@@ -11,7 +11,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'io.pezkuwichain.wallet.hydra_dx_math'
+    namespace 'io.novafoundation.nova.hydra_dx_math'
 }
 
 dependencies {

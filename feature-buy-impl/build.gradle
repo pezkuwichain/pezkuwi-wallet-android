@@ -4,7 +4,7 @@ apply from: '../scripts/secrets.gradle'
 
 android {
 
-    namespace 'io.pezkuwichain.wallet.feature_buy_impl'
+    namespace 'io.novafoundation.nova.feature_buy_impl'
 
     defaultConfig {
 

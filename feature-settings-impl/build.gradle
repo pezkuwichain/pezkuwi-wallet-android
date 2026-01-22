@@ -2,7 +2,7 @@ apply plugin: 'kotlin-parcelize'
 apply from: '../tests.gradle'
 
 android {
-    namespace 'io.pezkuwichain.wallet.feature_settings_impl'
+    namespace 'io.novafoundation.nova.feature_settings_impl'
 
     buildTypes {
         release {

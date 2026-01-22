@@ -7,7 +7,7 @@ android {
 
     }
 
-    namespace 'io.pezkuwichain.wallet.feature_governance_api'
+    namespace 'io.novafoundation.nova.feature_governance_api'
 }
 
 dependencies {

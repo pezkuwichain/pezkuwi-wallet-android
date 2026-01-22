@@ -1,6 +1,6 @@
 
 android {
-    namespace 'io.pezkuwichain.wallet.feature_crowdloan_api'
+    namespace 'io.novafoundation.nova.feature_crowdloan_api'
 
     packagingOptions {
         resources.excludes.add("META-INF/NOTICE.md")

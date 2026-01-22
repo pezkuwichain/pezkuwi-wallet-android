@@ -1,7 +1,7 @@
 apply plugin: 'kotlin-parcelize'
 
 android {
-    namespace 'io.pezkuwichain.wallet.feature_xcm_impl'
+    namespace 'io.novafoundation.nova.feature_xcm_impl'
 
 
     buildTypes {

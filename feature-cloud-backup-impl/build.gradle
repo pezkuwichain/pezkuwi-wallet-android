@@ -2,7 +2,7 @@ apply plugin: 'kotlin-parcelize'
 apply from: '../scripts/secrets.gradle'
 
 android {
-    namespace 'io.pezkuwichain.wallet.feature_cloud_backup_impl'
+    namespace 'io.novafoundation.nova.feature_cloud_backup_impl'
 
     defaultConfig {
 

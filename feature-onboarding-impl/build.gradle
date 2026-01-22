@@ -9,7 +9,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'io.pezkuwichain.wallet.feature_onboarding_impl'
+    namespace 'io.novafoundation.nova.feature_onboarding_impl'
 
     buildFeatures {
         viewBinding true

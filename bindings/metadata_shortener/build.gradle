@@ -1,7 +1,7 @@
 apply plugin: 'org.mozilla.rust-android-gradle.rust-android'
 
 android {
-    namespace 'io.pezkuwichain.wallet.metadata_shortener'
+    namespace 'io.novafoundation.nova.metadata_shortener'
 
     ndkVersion "26.1.10909125"
 

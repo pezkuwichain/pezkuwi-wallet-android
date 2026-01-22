@@ -3,7 +3,7 @@ apply from: '../tests.gradle'
 apply from: '../scripts/secrets.gradle'
 
 android {
-    namespace 'io.pezkuwichain.wallet.feature_vote'
+    namespace 'io.novafoundation.nova.feature_vote'
 
     
     buildTypes {

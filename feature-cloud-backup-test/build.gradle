@@ -1,6 +1,6 @@
 
 android {
-    namespace 'io.pezkuwichain.wallet.feature_cloud_backup_test'
+    namespace 'io.novafoundation.nova.feature_cloud_backup_test'
 
 
     buildTypes {

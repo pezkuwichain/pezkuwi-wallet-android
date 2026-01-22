@@ -71,7 +71,7 @@ android {
         }
     }
 
-    namespace 'io.pezkuwichain.wallet.common'
+    namespace 'io.novafoundation.nova.common'
 
     buildFeatures {
         viewBinding true

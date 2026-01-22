@@ -3,7 +3,7 @@ apply from: '../tests.gradle'
 apply from: "../scripts/secrets.gradle"
 
 android {
-    namespace 'io.pezkuwichain.wallet.feature_external_sign_impl'
+    namespace 'io.novafoundation.nova.feature_external_sign_impl'
 
 
     defaultConfig {

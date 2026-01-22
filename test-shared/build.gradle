@@ -7,7 +7,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'io.pezkuwichain.wallet.test_shared'
+    namespace 'io.novafoundation.nova.test_shared'
 }
 
 

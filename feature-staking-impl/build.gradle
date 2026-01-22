@@ -21,7 +21,7 @@ android {
             buildConfigField "String", "RECOMMENDED_VALIDATORS_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/staking/validators/v1/nova_validators.json\""
         }
     }
-    namespace 'io.pezkuwichain.wallet.feature_staking_impl'
+    namespace 'io.novafoundation.nova.feature_staking_impl'
 
     buildFeatures {
         viewBinding true
