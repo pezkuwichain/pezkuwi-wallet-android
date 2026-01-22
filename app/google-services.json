@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "783787781434",
+    "project_id": "pezkuwi-wallet",
+    "storage_bucket": "pezkuwi-wallet.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783787781434:android:3645395a1f99c11c53b403",
+        "android_client_info": {
+          "package_name": "io.pezkuwichain.wallet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK_P0TE_QyomWlO1BN79qY4xUAKcei12g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
