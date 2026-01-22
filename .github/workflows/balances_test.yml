@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-app:
-    uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@develop
+    uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
     with:
       branch: ${{github.head_ref}}
       gradlew-command: assembleDebug

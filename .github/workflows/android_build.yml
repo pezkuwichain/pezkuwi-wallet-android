@@ -5,7 +5,7 @@ on:
     inputs:
       branch:
         required: true
-        default: develop
+        default: main
         type: string
       gradlew-command:
         required: false

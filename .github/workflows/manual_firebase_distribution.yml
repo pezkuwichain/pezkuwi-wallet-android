@@ -10,11 +10,11 @@ on:
       branch:
         description: 'From which branch the application will be built'
         required: true
-        default: develop
+        default: main
 
 jobs:
   build:
-    uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@develop
+    uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
     with:
       branch: ${{ github.event.inputs.branch }}
       gradlew-command: assembleDevelop
