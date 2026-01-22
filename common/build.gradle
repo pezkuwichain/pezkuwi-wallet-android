@@ -1,0 +1,157 @@
+apply plugin: 'kotlin-parcelize'
+
+android {
+
+    defaultConfig {
+
+        buildConfigField "String", "WEBSITE_URL", "\"https://pezkuwichain.io\""
+        buildConfigField "String", "PRIVACY_URL", "\"https://pezkuwichain.io/privacy\""
+        buildConfigField "String", "TERMS_URL", "\"https://pezkuwichain.io/terms\""
+        buildConfigField "String", "GITHUB_URL", "\"https://github.com/pezkuwichain\""
+        buildConfigField "String", "TELEGRAM_URL", "\"https://t.me/pezkuwichain\""
+        buildConfigField "String", "TWITTER_URL", "\"https://twitter.com/pezkuwichain\""
+        buildConfigField "String", "RATE_URL", "\"market://details?id=${rootProject.applicationId}.${releaseApplicationSuffix}\""
+        buildConfigField "String", "EMAIL", "\"support@pezkuwichain.io\""
+        buildConfigField "String", "YOUTUBE_URL", "\"https://www.youtube.com/@pezkuwichain\""
+
+        buildConfigField "String", "TWITTER_ACCOUNT_TEMPLATE", "\"https://twitter.com/%s\""
+        buildConfigField "String", "RECOMMENDED_VALIDATORS_LEARN_MORE", "\"https://docs.pezkuwichain.io/wallet-wiki/staking/staking-faq#q-how-does-pezkuwi-wallet-select-validators-collators\""
+
+        buildConfigField "String", "PAYOUTS_LEARN_MORE", "\"https://docs.pezkuwichain.io/wallet-wiki/staking/staking-faq#q-what-is-the-difference-between-restake-rewards-and-transferable-rewards\""
+
+        buildConfigField "String", "SET_CONTROLLER_LEARN_MORE", "\"https://docs.pezkuwichain.io/wallet-wiki/staking/staking-faq#q-what-are-stash-and-controller-accounts\""
+
+        buildConfigField "String", "SET_CONTROLLER_DEPRECATED_LEARN_MORE", "\"https://docs.pezkuwichain.io/wallet-wiki/staking/controller-account-deprecation\""
+
+        buildConfigField "String", "PARITY_SIGNER_TROUBLESHOOTING", "\"https://docs.pezkuwichain.io/wallet-wiki/hardware-wallets/parity-signer/troubleshooting\""
+        buildConfigField "String", "POLKADOT_VAULT_TROUBLESHOOTING", "\"https://docs.pezkuwichain.io/wallet-wiki/hardware-wallets/polkadot-vault/troubleshooting\""
+        buildConfigField "String", "PEZKUWI_WALLET_WIKI_BASE", "\"https://docs.pezkuwichain.io/wallet-wiki/about-pezkuwi-wallet\""
+        buildConfigField "String", "PEZKUWI_WALLET_WIKI_PROXY", "\"https://docs.pezkuwichain.io/wallet-wiki/wallet-management/delegated-authorities-proxies\""
+        buildConfigField "String", "PEZKUWI_WALLET_WIKI_INTEGRATE_NETWORK", "\"https://docs.pezkuwichain.io/wallet-wiki/misc/developer-documentation/integrate-network\""
+
+        buildConfigField "String", "LEDGER_MIGRATION_ARTICLE", "\"https://docs.pezkuwichain.io/wallet-wiki/wallet-management/hardware-wallets/ledger-nano-x/ledger-app-migration\""
+
+        buildConfigField "String", "LEDGER_CONNECTION_GUIDE", "\"https://docs.pezkuwichain.io/wallet-wiki/wallet-management/hardware-wallets/ledger-devices\""
+
+        buildConfigField "String", "APP_UPDATE_SOURCE_LINK", "\"https://wallet.pezkuwichain.io\""
+
+        buildConfigField "String", "PEZKUWI_CARD_WIDGET_URL", "\"https://exchange.mercuryo.io\""
+
+        buildConfigField "String", "ASSET_COLORED_ICON_URL", "\"https://wallet.pezkuwichain.io/icons/tokens/colored\""
+        buildConfigField "String", "ASSET_WHITE_ICON_URL", "\"https://wallet.pezkuwichain.io/icons/tokens/white\""
+
+        buildConfigField "String", "UNIFIED_ADDRESS_ARTICLE", "\"https://docs.pezkuwichain.io/wallet-wiki/asset-management/how-to-receive-tokens#unified-and-legacy-addresses\""
+
+        buildConfigField "String", "MULTISIGS_WIKI_URL", "\"https://docs.pezkuwichain.io/wallet-wiki/wallet-management/multisig-wallets\""
+
+        buildConfigField "String", "GIFTS_WIKI_URL", "\"https://docs.pezkuwichain.io/wallet-wiki/asset-management/gifting-tokens\""
+
+        buildConfigField "long", "CLOUD_PROJECT_NUMBER", "171267697857L"
+
+        buildConfigField "String", "GLOBAL_CONFIG_URL", "\"https://wallet.pezkuwichain.io/config/global_config_dev.json\""
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "long", "CLOUD_PROJECT_NUMBER", "802342409053L"
+
+            buildConfigField "String", "GLOBAL_CONFIG_URL", "\"https://wallet.pezkuwichain.io/config/global_config.json\""
+        }
+
+        releaseGithub {
+            initWith buildTypes.release
+            matchingFallbacks = ['release']
+            buildConfigField "String", "APP_UPDATE_SOURCE_LINK", "\"https://github.com/pezkuwichain/pezWallet/releases\""
+        }
+    }
+
+    namespace 'io.novafoundation.nova.common'
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation(name: 'renderscript-toolkit', ext: 'aar')
+
+    api project(":core-api")
+
+    implementation kotlinDep
+
+    implementation androidDep
+    implementation cardViewDep
+    implementation recyclerViewDep
+    implementation materialDep
+    implementation constraintDep
+
+    implementation biometricDep
+
+    implementation bouncyCastleDep
+
+    api substrateSdkDep
+
+    implementation coroutinesDep
+    api liveDataKtxDep
+    implementation lifeCycleKtxDep
+
+    implementation viewModelKtxDep
+
+    implementation daggerDep
+    ksp daggerCompiler
+
+    implementation lifecycleDep
+    ksp lifecycleCompiler
+
+    implementation retrofitDep
+    api gsonConvertedDep
+    implementation scalarsConverterDep
+    implementation interceptorVersion
+
+    implementation zXingCoreDep
+    implementation zXingEmbeddedDep
+
+    implementation progressButtonDep
+
+    implementation wsDep
+
+    api insetterDep
+
+    api coilDep
+    api coilSvg
+
+    api web3jDep
+    api coroutinesFutureDep
+    api coroutinesRxDep
+
+    implementation shimmerDep
+
+    implementation playIntegrity
+
+    testImplementation jUnitDep
+    testImplementation mockitoDep
+    testImplementation project(':test-shared')
+
+    implementation permissionsDep
+
+    implementation flexBoxDep
+
+    implementation markwonDep
+    implementation markwonImage
+    implementation markwonTables
+    implementation markwonLinkify
+    implementation markwonStrikethrough
+    implementation markwonHtml
+    implementation kotlinReflect
+
+    implementation playServicesAuthDep
+
+}

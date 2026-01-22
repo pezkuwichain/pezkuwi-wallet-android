@@ -1,0 +1,11 @@
+
+android {
+    namespace 'io.novafoundation.nova.core'
+}
+
+dependencies {
+    implementation coroutinesDep
+    implementation substrateSdkDep
+
+    api web3jDep
+}

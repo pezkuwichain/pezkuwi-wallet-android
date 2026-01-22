@@ -1,0 +1,749 @@
+package io.novafoundation.nova.common.utils
+
+import android.widget.CompoundButton
+import android.widget.EditText
+import android.widget.RadioGroup
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.tabs.TabLayout
+import io.novafoundation.nova.common.base.BaseFragment
+import io.novafoundation.nova.common.domain.ExtendedLoadingState
+import io.novafoundation.nova.common.domain.dataOrNull
+import io.novafoundation.nova.common.presentation.LoadingState
+import io.novafoundation.nova.common.utils.input.Input
+import io.novafoundation.nova.common.utils.input.isModifiable
+import io.novafoundation.nova.common.utils.input.modifyInput
+import io.novafoundation.nova.common.utils.input.valueOrNull
+import io.novafoundation.nova.common.view.InsertableInputField
+import io.novafoundation.nova.common.view.input.seekbar.Seekbar
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.SendChannel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.transformLatest
+import kotlinx.coroutines.flow.transformWhile
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlin.coroutines.coroutineContext
+import kotlin.experimental.ExperimentalTypeInference
+import kotlin.time.Duration
+
+inline fun <T> Flow<List<T>>.filterList(crossinline handler: suspend (T) -> Boolean) = map { list ->
+    list.filter { item -> handler(item) }
+}
+
+inline fun <T> Flow<Set<T>>.filterSet(crossinline handler: suspend (T) -> Boolean) = map { set ->
+    set.filter { item -> handler(item) }.toSet()
+}
+
+inline fun <T, R> Flow<List<T>>.mapList(crossinline mapper: suspend (T) -> R) = map { list ->
+    list.map { item -> mapper(item) }
+}
+
+inline fun <T, R> Flow<Result<T>>.mapResult(crossinline mapper: suspend (T) -> R) = map { result ->
+    result.map { item -> mapper(item) }
+}
+
+/**
+ * Maps nullable values by transforming non-null values and  propagating null to downstream
+ */
+inline fun <T : Any, R : Any> Flow<T?>.mapOptional(crossinline mapper: suspend (T) -> R?): Flow<R?> = map { result ->
+    result?.let { mapper(it) }
+}
+
+inline fun <T, R> Flow<List<T>>.mapListNotNull(crossinline mapper: suspend (T) -> R?) = map { list ->
+    list.mapNotNull { item -> mapper(item) }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun <T> Flow<T>.onEachLatest(action: suspend (T) -> Unit): Flow<T> = transformLatest { value ->
+    action(value)
+    return@transformLatest emit(value)
+}
+
+/**
+ * Modifies flow so that it firstly emits [LoadingState.Loading] state.
+ * Then emits each element from upstream wrapped into [LoadingState.Loaded] state.
+ */
+fun <T> Flow<T>.withLoading(): Flow<LoadingState<T>> {
+    return map<T, LoadingState<T>> { LoadingState.Loaded(it) }
+        .onStart { emit(LoadingState.Loading()) }
+}
+
+fun <T> MutableStateFlow<T>.setter(): (T) -> Unit {
+    return { value = it }
+}
+
+fun <T> MutableStateFlow<T>.updateValue(updater: (T) -> T) {
+    value = updater(value)
+}
+
+fun <T> Flow<T>.withItemScope(parentScope: CoroutineScope): Flow<Pair<T, CoroutineScope>> {
+    var currentScope: CoroutineScope? = null
+
+    return map {
+        currentScope?.cancel()
+        currentScope = parentScope.childScope(supervised = true)
+        it to requireNotNull(currentScope)
+    }
+}
+
+/**
+ * Modifies flow so that it firstly emits [ExtendedLoadingState.Loading] state.
+ * Then emits each element from upstream wrapped into [ExtendedLoadingState.Loaded] state.
+ * If exception occurs, emits [ExtendedLoadingState.Error] state.
+ */
+fun <T> Flow<T>.withSafeLoading(): Flow<ExtendedLoadingState<T>> {
+    return map<T, ExtendedLoadingState<T>> { ExtendedLoadingState.Loaded(it) }
+        .onStart { emit(ExtendedLoadingState.Loading) }
+        .catch { emit(ExtendedLoadingState.Error(it)) }
+}
+
+suspend fun <T> Flow<LoadingState<T>>.firstOnLoad(): T = transform {
+    collect {
+        if (it is LoadingState.Loaded<T>) {
+            emit(it.data)
+        }
+    }
+}.first()
+
+fun <T> List<Flow<T>>.mergeIfMultiple(): Flow<T> = when (size) {
+    0 -> emptyFlow()
+    1 -> first()
+    else -> merge()
+}
+
+inline fun <T> withFlowScope(crossinline block: suspend (scope: CoroutineScope) -> Flow<T>): Flow<T> {
+    return flowOfAll {
+        val flowScope = CoroutineScope(coroutineContext)
+
+        block(flowScope)
+    }
+}
+
+inline fun <T> parentCancellableFlowScope(crossinline block: suspend (scope: CoroutineScope) -> T): Flow<T> {
+    return flow {
+        val flowScope = CoroutineScope(coroutineContext)
+        emit(block(flowScope))
+
+        awaitCancellation()
+    }
+}
+
+fun <T1, T2> combineToPair(flow1: Flow<T1>, flow2: Flow<T2>): Flow<Pair<T1, T2>> = combine(flow1, flow2, ::Pair)
+
+fun <T1, T2, T3> combineToTriple(flow1: Flow<T1>, flow2: Flow<T2>, flow3: Flow<T3>): Flow<Triple<T1, T2, T3>> = combine(flow1, flow2, flow3, ::Triple)
+
+fun <T1, T2, T3, T4> combineToTuple4(
+    flow1: Flow<T1>,
+    flow2: Flow<T2>,
+    flow3: Flow<T3>,
+    flow4: Flow<T4>
+): Flow<Tuple4<T1, T2, T3, T4>> = combine(flow1, flow2, flow3, flow4, ::Tuple4)
+
+/**
+ * Modifies flow so that it firstly emits [LoadingState.Loading] state for each element from upstream.
+ * Then, it constructs new source via [sourceSupplier] and emits all of its items wrapped into [LoadingState.Loaded] state
+ * Old suppliers are discarded as per [Flow.transformLatest] behavior
+ */
+fun <T, R> Flow<T>.withLoading(sourceSupplier: suspend (T) -> Flow<R>): Flow<LoadingState<R>> {
+    return transformLatest { item ->
+        emit(LoadingState.Loading<R>())
+
+        val newSource = sourceSupplier(item).map { LoadingState.Loaded(it) }
+
+        emitAll(newSource)
+    }
+}
+
+private enum class InnerState {
+    INITIAL_START, SECONDARY_START, IN_PROGRESS
+}
+
+/**
+ * Modifies flow so that it firstly emits [LoadingState.Loading] state for each element from upstream.
+ * Then, it constructs new source via [sourceSupplier] and emits all of its items wrapped into [LoadingState.Loaded] state
+ * Old suppliers are discarded as per [Flow.transformLatest] behavior
+ *
+ * NOTE: This is a modified version of [withLoading] that is intended to be used ONLY with [SharingStarted.WhileSubscribed].
+ * In particular, it does not emit loading state on second and subsequent re-subscriptions
+ */
+fun <T, R> Flow<T>.withLoadingShared(sourceSupplier: suspend (T) -> Flow<R>): Flow<ExtendedLoadingState<R>> {
+    var state: InnerState = InnerState.INITIAL_START
+
+    return transformLatest { item ->
+        if (state != InnerState.SECONDARY_START) {
+            emit(ExtendedLoadingState.Loading)
+        }
+        state = InnerState.IN_PROGRESS
+
+        val newSource = sourceSupplier(item).map { ExtendedLoadingState.Loaded(it) }
+
+        emitAll(newSource)
+    }
+        .catch { emit(ExtendedLoadingState.Error(it)) }
+        .onCompletion { state = InnerState.SECONDARY_START }
+}
+
+fun <T> Flow<T>.zipWithLastNonNull(): Flow<Pair<T?, T>> = flow {
+    var lastNonNull: T? = null
+
+    collect {
+        emit(lastNonNull to it)
+
+        if (it != null) {
+            lastNonNull = it
+        }
+    }
+}
+
+suspend inline fun <reified T> Flow<ExtendedLoadingState<T>>.firstLoaded(): T = first { it.dataOrNull != null }.dataOrNull as T
+
+suspend fun <T> Flow<ExtendedLoadingState<T>>.firstIfLoaded(): T? = first().dataOrNull
+
+/**
+ * Modifies flow so that it firstly emits [LoadingState.Loading] state.
+ * Then emits each element from upstream wrapped into [LoadingState.Loaded] state.
+ *
+ * NOTE: This is a modified version of [withLoading] that is intended to be used ONLY with [SharingStarted.WhileSubscribed].
+ * In particular, it does not emit loading state on second and subsequent re-subscriptions
+ */
+fun <T> Flow<T>.withLoadingShared(): Flow<ExtendedLoadingState<T>> {
+    var state: InnerState = InnerState.INITIAL_START
+
+    return map<T, ExtendedLoadingState<T>> { ExtendedLoadingState.Loaded(it) }
+        .onStart {
+            if (state != InnerState.SECONDARY_START) {
+                emit(ExtendedLoadingState.Loading)
+            }
+            state = InnerState.IN_PROGRESS
+        }
+        .catch { emit(ExtendedLoadingState.Error(it)) }
+        .onCompletion { state = InnerState.SECONDARY_START }
+}
+
+/**
+ * Similar to [Flow.takeWhile] but emits last element too
+ */
+fun <T> Flow<T>.takeWhileInclusive(predicate: suspend (T) -> Boolean) = transformWhile {
+    emit(it)
+
+    predicate(it)
+}
+
+inline fun <T, R> Flow<T?>.mapNullable(crossinline mapper: suspend (T) -> R): Flow<R?> {
+    return map { it?.let { mapper(it) } }
+}
+
+/**
+ * Modifies flow so that it firstly emits [LoadingState.Loading] state for each element from upstream.
+ * Then, it constructs new source via [sourceSupplier] and emits all of its items wrapped into [LoadingState.Loaded] state
+ * Old suppliers are discarded as per [Flow.transformLatest] behavior
+ */
+fun <T, R> Flow<T>.withLoadingSingle(sourceSupplier: suspend (T) -> R): Flow<LoadingState<R>> {
+    return transformLatest { item ->
+        emit(LoadingState.Loading())
+
+        val newSource = LoadingState.Loaded(sourceSupplier(item))
+
+        emit(newSource)
+    }
+}
+
+fun <T> Flow<T>.wrapInResult(): Flow<Result<T>> {
+    return map { Result.success(it) }
+        .catch { emit(Result.failure(it)) }
+}
+
+@Suppress("UNCHECKED_CAST")
+@OptIn(ExperimentalTypeInference::class)
+inline fun <reified T, reified R> Flow<Result<T>>.transformResult(
+    @BuilderInference crossinline transform: suspend FlowCollector<R>.(value: T) -> Unit
+): Flow<Result<R>> {
+    return transform { upstream ->
+        upstream.onFailure {
+            emit(upstream as Result<R>)
+        }.onSuccess {
+            val innerCollector = FlowCollector<R> {
+                emit(Result.success(it))
+            }
+
+            runCatching {
+                transform(innerCollector, it)
+            }.onFailure {
+                if (it is CancellationException) {
+                    throw it
+                }
+
+                emit(Result.failure(it))
+            }
+        }
+    }
+}
+
+fun <T, R> Flow<T>.withLoadingResult(source: suspend (T) -> Result<R>): Flow<ExtendedLoadingState<R>> {
+    return transformLatest { item ->
+        emit(ExtendedLoadingState.Loading)
+
+        source(item)
+            .onSuccess { emit(ExtendedLoadingState.Loaded(it)) }
+            .onFailure { emit(ExtendedLoadingState.Error(it)) }
+    }
+}
+
+fun <T> Flow<T>.asLiveData(scope: CoroutineScope): LiveData<T> {
+    val liveData = MutableLiveData<T>()
+
+    onEach {
+        liveData.value = it
+    }.launchIn(scope)
+
+    return liveData
+}
+
+fun <T : Identifiable> Flow<List<T>>.diffed(): Flow<CollectionDiffer.Diff<T>> {
+    return zipWithPrevious().map { (previous, new) ->
+        CollectionDiffer.findDiff(newItems = new, oldItems = previous.orEmpty(), forceUseNewItems = false)
+    }
+}
+
+suspend inline fun Flow<Boolean>.awaitTrue() {
+    first { it }
+}
+
+fun <T> Flow<T>.zipWithPrevious(): Flow<Pair<T?, T>> = flow {
+    var current: T? = null
+
+    collect {
+        emit(current to it)
+
+        current = it
+    }
+}
+
+fun <T> Flow<T>.onEachWithPrevious(action: suspend (T?, T) -> Unit): Flow<T> = flow {
+    var current: T? = null
+
+    collect {
+        action(current, it)
+        emit(it)
+        current = it
+    }
+}
+
+private fun <K> MutableMap<K, CoroutineScope>.removeAndCancel(key: K) {
+    remove(key)?.also(CoroutineScope::cancel)
+}
+
+fun <T : Identifiable, R> Flow<List<T>>.transformLatestDiffed(transform: suspend FlowCollector<R>.(value: T) -> Unit): Flow<R> = channelFlow {
+    val parentScope = CoroutineScope(coroutineContext)
+    val itemScopes = mutableMapOf<String, CoroutineScope>()
+
+    diffed().onEach { diff ->
+        diff.removed.forEach { removedItem ->
+            itemScopes.removeAndCancel(removedItem.identifier)
+        }
+
+        diff.newOrUpdated.forEach { newOrUpdatedItem ->
+            itemScopes.removeAndCancel(newOrUpdatedItem.identifier)
+
+            val chainScope = parentScope.childScope(supervised = false)
+            itemScopes[newOrUpdatedItem.identifier] = chainScope
+
+            chainScope.launch {
+                transform(SendingCollector(this@channelFlow), newOrUpdatedItem)
+            }
+        }
+    }.launchIn(parentScope)
+}
+
+private class SendingCollector<T>(
+    private val channel: SendChannel<T>
+) : FlowCollector<T> {
+
+    override suspend fun emit(value: T): Unit = channel.send(value)
+}
+
+fun <T> singleReplaySharedFlow() = MutableSharedFlow<T>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+fun <T> Flow<T>.inBackground() = flowOn(Dispatchers.Default)
+
+fun <T> Flow<T>.nullOnStart(): Flow<T?> {
+    return onStart<T?> { emit(null) }
+}
+
+fun InsertableInputField.bindTo(flow: MutableSharedFlow<String>, scope: CoroutineScope) {
+    content.bindTo(flow, scope)
+}
+
+fun EditText.bindTo(
+    flow: MutableSharedFlow<String>,
+    scope: CoroutineScope,
+    moveSelectionToEndOnInsertion: Boolean = false,
+) {
+    bindTo(flow, scope, moveSelectionToEndOnInsertion, toT = { it }, fromT = { it })
+}
+
+inline fun <T> EditText.bindTo(
+    flow: MutableSharedFlow<T>,
+    scope: CoroutineScope,
+    moveSelectionToEndOnInsertion: Boolean = false,
+    crossinline toT: suspend (String) -> T,
+    crossinline fromT: suspend (T) -> String?,
+) {
+    val textWatcher = onTextChanged {
+        scope.launch {
+            flow.emit(toT(it))
+        }
+    }
+
+    scope.launch {
+        flow.collect { input ->
+            val inputString = fromT(input)
+            if (inputString != null && text.toString() != inputString) {
+                removeTextChangedListener(textWatcher)
+                setText(inputString)
+                if (moveSelectionToEndOnInsertion) {
+                    moveSelectionToTheEnd()
+                }
+                addTextChangedListener(textWatcher)
+            }
+        }
+    }
+}
+
+fun EditText.moveSelectionToTheEnd() {
+    if (hasFocus()) {
+        setSelection(text.length)
+    }
+}
+
+context(BaseFragment<*, *>)
+infix fun TabLayout.bindTo(pageIndexFlow: MutableSharedFlow<Int>) = bindTo(pageIndexFlow, this@BaseFragment.lifecycleScope)
+
+fun TabLayout.bindTo(
+    pageIndexFlow: MutableSharedFlow<Int>,
+    scope: LifecycleCoroutineScope
+) {
+    var currentTabPosition = -1
+
+    addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        override fun onTabSelected(tab: TabLayout.Tab) {
+            val newIndex = tab.position
+            if (currentTabPosition != newIndex) {
+                currentTabPosition = newIndex
+                scope.launch {
+                    pageIndexFlow.emit(newIndex)
+                }
+            }
+        }
+
+        override fun onTabUnselected(tab: TabLayout.Tab?) {}
+        override fun onTabReselected(tab: TabLayout.Tab?) {}
+    })
+
+    pageIndexFlow.observe(scope) { index ->
+        if (index != currentTabPosition && index in 0 until tabCount) {
+            currentTabPosition = index
+            this@bindTo.getTabAt(index)?.select()
+        }
+    }
+}
+
+inline fun <R> MutableStateFlow<Boolean>.withFlagSet(action: () -> R): R {
+    value = true
+
+    val result = action()
+
+    value = false
+
+    return result
+}
+
+fun CompoundButton.bindTo(flow: Flow<Boolean>, scope: CoroutineScope, callback: (Boolean) -> Unit) {
+    var oldValue = isChecked
+
+    scope.launch {
+        flow.collect { newValue ->
+            if (isChecked != newValue) {
+                oldValue = newValue
+                isChecked = newValue
+            }
+        }
+    }
+
+    setOnCheckedChangeListener { _, newValue ->
+        if (oldValue != newValue) {
+            oldValue = newValue
+            callback(newValue)
+        }
+    }
+}
+
+fun CompoundButton.bindTo(flow: MutableStateFlow<Boolean>, scope: CoroutineScope) {
+    scope.launch {
+        flow.collect { newValue ->
+            if (isChecked != newValue) {
+                isChecked = newValue
+            }
+        }
+    }
+
+    setOnCheckedChangeListener { _, newValue ->
+        if (flow.value != newValue) {
+            flow.value = newValue
+        }
+    }
+}
+
+@JvmName("bindToInput")
+fun CompoundButton.bindTo(flow: MutableStateFlow<Input<Boolean>>, scope: CoroutineScope) {
+    scope.launch {
+        flow.collect { newValue ->
+            when (newValue) {
+                Input.Disabled -> makeGone()
+
+                is Input.Enabled -> {
+                    if (isChecked != newValue.value) {
+                        isChecked = newValue.value
+                    }
+
+                    makeVisible()
+                    isEnabled = newValue.isModifiable
+                }
+            }
+        }
+    }
+
+    setOnCheckedChangeListener { _, newValue ->
+        if (flow.value.valueOrNull != newValue) {
+            flow.modifyInput(newValue)
+        }
+    }
+}
+
+fun <T : Enum<T>> RadioGroup.bindTo(flow: MutableStateFlow<T>, scope: LifecycleCoroutineScope, valueToViewId: Map<T, Int>) {
+    val viewIdToValue = valueToViewId.reversed()
+
+    setOnCheckedChangeListener { _, checkedId ->
+        val newValue = viewIdToValue.getValue(checkedId)
+
+        if (flow.value != newValue) {
+            flow.value = newValue
+        }
+    }
+
+    scope.launchWhenResumed {
+        flow.collect {
+            val newCheckedId = valueToViewId.getValue(it)
+
+            if (newCheckedId != checkedRadioButtonId) {
+                check(newCheckedId)
+            }
+        }
+    }
+}
+
+fun RadioGroup.bindTo(flow: MutableStateFlow<Int>, scope: LifecycleCoroutineScope) {
+    setOnCheckedChangeListener { _, checkedId ->
+        if (flow.value != checkedId) {
+            flow.value = checkedId
+        }
+    }
+
+    scope.launchWhenResumed {
+        flow.collect {
+            if (it != checkedRadioButtonId) {
+                check(it)
+            }
+        }
+    }
+}
+
+fun Seekbar.bindTo(flow: MutableStateFlow<Int>, scope: LifecycleCoroutineScope) {
+    setOnProgressChangedListener { progress ->
+        if (flow.value != progress) {
+            flow.value = progress
+        }
+    }
+
+    scope.launchWhenResumed {
+        flow.collect {
+            if (it != progress) {
+                progress = it
+            }
+        }
+    }
+}
+
+fun <T> Flow<T>.observe(
+    scope: LifecycleCoroutineScope,
+    collector: FlowCollector<T>,
+) {
+    scope.launchWhenResumed {
+        collect(collector)
+    }
+}
+
+fun MutableStateFlow<Boolean>.toggle() {
+    value = !value
+}
+
+fun <T> flowOf(producer: suspend () -> T) = flow {
+    emit(producer())
+}
+
+inline fun <T> flowOfAll(crossinline producer: suspend () -> Flow<T>): Flow<T> = flow {
+    emitAll(producer())
+}
+
+inline fun <reified T> Iterable<Flow<T>>.combine(): Flow<List<T>> {
+    return combineIdentity(this)
+}
+
+inline fun <reified T> combineIdentity(flows: Iterable<Flow<T>>): Flow<List<T>> {
+    return combine(flows) { it.toList() }
+}
+
+fun <T> Collection<Flow<T>>.accumulate(): Flow<List<T>> {
+    return accumulate(*this.toTypedArray())
+}
+
+fun <T> accumulate(vararg flows: Flow<T>): Flow<List<T>> {
+    val flowsList = flows.mapIndexed { index, flow -> flow.map { index to flow } }
+    val resultOfFlows = MutableList<T?>(flowsList.size) { null }
+    val lock = Mutex()
+
+    return flowsList
+        .merge()
+        .map {
+            lock.withLock { resultOfFlows[it.first] = it.second.first() }
+            resultOfFlows.filterNotNull().toList()
+        }
+}
+
+fun <T> accumulateFlatten(vararg flows: Flow<List<T>>): Flow<List<T>> {
+    return accumulate(*flows).map { it.flatten() }
+}
+
+fun <A, B, R> unite(flowA: Flow<A>, flowB: Flow<B>, transform: suspend (A?, B?) -> R): Flow<R> {
+    var aResult: A? = null
+    var bResult: B? = null
+
+    return merge(
+        flowA.onEach { aResult = it },
+        flowB.onEach { bResult = it },
+    ).map { transform(aResult, bResult) }
+}
+
+fun <A, B, C, R> unite(flowA: Flow<A>, flowB: Flow<B>, flowC: Flow<C>, transform: (A?, B?, C?) -> R): Flow<R> {
+    var aResult: A? = null
+    var bResult: B? = null
+    var cResult: C? = null
+
+    return merge(
+        flowA.onEach { aResult = it },
+        flowB.onEach { bResult = it },
+        flowC.onEach { cResult = it },
+    ).map { transform(aResult, bResult, cResult) }
+}
+
+fun <A, B, C, D, R> unite(flowA: Flow<A>, flowB: Flow<B>, flowC: Flow<C>, flowD: Flow<D>, transform: (A?, B?, C?, D?) -> R): Flow<R> {
+    var aResult: A? = null
+    var bResult: B? = null
+    var cResult: C? = null
+    var dResult: D? = null
+
+    return merge(
+        flowA.onEach { aResult = it },
+        flowB.onEach { bResult = it },
+        flowC.onEach { cResult = it },
+        flowD.onEach { dResult = it }
+    ).map { transform(aResult, bResult, cResult, dResult) }
+}
+
+fun <T> firstNonEmpty(
+    vararg sources: Flow<List<T>>
+): Flow<List<T>> = accumulate(*sources)
+    .transform { collected ->
+        val isAllLoaded = collected.size == sources.size
+        val flattenResult: List<T> = collected.flatten()
+
+        if (isAllLoaded || flattenResult.isNotEmpty()) {
+            emit(flattenResult)
+        }
+    }
+
+fun <T> Flow<T>.observeInLifecycle(
+    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    observer: FlowCollector<T>,
+) {
+    lifecycleCoroutineScope.launchWhenResumed {
+        collect(observer)
+    }
+}
+
+fun <T> Flow<T>.skipFirst(): Flow<T> {
+    return drop(1)
+}
+
+fun <T> Map<out T, MutableStateFlow<Boolean>>.checkEnabled(key: T) = get(key)?.value ?: false
+
+suspend inline fun <reified T> Flow<T?>.firstNotNull(): T = first { it != null } as T
+
+inline fun <T, R> Flow<IndexedValue<T>>.mapLatestIndexed(crossinline transform: suspend (T) -> R): Flow<IndexedValue<R>> {
+    return mapLatest { IndexedValue(it.index, transform(it.value)) }
+}
+
+/**
+ * Emits first element from upstream and then emits last element emitted by upstream during specified time window
+ *
+ * ```
+ * flow {
+ *  for (num in 1..15) {
+ *      emit(num)
+ *      delay(25)
+ *  }
+ * }.throttleLast(100)
+ *  .onEach { println(it) }
+ *  .collect()  // Prints 1, 5, 9, 13, 15
+ *
+ * ```
+ */
+fun <T> Flow<T>.throttleLast(delay: Duration): Flow<T> = this
+    .conflate()
+    .transform {
+        emit(it)
+        delay(delay)
+    }

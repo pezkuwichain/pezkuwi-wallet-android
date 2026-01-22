@@ -1,0 +1,105 @@
+apply plugin: 'kotlin-parcelize'
+apply from: '../tests.gradle'
+apply from: '../scripts/secrets.gradle'
+
+android {
+
+    defaultConfig {
+
+        
+
+        buildConfigField "String", "PEZKUWI_CARD_WIDGET_ID", "\"4ce98182-ed76-4933-ba1b-b85e4a51d75a\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    
+    namespace 'io.novafoundation.nova.feature_assets'
+
+    packagingOptions {
+        resources.excludes.add("META-INF/NOTICE.md")
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(':core-db')
+    implementation project(':common')
+    implementation project(':feature-wallet-api')
+    implementation project(':feature-account-api')
+    implementation project(':feature-nft-api')
+    implementation project(':feature-currency-api')
+    implementation project(':feature-crowdloan-api')
+    implementation project(':feature-wallet-connect-api')
+    implementation project(':feature-staking-api')
+    implementation project(':feature-swap-api')
+    implementation project(':web3names')
+    implementation project(':runtime')
+    implementation project(':feature-buy-api')
+    implementation project(':feature-xcm:api')
+    implementation project(':feature-banners-api')
+    implementation project(':feature-deep-linking')
+    implementation project(':feature-ahm-api')
+    implementation project(':feature-gift-api')
+
+    implementation kotlinDep
+
+    implementation androidDep
+    implementation swipeRefershLayout
+    implementation materialDep
+    implementation cardViewDep
+    implementation constraintDep
+
+    implementation permissionsDep
+
+    implementation coroutinesDep
+    implementation coroutinesAndroidDep
+    implementation viewModelKtxDep
+    implementation liveDataKtxDep
+    implementation lifeCycleKtxDep
+
+    implementation daggerDep
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    ksp daggerCompiler
+
+    implementation roomDep
+    ksp roomCompiler
+
+    implementation lifecycleDep
+    ksp lifecycleCompiler
+
+    implementation androidxWebKit
+
+    implementation bouncyCastleDep
+
+    testImplementation jUnitDep
+    testImplementation mockitoDep
+
+    implementation substrateSdkDep
+
+    implementation gsonDep
+    implementation retrofitDep
+
+    implementation wsDep
+
+    implementation zXingCoreDep
+    implementation zXingEmbeddedDep
+
+    implementation insetterDep
+
+    implementation shimmerDep
+    implementation flexBoxDep
+
+    implementation chartsDep
+
+    androidTestImplementation androidTestRunnerDep
+    androidTestImplementation androidTestRulesDep
+    androidTestImplementation androidJunitDep
+}

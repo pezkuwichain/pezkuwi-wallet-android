@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colors not included in the design system -->
+    <color name="address_icon_background">#eeeeee</color>
+    <color name="qr_code_background">#FFFFFF</color>
+    <color name="qr_code_content">#101014</color>
+
+    <color name="timeline_circle_color">#373A49</color>
+    <color name="timeline_line_color">#3DFFFFFF</color>
+
+    <!-- Splash background color -->
+    <color name="splash_background_color">#05081C</color>
+
+    <!-- System - Kurdistan Theme -->
+    <color name="android_system_accent">#009639</color>
+    <color name="default_system_blue_dark">#009639</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#E0FFFFFF</color>
+    <color name="text_primary_on_content">#000000</color>
+    <color name="text_secondary">#7AFFFFFF</color>
+    <color name="text_secondary_on_content">#8F000000</color>
+    <color name="text_on_cloud_backup_button">#05081C</color>
+    <color name="button_text">#E0FFFFFF</color>
+    <color name="chip_text">#A3FFFFFF</color>
+    <color name="button_text_inactive">#52FFFFFF</color>
+    <color name="hint_text">#52FFFFFF</color>
+    <color name="button_text_accent">#009639</color>
+    <color name="text_warning">#EBC50A</color>
+    <color name="critical_update_chip_text">#EBC50A</color>
+    <color name="text_negative">#E53450</color>
+    <color name="text_positive">#2FC864</color>
+    <color name="progress_bar_text">#2AB0F2</color>
+    <color name="major_update_chip_text">#2AB0F2</color>
+    <color name="conviction_slider_text_01x">#2AB0F2</color>
+    <color name="conviction_slider_text_1x">#41D4D2</color>
+    <color name="conviction_slider_text_2x">#58F8B2</color>
+    <color name="conviction_slider_text_3x">#86F574</color>
+    <color name="conviction_slider_text_4x">#B6F234</color>
+    <color name="conviction_slider_text_5x">#DAC71B</color>
+    <color name="conviction_slider_text_6x">#F19B27</color>
+    <color name="link_text">#A3FFFFFF</color>
+    <color name="staking_type_banner_text">#A3FFFFFF</color>
+    <color name="staking_type_banner_text_inactive">#52FFFFFF</color>
+    <color name="tinder_gov_banner_secondary_text">#A3FFFFFF</color>
+
+    <color name="crowdloan_banner_gradient_start">#BD387F</color>
+    <color name="crowdloan_banner_gradient_end">#FF7A00</color>
+
+    <color name="networks_banner_gradient_start">#00072E</color>
+    <color name="networks_banner_gradient_end">#661D78</color>
+
+    <!-- Icon Colors -->
+    <color name="icon_primary">#E0FFFFFF</color>
+    <color name="icon_primary_on_content">#05081C</color>
+    <color name="icon_secondary">#52FFFFFF</color>
+    <color name="icon_inactive">#29FFFFFF</color>
+    <color name="chip_icon">#7AFFFFFF</color>
+    <color name="icon_pressed">#7AFFFFFF</color>
+    <color name="nav_bar_icon_inactive">#66FFFFFF</color>
+    <color name="icon_accent">#009639</color>
+    <color name="icon_warning">#EBC50A</color>
+    <color name="icon_negative">#E53450</color>
+    <color name="icon_favorite">#E53450</color>
+    <color name="icon_positive">#2FC864</color>
+    <color name="mimi_icon_favorite">#8E8F9A</color>
+
+    <!-- Background Colors -->
+    <color name="secondary_screen_background">#08090E</color>
+    <color name="bottom_sheet_background">#181920</color>
+    <color name="block_background">#1A999EC7</color>
+    <color name="hided_networks_block_background">#3D999EC7</color>
+    <!--    TODO update name once in design system-->
+    <color name="block_background_dark">#5205081C</color>
+    <color name="cell_background_pressed">#291F78FF</color>
+    <color name="input_background">#1A999EC7</color>
+    <color name="chips_background">#29999EC7</color>
+    <color name="chip_on_card_background">#443679</color>
+    <color name="container_background">#1A999EC7</color>
+    <color name="token_container_background">#3D08090E</color>
+    <color name="segmented_background">#5208090E</color>
+    <color name="segmented_background_on_black">#1A999EC7</color>
+    <color name="cloud_backup_button_background">#FFFFFF</color>
+    <color name="selected_dapp_category">#E0FFFFFF</color>
+    <color name="android_history_background">#1E223C</color>
+
+    <color name="gift_block_background">#3D999EC7</color>
+    <color name="segmented_tab_active">#3D999EC7</color>
+    <color name="switch_background">#3D999EC7</color>
+    <color name="progress_bar_background">#3D999EC7</color>
+    <color name="voting_slider_background">#29999EC7</color>
+    <color name="error_block_background">#29E53450</color>
+    <color name="warning_block_background">#29EDCE36</color>
+    <color name="critical_update_chip_background">#1FEDCE36</color>
+    <color name="major_update_chip_background">#1F2AB0F2</color>
+    <color name="blur_navigation_background">#66151D27</color>
+    <color name="dapp_blur_navigation_background">#CC151D27</color>
+    <color name="solid_navigation_background">#0F111A</color>
+    <color name="dim_background">#7A08090E</color>
+    <color name="waiting_status_background">#3D999EC7</color>
+    <color name="active_status_background">#3D2FC864</color>
+    <color name="your_rewards_card_background">#060A33</color>
+
+    <!-- Button Colors - Kurdistan Green -->
+    <color name="button_background_primary">#009639</color>
+    <color name="button_background_secondary">#29999EC7</color>
+    <color name="button_background_approve">#2FC864</color>
+    <color name="button_background_reject">#E53450</color>
+    <color name="button_background_inactive_on_gradient">#1A999EC7</color>
+    <color name="button_background_inactive">#181920</color>
+
+    <color name="button_wallet_connect_background">#353D67</color>
+    <color name="wallet_connections_background">#101636</color>
+
+    <!-- Border Colors - Kurdistan Green -->
+    <color name="active_border">#009639</color>
+    <color name="checkbox_border">#3D999EC7</color>
+    <color name="radio_border">#3D999EC7</color>
+    <color name="container_border">#29999EC7</color>
+    <color name="no_key_container_border">#52999EC7</color>
+    <color name="mnemonic_border_active">#29999EC7</color>
+    <color name="mnemonic_border_inactive">#3D999EC7</color>
+    <color name="container_card_actions_border">#0A999EC7</color>
+    <color name="staking_type_card_border">#3D999EC7</color>
+    <color name="error_border">#E53450</color>
+
+    <!-- Divider Colors -->
+    <color name="divider">#29999EC7</color>
+    <color name="navigation_divider">#29999EC7</color>
+
+    <!-- Indicator Colors - Kurdistan Green -->
+    <color name="indicator_active">#009639</color>
+    <color name="indicator_inactive">#29FFFFFF</color>
+    <color name="pull_indicator">#29FFFFFF</color>
+    <color name="shimmering_indicator">#A3FFFFFF</color>
+    <color name="nay_indicator">#E53450</color>
+    <color name="aye_indicator">#2FC864</color>
+    <color name="progress_bar_indicator">#2AB0F2</color>
+    <color name="votes_to_pass_indicator">#FFFFFF</color>
+    <color name="voting_slider_indicator_active">#08090E</color>
+    <color name="voting_slider_indicator_inactive">#7A08090E</color>
+    <color name="voting_slider_knob_icon">#FFFFFF</color>
+
+    <color name="individual_chip_icon">#2AB0F2</color>
+    <color name="individual_chip_text">#2AB0F2</color>
+    <color name="individual_chip_background">#292AB0F2</color>
+
+    <color name="organization_chip_icon">#EBC50A</color>
+    <color name="organization_chip_text">#EBC50A</color>
+    <color name="organization_chip_background">#1FEDCE36</color>
+
+    <!-- Shadow -->
+    <color name="nft_stack_shadow">#B8000000</color>
+    <color name="voting_slider_knob_shadow">#B8000000</color>
+    <color name="votes_to_pass_indicator_shadow">#B8000000</color>
+
+    <color name="notification_preview_1_layer_background">#3B3E4E</color>
+    <color name="notification_preview_2_layer_background">#252733</color>
+    <color name="notification_preview_3_layer_background">#1D1D28</color>
+
+    <color name="price_chart_grid_line">#29999EC7</color>
+    <color name="neutral_price_chart_line">#454968</color>
+    <color name="positive_price_chart_line">#2FC864</color>
+    <color name="negative_price_chart_line">#E53450</color>
+</resources>

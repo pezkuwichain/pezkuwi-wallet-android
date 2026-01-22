@@ -1,0 +1,92 @@
+apply plugin: 'kotlin-parcelize'
+apply from: '../tests.gradle'
+apply from: '../scripts/secrets.gradle'
+
+android {
+
+    defaultConfig {
+
+        
+
+        buildConfigField "String", "EHTERSCAN_API_KEY_MOONBEAM", readStringSecret("EHTERSCAN_API_KEY_MOONBEAM")
+        buildConfigField "String", "EHTERSCAN_API_KEY_MOONRIVER", readStringSecret("EHTERSCAN_API_KEY_MOONRIVER")
+        buildConfigField "String", "EHTERSCAN_API_KEY_ETHEREUM", readStringSecret("EHTERSCAN_API_KEY_ETHEREUM")
+
+        buildConfigField "String", "LEGACY_CROSS_CHAIN_CONFIG_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/refs/heads/master/xcm/v8/transfers_dev.json\""
+        buildConfigField "String", "DYNAMIC_CROSS_CHAIN_CONFIG_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/refs/heads/master/xcm/v8/transfers_dynamic_dev.json\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "LEGACY_CROSS_CHAIN_CONFIG_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/xcm/v8/transfers.json\""
+            buildConfigField "String", "DYNAMIC_CROSS_CHAIN_CONFIG_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/xcm/v8/transfers_dynamic.json\""
+        }
+    }
+    namespace 'io.novafoundation.nova.feature_wallet_impl'
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(':core-db')
+    implementation project(':common')
+    implementation project(':feature-wallet-api')
+    implementation project(':feature-account-api')
+    implementation project(':feature-currency-api')
+    implementation project(":feature-swap-core")
+    implementation project(':runtime')
+    implementation project(':feature-xcm:api')
+
+    implementation kotlinDep
+
+    implementation androidDep
+    implementation materialDep
+    implementation cardViewDep
+    implementation constraintDep
+
+    implementation permissionsDep
+
+    implementation coroutinesDep
+    implementation coroutinesAndroidDep
+    implementation viewModelKtxDep
+    implementation liveDataKtxDep
+    implementation lifeCycleKtxDep
+
+    implementation daggerDep
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    ksp daggerCompiler
+
+    implementation roomDep
+    ksp roomCompiler
+
+    implementation lifecycleDep
+    ksp lifecycleCompiler
+
+    implementation bouncyCastleDep
+
+    testImplementation jUnitDep
+    testImplementation mockitoDep
+
+    implementation substrateSdkDep
+
+    implementation gsonDep
+    implementation retrofitDep
+
+    implementation wsDep
+
+    implementation zXingCoreDep
+    implementation zXingEmbeddedDep
+
+    implementation insetterDep
+
+    implementation shimmerDep
+
+    androidTestImplementation androidTestRunnerDep
+    androidTestImplementation androidTestRulesDep
+    androidTestImplementation androidJunitDep
+}

@@ -1,0 +1,2744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyEllipsis">
+
+    <!--<string name="account_ledger_generic_item_subtitle">Flex, Stax, Nano X, Nano S Plus</string>-->
+    <string name="account_ledger_generic_item_subtitle">Flex, Stax, Nano</string>
+
+    <string name="ledger_device_nano_gen5">Ledger Nano Gen5</string>
+
+    <string name="multisig_gifts_not_supported_title">Gifting is not supported for Multisig wallets</string>
+    <string name="multisig_gifts_not_supported_message">To create or manage gifts, please switch to a different type of wallet.</string>
+
+    <string name="account_wallet_name">Wallet name</string>
+    <string name="common_name">Name</string>
+    <string name="common_invalid_qr_code">Invalid QR code</string>
+
+    <string name="account_polkadot_vault_import_start_step_2">%s you would like to add to Pezkuwi Wallet</string>
+    <string name="account_polkadot_vault_import_start_step_2_highlighted">Tap on Derived Key</string>
+
+    <string name="account_pair_public_key">Pair public key</string>
+    <string name="account_import_private_key">Import private key</string>
+
+    <string name="account_polkadot_vault_import_start_step_3_private">Tap the icon in the top-right corner and select %s</string>
+    <string name="account_polkadot_vault_import_start_step_3_private_highlighted">Export Private Key</string>
+
+    <string name="reclaim_gift_success">You’ve successfully reclaimed your gift</string>
+
+    <string name="reclaim_gift_confirmation_title">Reclaim %s Gift?</string>
+    <string name="reclaim_gift_confirmation_message">If you reclaim this gift, the shared link will be disabled, and tokens will be refunded to your wallet.\nDo you want to continue?</string>
+
+    <string name="share_gift_reclaim">Reclaim</string>
+    <string name="account_secrets">secrets</string>
+
+    <string name="account_chain_not_found">No account on %s</string>
+    <string name="claim_gift_no_account_alert_title">Use another wallet, create a new one, or add a %s account to this wallet in Settings.</string>
+
+    <string name="claim_gift_uncontrollable_wallet_title">You can’t receive a gift with a %s wallet</string>
+    <string name="claim_gift_uncontrollable_wallet_message">Create a new wallet or import an existing one to claim the gift</string>
+
+    <string name="common_manage_wallets">Manage Wallets</string>
+
+    <string name="claim_gift_success_message">You’ve successfully claimed a gift. Tokens will appear in your balance shortly.</string>
+
+    <string name="claim_gift_already_claimed_title">The gift cannot be received</string>
+    <string name="claim_gift_already_claimed_message">Oops, the gift has already been  claimed</string>
+
+    <string name="claim_gift_default_error_title">Oops, something went wrong</string>
+    <string name="claim_gift_default_error_message">There may be a problem with the server. Please, try again later.</string>
+    <string name="claim_gift_button">Claim the gift</string>
+    <string name="claim_gift_title">You’ve got a crypto gift!</string>
+
+    <string name="gift_created_subtitle">Created: %s</string>
+    <string name="gift_claimed_subtitle">Claimed</string>
+    <string name="gift_reclaimed_subtitle">Reclaimed</string>
+    <string name="gifts_claim_fee">Network fee on claim</string>
+
+    <string name="share_gift_text">Hello! You’ve got a %s gift waiting for you!\n\nInstall Pezkuwi Wallet app, set up your wallet, and claim it via this special link:\n%s</string>
+
+    <string name="share_gift_title">Gift Has Been Prepared.\nShare It Now!</string>
+    <string name="share_gift_button">Share gift link</string>
+
+    <string name="confirm_create_gift_hint">Confirming will transfer tokens from your account</string>
+    <string name="common_your_gift">Your Gift</string>
+
+    <string name="select_gift_amount_title">Send gift on</string>
+
+    <string name="common_enter_other_amount">Enter another amount</string>
+
+    <string name="gift_min_balance_validation_message">The minimum gift is %s</string>
+
+    <string name="gift_enter_amount_disabled_button_state">Enter amount</string>
+
+    <string name="gifts_assets_flow_title">Select a token to gift</string>
+    <string name="gifts_network_flow_title">Select network for %s gift</string>
+    <string name="assets_gifts_flow_placeholder">You don’t have tokens to gift.\nBuy or Deposit tokens to your account.</string>
+
+    <string name="gifts_create">Create Gift</string>
+    <string name="gifts_placeholder_step_1">Enter your gift amount</string>
+    <string name="gifts_placeholder_step_2">%s as a link and invite anyone to Pezkuwi Wallet</string>
+    <string name="gifts_placeholder_step_2_highlight">Share the gift directly</string>
+    <string name="gifts_placeholder_step_3">%s, and you can return unclaimed gifts anytime from this device</string>
+    <string name="gifts_placeholder_step_3_highlight">The gift is available instantly</string>
+
+    <string name="gifts_header_title">Share Crypto Gifts with Anyone, Anywhere</string>
+    <string name="gifts_header_subtitle">Send gifts fast, easily, and securely in Pezkuwi Wallet</string>
+    <string name="gifts_list_title">Gifts you created</string>
+    <string name="common_gift">Gift</string>
+
+    <string name="select_token_to_vote">Select token to vote</string>
+    <string name="common_select_token">Select token</string>
+
+    <string name="staking_rewards">%s rewards</string>
+
+    <string name="chain_migration_details_hint_history">Old transaction history remains on %s</string>
+
+    <string name="chain_migration_details_in_progress_title">Starting %1$s your %2$s balance, Staking and Governance are on %3$s. These features might be unavailable for up to 24 hours.</string>
+    <string name="staking_details_migration_alert_title">%1$s staking is live on %2$s starting %3$s</string>
+
+    <string name="common_view">View</string>
+    <string name="transaction_history_migration_source_message">Your previous %s transaction history is still available on %s</string>
+
+    <string name="asset_details_source_asset_alert_title">Your %s tokens now on %s</string>
+    <string name="asset_details_source_asset_alert_message">Starting %1$s, your %2$s balance, Staking, and Governance will be on %3$s — with improved performance and lower costs.</string>
+    <string name="asset_details_source_asset_alert_button">Go to %s</string>
+
+    <string name="chain_migration_details_hint_auto_migration">Migration happens automatically, no action needed</string>
+
+    <string name="chain_migration_details_title">Starting %1$s your %2$s balance, Staking and Governance are on %3$s</string>
+    <string name="chain_migration_details_subtitle">What makes Asset Hub awesome?</string>
+    <string name="chain_migration_details_minimal_balance">%1$sx reduction in minimal balance\n(from %2$s to %3$s)</string>
+    <string name="chain_migration_details_lower_fee">%1$sx lower transaction fees\n(from %2$s to %3$s)</string>
+    <string name="chain_migration_details_tokens">More tokens supported: %s, and other ecosystem tokens</string>
+    <string name="chain_migration_details_unified_access">Unified access to %s, assets, staking, and governance</string>
+    <string name="chain_migration_details_fee_in_any_tokens">Ability to pay fees in any token</string>
+
+    <string name="profile_settings_hide_balances_on_launch_title">Open app with hidden balance</string>
+
+    <string name="mutisigs_push_notifications_warning_enable">Enable in Settings</string>
+
+    <string name="mutisigs_push_notifications_warning_title">Multisig push notifications are here!</string>
+    <string name="mutisigs_push_notifications_warning_message">Get notified about signing requests, new signatures, and completed transactions — so you’re always in control. Manage anytime in Settings.</string>
+
+    <string name="no_ms_accounts_found_dialog_title">No multisig wallets</string>
+    <string name="no_ms_accounts_found_dialog_message">You haven’t added or selected any multisig wallets in Pezkuwi Wallet. Add and select at least one to receive multisig push notifications.</string>
+
+    <string name="account_welcome_trust_wallet_title">Trust Wallet</string>
+    <string name="account_welcome_trust_wallet_subtitle">Use your Trust Wallet accounts in Pezkuwi Wallet</string>
+
+    <string name="multisig_push_settings_initial_switcher">Your signature requested</string>
+    <string name="multisig_push_settings_approval_switcher">Signed by signatory</string>
+    <string name="multisig_push_settings_executed_switcher">Multisig transaction executed</string>
+    <string name="multisig_push_settings_rejected_switcher">Multisig transaction rejected</string>
+    <string name="multisig_operation_utility_batch_title">Batch (executes until error)</string>
+    <string name="multisig_operation_utility_batch_all_title">Batch All (reverts on error)</string>
+    <string name="multisig_operation_utility_force_batch_title">Force Batch (ignores errors)</string>
+    <string name="multisig_operation_details_not_found_title">Signing is over</string>
+
+    <string name="multisig_operation_details_not_found_message">Transaction has already been executed or rejected.</string>
+
+    <string name="loading_transaction_details">Loading transaction details…</string>
+
+    <string name="multisig_transaction_message_transfer">%1$s → %2$s</string>
+
+    <string name="multisig_transaction_executed_dialog_title">Multisig Transaction Executed</string>
+    <string name="multisig_transaction_rejected_dialog_title">Multisig Transaction Rejected</string>
+
+    <string name="multisig_transaction_rejected_dialog_message">%s on %s.\nRejected by: %s.\nNo further actions are required from you.</string>
+    <string name="multisig_transaction_executed_dialog_message">%s on %s.\nNo further actions are required from you.</string>
+
+    <string name="multisig_transaction_dialog_message_unknown_call">Transaction without initial on-chain information (call data) was rejected</string>
+
+    <string name="alert_nova_has_selected_ms_wallet">Pezkuwi Wallet has automatically switched to your multisig wallet so you can view pending transactions.</string>
+
+    <string name="multisig_notification_on_behalf_of">On behalf of %s.</string>
+    <string name="multisig_notification_rejected_transaction_title">❌ Multisig transaction rejected</string>
+    <string name="multisig_notification_rejected_transaction_message">Rejected by %s.</string>
+
+    <string name="multisig_notification_executed_transaction_title">✅ Multisig transaction executed</string>
+    <string name="multisig_notification_executed_transaction_message">Signed and executed by %s.</string>
+
+    <string name="multisig_notification_new_approval_title_additional_message">%d of %d signatures collected.</string>
+    <string name="multisig_notification_new_approval_title">Signed by %s</string>
+
+    <string name="multisig_notification_init_transaction_title">✍🏻 Your signature requested </string>
+    <string name="multisig_notification_init_transaction_message">%s on %s.</string>
+    <string name="multisig_operation_default_call_format">%s: %s</string>
+    <string name="multisig_notification_initiator_footer">Initiated by %s.</string>
+    <string name="multisig_notification_message_header">Wallet: %s</string>
+
+    <string name="multisigs_notification_channel_name">Multisig Transactions Notification Channel</string>
+    <string name="multisigs_notification_channel_id" translatable="false">multisigs_notification_channel_id</string>
+
+    <string name="push_wallets_title">Select up to %d wallets to be notified when wallet has activity</string>
+
+    <string name="push_settings_multisig_operations">Multisig transactions</string>
+
+    <string name="invalid_call_data_format_message">The call data you provided is invalid or has the wrong format. Please ensure it is correct and try again.</string>
+
+    <string name="multisig_operations_placeholder">No transactions yet.\nSigning requests will show up here</string>
+
+    <string name="proxied_card_not_supported_title">Debit Card is not supported for this Proxied wallet</string>
+    <string name="proxied_card_not_supported_message">To manage your Debit Card, please switch to a different wallet with Polkadot network.</string>
+
+    <string name="common_call_hash">Call hash</string>
+
+    <string name="common_copy_call_data">Copy call data</string>
+    <string name="common_share_call_data">Share call data</string>
+
+    <string name="multisig_approve_transaction_unavailable_title">Cannot perform this transaction</string>
+    <string name="multisig_approve_transaction_unavailable_message">This transaction has already been rejected or executed.</string>
+
+    <string name="multisig_transaction_created_subtitle">Other signatories can now confirm the transaction.\nYou can track its status in the %s.</string>
+    <string name="multisig_transaction_created_subtitle_highlight">Transactions to sign</string>
+
+    <string name="accounts_update_proxieds_title">Delegated to you</string>
+
+    <string name="account_proxieds">Delegated to you (Proxied)</string>
+
+    <string name="multisig_signing_reject_confirmation_subtitle">Transaction will be rejected. Multisig deposit will be returned to %s.</string>
+
+    <string name="common_full_details">Full details</string>
+
+    <string name="multisig_deposit_description">The deposit stays locked on the depositor’s account until the multisig operation is executed or rejected.</string>
+
+    <string name="common_copy_hash">Copy hash</string>
+    <string name="common_share_hash">Share hash</string>
+
+    <string name="common_depositor">Depositor</string>
+    <string name="multisig_deposit">Multisig deposit</string>
+    <string name="common_call_data">Call data</string>
+    <string name="multisig_extrinsic_details_subtitle">Make sure the operation is correct</string>
+
+    <string name="multisig_on_behalf_of">On behalf of</string>
+    <string name="common_signatory">Signatory</string>
+    <string name="common_hide">Hide</string>
+    <string name="common_show">Show</string>
+    <string name="multisig_operation_details_signatories">Signatories (%d of %d)</string>
+
+    <string name="swap_dry_run_failed_inline_message">Simulation of swap step failed</string>
+
+    <string name="common_dry_run_failed_title">Transaction simulation failed</string>
+    <string name="common_dry_run_failed_message">Pezkuwi Wallet simulates the transaction beforehand to prevent errors. This simulation didn’t succeed. Try again later or with a higher amount. If the issue persists, please contact Pezkuwi Wallet Support in Settings.</string>
+
+    <string name="multisig_signatory_validation_deposit_fee">%s doesn’t have enough balance to pay the network fee of %s and place multisig deposit of %s. You need to add %s more to your balance</string>
+    <string name="multisig_signatory_validation_deposit">%s doesn’t have enough balance to place multisig deposit of %s. You need to add %s more to your balance</string>
+    <string name="multisig_signatory_validation_fee">%s doesn’t have enough balance to pay the network fee of %s. You need to add %s more to your balance</string>
+
+    <string name="invalid_call_data_title">Invalid call data</string>
+    <string name="invalid_call_data_message">This call data for another operation with call hash %s</string>
+
+    <string name="multisig_operation_details_call_data_not_found">Enter call data to view details</string>
+
+    <string name="enter_call_data_title">Enter call data</string>
+
+
+    <string name="multisig_wallet_details_info_warning_other_signatories">Other signatories:</string>
+    <string name="multisig_wallet_details_info_warning_title">Threshold %d out of %d</string>
+
+    <string name="multisig_card_not_supported_title">Debit Card is not supported for Multisig</string>
+    <string name="multisig_card_not_supported_message">To manage your Debit Card, please switch to a different type of wallet.</string>
+
+    <string name="multisig_sell_not_supported_title">Sell is not supported for Multisig</string>
+    <string name="multisig_sell_not_supported_message">To sell crypto for fiat, please switch to a different type of wallet.</string>
+
+
+    <string name="multisig_pending_operations">Transactions to sign</string>
+
+    <string name="multisig_operations_progress">Signing (%s of %s)</string>
+
+
+    <string name="multisig_operations_created">Created by you</string>
+    <string name="multisig_operations_signed">Signed by you</string>
+
+
+    <string name="multisig_pending_operations_on_behalf_of">On behalf of:</string>
+
+    <string name="multisig_operations_unknown_calldata">Unknown operation</string>
+
+
+    <string name="multisig_callhash_exists_title">Operation already exists</string>
+    <string name="multisig_callhash_exists_message">%s has already initiated the same operation and it is currently waiting to be signed by other signatories.</string>
+
+    <string name="multisig_signatory_validation_ed">%s needs at least %s to pay this transaction fee and stay above the minimum network balance. Current balance is: %s</string>
+
+    <string name="multisig_signing_is_not_supported_message">Multisig wallets do not support signing arbitrary messages — only transactions</string>
+
+    <string name="multisig_signing_warning_title">Multisig transaction</string>
+    <string name="multisig_signing_warning_message">The multisig transaction will be initiated by %s. The initiator pays the network fee and reserves a multisig deposit, which will be unreserved once the transaction is executed.</string>
+
+    <string name="account_multisig_group_label">shared control (multisig)</string>
+
+    <string name="delegated_accounts_fragment_title">Wallet list has been updated</string>
+
+    <string name="delegated_accounts_fragment_explanation">Proxy and Multisig accounts auto-detected and organized for you. Manage anytime in Settings.</string>
+
+    <string name="account_proxied">Proxied</string>
+    <string name="active_multisig_title">Shared control</string>
+
+    <string name="delegation_updates_deactivated_title">No longer valid</string>
+
+    <string name="multisig_transaction_created_title">Multisig transaction created</string>
+    <string name="multisig_transaction_created_view_details">View details</string>
+
+    <string name="multisig_operation_details_approve">Approve</string>
+    <string name="multisig_operation_details_approve_and_execute">Approve &amp; Execute</string>
+    <string name="multisig_operation_details_reject">Reject</string>
+
+    <string name="account_multisig">Multisig</string>
+    <string name="multisig_wallet_details_info_warning">Transactions from this wallet require approval from multiple signatories. Your account is one of the signatories:</string>
+    <string name="multisig_signatory">Signatory:</string>
+
+
+    <string name="swap_failure_cannot_receive_insufficient_asset_out">You must have at least %s on %s to receive %s token</string>
+
+    <string name="account_migration_title">Welcome to Pezkuwi Wallet!</string>
+    <string name="account_migration_subtitle">You’re almost there! 🎉\n Just tap below to complete the setup and start using your accounts seamlessly in both the Polkadot App and Pezkuwi Wallet</string>
+
+    <string name="account_migration_fallback_name" translatable="false">%s Wallet</string>
+
+    <string name="account_migration_accepted_url" translatable="false">%s://polkadot/migration-accepted?key=%s</string>
+    <string name="account_ledger_import_start_step_3_highlighted">access Bluetooth</string>
+
+    <string name="branch_io_link_host" translatable="false">pezkuwi-wallet.app.link</string>
+    <string name="branch_io_link_host_alternate" translatable="false">pezkuwi-wallet-alternate.app.link</string>
+
+    <string name="ledger_verify_addresses_message_both_buttons">Press both buttons on your %s to approve the addresses</string>
+    <string name="ledger_verify_addresses_message_confirm_button">Press confirm button on your %s to approve the addresses</string>
+
+    <string name="account_add_address">Add address</string>
+    <string name="account_substrate_accounts">Substrate Accounts</string>
+    <string name="account_evm_accounts">EVM Accounts</string>
+
+    <string name="ledger_select_address_update_for_evm_title">Update Ledger Generic App</string>
+    <string name="ledger_select_address_update_for_evm_message">Your Ledger device is using an outdated Generic app that doesn’t support EVM addresses. Update it via Ledger Live.</string>
+
+    <string name="ledger_select_address_not_found">Account not found</string>
+
+    <string name="ledger_select_address_account_label">Account %s</string>
+    <string name="ledger_device_nano_s">Nano S</string>
+
+    <string name="trade_provider_open_confirmation_title">Continue in browser?</string>
+    <string name="trade_provider_open_confirmation_message">To continue the purchase you will be redirected from Pezkuwi Wallet app to %s</string>
+
+    <string name="buy_token_not_supported_title">This token is not supported by the buy feature</string>
+    <string name="buy_token_not_supported_message">None of our providers currently support the buying of this token. Please choose a different token, a different network, or check back later.</string>
+
+    <string name="sell_token_not_supported_title">This token is not supported by the sell feature</string>
+    <string name="sell_token_not_supported_message">None of our providers currently support the selling of this token. Please choose a different token, a different network, or check back later.</string>
+
+    <string name="trade_token_not_supported_title">This token is not supported by the buy/sell feature</string>
+    <string name="trade_token_not_supported_message">None of our providers currently support the buying or selling of this token. Please choose a different token, a different network, or check back later.</string>
+
+    <string name="buy_order_completed_message">Purchase initiated! Please wait up to 60 minutes. You can track status on the email.</string>
+    <string name="sell_order_completed_message">Sale initiated! Please wait up to 60 minutes. You can track status on the email.</string>
+
+    <string name="fragment_sell_token_title">Sell %s token</string>
+    <string name="sell_network_flow_title">Select network for selling %s</string>
+
+    <string name="mercurio_provider_description">Best price with fees up to 3.95%%</string>
+    <string name="transak_provider_buy_description">Buy crypto starting from just $5</string>
+    <string name="banxa_provider_description">Straightforward and efficient KYC process</string>
+
+    <string name="transak_provider_sell_description">Sell crypto starting from just $10</string>
+
+    <string name="wallet_asset_sell">Sell</string>
+
+    <string name="additional_payment_methods">+%d</string>
+
+    <string name="trade_provider_list_buy_title">Select a provider to buy %s token</string>
+
+    <string name="trade_provider_list_sell_title">Select a provider to sell %s token</string>
+
+    <string name="trade_provider_list_footer">Payment methods, fees and limits differ by provider.\nCompare their quotes to find the best option for you.</string>
+
+    <string name="wallet_asset_sell_tokens">Sell tokens</string>
+    <string name="wallet_asset_buy_tokens">Buy tokens</string>
+
+    <string name="wallet_asset_buy_sell">Buy/Sell</string>
+
+
+    <string name="account_ledger_import_start_step_otg">%s in your phone settings</string>
+    <string name="account_ledger_import_start_step_otg_highlighted">Enable OTG</string>
+
+    <string name="select_ledger_grant_permissions">Enable Bluetooth &amp; Grant Permissions</string>
+
+    <string name="ledger_verify_address_message_both_buttons">Press both buttons on your %s to approve the address</string>
+    <string name="ledger_verify_address_message_confirm_button">Press confirm button on your %s to approve the address</string>
+    <string name="ledger_hold_to_sign">Hold confirm button on your %s to approve the transaction</string>
+
+    <string name="ledger_device_nano_x">Nano X</string>
+    <string name="ledger_device_flex">Ledger Flex</string>
+    <string name="ledger_device_stax">Ledger Stax</string>
+    <string name="ledger_device_nano_s_plus">Nano S Plus</string>
+
+    <string name="account_ledger_select_device_all_description">If using a Ledger via Bluetooth, enable Bluetooth on both devices and grant Pezkuwi Wallet Bluetooth and location permissions. For USB, enable OTG in your phone settings.</string>
+    <string name="account_ledger_select_device_usb_description">Please, enable Ledger device. Unlock your Ledger device and open the %s app.</string>
+
+    <string name="account_ledger_import_start_guide">Ledger Connection Guide</string>
+
+    <string name="account_ledger_import_start_title">Connect Ledger</string>
+
+    <string name="start_import_ledger_connection_mode_bluetooth">Bluetooth</string>
+    <string name="start_import_ledger_connection_mode_usb">USB</string>
+
+    <string name="account_ledger_nano_x_legacy">Ledger Legacy</string>
+
+    <string name="account_ledger_generic_item_title">Ledger (Generic Polkadot app)</string>
+
+    <string name="account_parity_signer_show_mode_legacy">Legacy</string>
+    <string name="account_parity_signer_show_mode_new">New (Vault v7+)</string>
+
+    <string name="unified_address_title">New Unified Address</string>
+    <string name="unified_address_subtitle">Some exchanges may still require the legacy format\nfor operations while they update. %s</string>
+    <string name="unified_address_format_new_badge">new format</string>
+    <string name="unified_address_format_legacy_badge">legacy format</string>
+    <string name="unified_address_format_checkbox_warning">Do not show this again.\nYou can find legacy address in Receive.</string>
+
+    <string name="waiting_top_up_card_timer">Estimated %s</string>
+    <string name="waiting_initial_top_up_card_title">Your card is being issued!</string>
+    <string name="waiting_existing_card_top_up_card_title">Your card is being funded!</string>
+    <string name="waiting_top_up_card_description">It can take up to 5 minutes.\nThis window will be closed automatically.</string>
+
+    <string name="fragment_waiting_top_up_time_out_error_title">Contact support</string>
+    <string name="fragment_waiting_top_up_time_out_error_message">Please contact support@pezkuwichain.io. Include email address that you have used for issuing the card.</string>
+
+    <string name="fragment_assets_nova_card">Manage Debit Card</string>
+
+    <string name="fragment_top_up_card_title">Top up card with %s</string>
+
+    <string name="price_charts_period_today">Today</string>
+    <string name="price_charts_period_week">Last Week</string>
+    <string name="price_charts_period_month">Last Month</string>
+    <string name="price_charts_period_year">Last Year</string>
+    <string name="price_charts_period_all">All Time</string>
+
+    <string name="price_chart_date_format">%s at %s</string>
+    <string name="price_chart_price_change">%s (%s)</string>
+
+    <string name="price_chart_title">%s price</string>
+    <string name="price_chart_day">1D</string>
+    <string name="price_chart_week">1W</string>
+    <string name="price_chart_month">1M</string>
+    <string name="price_chart_year">1Y</string>
+    <string name="price_chart_max">All</string>
+
+    <string name="app_link_host" translatable="false">app.pezkuwichain.io</string>
+
+    <string name="high_price_impact_detacted_title">High price impact detected (%s)</string>
+
+    <string name="high_price_impact_detacted_message">Executing this swap will result in significant slippage and financial losses. Consider reducing your trade size of splitting your trade into multiple transactions.</string>
+
+    <string name="popular_dapps_title">Popular</string>
+
+    <string name="swap_intermediate_too_low_amount_to_stay_abow_ed_message">During swap execution intermediate receive amount is %s which is less than minimum balance of %s. Try specifying larger swap amount.</string>
+
+    <string name="common_not_enough_to_pay_fee_message">You don\'t have enough balance to pay network fee of %s. Current balance is %s</string>
+
+    <string name="common_sec">sec</string>
+
+    <string name="common_do_not_close_app">Do not close the app!</string>
+
+    <string name="common_failed">Failed</string>
+
+    <string name="swap_execution_operations_progress">%s of %s operations</string>
+
+    <plurals name="swap_execution_operations_completed">
+        <item quantity="one">%s operation</item>
+        <item quantity="other">%s operations</item>
+    </plurals>
+
+    <string name="swap_execution_progress_swap_label">Swapping %s to %s on %s</string>
+    <string name="swap_execution_progress_transfer_label">Transferring %s to %s</string>
+
+    <string name="swap_execution_failure">Failed on operation #%s (%s)</string>
+    <string name="swap_execution_failure_swap_label">%s to %s swap on %s</string>
+    <string name="swap_execution_failure_transfer_label">%s transfer from %s to %s</string>
+
+    <plurals name="common_seconds_format">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+
+    <string name="swap_execution_time">Execution time</string>
+
+    <string name="common_total_fee">Total fee</string>
+
+    <string name="common_fee_with_label">Fee: %s</string>
+
+    <string name="swap_route_segment_transfer_title">Transfer</string>
+    <string name="swap_route_segment_swap_title">Swap</string>
+    <string name="swap_route_description">The way that your token will take through different networks to get the desired token.</string>
+    <string name="swap_route">Route</string>
+
+    <string name="common_see_all">See All</string>
+    <string name="dapp_favorites">Favorites</string>
+    <string name="dapp_entry_point_title">%d DApps</string>
+
+    <string name="close_dapp_tabs_title">Close All DApps?</string>
+    <string name="close_dapp_tabs_message">All opened tabs in DApp browser will be closed.</string>
+
+    <string name="browser_tabs_close_all">Close All</string>
+
+    <string name="select_network_title">Select network</string>
+
+    <string name="assets_search_token_hint">Search by token</string>
+
+    <string name="receive_screen_copy_address">Copy Address</string>
+    <string name="wallet_asset_receive_token_subtitle">Send only %1$s token and tokens in %2$s network to this address, or you might lose your funds</string>
+
+    <string name="appearance_token_assets_title">token icons</string>
+    <string name="appearance_title">Appearance</string>
+    <string name="appearance_white_icon_title">White</string>
+    <string name="appearance_colored_icon_title">Colored</string>
+
+    <string name="buy_network_flow_title">Select network for buying %s</string>
+    <string name="receive_network_flow_title">Select network for receiving %s</string>
+    <string name="send_network_flow_title">Select network for sending %s</string>
+    <string name="swap_network_flow_title">Select network for swapping %s</string>
+
+    <string name="asset_view_tokens">Tokens</string>
+    <string name="asset_view_networks">Networks</string>
+
+    <string name="settings_wiki">Wiki &amp; Help Center</string>
+
+    <string name="settings_email">Get support via Email</string>
+
+    <string name="swipe_gov_card_placeholder_basket_full_text">You have already voted for all available referenda</string>
+    <string name="swipe_gov_cards_placeholder_button">Confirm your votes</string>
+    <string name="swipe_gov_cards_basket_title">Vote list</string>
+    <string name="swipe_gov_cards_no_referenda_to_vote">No referenda to vote</string>
+    <string name="swipe_gov_cards_counter">%d left</string>
+
+    <string name="common_use_max">Use max</string>
+
+    <string name="swipe_gov_insufficient_balance_dialog_title">Insufficient balance for voting</string>
+    <string name="swipe_gov_insufficient_balance_dialog_message">You don\'t have enough balance to vote with the current voting power %s (%sx). Please change voting power or add more funds to your wallet.</string>
+    <string name="swipe_gov_convirm_votes_success_message">You have successfully voted for %d referenda</string>
+
+    <string name="swipe_gov_vote_setup_title">Vote for %d referenda</string>
+    <string name="swipe_gov_basket_remove_item_confirm_title">Remove referendum %s from vote list?</string>
+    <string name="swipe_gov_basket_remove_item_confirm_message">You always can vote for this referendum later </string>
+
+    <string name="swipe_gov_basket_removed_items_title">Some of the referenda excluded from vote list</string>
+    <string name="swipe_gov_basket_removed_items_message">Some of the referenda are no longer available for voting or you may not have enough tokens available to vote. Available to vote: %s.</string>
+
+    <string name="swipe_gov_aye_format">Aye: %s</string>
+    <string name="swipe_gov_nay_format">Nay: %s</string>
+    <string name="swipe_gov_abstain_format">Abstain: %s</string>
+
+    <string name="swipe_gov_vote_title">Voting power</string>
+    <string name="swipe_gov_vote_subtitle">Voting will be set for future votes in SwipeGov</string>
+    <string name="swipe_gov_cards_full_list">Confirm votes</string>
+    <string name="swipe_gov_cards_voting_list_empty">No votes</string>
+    <string name="swipe_gov_card_data_loading_error_title">No data retrived</string>
+    <string name="swipe_gov_card_data_loading_error_message">The data of the referendum could not be loaded</string>
+    <string name="swipe_gov_card_requested_title">Requested:</string>
+    <string name="swipe_gov_card_placeholder_basket_empty_text">You have already voted for all available referenda or there are no referenda to vote right now. Come back later.</string>
+    <string name="swipe_gov_title">SwipeGov</string>
+    <string name="referenda_swipe_gov_banner_subtitle">Swipe to vote on referenda with AI summaries. Fast &amp; easy!</string>
+    <string name="referenda_swipe_gov_banner_chip">%d referenda</string>
+
+    <string name="account_ledger_generic_import_start_step_1_highlighted">Polkadot app is installed</string>
+
+    <string name="account_ledger_generic_import_start_step_2_highlighted">Open the Polkadot app</string>
+
+    <string name="account_ledger_generic_import_start_step_1">Make sure %s to your Ledger device using Ledger Live app</string>
+
+    <string name="account_ledger_generic_import_start_step_2">%s on your Ledger device</string>
+
+    <string name="account_ledger_import_start_step_3">Allow Pezkuwi Wallet to %s</string>
+
+    <string name="account_ledger_import_start_step_4">%s to add to wallet</string>
+    <string name="account_ledger_import_start_step_4_highlighted">Select account</string>
+
+    <string name="account_polkadot_vault_import_start_step_3">Polkadot Vault will provide you %s</string>
+    <string name="account_polkadot_vault_import_start_step_3_highlighted">QR code to scan</string>
+
+    <string name="account_polkadot_vault_import_start_step_1">%s application on your smartphone</string>
+    <string name="account_polkadot_vault_import_start_step_1_highlighted">Open Polkadot Vault</string>
+
+    <string name="account_ledger_import_start_step_2">%s on your Ledger device</string>
+    <string name="account_ledger_import_start_step_2_highlighted">Open the network app</string>
+
+    <string name="account_ledger_import_start_step_1">Make sure %s to your Ledger device using Ledger Live app</string>
+    <string name="account_ledger_import_start_step_1_highlighted">Network app is installed</string>
+
+    <string name="account_parity_signer_import_start_step_3">Parity Signer will provide you %s</string>
+    <string name="account_parity_signer_import_start_step_3_highlighted">QR code to scan</string>
+
+    <string name="account_parity_signer_import_start_step_2">%s you would like to add to Pezkuwi Wallet</string>
+    <string name="account_parity_signer_import_start_step_2_highlighted">Go to “Keys” tab. Select seed, then account</string>
+
+    <string name="account_parity_signer_import_start_step_1">%s application on your smartphone</string>
+    <string name="account_parity_signer_import_start_step_1_highlighted">Open Parity Signer</string>
+
+    <string name="setup_referendum_vote_conviction_info">Conviction will be set to 0.1x when you vote Abstain</string>
+
+    <string name="referendum_abstain_voters_title">Abstain votes</string>
+    <string name="referendum_abstain_vote_invalid_conviction_title">Conviction update</string>
+    <string name="referendum_abstain_vote_invalid_conviction_subtitle">Abstain votes can only be done with 0.1x conviction. Vote with 0.1x conviction?</string>
+
+    <string name="dapp_url_warning_title">Warning! DApp is unknown</string>
+    <string name="dapp_url_warning_subtitle">Malicious DApps can withdraw all your funds. Always do your own research before using a DApp, granting permission, or sending funds out.\n\nIf someone is urging you to visit this DApp, it is likely a scam. When in doubt, please contact Pezkuwi Wallet support: %s.</string>
+    <string name="dapp_url_warning_open_anyway">Open anyway</string>
+
+    <string name="setup_staking_conflict_title">Already staking</string>
+    <string name="setup_staking_conflict_message">You cannot stake with Direct Staking and Nomination Pools at the same time</string>
+
+    <string name="pool_staking_conflict_title">Pool operations are not available</string>
+    <string name="pool_staking_conflict_message">You can no longer use both Direct Staking and Pool Staking from the same account. To manage your Pool  Staking you first need to unstake your tokens from Direct Staking.</string>
+
+    <string name="chain_network_management_auto_balance">Auto-balance nodes</string>
+    <string name="chain_network_management_enabling">Enable connection</string>
+
+    <string name="account_ledger_migration_deprecation_message">The Migration app will be unavailable in the near future. Use it to migrate your accounts to the new Ledger app to avoid losing your funds.</string>
+
+    <string name="account_ledger_migration_app">Polkadot Migration</string>
+    <string name="account_ledger_migration_generic">Polkadot</string>
+
+    <string name="account_ledger_legacy_warning_title">New Ledger app has been released</string>
+    <string name="account_ledger_legacy_warning_message">To sign operations and migrate your accounts to the new Generic Ledger app install and open Migration app. Legacy Old and Migration Ledger apps will not be supported in the future.</string>
+
+    <string name="account_ledger_nano_x">Ledger Nano X</string>
+
+    <string name="accounts_ledger_legacy">Ledger (Legacy)</string>
+
+    <string name="common_passphrase">Passphrase</string>
+
+    <string name="cloud_backup_removing_warning_title">Wallet will be removed in the Cloud Backup</string>
+    <string name="cloud_backup_removing_warning_subtitle">Ensure you have saved Passphrase for the wallet before proceeding. </string>
+
+    <string name="account_create_wallet">Create a new wallet</string>
+
+    <string name="enter_backup_password_hint">Backup password</string>
+
+    <string name="common_no_screenshot_message_v2_2_0">We are going to show your passphrase. Make sure no one can see your screen and do not take screenshots — they can be collected by third-party malware</string>
+
+    <string name="disabled_chain_error_title">%s is disabled</string>
+    <string name="disabled_chain_error_message">You can not sign transactions of disabled networks. Enable %s in settings and try again</string>
+
+    <string name="invalid_token_symbol_title">Invalid Currency Symbol</string>
+    <string name="invalid_token_symbol_message">The entered Currency Symbol (%1$s) does not match the network (%2$s). Do you want to use the correct currency symbol?</string>
+
+    <string name="manage_node_actions_title">Manage added node</string>
+    <string name="manage_node_delete_title">Delete node?</string>
+    <string name="manage_node_delete_message">Node \"%s\" will be deleted</string>
+
+    <string name="manage_node_action_edit">Edit node</string>
+    <string name="manage_node_action_delete">Delete node</string>
+
+    <string name="manage_network_delete_title">Delete network?</string>
+    <string name="manage_network_delete_message">You will not be able to see your token balances on that network on Assets screen</string>
+
+    <string name="manage_network_action_edit">Edit network</string>
+    <string name="manage_network_action_delete">Delete network</string>
+    <string name="manage_network_actions_title">Manage added network</string>
+
+    <string name="common_delete">Delete</string>
+
+    <string name="add_network_title">Enter network details</string>
+    <string name="loading_network_info">Loading network info...</string>
+
+    <string name="create_network_invalid_chain_id_title">Invalid Chain ID</string>
+    <string name="create_network_invalid_chain_id_message">The entered Chain ID does not match the network in the RPC URL.</string>
+
+    <string name="common_modify">Modify</string>
+    <string name="network_already_exist_failure_title">This Node already exists</string>
+    <string name="default_network_already_exist_failure_message">The entered RPC URL is present in Pezkuwi Wallet as a %s network.</string>
+    <string name="custom_network_already_exist_failure_message">The entered RPC URL is present in Pezkuwi Wallet as a %s custom network. Are you sure you want to modify it?</string>
+
+    <string name="create_network_node_name" translatable="false">%s Default Node</string>
+    <string name="create_network_block_explorer_name" translatable="false">%s Default Block Explorer</string>
+
+    <string name="common_enter_details">Enter details</string>
+    <string name="common_substrate">Substrate</string>
+    <string name="common_evm">EVM</string>
+
+    <string name="token_price_info_provider_label">Coingecko link for price info (Optional) </string>
+
+    <string name="token_price_info_provider_placeholder" translatable="false">www.coingecko.com/en/coins/tether</string>
+
+    <string name="custom_network_block_explorer_title">Block explorer URL (Optional) </string>
+    <string name="custom_network_block_explorer_placeholder">https://networkscan.io</string>
+    <string name="custom_network_chain_id_title">Chain ID</string>
+    <string name="custom_network_chain_id_placeholder">012345</string>
+    <string name="custom_network_currency_title">Currency Symbol</string>
+    <string name="custom_network_currency_placeholder">TOKEN</string>
+    <string name="custom_network_name_title">Network name</string>
+    <string name="custom_rpc_node_url_title">RPC URL</string>
+
+    <string name="pre_configured_networks_search_hint">Search by network name</string>
+    <string name="pre_configured_networks_progress_text">Loading networks list...</string>
+    <string name="pre_configured_networks_title">Add network</string>
+    <string name="pre_configured_networks_add_custom_button">Add network manually</string>
+
+    <string name="node_already_exist_failure_title">This Node already exists</string>
+    <string name="node_already_exist_failure_message">The URL you entered already exists as the "%s" Node.</string>
+
+    <string name="node_not_supported_by_network_title">Wrong network</string>
+    <string name="node_not_supported_by_network_message">The URL you entered is not corresponding to Node for %1$s.\nPlease enter URL of the valid %1$s node.</string>
+
+    <string name="node_not_alive_title">Node error</string>
+    <string name="node_not_alive_message">The Node URL you entered is either not responding or contains incorrect format. The URL format should start with "wss://".</string>
+
+    <string name="custom_node_add_title">Add custom node for</string>
+    <string name="custom_node_edit_title">Edit custom node for</string>
+    <string name="custom_node_url_title">Node URL</string>
+    <string name="custom_node_url_hint">wss://</string>
+    <string name="custom_node_name_title">Node name</string>
+    <string name="custom_node_name_hint">Name</string>
+    <string name="custom_node_disabled_button_state">Enter details</string>
+    <string name="custom_node_add_button_state">Add node</string>
+    <string name="custom_node_edit_button_state">Save</string>
+
+    <string name="common_connected_ms">%d ms</string>
+    <string name="add_custom_node">Add custom node</string>
+
+    <string name="network_management_custom_nodes">custom nodes</string>
+    <string name="network_management_default_nodes">default nodes</string>
+    <string name="added_networks_empty_placeholder">Added custom networks\nwill appear here</string>
+
+    <string name="integrate_networks_banner_title">Building for Polkadot?</string>
+    <string name="integrate_networks_banner_description">Integrate all the features of the network you are building into Pezkuwi Wallet, making it accessible to everyone.</string>
+    <string name="integrate_networks_banner_link">Integrate your network</string>
+
+    <string name="common_connecting">connecting...</string>
+    <string name="common_testnet">Testnet</string>
+    <string name="network_management_default_page_title">Default</string>
+    <string name="network_management_added_page_title">Added</string>
+    <string name="common_add_network">Add network</string>
+    <string name="common_not_available">Not available</string>
+    <string name="settings_push_notifications_only_available_with_google_services_error">Push notifications are only available for devices with Google services.</string>
+    <string name="settings_push_notifications_only_available_from_google_play_error">Push notifications are available only for the Pezkuwi Wallet version downloaded from Google Play.</string>
+
+    <string name="onboarding_terms_and_conditions_1_v2_2_1">By continuing, you agree to our\n%1$s and %2$s</string>
+
+    <string name="backup_settings_no_wallets_error_title">No wallets to back up</string>
+    <string name="backup_settings_no_wallets_error_message">You haven\'t added any wallets with a passphrase.</string>
+
+    <string name="account_export_existing">Import existing</string>
+    <string name="cloud_backup_will_be_changed_title">Wallet changes will be updated in the Cloud Backup</string>
+    <string name="cloud_backup_will_be_changed_subtitle">New wallets are automatically added to the Cloud Backup. You can disable Cloud Backup in Settings.</string>
+    <string name="common_check_box_auto_continue">Automatically continue in the future</string>
+
+    <string name="wallet_management_add_account_title">How to add wallet?</string>
+    <string name="wallet_management_create_account_btn">How to add wallet?</string>
+    <string name="wallet_management_import_account_btn">How to add wallet?</string>
+
+    <string name="account_export_json_password_subtitle">This password is required to encrypt your account and is used alongside this JSON file to restore your wallet.</string>
+
+    <string name="export_json_download_btn">Download Restore JSON</string>
+
+    <string name="common_enter_password">Enter password</string>
+
+    <string name="common_network_polkadot">Polkadot</string>
+    <string name="common_network_ethereum">Ethereum</string>
+
+    <string name="manual_backup_secrets_subtitle">Do not share any of this information with anyone - If you do you will permanently and irretreveably lose all of your assets</string>
+
+    <string name="manual_backup_secrets_custom_key_title">Custom Key</string>
+    <string name="manual_backup_secrets_default_key_title">Default Key</string>
+
+    <string name="json_export_btn">Export JSON file</string>
+
+    <string name="backup_secrets_warning_disabled_button">Review &amp; Accept to Continue</string>
+
+    <string name="manual_backup_warning_title">Do not share your passphrase!</string>
+    <string name="manual_backup_warning_subtitle">Please read the following carefully before viewing your backup</string>
+    <string name="backup_secrets_warning_condition_1">This passphrase gives you total and permanent access to all connected wallets and the funds within them.\n%s</string>
+    <string name="backup_secrets_warning_condition_1_highlight">DO NOT SHARE IT.</string>
+    <string name="backup_secrets_warning_condition_2">Do not enter your Passphrase into any form or website.\n%s</string>
+    <string name="backup_secrets_warning_condition_2_highlight">FUNDS MAY BE LOST FOREVER.</string>
+    <string name="backup_secrets_warning_condition_3">Support or admins will never request your Passphrase under any circumstances.\n%s</string>
+    <string name="backup_secrets_warning_condition_3_highlight">BEWARE OF IMPERSONATORS.</string>
+
+    <string name="manual_backup_select_account_default_key_title">Accounts with default key</string>
+    <string name="manual_backup_select_account_custom_key_title">Accounts with custom key</string>
+    <string name="manual_backup_select_account_default_key_account">Default accounts</string>
+    <string name="manual_backup_select_account_default_key_account_subtitle_more_chains">%s, +%d others</string>
+    <string name="manual_backup_select_account_header">Select the key to back up</string>
+
+    <string name="manual_backup_select_wallet_header">Select a wallet to back up</string>
+    <string name="cloud_backup_destructive_changes_not_applied_title">Wallet changes failed to update in the Cloud Backup</string>
+    <string name="cloud_backup_destructive_changes_not_applied_subtitle">At the moment your backup is not synchronized. Please review the issue.</string>
+    <string name="cloud_backup_destructive_changes_not_applied_button">Review the Issue</string>
+
+    <string name="cloud_backup_destructive_changes_confirmation_title">Are you sure that you want to apply these changes?</string>
+    <string name="cloud_backup_destructive_changes_confirmation_subtitle">If you have not manually written down your Passphrase for wallets that will be removed, then those wallets and all of their assets will be permanently and irretrievably lost forever.</string>
+
+    <string name="cloud_backup_destructive_changes_action_title">Cloud Backup changes found</string>
+    <string name="cloud_backup_destructive_changes_action_subtitle">At the moment your backup is not synchronized. Please review these updates.</string>
+    <string name="cloud_backup_destructive_changes_button">Review Updates</string>
+
+    <string name="state_new">New</string>
+    <string name="state_changed">Modified</string>
+    <string name="state_removed">Removed</string>
+
+    <string name="backup_diff_title">Apply Backup Updates?</string>
+    <string name="backup_diff_subtitle">Before proceeding with changes, %s for modified and removed wallets!</string>
+    <string name="backup_diff_subtitle_highlighted">ensure you\'ve saved Passphrases</string>
+    <string name="common_sign_in">Sign In</string>
+
+    <string name="common_not_now">Not now</string>
+
+    <string name="deprecated_cloud_backup_password_title">Backup password was changed</string>
+    <string name="deprecated_cloud_backup_password_subtitle">Your backup password was previously updated. To continue using Cloud Backup, %s</string>
+    <string name="deprecated_cloud_backup_password_subtitle_highlight">please enter the new backup password.</string>
+
+    <string name="restore_cloud_backup_password_title">Your backup password was previously updated. To continue using Cloud Backup, please enter the new backup password.</string>
+
+    <string name="change_cloud_backup_password_title">Update backup password</string>
+    <string name="change_cloud_backup_password_subtitle">Please enter a password that will be used to recover your wallets from cloud backup. This password can\'t be recovered in the future, so be sure to remember it!</string>
+
+    <string name="confirm_cloud_backup_password_title">Enter current backup password</string>
+    <string name="confirm_cloud_backup_password_subtitle">Please enter the password you created during the backup process</string>
+
+    <string name="deleting_backup_progress">Deleting a backup...</string>
+    <string name="cloud_backup_delete_action_title">Backup will be deleted from Google Drive</string>
+    <string name="cloud_backup_delete_action_subtitle">%s and remember to always keep them offline to restore them anytime. You can do this in the Backup Settings.</string>
+    <string name="cloud_backup_delete_action_subtitle_highlighted">Please write down all your wallet’s Passphrases before proceeding</string>
+
+    <string name="manage_cloud_backup">Manage backup</string>
+
+    <string name="backup_settings_delete_backup">Delete backup</string>
+
+    <string name="common_change_password">Change password</string>
+
+    <string name="cloud_backup_settings_disabled_state_subtitle">Enable to backup wallets to your Google Drive</string>
+    <string name="cloud_backup_settings_last_sync">Last sync: %s at %s</string>
+    <string name="cloud_backup_settings_not_auth_button">Sign In to Google Drive</string>
+    <string name="cloud_backup_settings_deprecated_password_button">Enter Backup Password</string>
+    <string name="cloud_backup_settings_corrupted_backup_button">Review Backup Updates</string>
+    <string name="cloud_backup_settings_other_errors_button">Review Google Drive Issue</string>
+    <string name="cloud_backup_settings_backup_errors_button">Review Backup Error</string>
+
+    <string name="cloud_backup_state_syncing_title">Backup Syncing...</string>
+    <string name="cloud_backup_state_disabled_title">Backup Disabled</string>
+    <string name="cloud_backup_state_unsynced_title">Backup Unsynced</string>
+    <string name="cloud_backup_state_synced_title">Backup Synced</string>
+    <string name="backup_settings_toolbar_title">Backup</string>
+    <string name="backup_settings_title">Google Drive</string>
+    <string name="backup_settings_subtitle">You can enable Google Drive backups to store encrypted copies of all your wallets, secured by a password you set.</string>
+    <string name="backup_settings_manual_title">Manual</string>
+    <string name="backup_settings_manual_subtitle">You can manually back up your passphrase to ensure access to your wallet’s funds if you lose access to this device</string>
+    <string name="backup_settings_switcher_text">Back up to Google Drive</string>
+    <string name="backup_settings_manual_switcher_title">Back up manually</string>
+
+    <string name="corrupted_backup_error_title">Backup found but empty or broken</string>
+    <string name="corrupted_backup_error_subtitle">An issue has been identified with your backup. You have the option to delete the current backup and create a new one. %s before proceeding.</string>
+    <string name="corrupted_backup_error_subtitle_highlighted">Ensure you have saved Passphrases for all wallets</string>
+
+    <string name="confirm_mnemonic_not_matching_error_message">Invalid passphrase, please check one more time the words order</string>
+    <string name="confirm_mnemonic_disabled_button_state">Select the words...</string>
+
+    <string name="existing_cloud_backup_found_button">Recover Wallets</string>
+    <string name="existing_cloud_backup_found_title">Existing Cloud Backup found</string>
+    <string name="existing_cloud_backup_found_subtitle">%s All of your wallets will be safely backed up in Google Drive.</string>
+    <string name="existing_cloud_backup_found_subtitle_highlight">Do you want to recover your wallets?</string>
+
+    <string name="import_wallet_cloud_backup_not_found_title">Backup Not Found</string>
+    <string name="import_wallet_cloud_backup_not_found_subtitle">Unfortunately, Backup with your wallets has not been found.</string>
+
+    <string name="cloud_backup_delete_backup_confirmation_title">Are you sure you want to delete Cloud Backup?</string>
+    <string name="cloud_backup_delete_backup_confirmation_message">Current backup with your wallets will be permanently deleted!</string>
+
+    <string name="cloud_backup_delete_button">Delete Backup</string>
+    <string name="restore_cloud_backup_delete_backup_title">Have you lost your password?</string>
+    <string name="restore_cloud_backup_delete_backup_description">%s It\'s exclusively yours, securely stored, inaccessible to others. Without the backup password, restoring wallets from Google Drive is impossible. If lost, delete the current backup to create a new one with a fresh password. %s</string>
+    <string name="restore_cloud_backup_delete_backup_description_highlighted_1">Unfortunately, your password cannot be recovered.</string>
+    <string name="restore_cloud_backup_delete_backup_description_highlighted_2">Alternatively, use Passphrase for restoration.</string>
+
+    <string name="common_forgot_password">Forgot Password?</string>
+    <string name="restore_cloud_backup_title">Enter backup password</string>
+    <string name="restore_cloud_backup_subtitle">Please enter the password you created during the backup process</string>
+
+    <string name="common_got_it">Got it</string>
+
+    <string name="create_cloud_backup_password_alert_title">Remember Backup Password</string>
+    <string name="create_cloud_backup_password_alert_subtitle">In the future, without backup password it is not possible to restore your wallets from Cloud Backup.\n%s</string>
+    <string name="create_cloud_backup_password_alert_subtitle_highlighted">This password cannot be recovered.</string>
+    <string name="create_cloud_backup_password_title">Create your backup password</string>
+    <string name="create_cloud_backup_password_subtitle">Please enter a password to access your backup anytime. The password can’t be recovered, be sure to remember it!</string>
+    <string name="create_cloud_backup_password_input_hint">Backup password</string>
+    <string name="create_cloud_backup_password_input_confirm_hint">Confirm password</string>
+    <string name="create_cloud_backup_password_requirement_min_chars">Min. 8 characters</string>
+    <string name="create_cloud_backup_password_requirement_numbers">Numbers</string>
+    <string name="create_cloud_backup_password_requirement_letters">Letters</string>
+    <string name="create_cloud_backup_password_requirement_passwords_match">Passwords match</string>
+
+    <string name="cloud_backup_error_invalid_password_title">Password is invalid</string>
+    <string name="cloud_backup_error_invalid_password_message">Please, check password correctness and try again.</string>
+
+    <string name="common_connection_error_title">Connection Failed</string>
+    <string name="common_connection_error_message">Please, check your connection or try again later</string>
+
+    <string name="cloud_backup_error_not_found_title">No Backups Found</string>
+    <string name="cloud_backup_error_not_found_message">Unfortunately, we have not found a backup to restore wallets</string>
+
+    <string name="cloud_backup_error_google_service_auth_failed_title">Google Drive authentication failed</string>
+    <string name="cloud_backup_error_google_service_auth_failed_message">Please ensure that you are logged into your Google account with the correct credentials and have granted Pezkuwi Wallet access to Google Drive</string>
+
+    <string name="cloud_backup_error_google_service_other_title">Google Drive error</string>
+    <string name="cloud_backup_error_google_service_other_message">Unable to backup your wallets to Google Drive. Please ensure that you have enabled Pezkuwi Wallet to use your Google Drive and have enough available storage space and then try again.</string>
+
+    <string name="cloud_backup_error_google_service_not_enough_space_title">Not Enough Storage</string>
+    <string name="cloud_backup_error_google_service_not_enough_space_message">You do not have enough available Google Drive storage.</string>
+
+    <string name="cloud_backup_error_google_service_not_found_title">Google Play services not found</string>
+    <string name="cloud_backup_error_google_service_not_found_message">Unfortunately, Google Drive is not working without Google Play services, which are missing on your device. Try to get Google Play services</string>
+
+    <string name="start_create_wallet_your_wallet_is_ready">Your wallet is ready</string>
+    <string name="backup_title">Backup</string>
+    <string name="start_create_wallet_set_wallet_name_explanation">This will only be visible to you and you can edit it later.</string>
+    <string name="start_create_wallet_backup_ready_explanation">Now lets back up your wallet. This makes sure that your funds are safe and secure. Backups allow you to restore your wallet at any time.</string>
+    <string name="start_create_wallet_cloud_backup_btn">Continue with Google</string>
+    <string name="start_create_wallet_manual_backup_btn">Continue with manual backup</string>
+
+    <string name="backup_mnemonic_attention_title">Prepare to save your wallet!</string>
+    <string name="common_tap_to_reveal_title">Tap to reveal</string>
+    <string name="mnemonic_card_reveal_subtitle">Make sure no one can see your screen\nand do not take screenshots</string>
+
+    <string name="mnemonic_card_title">Please %s anyone</string>
+    <string name="mnemonic_card_title_highlight">do not share with</string>
+
+    <!--<string name="account_backup_mnemonic_title">Write down the phrase and store it in a safe place</string>-->
+    <string name="account_backup_mnemonic_title">Write down your Passphrase</string>
+
+    <string name="start_create_wallet_input_hint">My new wallet</string>
+    <string name="start_create_wallet_name_your_wallet">Give your wallet a name</string>
+    <string name="start_create_wallet_enter_wallet_name">Enter wallet name</string>
+
+    <string name="common_cloud_backup">Cloud backup</string>
+    <string name="import_wallet_options_cloud_backup_subtitle">Recover wallets from Google Drive</string>
+    <string name="loocking_backup_progress">Looking for your backup...</string>
+
+    <string name="import_wallet_options_mnemonic_subtitle">Use your 12, 15, 18, 21 or 24-word phrase</string>
+    <string name="import_wallet_options_watch_only_title">Watch-only</string>
+
+    <string name="account_welcome_hardware_wallet_title">Hardware wallet</string>
+
+    <string name="account_welcome_hardware_wallet_subtitle">Polkadot Vault, Parity Signer or Ledger</string>
+
+    <string name="import_wallet_options_title">Choose how you would like to import your wallet</string>
+
+    <string name="common_something_went_wrong_title">Something went wrong</string>
+    <string name="push_welcome_timeout_error_message">Please try again later by accessing notification settings from the Settings tab</string>
+
+    <plurals name="multiple_wallets_selection_min_button_text">
+        <item quantity="one">Select at least %d wallet</item>
+        <item quantity="other">Select at least %d wallets</item>
+    </plurals>
+
+    <string name="common_terms_and_conditions_formatting">Terms and Conditions</string>
+    <string name="common_privacy_policy_formatting">Privacy Policy</string>
+
+    <string name="push_template_message">Received +0.6068 KSM ($20.35) from Kusama staking</string>
+    <string name="push_template_app_name_and_time">Pezkuwi Wallet • now</string>
+
+    <string name="push_settings_no_selected_wallets">You won\'t receive notifications about Wallet Activities (Balances, Staking) because you haven\'t selected any wallet</string>
+
+    <string name="deep_linking_host" translatable="false">pezkuwi</string>
+    <string name="deep_linking_scheme" translatable="false">pezkuwiwallet</string>
+
+    <string name="push_token_received_title">⬇️ Received %s</string>
+    <string name="push_token_received_no_account_name_title">⬇️ Received</string>
+    <string name="push_token_received_message">Received %s on %s</string>
+
+    <string name="push_token_sent_title">💸 Sent %s</string>
+    <string name="push_token_sent_no_account_name_title">💸 Sent</string>
+    <string name="push_token_sent_message">Sent %1$s to %2$s on %3$s</string>
+
+    <string name="push_staking_reward_single_account_title">⭐️ New reward</string>
+    <string name="push_staking_reward_many_accounts_title">⭐️ New reward %s</string>
+    <string name="push_staking_reward_message">Received %s from %s staking</string>
+
+    <string name="push_referendum_approved_title">✅ Referendum approved!</string>
+    <string name="push_referendum_approved_message">%1$s referendum #%2$s has ended and been approved 🎉</string>
+    <string name="push_referendum_rejected_title">❌ Referendum rejected!</string>
+    <string name="push_referendum_rejected_message">%1$s referendum #%2$s has ended and been rejected!</string>
+    <string name="push_referendum_status_changed_title">🗳️ Referendum status changed</string>
+    <string name="push_referendum_from_to_status_changed_message">%1$s Referendum #%2$s status changed from %3$s to %4$s</string>
+    <string name="push_referendum_to_status_changed_message">%1$s Referendum #%2$s status changed to %3$s</string>
+
+    <string name="referendum_status_in_queue">In queue</string>
+
+    <string name="push_new_update_title">A new update of Pezkuwi Wallet is available!</string>
+    <string name="push_new_update_message">Download Pezkuwi Wallet v%s to get all the new features!</string>
+    <string name="push_new_referendum_title">🗳️ New referendum</string>
+    <string name="push_new_referendum_message">%s Referendum #%s is now live!</string>
+
+    <plurals name="governance_select_tracks_min_tracks_error">
+        <item quantity="one">You need to select at least %d track</item>
+        <item quantity="other">You need to select at least %d tracks</item>
+    </plurals>
+
+    <string name="select_tracks_for">Select tracks for</string>
+    <string name="selected_tracks_quantity" formatted="false">%d of %d</string>
+
+    <string name="default_notification_channel_id" translatable="false">default_notification_channel_id</string>
+    <string name="transactions_notification_channel_id" translatable="false">transactions_notification_channel_id</string>
+    <string name="governance_notification_channel_id" translatable="false">default_notifications_channel_id</string>
+    <string name="staking_notification_channel_id" translatable="false">staking_notification_channel_id</string>
+    <string name="default_notification_channel_name">Default Notification Channel</string>
+    <string name="transactions_notification_channel_name">Transactions Notification Channel</string>
+    <string name="governance_notification_channel_name">Governance Notification Channel</string>
+    <string name="staking_notification_channel_name">Staking Notifications Channel</string>
+
+    <string name="push_governance_settings_new_referendum">New Referendum</string>
+    <string name="push_governance_settings_referendum_update">Referendum Update</string>
+    <string name="push_governance_settings_delegate_votes">Delegate has voted</string>
+    <string name="common_clear">Clear</string>
+
+    <string name="multiple_wallets_selection_max_message">You cannot select more than %d wallets</string>
+
+    <string name="push_settings_staking_rewards">Staking rewards</string>
+    <string name="push_settings_others">Others</string>
+
+    <string name="push_settings_received_tokens">Received tokens</string>
+    <string name="push_settings_sent_tokens">Sent tokens</string>
+    <string name="push_settings_balances">Balances</string>
+
+    <string name="push_settings_announcements">Pezkuwi announcements</string>
+
+    <string name="push_settings_enable">Enable notifications</string>
+    <string name="push_settings_wallets">Wallets</string>
+
+    <string name="common_retry_message">Something went wrong. Please try again</string>
+    <string name="common_push_notifications">Push notifications</string>
+
+    <string name="push_welcome_title">Don’t miss a thing!</string>
+    <string name="push_welcome_message">Get notified about Wallet operations, Governance updates, Staking activity and Security, so you’re always in the know</string>
+    <string name="push_welcome_enable_button">Enable push notifications</string>
+    <string name="push_welcome_terms_and_conditions" formatted="false">By enabling push notifications, you agree to our %s and %s</string>
+
+    <string name="wallet_send_cannot_dust_before_delivery_fee_message">Due to the cross-chain restrictions you can transfer not more than %s</string>
+
+    <string name="common_too_small_balance_title">Your balance is too small</string>
+    <string name="wallet_send_insufficient_balance_commission">You need to have at least %s to pay this transaction fee and stay above the minimum network balance. Your current balance is: %s. You need to add %s to your balance to perform this operation.</string>
+
+    <string name="nft_issuance_fungible_format">%s units of %s</string>
+
+    <string name="nft_fungile_price">%s for %s</string>
+
+    <string name="staking_set_controller_deprecated_subtitle">Use Proxies to delegate Staking operations to another account</string>
+
+    <string name="staking_manage_proxy_requires_stash_title">Select stash account to setup proxy</string>
+    <string name="staking_manage_proxy_requires_stash_message">Please switch your wallet to %s to setup a proxy</string>
+
+    <string name="common_network_not_supported">%s is not supported</string>
+
+    <string name="remove_proxy_confirmation_revoke_access_type">Revoke access type</string>
+    <string name="remove_proxy_confirmation_revoke_for">Revoke for</string>
+
+    <string name="common_add_delegation">Add delegation</string>
+
+    <string name="staking_proxies_group_title">Delegated authorities (proxy)</string>
+    <string name="common_proxy_rewoke_access">Revoke access</string>
+
+    <string name="proxy_access_type_staking_operations">Staking operations</string>
+
+    <string name="add_proxy_confirmation_delegating_wallet">Delegating wallet</string>
+    <string name="add_proxy_confirmation_delegating_account">Delegating account</string>
+    <string name="add_proxy_confirmation_grant_access_type">Grant access type</string>
+    <string name="add_proxy_confirmation_delegate_to">Delegate to</string>
+
+    <string name="staking_add_proxy_confirmation_title">Add delegation</string>
+
+    <string name="duplicate_proxy_type_title">Delegation already exists</string>
+    <string name="duplicate_proxy_type_message">You are already delegating to this account: %s</string>
+
+    <string name="invalid_proxy_address_title">Invalid proxy address</string>
+    <string name="invalid_proxy_address_message">Proxy address should be a valid %s address</string>
+
+    <string name="add_proxy_deposit_description_message">The deposit stays reserved on your account until the proxy is removed.</string>
+
+    <string name="add_proxy_maximum_reached_error_title">Maximum number of proxies has been reached</string>
+    <string name="add_proxy_maximum_reached_error_message">You have reached the limit of %s added proxies in %s. Remove proxies to add new ones.</string>
+
+    <string name="common_error_not_enough_tokens">Not enough tokens</string>
+    <string name="staking_not_enough_balance_to_pay_proxy_deposit_message">You don’t have enough balance for proxy deposit of %s. Available balance: %s</string>
+
+    <string name="staking_action_your_proxies">Your delegations</string>
+    <string name="staking_action_add_proxy">Add delegated authority (Proxy)</string>
+
+    <string name="set_staking_proxy_address_description">Give authority to</string>
+    <string name="common_proxy_deposit">Proxy deposit</string>
+    <string name="fragment_set_staking_proxy_title">Add delegation for %s staking</string>
+
+    <string name="common_enter_address">Enter address…</string>
+    <string name="proxy_error_not_enough_to_pay_fee_message">Delegated account %s doesn’t have enough balance to pay the network fee of %s. Available balance to pay fee: %s</string>
+    <string name="staking_no_access_to_controller_account_title">No access to controller account</string>
+    <string name="staking_no_access_to_controller_account_message">Add your controller account in device.</string>
+
+    <string name="staking_story_staking_page_1">Staking is an option to earn passive income by locking your tokens in the network. Staking rewards are allocated every era (6 hours on Kusama and 24 hours on Polkadot). You can stake as long as you wish, and for unstaking your tokens you need to wait for the unstaking period to end, making your tokens available to be redeemed.</string>
+
+    <string name="proxy_signing_none_permissions_message">%1$s has not delegated %2$s</string>
+
+    <string name="error_not_enough_to_pay_fee_title">Not enough tokens to pay the fee</string>
+
+    <string name="proxied_wallet_details_info_warning">This account granted access to perform transactions to the following account:</string>
+
+    <string name="proxy_signing_warning_title">This is Delegating (Proxied) account</string>
+    <string name="proxy_signing_warning_message">Transaction will be initiated by %s as a delegated account. Network fee will be paid by delegated account.</string>
+
+    <string name="proxy_signing_not_enough_permission_title">Oops! Not enough permission</string>
+    <string name="proxy_signing_not_enough_permission_message">%1$s delegated %2$s only for %3$s</string>
+
+    <string name="proxy_signing_is_not_supported_message">Proxied wallets do not support signing arbitrary messages — only transactions</string>
+
+    <string name="proxy_wallet_type">%s proxy</string>
+    <string name="account_proxy_type_any">Any</string>
+    <string name="account_proxy_type_non_transfer">Non Transfer</string>
+    <string name="account_proxy_type_governance">Governance</string>
+    <string name="account_proxy_type_staking">Staking</string>
+    <string name="account_proxy_type_identity_judgement">Identity Judgement</string>
+    <string name="account_proxy_type_cancel_proxy">Cancel Proxy</string>
+    <string name="account_proxy_type_auction">Auction</string>
+    <string name="account_proxy_type_nomination_pools">Nomination Pools</string>
+
+    <string name="deep_linking_chain_id_is_not_found">Chain is not found</string>
+    <string name="deep_linking_governance_type_is_not_specified">Governance type is not specified</string>
+    <string name="deep_linking_governance_type_is_not_supported">Governance type is not supported</string>
+    <string name="deep_linking_url_is_invalid">Invalid url</string>
+    <string name="deep_linking_domain_is_not_matched">Domain from the link %s is not allowed</string>
+    <string name="deep_linking_invalid_mnemonic">Mnemonic is not valid</string>
+    <string name="deep_linking_invalid_crypto_type">Crypto type is invalid</string>
+    <string name="deep_linking_invalid_derivation_path">Invalid derivation path</string>
+
+    <string name="referendim_details_not_found_title">Referendum not found</string>
+
+    <string name="operations_swap_title">Swap</string>
+
+    <string name="swap_repeat_operation">Repeat the operation</string>
+
+    <string name="wallet_filters_swaps">Swaps</string>
+
+    <string name="swap_failure_balance_not_consider_consumers">You should keep at least %s after paying %s network fee as you are holding non sufficient tokens</string>
+    <string name="swap_failure_balance_not_consider_non_sufficient_assets">You must keep at least %s to receive %s token</string>
+
+    <string name="swap_rate_description">Exchange rate between two different cryptocurrencies. It represents how much of one cryptocurrency you can get in exchange for a certain amount of another cryptocurrency.</string>
+    <string name="swap_price_difference_description">Price difference refers to the difference in price between two different assets. When making a swap in crypto, the price difference is usually the difference between the price of the asset you are swapping for and the price of the asset you are swapping with.</string>
+    <string name="swap_slippage_description">Swap slippage is a common occurrence in decentralized trading where the final price of a swap transaction might slightly differ from the expected price, due to changing market conditions.</string>
+    <string name="swap_network_fee_description">A network fees charged by the blockchain to process and validate any transactions. May vary depending on network conditions or transaction speed.</string>
+
+    <string name="swap_main_settings_asset_in_not_selecting_button_state">Select a token to pay</string>
+    <string name="swap_main_settings_asset_out_not_selecting_button_state">Select a token to receive</string>
+    <string name="swap_main_settings_enter_amount_disabled_button_state">Enter amount</string>
+    <string name="swap_main_settings_wrong_amount_disabled_button_state">Enter other amount</string>
+
+    <string name="swap_field_validation_not_enough_liquidity">Not enough liquidity</string>
+    <string name="swap_field_validation_not_enough_amount_to_swap">Not enough tokens to swap</string>
+    <string name="swap_field_validation_to_low_amount_out">You can’t receive less than %s</string>
+
+    <string name="common_cannot_pay_network_fee_message">You can use up to %s since you need to pay\n%s for network fee.</string>
+
+    <string name="swap_too_low_amount_to_stay_abow_ed_title">You are trying to swap too small amount</string>
+    <string name="swap_too_low_amount_to_stay_abow_ed_message">Amount of %s is less than minimum balance of %s</string>
+
+    <string name="swap_invalid_slippage_failure_title">Invalid slippage</string>
+    <string name="swap_invalid_slippage_failure_message">Slippage must be specified between %s and %s</string>
+    <string name="swap_rate_was_updated_failure_title">Swap rate was updated</string>
+    <string name="swap_rate_was_updated_failure_message">Old rate: %1$s ≈ %2$s.\nNew rate: %1$s ≈ %3$s</string>
+    <string name="swap_not_enought_liquidity_failure">Pool doesn’t have enough liquidity to swap</string>
+    <string name="swap_failure_too_small_remaining_balance_title">Too small amount remains on your balance</string>
+    <string name="swap_failure_too_small_remaining_balance_message">You should leave at least %1$s on your balance. Do you want to perform full swap by adding remaining %2$s as well?</string>
+    <string name="swap_failure_too_small_remaining_balance_with_buy_ed_message">You should keep at least %1$s after paying %2$s network fee and converting %3$s to %4$s to meet %5$s minimum balance.\n\nDo you want to fully swap by adding remaining %6$s as well?</string>
+    <string name="swap_failure_insufficient_balance_message">You can swap up to %1$s since you need to pay %2$s for network fee.</string>
+    <string name="swap_failure_insufficient_balance_with_buy_ed_message">You can swap up to %1$s since you need to pay %2$s for network fee and also convert %3$s to %4$s to meet %5$s minimum balance.</string>
+
+    <string name="swap_failure_swap_max_button">Swap max</string>
+    <string name="swap_failure_swap_min_button">Swap min</string>
+
+    <string name="wallet_cross_chain_transfer">Cross-chain transfer</string>
+
+    <string name="common_hexadecimal_string">Hexadecimal string</string>
+
+    <string name="swap_get_token_using">Get %s using</string>
+    <string name="swap_get_token_cross_chain_description">Transfer %s from another network</string>
+    <string name="swap_get_token_receive_description">Receive %s with QR or your address</string>
+    <string name="swap_get_token_buy_description">Instantly buy %s with a credit card</string>
+
+    <string name="common_get_token_format">Get %s</string>
+
+    <string name="swap_custom_fee_selector_description">Token for paying network fee</string>
+    <string name="swap_custom_fee_selector_footer">Network fee is added on top of entered amount</string>
+    <string name="swap_minimum_balance_buy_in_alert">To pay network fee with %s, Pezkuwi Wallet will automatically swap %s for %s to maintain your account\'s minimum %s balance.</string>
+
+    <string name="swap_slippage_disabled_button_state">Enter other value</string>
+    <string name="swap_slippage_error_not_in_available_range">Enter a value between %s and %s</string>
+    <string name="swap_slippage_warning_too_small">Transaction might be reverted because of low slippage tolerance.</string>
+    <string name="swap_slippage_warning_too_big">Transaction might be frontrun because of high slippage.</string>
+    <string name="swap_slippage">Slippage</string>
+    <string name="swap_settings_title">Swap settings</string>
+
+    <string name="common_percent" translatable="false">%</string>
+
+    <string name="assets_swap_flow_pay_title">Token to pay</string>
+    <string name="assets_swap_flow_receive_title">Token to receive</string>
+
+    <string name="swap_error_pair_not_supported">This pair is not supported</string>
+    <string name="swap_price_impact">%s ≈ %s</string>
+
+    <string name="swap_field_subtitle_default">Select a token</string>
+    <string name="swap_field_asset_from_title">Pay</string>
+    <string name="swap_field_asset_to_title">Receive</string>
+
+    <string name="swap_rate_title">Rate</string>
+    <string name="swap_price_difference_title">Price difference</string>
+    <string name="swap_slippage_title">Slippage</string>
+    <string name="common_wallet">Wallet</string>
+
+    <string name="fragment_swap_main_settings_max_button">Max:</string>
+    <string name="fragment_swap_main_settings_pay_title">You pay</string>
+    <string name="fragment_swap_main_settings_receive_title">You receive</string>
+    <string name="fragment_swap_main_settings_details_title">Swap details</string>
+    <string name="wallet_asset_swap">Swap</string>
+    <string name="fragment_swap_main_settings_select_token">Select a token</string>
+
+    <string name="assets_crowdloan_unlock_banner_title">Boost your DOT 🚀</string>
+    <string name="assets_crowdloan_unlock_banner_description">Received your DOT back from crowdloans? Start staking your DOT today to get the maximum possible rewards!</string>
+
+    <string name="assets_buy_tokens_placeholder_button">Buy tokens</string>
+
+    <string name="assets_send_flow_placeholder">You don’t have tokens to send.\nBuy or Deposit tokens to your account.</string>
+    <string name="common_days_and_hours_format_with_delimeter">%s and %s</string>
+    <string name="common_frequency_days_daily">daily</string>
+
+    <string name="referendum_status_deciding">Deciding</string>
+    <string name="referendum_timeline_state_deciding">Voting: Deciding</string>
+
+    <string name="start_staking_fragment_min_stake_condition_no_min_stake">Stake anytime. Your stake will actively earn rewards %s</string>
+
+
+    <string name="pool_full_failure_title">Pool is full</string>
+    <string name="pool_full_failure_message">You cannot join pool since it reached maximum number of members</string>
+
+    <string name="pool_inactive_failure_title">Pool is not open</string>
+    <string name="pool_inactive_failure_message">You cannot join pool that is not open. Please, contact the pool owner.</string>
+
+    <string name="common_close_confirmation_message">Are you sure you want to close this screen?\nYour changes will not be applied.</string>
+
+    <string name="common_search_placeholder_default">Search result will be displayed here</string>
+
+    <string name="search_pool_no_pools_found_placeholder">No pool with entered name or pool ID were found. Make sure you entered correct data</string>
+
+    <string name="select_custom_pool_title">Select pool</string>
+    <string name="select_custom_pool_active_pools_count">active pools: %d</string>
+    <string name="select_custom_pool_members">members</string>
+
+    <string name="setup_staking_type_staking_amount_is_less_than_min_amount_title">Your stake is less than the minimum to earn rewards</string>
+    <string name="setup_staking_type_direct_staking_amount_is_less_than_min_amount_message">You have specified less than the minimum stake of %s required to earn rewards with %s. You should consider using Pool staking to earn rewards.</string>
+    <string name="setup_staking_type_already_used_title">Staking type cannot be changed</string>
+    <string name="setup_staking_type_pool_already_used_message">You are already staking in a pool</string>
+    <string name="setup_staking_type_direct_already_used_message">You are already have Direct staking</string>
+    <string name="setup_staking_type_unsupported_staking_type_used_fallback_message">Unsupported staking type</string>
+
+    <string name="setup_staking_type_min_amount_condition">Minimum stake: %s</string>
+    <string name="setup_staking_type_payout_type_manual_condition">Rewards: Claim manually</string>
+    <string name="setup_staking_type_payout_type_automatically_condition">Rewards: Paid automatically</string>
+    <string name="setup_staking_type_governance_condition">Reuse tokens in Governance</string>
+    <string name="setup_staking_type_advanced_options_condition">Advanced staking management</string>
+
+    <string name="staking_type_title">Staking Type</string>
+    <string name="setup_staking_type_pool_staking">Pool staking</string>
+    <string name="setup_staking_type_direct_staking">Direct staking</string>
+
+    <string name="staking_unstake_all">Unstake all</string>
+
+    <string name="choose_amount_error_too_big">Sorry, you don\'t have enough funds to spend the specified amount</string>
+
+    <string name="staking_setup_amount_too_low">You can\'t stake less than the minimal value (%s)</string>
+
+    <string name="staking_missing_account_message">You need to add a %s account to your wallet in order to start staking</string>
+    <string name="add_delegation_missing_account_message">You need to add a %s account to the wallet in order to delegate</string>
+    <string name="referendum_missing_account_message">You need to add a %s account to the wallet in order to vote</string>
+    <string name="crowdloan_missing_account_message">You need to add a %s account to the wallet in order to contribute</string>
+
+
+    <string name="staking_info">Staking info</string>
+    <string name="nomination_pools_info">Pool staking info</string>
+
+    <string name="staking_already_staking_title">You are already have staking in %s</string>
+
+    <string name="staking_unable_to_stake_more_title">Unable to stake more</string>
+    <string name="staking_unable_to_stake_more_message">You are unstaking all of your tokens and can\'t stake more.</string>
+
+    <string name="staking_stake_max">Stake max</string>
+    <string name="staking_pool_available_validation_message">Your available balance is %s, you need to leave %s as minimal balance and pay network fee of %s. You can stake not more than %s.</string>
+    <string name="staking_staking_type">Staking type</string>
+
+    <string name="start_staking_inactive_pool_message">The pool you have selected is inactive due to no validators selected or its stake is less than the minimum.\nAre you sure you want to proceed with the selected Pool?</string>
+
+    <string name="start_staking_cant_stake_amount">You can\'t stake the specified amount</string>
+    <string name="start_staking_available_balance_gap_message">You have locked tokens on your balance due to %s. In order to continue you should enter less than %s or more than %s. To stake another amount you should remove your %s locks.</string>
+
+    <string name="start_staking_max_nominators_reached_title">%s is currently unavailable</string>
+    <string name="start_staking_max_nominators_reached_message">The maximum number of nominators has been reached. Try again later</string>
+
+    <string name="start_staking_selection_validators_subtitle">Validators: %d (max %d)</string>
+    <string name="start_staking_editing_selection_validators_subtitle">Selected: %d (max %d)</string>
+    <string name="common_recommended">Recommended</string>
+
+    <string name="common_fee_changed_title">Network fee is too high</string>
+    <string name="common_fee_changed_message">The estimated network fee %s is much higher than the default network fee (%s). This might be due to temporary network congestion. You can refresh to wait for a lower network fee.</string>
+    <string name="common_refresh_fee">Refresh fee</string>
+
+    <string name="send_recipient_system_account_title">Tokens will be lost</string>
+    <string name="send_recipient_system_account_message">Recipient is a system account. It is not controlled by any company or individual.\nAre you sure you still want to perform this transfer?</string>
+
+    <string name="asset_add_evm_token_already_exist_title">This token already exists</string>
+    <string name="asset_add_evm_token_already_exist_modifiable_message">The entered contract address is present in Pezkuwi Wallet as a %s token. Are you sure you want to modify it?</string>
+
+    <string name="nomination_pool_claim_rewards">Claim rewards</string>
+    <string name="nomination_pools_claim_rewards_restake_subtitle">Your tokens will be added back to the stake</string>
+
+    <string name="nomination_pools_pool_reached_unbondings_limit_title">Too many people are unstaking from your pool</string>
+    <string name="nomination_pools_pool_reached_unbondings_limit_message">There are currently no free spots in unstaking queue for your pool. Please try again in %s</string>
+
+    <string name="staking_unbond_crossed_existential">When unstaking partially, you should leave at least %s in stake. Do you want to perform full unstake by unstaking remaining %s as well?</string>
+    <string name="staking_unbond_crossed_existential_title">Too small amount remains in stake</string>
+
+    <string name="nomination_pools_pool_destroying_error_message">Cannot perform specified operation since pool is in destroying state. It will be closed soon.</string>
+    <string name="nomination_pools_pool_destroying_error_title">Pool is destroying</string>
+
+    <string name="nomination_pools_pending_claim_hint_format">Your rewards (%s) will also be claimed and added to your free balance</string>
+
+    <string name="nomination_pools_your_pool_format">Your pool (#%s)</string>
+    <string name="nomination_pools_your_pool">Your pool</string>
+
+    <string name="nomination_pools_pool">Pool</string>
+    <string name="nomination_pools_direct">Direct</string>
+
+    <string name="start_staking_fragment_start_staking">Start Staking</string>
+    <string name="start_staking_fragment_available_balance">Available balance: %1$s (%2$s)</string>
+
+    <string name="start_staking_fragment_title_APY">Earn up to %s</string>
+    <string name="start_staking_fragment_title">%1$s\non your %2$s tokens\nper year</string>
+
+    <string name="start_staking_fragment_min_stake_condition">Stake anytime with as little as %1$s. Your stake will actively earn rewards %2$s</string>
+    <string name="start_staking_fragment_min_stake_condition_duration">in %s</string>
+    <string name="start_staking_fragment_test_network_condition">%1$s is a %2$s with %3$s</string>
+    <string name="start_staking_fragment_test_network_condition_test_network">test network</string>
+    <string name="start_staking_fragment_test_network_condition_no_token">no token value</string>
+
+    <string name="start_staking_fragment_unstake_condition">Unstake anytime, and redeem your funds %s. No rewards are earned while unstaking</string>
+    <string name="start_staking_fragment_unstake_condition_duration">after %s</string>
+
+    <string name="start_staking_fragment_reward_frequency_condition_duration">every %s</string>
+    <string name="start_staking_fragment_reward_frequency_condition_restake_only">Rewards accrue %s and added back to the stake</string>
+    <string name="start_staking_fragment_reward_frequency_condition_payout_only">Rewards accrue %s and added to the transferable balance</string>
+    <string name="start_staking_fragment_reward_frequency_condition_automatic_and_manual">Rewards accrue %1$s. Stake over %2$s for automatic rewards payout, otherwise you need to claim rewards manually</string>
+    <string name="start_staking_fragment_reward_frequency_condition_manual">Rewards accrue %s. You need to claim rewards manually</string>
+    <string name="start_staking_fragment_reward_frequency_condition_fallback">Rewards accrue %s</string>
+
+    <string name="start_staking_fragment_governance_participation_no_conditions">%s with your staked tokens</string>
+    <string name="start_staking_fragment_governance_participation_no_conditions_accent">Participate in governance</string>
+
+    <string name="start_staking_fragment_governance_participation_with_min_amount">Stake over %1$s and %2$s with your staked tokens</string>
+    <string name="start_staking_fragment_governance_participation_with_min_amount_accent">participate in governance</string>
+
+    <string name="start_staking_fragment_stake_monitoring_monitor_stake">Monitor your stake</string>
+    <string name="start_staking_fragment_stake_monitoring">Rewards and staking status vary over time. %s from time to time</string>
+
+    <string name="start_staking_fragment_more_info">Find out more information about\n%1$s staking over at the %2$s</string>
+    <string name="start_staking_fragment_more_info_clicable_part">Pezkuwi Wiki</string>
+
+    <string name="start_staking_fragment_terms_of_use">See %s</string>
+    <string name="start_staking_fragment_terms_of_use_clicable_part">Terms of Use</string>
+
+    <string name="account_parity_signer_sign_qr_code_expired_descrition">For security reasons generated operations valid for only %s.\nPlease generate new QR code and sign it with %s</string>
+    <string name="account_parity_signer_import_scan_invalid_qr">Invalid QR code, please make sure you are scanning QR code from %s</string>
+    <string name="account_parity_signer_sign_have_error">I have an error in %s</string>
+    <string name="account_parity_signer_sign_title">Sign with %s</string>
+    <string name="account_parity_signer_import_preview_description">Following accounts have been successfully read from %s</string>
+    <string name="account_parity_signer_scan_from">Scan the QR code from the %s</string>
+    <string name="account_parity_signer_import_start_title">Add wallet from %s</string>
+    <string name="account_details_parity_signer_alert">This wallet is paired with %1$s. Pezkuwi Wallet will help you to form any operations you want, and you will be requested to sign them using %1$s</string>
+    <string name="account_details_parity_signer_not_supported">Not supported by %s</string>
+    <string name="account_parity_signer_not_supported_subtitle">%s does not support signing arbitrary messages — only transactions</string>
+    <string name="account_parity_signer_chain_not_supported">%s doesn’t support %s</string>
+
+    <string name="account_polkadot_vault_import_start_empty_derivation_hint">Pay attention, the derivation path name should be empty</string>
+
+    <string name="account_parity_signer">Parity Signer</string>
+    <string name="account_polkadot_vault">Polkadot Vault</string>
+
+    <string name="staking_set_controller_deprecated_title">Controller Accounts Are Being Deprecated</string>
+    <string name="staking_set_controller_deprecated_action">Update Controller to Stash</string>
+
+    <string name="assets_search_placeholder">No networks or tokens with entered\nname were found</string>
+
+    <string name="transfer_history_income_from">From: %s</string>
+    <string name="transfer_history_send_to">To: %s</string>
+
+    <string name="transaction_history_fiat_with_time">%s at %s</string>
+
+    <string name="referenda_list_filter_placeholder">There are no referenda with filters applied</string>
+
+    <string name="pincode_biometric_switch_dialog_title">Use biometric to authorize</string>
+
+    <string name="pincode_biometric_error">You are not authorized. Try again, please.</string>
+
+    <string name="common_settings">Settings</string>
+    <string name="settings_biometric_not_ready_title">Biometrics disabled in Settings</string>
+    <string name="settings_biometric_not_ready_message">Please, make sure biometrics is enabled in Settings</string>
+
+    <string name="referenda_filters_header">Show</string>
+    <string name="referenda_filters_all">All referenda</string>
+    <string name="referenda_filters_not_voted">Not voted</string>
+    <string name="referenda_filters_voted">Voted</string>
+    <string name="common_filters">Filters</string>
+
+    <string name="referenda_title">Referenda</string>
+    <string name="referenda_search_toolbar_hint">Search by referendum title or ID</string>
+    <string name="referenda_search_placeholder">No referenda with entered title or ID were found</string>
+
+    <string name="pincode_biometry_dialog_subtitle">Pezkuwi Wallet uses biometric authentication to restrict unauthorized users from accessing the app.</string>
+
+    <string name="staking_period_select_date">Select date</string>
+    <string name="staking_period_start_date_picker_title">Select start date</string>
+    <string name="staking_period_end_date_picker_title">Select end date</string>
+
+    <string name="staking_period_all_short">All</string>
+    <string name="staking_period_week_short">7D</string>
+    <string name="staking_period_month_short">30D</string>
+    <string name="staking_period_quarter_short">3M</string>
+    <string name="staking_period_half_year_short">6M</string>
+    <string name="staking_period_year_short">1Y</string>
+    <string name="staking_period_custom_short">%dD</string>
+
+    <string name="staking_your_rewards">Rewards</string>
+
+    <string name="staking_period_title">Show staking rewards for</string>
+    <string name="staking_period_all_time">All time</string>
+    <string name="staking_period_week">Last 7 days (7D)</string>
+    <string name="staking_period_month">Last 30 days (30D)</string>
+    <string name="staking_period_quarter">Last 3 month (3M)</string>
+    <string name="staking_period_half_year">Last 6 months (6M)</string>
+    <string name="staking_period_year">Last year (1Y)</string>
+    <string name="staking_period_custom">Custom period</string>
+
+    <string name="staking_period_start_title">Starts</string>
+    <string name="staking_period_current_date_title">End date is always today</string>
+    <string name="staking_period_end_title">Ends</string>
+
+    <string name="settings_pin_code_verification_confirmation_title">Ask authentication for operation signing</string>
+    <string name="settings_pin_code_verification_confirmation_message">Each sign operation on wallets with key pair (created in Pezkuwi Wallet or imported) should require PIN verification before constructing signature</string>
+
+    <string name="biometric_auth_title">Biometric auth</string>
+    <string name="profile_settings_pin_code_verification_title">Approve with PIN</string>
+
+    <string name="send_address_hint">Address or w3n</string>
+
+    <string name="wallet_send_recipient_blocked_title">Recipient cannot accept transfer</string>
+    <string name="wallet_send_recipient_blocked_message">Recipient has been blocked by token owner and cannot currently accept incoming transfers</string>
+
+    <string name="staking_title_format">%s staking</string>
+
+    <string name="staking_dashboard_more_options">More staking options</string>
+    <string name="staking_dashboard_no_stake_header">Stake and earn rewards</string>
+    <string name="staking_dashboard_browser_stake_header">Staking via Pezkuwi DApp browser</string>
+
+    <string name="common_waiting">Waiting</string>
+    <string name="common_per_year">/ year</string>
+    <string name="common_per_year_long">per year</string>
+    <string name="staking_earnings_per_year">Estimated rewards</string>
+
+    <string name="common_expired">Expired</string>
+
+    <plurals name="common_networks_plural">
+        <item quantity="one">Network</item>
+        <item quantity="other">Networks</item>
+    </plurals>
+
+    <string name="common_required">Required</string>
+    <string name="common_optional">Optional</string>
+
+    <plurals name="wallet_connect_unsupported_networks_hidden">
+        <item quantity="one">%s unsupported network is hidden</item>
+        <item quantity="other">%s unsupported networks are hidden</item>
+    </plurals>
+
+    <string name="wallet_connect_session_approve_unsupported_chains_alert">Some of the required networks requested by \"%s\" are not supported in Pezkuwi Wallet</string>
+
+    <plurals name="wallet_connect_session_approve_missing_accounts_alert">
+        <item quantity="one">%s account is missing. Add account to the wallet in Settings</item>
+        <item quantity="other">%s accounts are missing. Add accounts to the wallet in Settings</item>
+    </plurals>
+
+    <plurals name="common_unknown_chains">
+        <item quantity="one">%s unsupported</item>
+        <item quantity="other">%s unsupported</item>
+    </plurals>
+
+    <string name="wallet_connect_v2">WalletConnect v2</string>
+
+    <string name="common_sign_request">Sign Request</string>
+
+    <string name="wallet_connect_sessions_placeholder">Wallet Connect sessions will appear here</string>
+
+    <string name="common_active">Active</string>
+    <string name="common_none">None</string>
+    <string name="common_networks">Networks</string>
+    <string name="common_disconnect">Disconnect</string>
+
+    <string name="wallet_connect_unknown_dapp">Unknown dApp</string>
+    <string name="wallet_connect_new_connection">New connection</string>
+    <string name="wallet_connect_title">WalletConnect</string>
+    <string name="common_scan_qr_code">Scan the QR code</string>
+
+    <string name="ethereum_function">Function</string>
+    <string name="ethereum_contract">Contract</string>
+    <string name="ethereum_contract_call">Contract call</string>
+
+    <string name="web3names_integrity_check_failed_title">Integrity check failed</string>
+    <string name="web3names_integrity_check_failed_message">Pezkuwi Wallet detected issues with integrity of information about %1$s addresses. Please contact owner of %1$s to resolve integrity issues.</string>
+
+    <string name="web3names_unsupported_asset_title">Token %s is not supported yet</string>
+    <string name="web3names_unsupported_asset_message">Pezkuwi Wallet can\'t resolve code for token %s</string>
+    <string name="web3names_address_with_description">%s (%s)</string>
+    <string name="web3names_invalid_recepient_title">Invalid recipient</string>
+    <string name="web3names_service_unavailable_title">Error resolving w3n</string>
+    <string name="web3names_service_unavailable_message">%1$s w3n services are unavailable. Try again later or enter the %1$s address manually</string>
+    <string name="web3names_recepient_not_found_message">%s not found</string>
+    <string name="web3names_no_valid_recepient_found_message">No valid address was found for %s on the %s network</string>
+    <string name="web3names_identifiers_sheet_title">%s addresses for %s</string>
+
+    <string name="common_no_app_to_handle_intent">No suitable app found on device to handle this intent</string>
+
+    <string name="select_ledger_location_enable_request_title">Please enable geo-location in device settings</string>
+    <string name="select_ledger_location_enable_request_message">Pezkuwi Wallet needs location to be enabled to be able to perform bluetooth scanning to find your Ledger device</string>
+
+    <string name="common_some_tx_failed_title">Failed to submit some transactions</string>
+    <string name="common_some_tx_failed_message">There was an error while submitting some transactions. Do you want to retry?</string>
+
+    <string name="staking_setup_amount_less_than_recommended">The recommended minimum stake to consistently receive rewards is %s.</string>
+
+    <string name="staking_alert_bond_more_title">Stake more tokens</string>
+
+    <string name="staking_alert_bond_more_message">Your stake is less than minimum of %s.\nHaving stake less than minimum increases chances of staking to not generate rewards</string>
+
+    <string name="staking_rebag_current_bag">Current queue slot</string>
+    <string name="staking_rebag_new_bag">New queue slot</string>
+
+    <string name="staking_alert_rebag_title">Staking improvements</string>
+    <string name="staking_alert_rebag_message">Having outdated position in the queue of stake assignment to a validator may suspend your rewards</string>
+
+    <string name="delegate_search_placeholder_empty">Address format is invalid. Make sure that address belongs to the right network</string>
+    <string name="delegate_search_result_count">search results: %d</string>
+    <string name="delegate_search_hint">Search by address or name</string>
+
+    <string name="assets_balance_details_locks_democrac_v1" translatable="false">Governance v1</string>
+    <string name="assets_balance_details_locks_democrac_v2" translatable="false">OpenGov</string>
+
+    <string name="staking_reward_payouts_payout_all">Pay out all (%s)</string>
+    <string name="staking_pending_rewards_subtitle">You can pay them out yourself, when they are close to expire, but you will pay the fee</string>
+
+
+    <string name="referendum_vote_abstain">Abstain</string>
+
+    <string name="delegation_revoke_hint_unlock">After the undelegating period has expired, you will need to unlock your tokens.</string>
+
+    <string name="delegation_edit_delegation">Edit delegation</string>
+    <string name="delegation_revoke_delegation">Revoke delegation</string>
+
+    <string name="select_delegation_tracks_add_title">Select tracks to add delegation</string>
+    <string name="select_delegation_tracks_revoke_title">Select tracks to revoke your delegation</string>
+    <string name="select_delegation_tracks_edit_title">Select tracks to edit delegation</string>
+
+    <string name="common_revoke">Revoke</string>
+
+    <string name="referendum_track_root">Main agenda</string>
+    <string name="referendum_whitelisted_caller">Fellowship: whitelist</string>
+    <string name="referendum_staking_admin">Staking</string>
+    <string name="referendum_track_treasurer">Treasury: any</string>
+    <string name="referendum_track_lease_admin">Governance: lease</string>
+    <string name="referendum_track_fellowship_admin">Fellowship: admin</string>
+    <string name="referendum_track_general_admin">Governance: registrar</string>
+    <string name="referendum_track_auction_admin">Crowdloans</string>
+    <string name="referendum_track_referendum_canceller">Governance: canceller</string>
+    <string name="referendum_track_referendum_killer">Governance: killer</string>
+    <string name="referendum_track_small_tipper">Treasury: small tips</string>
+    <string name="referendum_track_big_tipper">Treasury: big tips</string>
+    <string name="referendum_track_small_spender">Treasury: small spend</string>
+    <string name="referendum_track_medium_spender">Treasury: medium spend</string>
+    <string name="referendum_track_big_spender">Treasury: big spend</string>
+
+    <string name="delegation_referendum_vote">Your votes: %s via %s</string>
+    <string name="delegation_referendum_details_vote">Your votes via %s</string>
+
+    <string name="delegation_delegate">Delegate</string>
+    <string name="delegation_your_delegation">Your delegation</string>
+
+    <string name="delegation_delegate_hint_vote">Your votes will automatically vote alongside your delegates\' vote</string>
+    <string name="delegation_delegate_hint_unlock">Undelegating period will start after you revoke a delegation</string>
+
+    <string name="delegation_error_self_delegate_title">Cannot delegate to yourself</string>
+    <string name="delegation_error_self_delegate_message">You cannot delegate to yourself, please choose different address</string>
+
+    <string name="delegation_undelegating_period">Undelegating period</string>
+
+    <string name="delegation_multi_track_format">Across %s tracks</string>
+
+    <string name="delegation_remove_votes">Remove votes</string>
+    <string name="delegation_tracks">Tracks</string>
+
+    <string name="common_element_and_more_format">%s (+%s more)</string>
+
+    <string name="delegation_all_votes">Voted for all time</string>
+    <string name="delegation_delegate_info">Delegate info</string>
+
+    <string name="referendum_voted_referenda">Voted referenda</string>
+
+    <string name="referendum_other_votes">%s votes by %s</string>
+
+    <string name="delegation_your_delegations">Your delegations</string>
+
+    <string name="delegation_list_banner_title">Are you a Delegate?</string>
+    <string name="delegation_list_banner_description">Tell us more about yourself so Pezkuwi Wallet users get to know you better</string>
+    <string name="delegation_list_describe_yourself_action">Describe yourself</string>
+
+    <string name="common_sort_by">Sort by</string>
+
+    <string name="delegation_delegate_filter_all">All accounts</string>
+    <string name="delegation_delegate_filter_organizations">Organizations</string>
+    <string name="delegation_delegate_filter_individuals">Individuals</string>
+
+    <string name="delegation_delegate_type_organization">Organization</string>
+    <string name="delegation_delegate_type_individual">Individual</string>
+
+    <string name="delegation_delegations">Delegations</string>
+    <string name="delegation_delegated_votes">Delegated votes</string>
+    <string name="delegation_recent_votes_format">Voted last %s</string>
+
+    <string name="delegation_sorting_delegations">Delegations</string>
+    <string name="delegation_sorting_delegated_votes">Delegated votes</string>
+    <string name="delegation_sorting_recent_votes_format">Voted last %s</string>
+
+    <string name="select_delegation_tracks_available_tracks">Available tracks</string>
+    <string name="select_delegation_tracks_unavailable_tracks">Unavailable tracks</string>
+    <string name="select_delegation_tracks_description">Please select the tracks in which you would like to delegate your voting power.</string>
+
+    <string name="delegation_tracks_all_preset">Select all</string>
+    <string name="delegation_tracks_treasury_preset">Treasury</string>
+    <string name="delegation_tracks_governance_preset">Governance</string>
+    <string name="delegation_tracks_fellowship_preset" translatable="false">Fellowship</string>
+
+    <string name="delegation_tracks_disabled_apply_button_text">Select at least 1 track...</string>
+    <string name="delegation_tracks_empty_list_placeholder">No tracks are available to delegate</string>
+
+    <string name="remove_votes_suggestion_title">Remove history of your votes?</string>
+    <plurals name="remove_votes_suggestion_description">
+        <item formatted="true" quantity="one">You have previously voted in referendums in %d track. In order to make this track available for delegation, you need to remove your existing votes.</item>
+        <item formatted="true" quantity="other">You have previously voted in referendums in %d tracks. In order to make these tracks available for delegation, you need to remove your existing votes.</item>
+    </plurals>
+
+    <string name="remove_votes_suggestion_button_text">Remove votes</string>
+
+    <string name="unavailable_tracks_title">Unavailable tracks</string>
+    <string name="unavailable_tracks_button_text">Remove votes in order to delegate in these tracks</string>
+
+    <string name="unavailable_tracks_voted_group">Tracks which you have existing votes in</string>
+    <string name="unavailable_tracks_delegated_group">Tracks that you have already delegated votes to</string>
+    <string name="delegate_more_tracks" translatable="false">+%d</string>
+
+    <string name="delegations_filter">Show</string>
+
+    <string name="update_notification_item_version">Version %s</string>
+
+    <string name="update_notifications_show_more">See all available updates</string>
+    <string name="update_notifications_latest">Latest</string>
+    <string name="update_notifications_severity_critical">Critical</string>
+    <string name="update_notifications_severity_major">Major</string>
+
+    <string name="update_notifications_critical_update_alert_titile">Critical update</string>
+    <string name="update_notifications_critical_update_alert_subtitile">To avoid any issues, and improve your user experience, we strongly recommend that you install recent updates as soon as possible</string>
+
+    <string name="update_notifications_major_update_alert_titile">Major update</string>
+    <string name="update_notifications_major_update_alert_subtitile">Lots of amazing new features are available for Pezkuwi Wallet! Make sure to update your application to access them</string>
+
+    <string name="update_notification_title">Update available</string>
+    <string name="update_notification_install_btn">Install</string>
+
+    <string name="common_cannot_find_app">Sorry, you don\'t have the right app to process this request</string>
+
+    <string name="common_enable">Enable</string>
+    <string name="settings_safe_mode_confirmation_title">Safe mode</string>
+    <string name="settings_safe_mode_confirmation_message">Screen recording and screenshots will not be available. The minimized app will not display the content</string>
+
+    <string name="profile_settings_safe_mode_title">Safe mode</string>
+
+    <string name="dapp_options_title">Page settings</string>
+    <string name="dapp_options_add_to_favorite">Add to Favorites</string>
+    <string name="dapp_options_remove_from_favorite">Remove from Favorites</string>
+    <string name="dapp_options_desktop_mode">Desktop mode</string>
+
+
+    <string name="asset_add_evm_token_invalid_contract_address_message">The entered contract address is not a %s ERC-20 contract.</string>
+
+    <string name="assets_filter_title">Filter tokens</string>
+
+    <string name="manage_assets_add_token">Add token</string>
+
+    <string name="asset_add_evm_token_already_exist_message">The entered contract address is present in Pezkuwi Wallet as a %s token.</string>
+
+    <string name="asset_add_evm_token_invalid_contract_address_title">Invalid contract address</string>
+
+    <string name="asset_add_evm_token_invalid_decimals_title">Invalid decimals value</string>
+    <string name="asset_add_evm_token_invalid_decimals_message">Decimals must be at least 0, and not over 36.</string>
+
+    <string name="asset_add_evm_token_invalid_coin_gecko_link_title">Invalid CoinGecko link</string>
+    <string name="asset_add_evm_token_invalid_coin_gecko_link_message">Please make sure supplied url has the following form: www.coingecko.com/en/coins/tether.</string>
+
+    <string name="asset_add_token_enter_contract_address">Enter contract address</string>
+    <string name="asset_add_token_enter_symbol">Enter symbol</string>
+    <string name="asset_add_token_enter_decimals">Enter decimals</string>
+    <string name="assets_add_token">Add token</string>
+
+    <string name="assets_add_token_enter_info_title">Enter ERC-20 token details</string>
+
+    <string name="assets_add_token_enter_info_address_label">Contract address</string>
+    <string name="assets_add_token_enter_info_address_hint" translatable="false">0x...</string>
+
+    <string name="assets_add_token_enter_info_symbol_label">Symbol</string>
+    <string name="assets_add_token_enter_info_symbol_hint" translatable="false">USDT</string>
+
+    <string name="assets_add_token_enter_info_decimals_label">Decimals</string>
+    <string name="assets_add_token_enter_info_decimals_hint" translatable="false">18</string>
+
+    <string name="assets_add_token_select_chain_title">Select network to add ERC-20 token</string>
+
+    <string name="common_disabled">Disabled</string>
+
+    <string name="assets_manage_tokens_title">Manage tokens</string>
+    <string name="assets_manage_tokens_all_networks">All networks</string>
+
+    <string name="common_no_app_to_handle_import_intent">File import application not found on device. Please install it and try again</string>
+
+    <string name="referenda_list_placeholder">Referenda information will appear here when they start</string>
+
+    <string name="dapp_sign_error_unsupported_chain">Unsupported chain with genesis hash %s</string>
+
+    <string name="referendum_unlock_remains_locked_format">remains locked in %s</string>
+
+    <string name="referendum_unlock_unlockable">Unlockable</string>
+
+    <string name="referendum_vote_chip_governance_lock">Reuse governance lock: %s</string>
+    <string name="referendum_vote_chip_all_locks">Reuse all locks : %s</string>
+
+    <string name="common_amount_too_big">Amount is too big</string>
+    <string name="refrendum_vote_not_enough_available_message">You don’t have enough available tokens to vote. Available to vote: %s.</string>
+
+    <string name="refrendum_vote_already_completed_title">Referendum is completed</string>
+    <string name="refrendum_vote_already_completed_message">Referendum is completed and voting has finished</string>
+
+    <string name="refrendum_vote_already_delegating_title">Already delegating votes</string>
+    <string name="refrendum_vote_already_delegating_message">You are delegating votes for selected referendum’s track. Please either ask your delegatee to vote or remove delegation to be able to vote directly.</string>
+
+    <string name="refrendum_vote_max_votes_reached_title">Maximum number of votes reached</string>
+    <string name="refrendum_vote_max_votes_reached_message">You have reached a maximum of %s votes for track</string>
+
+    <string name="vote_revote">Revote</string>
+
+    <string name="referendum_vote_unlock_hint">After locking period don’t forget to unlock your tokens</string>
+
+    <string name="common_maximum_format">%s maximum</string>
+
+    <string name="referendum_vote_governance_lock">Governance lock</string>
+    <string name="referendum_vote_locking_period">Locking period</string>
+
+    <string name="referendum_vote_setup_title">Vote for %s</string>
+    <string name="referendum_vote_select_conviction_title">Multiply votes by increasing locking period</string>
+
+    <string name="referendum_timeline_state_preparing">Voting: Preparing</string>
+    <string name="referendum_timeline_state_waiting_deposit">Voting: Waiting for deposit</string>
+    <string name="referendum_timeline_state_in_queue">Voting: In queue</string>
+    <string name="referendum_timeline_state_passing">Voting: Passing</string>
+    <string name="referendum_timeline_state_not_passing">Voting: Not passing</string>
+
+    <string name="referendum_in_queue_position_format">Position: %s of %s</string>
+
+    <string name="referendum_timeline_state_created">Created</string>
+    <string name="referendum_timeline_state_approved">Voted: Approved</string>
+    <string name="referendum_timeline_state_rejected">Voted: Rejected</string>
+    <string name="referendum_timeline_state_executed">Executed</string>
+    <string name="referendum_timeline_state_cancelled">Cancelled</string>
+    <string name="referendum_timeline_state_killed">Killed</string>
+    <string name="referendum_timeline_state_timed_out">Timed out</string>
+
+    <string name="referendum_votes_format">%s votes</string>
+
+    <string name="common_read_more">Read more</string>
+
+    <string name="common_ongoing">Ongoing</string>
+    <string name="common_completed">Completed</string>
+
+    <string name="referendum_aye_format">Aye: %s</string>
+    <string name="referendum_nay_format">Nay: %s</string>
+    <string name="referendum_to_pass_format">To pass: %s</string>
+
+    <string name="vote_vote">Vote</string>
+    <string name="common_governance">Governance</string>
+
+    <string name="referendum_name_unknown">Referendum %s</string>
+
+    <string name="referendum_support_threshold_format">Threshold: %s of %s</string>
+    <string name="referendum_your_vote_format">Your vote: %s votes</string>
+
+    <string name="referendum_status_approved">Approved</string>
+    <string name="referendum_status_in_queue_format">In queue (%s of %s)</string>
+    <string name="referendum_status_timeout">Timed out</string>
+    <string name="referendum_status_cancelled">Cancelled</string>
+    <string name="referendum_status_passing">Passing</string>
+    <string name="referendum_status_not_passing">Not passing</string>
+    <string name="referendum_status_rejected">Rejected</string>
+    <string name="referendum_status_preparing">Preparing</string>
+    <string name="referendum_status_executed">Executed</string>
+    <string name="referendum_status_killed">Killed</string>
+
+    <string name="referendum_status_deciding_in">Deciding in %s</string>
+    <string name="referendum_status_waiting_deposit">Waiting for deposit</string>
+    <string name="referendum_status_time_out_in">Time out in %s</string>
+    <string name="referendum_status_time_reject_in">Reject in %s</string>
+    <string name="referendum_status_time_approve_in">Approve in %s</string>
+    <string name="referendum_status_time_execute_in">Execute in %s</string>
+
+    <string name="referendum_vote_aye">Aye</string>
+    <string name="referendum_vote_nay">Nay</string>
+
+    <string name="referendum_details_your_vote">Your vote:</string>
+    <string name="referendum_details_timeline">Timeline</string>
+
+    <string name="referendum_dapp_list_title">Use Pezkuwi DApp browser</string>
+
+    <string name="voting_status">Voting status</string>
+    <string name="referendum_details_requested_amount">Requested amount</string>
+
+    <string name="referendum_full_details_parameters_json">Parameters JSON</string>
+    <string name="referendum_full_details_long_for_preview">Too long for preview</string>
+    <string name="referendum_full_details_proposer">Proposer</string>
+    <string name="referendum_full_details_deposit">Deposit</string>
+    <string name="referendum_full_details_beneficiary">Beneficiary</string>
+    <string name="referendum_full_details_vote_threshold">Vote threshold</string>
+    <string name="referendum_full_details_turnout">Turnout</string>
+    <string name="referendum_full_details_electorate">Electorate</string>
+    <string name="referendum_full_details_approve_threshold">Approve curve</string>
+    <string name="referendum_full_details_support_threshold">Support curve</string>
+    <string name="referendum_positive_voters_title">Aye votes</string>
+    <string name="referendum_negative_voters_title">Nay votes</string>
+
+    <string name="referendum_description_fallback">Only the proposer can edit this description and the title. If you own proposer\'s account, visit Polkassembly and fill in information about your proposal</string>
+
+    <string name="referendum_voter_vote">%s votes</string>
+    <string name="referendum_voter_vote_details">%s × %sx</string>
+
+    <string name="confirm_referendum_vote_title">Vote</string>
+    <string name="confirm_referendum_vote_track">Track</string>
+    <string name="confirm_referendum_vote_referendum">Referendum</string>
+    <string name="referendum_voters_empty_list_placeholder">List of voters will appear here</string>
+
+    <string name="governance_unlock">Unlock</string>
+
+    <string name="crowdloan_contributions_liquid_source">Liquid</string>
+    <string name="crowdloan_contributions_parallel_source">Parallel</string>
+
+    <string name="assets_balance_details_locks_crowdloans">Crowdloans</string>
+
+    <string name="common_accept_terms">Accept terms...</string>
+    <string name="yield_boost_terms">Yield Boost will automatically stake %s all my transferable tokens above %s</string>
+
+    <string name="yield_boost_stake_increase_time">Stake increase time</string>
+    <string name="yiled_boost_yield_boosted">Yield Boosted</string>
+
+    <string name="yield_boost_already_enabled_title">Change the Yield Boosted Collator?</string>
+    <string name="yield_boost_already_enabled_message">Yield Boost will be turned off for current collators. New collator: %s</string>
+
+    <string name="yield_boost_not_enough_threshold_title">Not enough tokens to stay above threshold</string>
+    <string name="yield_boost_not_enough_threshold_message">You don’t have enough balance to pay the network fee of %s and not drop below the threshold %s.\nAvailable balance to pay the fee: %s</string>
+
+    <string name="yield_boost_not_enough_execution_fee_title">Not enough tokens to pay first execution fee</string>
+    <string name="yield_boost_not_enough_execution_fee_message">You don’t have enough balance to pay the network fee of %s and the yield boost execution fee of %s.\nAvailable balance to pay the fee: %s</string>
+
+    <string name="common_no_changes">No changes</string>
+
+    <string name="staking_turing_destination_payout">without Yield Boost</string>
+    <string name="staking_turing_destination_restake">with Yield Boost</string>
+
+    <string name="staking_turing_collator_title">For my collator</string>
+    <string name="staking_turing_restake_title">I want to stake</string>
+    <string name="staking_turing_frequency_new_title">to automatically stake %s all my transferable tokens above</string>
+    <string name="staking_turing_frequency_update_title">to automatically stake %s (before: %s) all my transferable tokens above</string>
+
+    <string name="common_frequency_days_everyday">everyday</string>
+    <plurals name="common_frequency_days">
+        <item quantity="one">everyday</item>
+        <item quantity="other">every %s days</item>
+    </plurals>
+    <string name="staking_turing_boost_threshold">Boost threshold</string>
+
+    <string name="common_on">On</string>
+    <string name="common_off">Off</string>
+    <string name="staking_turing_yield_boost">Yield Boost</string>
+
+    <string name="ledger_chain_not_supported">Ledger doesn’t support %s</string>
+
+    <string name="ledger_sign_raw_not_supported">Ledger does not support signing arbitrary messages — only transactions</string>
+
+    <string name="assets_receive_ledger_not_supported_message">Do not transfer %s to the Ledger-controlled account since Ledger does not support sending of %s, so assets will be stuck on this account</string>
+    <string name="assets_receive_ledger_not_supported_title">Ledger does not support this token</string>
+
+    <string name="common_signature_invalid">Signature is invalid</string>
+    <string name="ledger_sign_signature_invalid_message">Please, make sure you have selected the right Ledger device for currently approving operation</string>
+
+    <string name="ledger_sign_tx_not_supported_title">Transaction is not supported</string>
+    <string name="ledger_sign_tx_not_supported_subtitle">Ledger does not support this transaction.</string>
+
+    <string name="ledger_sign_metadata_outdated_title">Metadata is outdated</string>
+    <string name="ledger_sign_metadata_outdated_subtitle">Please, update %s app using Ledger Live app</string>
+
+    <string name="ledger_sign_transaction_validity_format">Transaction is valid for %s</string>
+
+    <string name="ledger_review_approve_title">Review and Approve</string>
+    <string name="ledger_sign_approve_message">Press both buttons on your %s to approve the transaction</string>
+
+    <string name="ledger_sign_transaction_expired_message">For security reasons generated operations valid for only %s. Please try again and approve it with Ledger</string>
+    <string name="ledger_sign_transaction_expired_title">Transaction has expired</string>
+
+    <string name="ledger_wallet_details_description">This wallet is paired with Ledger. Pezkuwi Wallet will help you to form any operations you want, and you will be requested to sign them using Ledger</string>
+
+    <string name="common_ledger">Ledger</string>
+
+    <string name="ledger_import_select_address_load_more">Load more accounts</string>
+    <string name="ledher_import_select_address_title">Select account to add to wallet</string>
+
+    <string name="ledger_error_general_title">Ledger operation failed</string>
+    <string name="ledger_error_general_message">Operation completed with error on device. Please, try again later.</string>
+
+    <string name="ledger_error_app_cancelled_title">Operation cancelled</string>
+    <string name="ledger_error_app_cancelled_message">Operation was cancelled by the device. Make sure you unlocked your Ledger.</string>
+
+    <string name="ledger_error_app_not_launched_title">%s app not launched</string>
+    <string name="ledger_error_app_not_launched_message">Open the %s app on your Ledger device</string>
+
+    <string name="account_ledger_select_device_title">Select your Ledger device</string>
+    <string name="account_ledger_select_device_description">Please, enable Bluetooth in your phone settings and Ledger device. Unlock your Ledger device and open the %s app.</string>
+
+    <string name="common_cancel_operation_warning">Are you sure you want to cancel this operation?</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+
+    <string name="account_ledger_import_fill_disabled_hint">Add at least one account</string>
+    <string name="account_ledger_import_fill_title">Add accounts to your wallet</string>
+    <string name="account_ledger_import_fill_description">Make sure Network app is installed to your Ledger device using Ledger Live app. Open the network app on your Ledger device.</string>
+
+    <string name="account_select_hardware_wallet">Select hardware wallet</string>
+
+    <string name="common_total">Total</string>
+
+    <string name="wallet_currency_title">Currency</string>
+    <string name="wallet_currency_category_cryptocurrencies">Cryptocurrencies</string>
+    <string name="wallet_currency_category_fiat">Fiat currencies</string>
+    <string name="wallet_currency_category_popular_fiat">Popular fiat currencies</string>
+
+    <string name="assets_select_send_your_wallets">Your wallets</string>
+
+    <string name="assets_balance_details_locks_staking">Staking</string>
+    <string name="assets_balance_details_locks_vesting">Vesting</string>
+    <string name="assets_balance_details_locks_phrelect">Elections</string>
+
+    <string name="account_parity_signer_not_supported_title">Signing is not supported</string>
+
+    <string name="common_invalid_qr">QR code is invalid</string>
+    <string name="account_parity_signer_sign_qr_invalid_message">Please make sure you are scanning QR code for currently signing operation</string>
+
+    <string name="common_try_again">Try again</string>
+
+    <string name="account_parity_signer_sign_qr_code_expired">QR code has expired</string>
+    <string name="account_parity_signer_sign_qr_code_valid_format">QR code is valid for %s</string>
+
+    <string name="account_parity_signer_import_preview_title">Here are your accounts</string>
+
+
+    <string name="common_permission_permissions_needed_title">Permissions needed</string>
+    <string name="common_permission_permissions_needed_message">Requested permissions are required to use this screen.</string>
+    <string name="common_ask_again">Ask again</string>
+
+    <string name="common_permission_permissions_denied_title">Permissions denied</string>
+    <string name="common_permission_permissions_denied_message">Requested permissions are required to use this screen. You should enable them in Settings.</string>
+    <string name="common_to_settings">Open Settings</string>
+
+    <string name="account_parity_signer_import_start_select_top">Make sure to select top one</string>
+    <string name="account_delete_confirmation_description">Make sure you have exported your wallet before proceeding.</string>
+    <string name="account_delete_confirmation_title">Forget wallet?</string>
+
+    <string name="accoount_enter_chain_address_format">Enter valid %s address...</string>
+    <string name="account_chain_address_format">%s address</string>
+
+    <string name="account_details_watch_only_alert">This is watch-only wallet, Pezkuwi Wallet can show you balances and other information, but you cannot perform any transactions with this wallet</string>
+    <string name="account_add_account">Add account</string>
+
+    <string name="account_select_wallet">Select wallet</string>
+
+    <string name="account_watch_only">watch-only</string>
+
+    <string name="account_import_wallet_title">Import wallet</string>
+    <string name="account_import_wallet_subtitle">Pezkuwi Wallet is compatible with all apps</string>
+
+    <string name="account_add_watch_only_description">Track any wallet by its address</string>
+
+    <string name="common_ok_back">Okay, back</string>
+
+    <string name="account_watch_key_missing_title">Oops! Key is missing</string>
+    <string name="account_watch_key_missing_description">Your wallet is watch-only, meaning that you cannot do any operations with it</string>
+
+    <string name="account_add_watch_wallet">Add watch-only wallet</string>
+
+    <string name="account_enter_wallet_nickname">Enter wallet nickname...</string>
+    <string name="accoount_enter_substrate_address">Enter valid substrate address...</string>
+    <string name="accoount_enter_evm_address">Evm address must be valid or empty...</string>
+
+    <string name="common_substrate_address">Substrate Address</string>
+    <string name="account_watch_add_substrate_address_description">Polkadot, Kusama, Karura, KILT and 50+ networks</string>
+
+    <string name="common_evm_address">EVM address</string>
+    <string name="account_watch_add_evm_address_optional">EVM address (Optional)</string>
+    <string name="account_watch_add_evm_address_description">Moonbeam, Moonriver and other networks</string>
+
+    <string name="account_watch_add_presets">Preset wallets</string>
+    <string name="account_watch_add_subtitle">Track the activity of any wallet without injecting your private key to Pezkuwi Wallet</string>
+
+    <string name="wallet_tokens">Tokens</string>
+
+    <string name="assets_search_hint">Search by network or token</string>
+
+    <string name="crowdloan_contributions_returns_in">Returns in %s</string>
+    <string name="crowdloan_contributions_to_be_returned">To be returned by parachain</string>
+
+    <plurals name="common_minutes_format">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <string name="wallet_send_myself">Myself</string>
+
+    <string name="wallet_send_cannot_pay_cross_chain_fee">You don’t have enough balance to pay the Cross-chain fee of %s.\nRemaining balance after transfer: %s</string>
+
+    <string name="wallet_send_confirm_hint">Cross-chain fee is added on top of entered amount. Recipient may receive part of cross-chain fee</string>
+
+    <string name="wallet_send_to_network">To network</string>
+    <string name="wallet_send_from_network">From network</string>
+    <string name="wallet_send_cross_chain_fee">Cross-chain fee</string>
+
+    <string name="wallet_send_on_chain">On-chain</string>
+    <string name="wallet_send_cross_chain">Cross-chain</string>
+    <string name="wallet_send_recipient_network">Recipient network</string>
+    <string name="wallet_send_tokens_to">to</string>
+
+    <string name="wallet_send_tokens_on">Send %s on</string>
+    <string name="wallet_send_tokens_from">Send %s from</string>
+
+    <string name="parachain_staking_cannot_stake_with_collator">Cannot stake with this collator</string>
+    <string name="parachain_staking_not_active_collator_message">The selected collator showed intention to stop participating in the staking.</string>
+
+    <string name="parachain_staking_collator_cannot_bond_more">Cannot add stake to this collator</string>
+    <string name="parachain_staking_pending_revoke_message">You cannot add stake to collator for which you are unstaking all tokens.</string>
+
+    <string name="parachain_staking_manage_collators">Manage collators</string>
+
+    <string name="parachain_staking_change_collator">Change collator</string>
+    <string name="parachain_staking_alerts_change_collator_message">One of your collators is not selected in the current round</string>
+
+    <string name="parachain_staking_alerts_redeem_message">Your unstaking period for %s has passed. Don’t forget to redeem your tokens</string>
+    <string name="parachain_staking_alerts_bond_more_message">One of your collators is not generating rewards</string>
+
+    <string name="staking_parachain_rebond_hint">Returned tokens will be counted from the next round</string>
+
+    <string name="staking_parachain_no_unbond_collators_title">No collators available for unstake</string>
+    <string name="staking_parachain_no_unbond_collators_message">You have pending unstake requests for all of your collators.</string>
+
+    <string name="staking_unstake_all_question">Unstake all?</string>
+    <string name="parachain_staking_unstake_all">Remaining staking balance will drop under minimum network value (%s) and will also be added to the unstaking amount</string>
+    <string name="parachain_staking_unbond_no_rewards">Your stake will be less than the minimum stake (%s) for this collator.</string>
+
+    <string name="staking_parachain_unbond_already_exists_message">You are already unstaking tokens from this collator. You can only have one pending unstake per collator</string>
+    <string name="staking_parachain_unbond_already_exists_title">You cannot unstake from this collator</string>
+    <string name="staking_parachain_stake_more_hint">You will get increased rewards starting from the next round</string>
+    <string name="staking_parachain_max_delegations_title">You can\'t select a new collator</string>
+    <string name="staking_parachain_max_delegations_message">You have reached the maximum number of delegations of %d collators</string>
+
+    <string name="staking_parachain_new_collator">New collator</string>
+    <string name="staking_parachain_collator_details_oversubscribed">Collator\'s minimum stake is higher than your delegation. You will not receive rewards from the collator.</string>
+
+    <string name="staking_parachain_your_collaotrs_no_rewards">Some of your collators are either not elected or have a higher minimum stake than your staked amount. You will not receive a reward in this round staking with them.</string>
+    <string name="staking_parachain_your_collators_active">Your stake is assigned to next collators</string>
+    <string name="staking_parachain_your_collators_elected">Active collators without producing rewards</string>
+    <string name="staking_parachain_your_collators_inactive">Collators without enough stake to be elected</string>
+    <string name="staking_parachain_your_collators_waiting">Collators that will enact in the next round</string>
+    <string name="staking_parachain_your_collators_waiting_title">Pending collators (%s)</string>
+
+    <string name="staking_parachain_your_collators">Your collators</string>
+
+    <string name="staking_parachain_next_round_format">waiting for the next round (%s)</string>
+    <string name="staking_parachain_status_inactive_message">You will not receive rewards for this round since none of your delegations is active.</string>
+
+    <string name="staking_parachain_collator_info">Collator info</string>
+    <string name="staking_parachain_delegators">Delegators</string>
+    <string name="staking_custom_validators_settings_sort_apr">Estimated rewards (%% APR)</string>
+
+    <string name="staking_parachain_collator_own_stake">Collator\'s own stake</string>
+    <string name="staking_parachain_collators_number_format">Collators: %s</string>
+    <string name="staking_min_stake">Min. stake</string>
+
+    <string name="staking_parachain_reward_frequency_hint">Tokens in stake produce rewards each round (%s)</string>
+    <string name="staking_setup_amount_too_low_strict">Minimum stake should be greater than %s</string>
+
+    <string name="common_missing_account_title">%s account is missing</string>
+
+    <string name="common_enter_amount">Enter amount…</string>
+    <string name="staking_parachain_select_collator_hint">Select collator…</string>
+    <string name="staking_parachain_wont_receive_rewards_title">You will not receive rewards</string>
+    <string name="staking_parachain_wont_receive_rewards_message">Your stake must be greater than the minimum stake (%s) for this collator.</string>
+    <string name="common_per_year_format">%s / year</string>
+
+    <string name="staking_parachain_collator">Collator</string>
+    <string name="staking_parachain_select_collator">Select collator</string>
+
+    <string name="common_average">Average</string>
+    <string name="common_maximum">Maximum</string>
+
+    <string name="staking_reward_info_title_restake">Earnings with restake</string>
+    <string name="staking_reward_info_title_transferrable">Earnings without restake</string>
+
+
+    <string name="staking_active_delegators">Active delegators</string>
+    <string name="staking_parachain_delegator_status_active_message">One or more of your collators have been elected by the network.</string>
+
+    <string name="dapp_list_placeholder">List of DApps will appear here</string>
+
+    <string name="dapp_authorized_remove_title">Remove from Authorized?</string>
+    <string name="dapp_authorized_remove_description">“%s” DApp will be removed from Authorized</string>
+
+    <string name="dapp_catalog">Catalog</string>
+
+    <string name="dapp_authorized_title">Authorized DApps</string>
+    <string name="dapp_authorized_description">DApps to which you allowed access to see your address when you use them</string>
+
+    <string name="common_title">Title</string>
+
+    <string name="common_save">Save</string>
+    <string name="dapp_favourites_add">Add to favorites</string>
+
+    <string name="dapp_favourites_remove_title">Remove from Favorites?</string>
+    <string name="dapp_favourites_remove_description">“%s” DApp will be removed from Favorites</string>
+
+    <string name="common_remove">Remove</string>
+    <string name="dapp_favourites">Favorites</string>
+
+    <string name="common_zero_amount_error">Amount must be positive</string>
+
+    <string name="dapp_phishing_title">Phishing detected</string>
+    <string name="dapp_phishing_subtitle">Pezkuwi Wallet believes that this website could compromise the security of your accounts and your tokens</string>
+    <string name="dapp_phishing_go_back">Okay, take me back</string>
+
+    <string name="staking_start_change_validators_recommended_subtitle">Pezkuwi Wallet will select the top validators based on security and profitability criteria</string>
+
+    <string name="staking_nominations_rewarded_format" formatted="false">%s rewarded</string>
+
+    <string name="common_status">Status</string>
+
+    <string name="staking_nominated">Nominated:</string>
+
+    <string name="staking_change_controller">Change controller</string>
+    <string name="staking_controller">Controller</string>
+    <string name="staking_stash">Stash</string>
+
+    <string name="common_find_out_more">Find out more</string>
+    <string name="staking_set_controller_title">Improve staking security</string>
+    <string name="staking_set_controller_subtitle">Select another account as a controller to delegate staking management operations to it</string>
+
+    <string name="staking_pending_rewards_title">Rewards are paid every 2–3 days by validators</string>
+
+    <string name="common_how_it_works">How it works</string>
+    <string name="staking_payout">Payout</string>
+    <string name="staking_reward_destination_payout">Transferable rewards</string>
+
+    <string name="staking_unbond_too_big">Amount you want to unstake is greater than staked balance</string>
+    <string name="staking_rebond_counted_next_era_hint">Returned tokens will be counted from the next era</string>
+    <string name="staking_change_validators">Change validators</string>
+    <string name="staking_set_validators">Set validators</string>
+    <string name="staking_recommended_filter_identity_subtitle">with at least one identity contact</string>
+    <string name="staking_rebond_custom">Custom amount</string>
+    <string name="staking_rebond_all">All unstaking</string>
+    <string name="staking_rebond_last">Latest unstake</string>
+    <string name="staking_select_payout_account">Select payout account</string>
+
+    <string name="staking_rewards_about">About rewards</string>
+    <string name="staking_reward_destination">Reward destination</string>
+    <string name="staking_stake_format">Stake %s</string>
+
+    <string name="common_cannot_open_link">Cannot open this link</string>
+
+
+    <string name="common_validation_invalid_address_title">Invalid recipient</string>
+    <string name="common_validation_invalid_address_message">Recipient should be a valid %s address</string>
+
+    <string name="common_paste">Paste</string>
+
+    <string name="wallet_sender">Sender</string>
+    <string name="wallet_recipient">Recipient</string>
+    <string name="wallet_transfer_details_send_back">Send to this contact</string>
+
+    <string name="common_transaction_id">Transaction ID</string>
+    <string name="common_type">Type</string>
+
+    <string name="nft_price_not_listed">Not listed</string>
+    <string name="common_price">Price</string>
+
+    <string name="nft_collection">Collection</string>
+    <string name="nft_owned_by">Owned by</string>
+    <string name="nft_created_by">Created by</string>
+
+    <string name="nft_issuance_unlimited">Unlimited series</string>
+    <string name="nft_issuance_limited_format">#%s Edition of %s</string>
+    <string name="nft_your_nfts">Your NFTs</string>
+
+    <string name="wallet_assets_empty">Your assets will appear here.\nMake sure the "Hide zero balances" filter is turned off</string>
+    <string name="wallet_filter_hide_zero_balance">Hide assets with zero balances</string>
+
+    <string name="wallet_send_existential_warnining_transfer_dust">Your account will be removed from blockchain after transfer cause it makes total balance lower than minimal. Remaining balance will be transferred to recipient as well.</string>
+    <string name="wallet_send_dead_recipient_commission_asset_title">Recipient is not able to accept transfer</string>
+    <string name="wallet_send_dead_recipient_commission_asset_message">Your transfer will fail since the destination account does not have enough %s to accept other token transfers</string>
+
+    <string name="common_close">Close</string>
+
+    <string name="dapp_search_hint">Search by name or enter URL</string>
+    <string name="common_all">All</string>
+    <string name="dapp_sign_extrinsic_details_subtitle">Make sure the operation is correct</string>
+    <string name="dapp_sign_extrinsic_failed">Failed to sign requested operation</string>
+    <string name="common_network">Network</string>
+    <string name="common_account_address">Account address</string>
+    <string name="dapp_confirm_authorize_title_format">Allow “%s” to access your account addresses?</string>
+    <string name="dapp_dapp">DApp</string>
+    <string name="dapp_confirm_authorize_subtitle">Approve this request if you trust the application</string>
+    <string name="dapp_confirm_sign_extrinsic_subtitle">Approve this request if you trust the application.\nCheck the transaction details.</string>
+    <string name="common_reject">Reject</string>
+    <string name="common_allow">Allow</string>
+
+    <string name="about_contact_us">Contact Us</string>
+    <string name="about_github_v2_2_0">Github</string>
+    <string name="about_privacy">Privacy policy</string>
+    <string name="about_rate_app">Rate us</string>
+    <string name="about_telegram_v2_2_0">Telegram</string>
+    <string name="about_terms">Terms and conditions</string>
+    <string name="about_terms_v2_2_0">Terms &amp; Conditions</string>
+    <string name="about_title">About</string>
+    <string name="about_version">App version</string>
+    <string name="about_version_template" translatable="false">Pezkuwi Wallet v%s</string>
+    <string name="about_website_v2_2_0">Website</string>
+    <string name="account_add_already_exists_message">Account already exists. Please, try another one.</string>
+    <string name="account_backup_secret_caption">Please make sure to write down your phrase correctly and legibly.</string>
+    <string name="account_confirm_mnemonic">Confirm mnemonic</string>
+    <string name="account_confirm_mnemonic_title">Let’s double check it</string>
+    <string name="account_confirmation_details">Choose words in the right order</string>
+    <string name="account_create_account">Create a new account</string>
+    <string name="account_create_details_v2_2_0">Do not use clipboard or screenshots on your mobile device, try to find secure methods for backup (e.g. paper)</string>
+    <string name="account_create_name_subtitle_v2_2_0">Name will be used only locally in this application. You can edit it later</string>
+    <string name="account_create_name_title_v2_2_0">Create wallet name</string>
+    <string name="account_create_title">Backup mnemonic</string>
+    <string name="account_creation_info">Mnemonic is used to recover access to account. Write it down, we will not be able to recover your account without it!</string>
+    <string name="account_custom_secret">Accounts with a changed secret</string>
+    <string name="account_delete_confirm">Forget</string>
+    <string name="account_derivation_path_ethereum_invalid_title">Invalid Ethereum derivation path</string>
+    <string name="account_derivation_path_substrate_invalid_title">Invalid Substrate derivation path</string>
+    <string name="account_error_try_another_one">Please, try another one.</string>
+    <string name="account_ethereum_crypto_type">Ethereum keypair crypto type</string>
+    <string name="account_ethereum_derivation_path">Ethereum secret derivation path</string>
+    <string name="account_export">Export account</string>
+    <string name="account_export_action">Export</string>
+    <string name="account_export_json_password_title">Set a password for your JSON file</string>
+    <string name="account_export_json_title">Save your secret and store it in a safe place</string>
+    <string name="account_export_seed_title">Write down your secret and store it in a safe place</string>
+    <string name="account_import_invalid_keystore">Invalid restore json. Please, make sure that input contains valid json.</string>
+    <string name="account_import_invalid_seed">Seed is invalid. Please, make sure that your input contains 64 hex symbols.</string>
+    <string name="account_import_json_no_network">JSON contains no network information. Please specify it below.</string>
+    <string name="account_import_json_title">Provide your Restore JSON</string>
+    <string name="account_import_mnemonic_hint">Typically 12-word phrase (but may be 15, 18, 21 or 24)</string>
+    <string name="account_import_mnemonic_subtitle">Write words separately with one space, no commas or other signs</string>
+    <string name="account_import_mnemonic_title">Enter the words in the right order</string>
+    <string name="account_import_password_placeholder">Password</string>
+    <string name="account_import_seed_hint">0xAB</string>
+    <string name="account_import_seed_title">Enter your raw seed</string>
+    <string name="account_info_title">Account</string>
+    <string name="account_invalid_derivation_path_message_v2_2_0">Your derivation path contains unsupported symbols or has incorrect structure</string>
+    <string name="account_invalid_derivation_path_title">Invalid derivation path</string>
+    <string name="account_json_file">JSON file</string>
+    <string name="account_mnmonic_length_variants">12, 15, 18, 21 or 24-word phrase</string>
+    <string name="account_needed_message">You don’t have account for this network, you can create or import account.</string>
+    <string name="account_needed_title">Account needed</string>
+    <string name="account_no_chain_projection">No account found</string>
+    <string name="account_private_key">Private key</string>
+    <string name="account_restore_account">Already have an account</string>
+    <string name="account_seed_hex_symbols">64 hex symbols</string>
+    <string name="account_select_secret_source">Select your secret type</string>
+    <string name="account_shared_secret">Accounts with a shared secret</string>
+    <string name="account_substrate_crypto_type">Substrate keypair crypto type</string>
+    <string name="account_substrate_derivation_path">Substrate secret derivation path</string>
+    <string name="account_wallet_nickname">Wallet nickname</string>
+    <string name="accounts_add_chain_account">Add %s account</string>
+    <string name="accounts_add_wallet">Add wallet</string>
+    <string name="accounts_change_chain_account">Change %s account</string>
+    <string name="accounts_change_chain_secrets">Change account</string>
+    <string name="buy_completed">Purchase initiated! Please wait up to 60 minutes. You can track status on the email.</string>
+    <string name="choose_amount_asset">Asset</string>
+    <string name="choose_amount_available_balance">Available balance</string>
+    <string name="choose_amount_error_balance">Sorry, balance checking request failed. Please, try again later.</string>
+    <string name="choose_amount_error_fee">Sorry, we couldn\'t contact transfer provider. Please, try again later.</string>
+    <string name="choose_amount_fee">Transfer fee</string>
+    <string name="choose_amount_initial" translatable="false">0</string>
+    <string name="choose_amount_network_error">Network not responding</string>
+    <string name="choose_amount_to">To</string>
+    <string name="common_account">Account</string>
+    <string name="common_add">Add</string>
+    <string name="common_address">Address</string>
+    <string name="common_advanced">Advanced</string>
+    <string name="common_amount">Amount</string>
+    <string name="common_amount_low">Amount is too low</string>
+    <string name="common_applied">Applied</string>
+    <string name="common_apply">Apply</string>
+    <string name="common_attention">Attention!</string>
+    <string name="common_available_format">Available: %s</string>
+    <string name="common_balance">Balance</string>
+    <string name="common_bonus">Bonus</string>
+    <string name="common_call">Call</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_chain">Chain</string>
+    <string name="common_change">Change</string>
+    <string name="common_choose_network">Choose network</string>
+    <string name="common_completed_with_count">Completed (%s)</string>
+    <string name="common_confirm">Confirm</string>
+    <string name="common_confirm_title">Confirmation</string>
+    <string name="common_confirmation_title">Are you sure?</string>
+    <string name="common_confirmed">Confirmed</string>
+    <string name="common_continue">Continue</string>
+    <string name="common_copied">Copied to clipboard</string>
+    <string name="common_copy_address">Copy address</string>
+    <string name="common_copy_id">Copy id</string>
+    <string name="common_crypto_type">Keypair crypto type</string>
+    <string name="common_date">Date</string>
+    <string name="common_details">Details</string>
+    <string name="common_done">Done</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_email_chooser_title">Select email app</string>
+    <string name="common_error_general_title">Error</string>
+    <string name="common_event">Event</string>
+    <string name="common_existential_warning_message_v2_2_0">Your account will be removed from blockchain after this operation cause it makes total balance lower than minimal</string>
+    <string name="common_existential_warning_title">Operation will remove account</string>
+    <string name="common_explore">Explore</string>
+    <string name="common_filter_sort_header">Sort by:</string>
+    <plurals name="common_hours_format">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <string name="common_i_understand">I understand</string>
+    <string name="common_info">Info</string>
+    <string name="common_learn_more">Learn more</string>
+    <string name="common_learn_more_v2_2_0">Find out more about</string>
+    <string name="common_left">%s left</string>
+    <string name="common_module">Module</string>
+    <string name="common_next">Next</string>
+    <string name="common_not_enough_funds_message">Sorry, you don\'t have enough funds to pay the network fee.</string>
+    <string name="common_not_enough_funds_title">Insufficient balance</string>
+    <string name="common_ok">OK</string>
+    <string name="common_options_title">Select an option</string>
+    <string name="common_proceed">Proceed</string>
+    <string name="common_reset">Reset</string>
+    <string name="common_retry">Retry</string>
+    <string name="common_search">Search</string>
+    <string name="common_search_results_number">Search results: %d</string>
+    <string name="common_secret_derivation_path">Secret derivation path</string>
+    <string name="common_share">Share</string>
+    <string name="common_skip">Skip</string>
+    <string name="common_skip_process">Skip process</string>
+    <string name="common_time_left">Time left</string>
+    <string name="common_transaction_submitted">Transaction submitted</string>
+    <string name="common_undefined_error_message">Please, try again with another input. If the error appears again, please, contact support.</string>
+    <string name="common_unknown">Unknown</string>
+    <string name="common_unlimited">Unlimited</string>
+    <string name="common_update">Update</string>
+    <string name="common_use">Use</string>
+    <string name="common_warning">Warning</string>
+    <string name="connection_add_already_exists_error">The node has already been added previously. Please, try another node.</string>
+    <string name="connection_add_invalid_error">Can\'t establish connection with node. Please, try another one.</string>
+    <string name="connection_add_unsupported_error">Unfortunately, the network is unsupported. Please, try one of the following: %s.</string>
+    <string name="connection_delete_description">Confirm %s deletion.</string>
+    <string name="connection_delete_title">Delete network?</string>
+    <string name="connection_error_message_v2_2_0">Please, check your connection or try again later</string>
+    <string name="connection_management_custom_title">Custom</string>
+    <string name="connection_management_default_title">Default</string>
+    <string name="connection_management_title">Networks</string>
+    <string name="connections_add_connection">Add connection</string>
+    <string name="contacts_scan">Scan QR code</string>
+    <string name="crodloan_private_crowdloan_message">Private crowdloans are not yet supported.</string>
+    <string name="crodloan_private_crowdloan_title">Private crowdloan</string>
+    <string name="crowdloan_about">About crowdloans</string>
+    <string name="crowdloan_acala_direct">Direct</string>
+    <string name="crowdloan_acala_learn_types">Learn more about different contributions to Acala</string>
+    <string name="crowdloan_acala_liquid">Liquid</string>
+    <string name="crowdloan_active_section_format">Active (%s)</string>
+    <string name="crowdloan_agree_with_policy">Agree to Terms and Conditions</string>
+    <string name="crowdloan_app_bonus_format">Pezkuwi Wallet bonus (%s)</string>
+    <string name="crowdloan_astar_wrong_referral">Astar referral code should be a valid Polkadot address</string>
+    <string name="crowdloan_cap_reached_amount_message">Cannot contribute chosen amount since resulting raised amount will exceed crowdloan cap. Maximum allowed contribution is %s.</string>
+    <string name="crowdloan_cap_reached_raised_message">Cannot contribute to selected crowdloan  since its cap is already reached.</string>
+    <string name="crowdloan_cap_reached_title">Crowdloan cap exceeded</string>
+    <string name="crowdloan_contribute_title">Contribute to crowdloan</string>
+    <string name="crowdloan_contribution">Contribution</string>
+    <string name="crowdloan_contribution_format">You contributed: %s</string>
+    <string name="crowdloan_contributions_placeholder">Your contributions\n will appear here</string>
+    <string name="crowdloan_contributions_with_source" formatted="false">%s (via %s)</string>
+    <string name="crowdloan_crowdloan">Crowdloans</string>
+    <string name="crowdloan_empty_bonus_title">Get a special bonus</string>
+    <string name="crowdloan_empty_message_v2_2_0">Crowdloans will be displayed here</string>
+    <string name="crowdloan_ended_message">Cannot contribute to selected crowdloan since it is already ended.</string>
+    <string name="crowdloan_ended_title">Crowdloan is ended</string>
+    <string name="crowdloan_enter_referral">Enter your referral code</string>
+    <string name="crowdloan_info">Crowdloan info</string>
+    <string name="crowdloan_learn">Learn %s\'s crowdloan</string>
+    <string name="crowdloan_learn_v2_2_0">%s\'s crowdloan website</string>
+    <string name="crowdloan_leasing_period">Leasing period</string>
+    <string name="crowdloan_main_description_v2_2_0">Choose parachains to contribute your %s. You\'ll get back your contributed tokens, and if parachain wins a slot, you\'ll receive rewards after the end of the auction</string>
+    <string name="crowdloan_missing_bonus_action">Apply bonus</string>
+    <string name="crowdloan_missing_bonus_message">If you don\'t have referral code, you can apply Pezkuwi referral code to receive bonus for your contribution</string>
+    <string name="crowdloan_missing_bonus_title">You have not applied bonus</string>
+    <string name="crowdloan_moonbeam_encryption_not_supported_message">Moonbeam crowdloan supports only SR25519 or ED25519 crypto type accounts. Please consider using another account for contribution</string>
+    <string name="crowdloan_moonbeam_encryption_not_supported_title">Cannot contribute with this account</string>
+    <string name="crowdloan_moonbeam_missing_account_message">You should add Moonbeam account to the wallet in order to participate in Moonbeam crowdloan</string>
+    <string name="crowdloan_moonbeam_missing_account_title">Moonbeam account is missing</string>
+    <string name="crowdloan_moonbeam_region_restriction_message">This crowdloan isn\'t available in your location.</string>
+    <string name="crowdloan_moonbeam_region_restriction_title">Your region is not supported</string>
+    <string name="crowdloan_moonbeam_reward_destination">%s reward destination</string>
+    <string name="crowdloan_moonbeam_terms_submit">Submit agreement</string>
+    <string name="crowdloan_moonbeam_terms_subtitle">You need to submit agreement with Terms &amp; Conditions on the blockchain to proceed. This is required to be done only once for all following Moonbeam contributions</string>
+    <string name="crowdloan_privacy_policy">I have read and agree to Terms and Conditions</string>
+    <string name="crowdloan_raised">Raised</string>
+    <string name="crowdloan_referral_code">Referral code</string>
+    <string name="crowdloan_referral_code_invalid">Referral code is invalid. Please, try another one</string>
+    <string name="crowdloan_terms_conditions_named">%s\'s Terms and Conditions</string>
+    <string name="crowdloan_too_small_contribution_message">The minimum allowed amount to contribute is %s.</string>
+    <string name="crowdloan_too_small_contribution_title">Contribution amount is too small</string>
+    <string name="crowdloan_unlock_hint">Your %s tokens will be returned after the leasing period.</string>
+    <string name="crowdloan_your_contributions">Your contributions</string>
+    <string name="crownloans_raised_format" formatted="false">Raised: %s of %s</string>
+    <string name="dapp_dapps">DApps</string>
+    <string name="ecdsa_selection_subtitle">(BTC/ETH compatible)</string>
+    <string name="ecdsa_selection_title">ECDSA</string>
+    <string name="ed25519_selection_subtitle">ed25519 (alternative)</string>
+    <string name="ed25519_selection_title">Edwards</string>
+    <string name="export_json_password_confirm">Confirm password</string>
+    <string name="export_json_password_match_error">Passwords do not match</string>
+    <string name="export_json_password_new">Set password</string>
+    <string name="export_mnemonic_with_derivation" formatted="false">Network: %s\nMnemonic: %s\nDerivation path: %s</string>
+    <string name="export_mnemonic_without_derivation" formatted="false">Network: %s\nMnemonic: %s</string>
+    <string name="fee_not_yet_loaded_message">Please wait until fee is calculated</string>
+    <string name="fee_not_yet_loaded_title">Fee calculation is in progress</string>
+    <string name="history_v1.9.0">History</string>
+    <string name="identity_email_title">Email</string>
+    <string name="identity_legal_name_title">Legal name</string>
+    <string name="identity_riot_name_title">Element name</string>
+    <string name="identity_title">Identity</string>
+    <string name="identity_web_title">Web</string>
+    <string name="import_json_chains_dont_match">Supplied JSON file was created for different network.</string>
+    <string name="import_json_invalid_format_message">Please, make sure that your input contains valid json.</string>
+    <string name="import_json_invalid_format_title">Restore JSON is invalid</string>
+    <string name="import_json_invalid_password">Please, check password correctness and try again.</string>
+    <string name="import_json_invalid_password_title">Keystore decryption failed</string>
+    <string name="import_json_paste">Paste json</string>
+    <string name="import_json_unsupported_crypto_title">Unsupported encryption type</string>
+    <string name="import_json_unsupported_ethereum_crypto_message">Cannot import account with Substrate secret into the network with Ethereum encryption</string>
+    <string name="import_json_unsupported_substrate_crypto_message">Cannot import account with Ethereum secret into the network with Substrate encryption</string>
+    <string name="import_mnemonic_invalid_title">Your mnemonic is invalid</string>
+    <string name="import_seed_invalid_message">Please, make sure that your input contains 64 hex symbols.</string>
+    <string name="import_seed_invalid_title">Seed is invalid</string>
+    <string name="invoice_scan_error_no_info">QR can\'t be decoded</string>
+    <string name="invoice_scan_qr_code_title">QR code</string>
+    <string name="invoice_scan_upload">Upload from gallery</string>
+    <string name="language_title">Language</string>
+    <string name="make_payout_transaction_sent">Payout transaction sent</string>
+    <string name="mnemonic_error_try_another_one">Please, try another one.</string>
+    <string name="mnemonic_error_try_another_one_v2_2_0">Invalid mnemonic passphrase, please check one more time the words order</string>
+    <string name="network_fee">Network fee</string>
+    <string name="network_info_address">Node address</string>
+    <string name="network_info_title">Node Info</string>
+    <string name="network_status_connecting">Connecting…</string>
+    <string name="onboarding_create_account">Create account</string>
+    <string name="onboarding_create_wallet">Create a new wallet</string>
+    <string name="onboarding_privacy_policy">Privacy Policy</string>
+    <string name="onboarding_restore_account">Import account</string>
+    <string name="onboarding_restore_wallet">Already have a wallet</string>
+    <string name="onboarding_terms_and_conditions_2">Terms and Conditions</string>
+    <string name="pincode_biometry_dialog_title">Biometry</string>
+    <string name="pincode_changed_message">Pin code has been successfully changed</string>
+    <string name="pincode_confirm_your_pin_code">Confirm your pin code</string>
+    <string name="pincode_create_top_title">Create pin code</string>
+    <string name="pincode_enter_pin_code_v2_2_0">Enter PIN code</string>
+    <string name="pincode_title_create">Set your pin code</string>
+    <string name="profile_accounts_title">Accounts</string>
+    <string name="profile_accounts_title_2_0">Wallets</string>
+    <string name="profile_language_title">Language</string>
+    <string name="profile_pincode_change_title">Change pin code</string>
+    <string name="profile_settings_title">Settings</string>
+    <string name="recover_json_hint">Paste json or upload file…</string>
+    <string name="recover_json_upload">Upload file</string>
+    <string name="recovery_json">Restore JSON</string>
+    <string name="recovery_passphrase">Mnemonic passphrase</string>
+    <string name="recovery_raw_seed">Raw seed</string>
+    <string name="recovery_source_type">Source type</string>
+    <string name="runtime_update_failure_description">Failed to update information about blockchain runtime. Some functionality may not work.</string>
+    <string name="runtime_update_failure_title">Runtime update failure</string>
+    <string name="search_contacts">Contacts</string>
+    <string name="search_header_my_accounts">my accounts</string>
+    <string name="search_recipient_hint">Account address or account name</string>
+    <string name="search_recipient_welcome_v2_2_0">Search results will be displayed here</string>
+    <string name="search_result_header">Search results</string>
+    <string name="settings_community">Community</string>
+    <string name="settings_general">General</string>
+    <string name="settings_preferences">Preferences</string>
+    <string name="settings_security">Security</string>
+    <string name="settings_support">Support &amp; Feedback</string>
+    <string name="settings_twitter">Twitter</string>
+    <string name="settings_youtube">Youtube</string>
+    <string name="sr25519_selection_subtitle">sr25519 (recommended)</string>
+    <string name="sr25519_selection_title">Schnorrkel</string>
+    <string name="staking_account_is_used_as_controller">Selected account is already in use as controller</string>
+    <string name="staking_add_controller">Add controller account %s to the application to perform this action.</string>
+    <string name="staking_alert_change_validators">Change your validators.</string>
+    <string name="staking_alert_no_alerts_now">Everything is fine now. Alerts will appear here.</string>
+    <string name="staking_alert_redeem_title">Redeem unstaked tokens</string>
+    <string name="staking_alert_start_next_era_message">Please wait for the next era to start.</string>
+    <string name="staking_alert_title">Alerts</string>
+    <string name="staking_already_controller_title">Already controller</string>
+    <string name="staking_apr" translatable="false">%s APR</string>
+    <string name="staking_apy" translatable="false">%s APY</string>
+    <string name="staking_balance_title">Staking balance</string>
+    <string name="staking_balance_title_v2_2_0">Balance</string>
+    <string name="staking_bond_more_v1_9_0">Stake more</string>
+    <string name="staking_bonded_inactive">You are neither nominating nor validating</string>
+    <string name="staking_confirm_nominations" formatted="false">%s of %s</string>
+    <string name="staking_confirm_selected_validators">Selected validators</string>
+    <string name="staking_controller_account">Controller account</string>
+    <string name="staking_controller_account_zero_balance">We found that this account has no free tokens, are you sure that you want to change the controller?</string>
+    <string name="staking_controller_can_hint">Controller can unstake, redeem, return to stake, change rewards destination and validators.</string>
+    <string name="staking_controller_can_hint_v2_2_0">Controller is used to: unstake, redeem, return to stake, change validators and set rewards destination</string>
+    <string name="staking_controller_change_success">Controller is changed</string>
+    <string name="staking_custom_blocked_warning">This validator is blocked and cannot be selected at the moment. Please, try again in the next era.</string>
+    <string name="staking_custom_clear_button_title">Clear filters</string>
+    <string name="staking_custom_deselect_button_title">Deselect all</string>
+    <string name="staking_custom_fill_button_title">Fill rest with recommended</string>
+    <string name="staking_custom_header_validators_title" formatted="false">Validators: %d of %d</string>
+    <string name="staking_custom_proceed_button_disabled_title">Select validators (max %d)</string>
+    <string name="staking_custom_proceed_button_enabled_title" formatted="false">Show selected: %d (max %d)</string>
+    <string name="staking_custom_validators_list_title">Select validators</string>
+    <string name="staking_custom_validators_settings_sort_apy">Estimated rewards (%% APY)</string>
+    <string name="staking_custom_validators_update_list">Update your list</string>
+    <string name="staking_era_index_no_prefix" translatable="false">#%d</string>
+    <string name="staking_era_title">era #%s</string>
+    <string name="staking_estimate_earning_title_v1.9.0">Estimated earnings</string>
+    <string name="staking_estimate_earning_title_v2_2_0">Estimated %s earnings</string>
+    <string name="staking_filter_title_own_stake">Validator\'s own stake</string>
+    <string name="staking_filter_title_own_stake_token">Validator\'s own stake (%s)</string>
+    <string name="staking_hint_no_rewards">Tokens in unstaking period generate no rewards.</string>
+    <string name="staking_hint_no_rewards_v2_2_0">During unstaking period tokens produce no rewards</string>
+    <string name="staking_hint_redeem">After unstaking period you will need to redeem your tokens.</string>
+    <string name="staking_hint_redeem_v2_2_0">After unstaking period don\'t forget to redeem your tokens</string>
+    <string name="staking_hint_reward_bond_more">Your rewards will be increased starting from the next era.</string>
+    <string name="staking_hint_reward_bond_more_v2_2_0">You will get increased rewards starting from next era</string>
+    <string name="staking_hint_rewards_format">Staked tokens generate rewards each era (%s).</string>
+    <string name="staking_hint_rewards_format_v2_2_0">Tokens in stake produce rewards each era (%s)</string>
+    <string name="staking_hint_unbond_kills_stash">Pezkuwi Wallet will change rewards destination\nto your account to avoid remaining stake.</string>
+    <string name="staking_hint_unstake_format">If you want to unstake tokens, you will have to wait for the unstaking period (%s).</string>
+    <string name="staking_hint_unstake_format_v2_2_0">To unstake tokens you will have to wait for the unstaking period (%s)</string>
+    <string name="staking_main_active_nominators_title">Active nominators</string>
+    <plurals name="staking_main_lockup_period_value">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <string name="staking_main_minimum_stake_title">Minimum stake</string>
+    <string name="staking_main_network_title">%s network</string>
+    <string name="staking_main_stake_balance_staked">Staked</string>
+    <string name="staking_manage_title">Manage</string>
+    <string name="staking_max_format" formatted="false">%s (max %s)</string>
+    <string name="staking_max_nominators_reached_message">Maximum number of nominators has been reached</string>
+    <string name="staking_max_nominators_reached_title">Cannot start staking</string>
+    <string name="staking_month_period_title">Monthly</string>
+    <string name="staking_nominator_status_alert_active_message">One of your validators have been elected by network.</string>
+    <string name="staking_nominator_status_alert_active_title">Active status</string>
+    <string name="staking_nominator_status_alert_inactive_title">Inactive status</string>
+    <string name="staking_nominator_status_alert_low_stake">Your staked amount is less than the minimum stake to get a reward.</string>
+    <string name="staking_nominator_status_alert_no_validators">None of your validators have been elected by network.</string>
+    <string name="staking_nominator_status_alert_waiting_message">Your staking will start in the next era.</string>
+    <string name="staking_nominator_status_inactive">Inactive</string>
+    <string name="staking_nominator_status_waiting">Waiting for the next Era</string>
+    <string name="staking_nominator_status_waiting_format">waiting for the next era (%s)</string>
+    <string name="staking_payout_expired">Payout expired</string>
+    <plurals name="staking_payouts_days_left">
+        <item quantity="one">%d day left</item>
+        <item quantity="other">%d days left</item>
+    </plurals>
+    <string name="staking_rebond">Return to stake</string>
+    <string name="staking_rebond_insufficient_bondings">Amount you want to return to stake is greater than unstaking balance</string>
+    <string name="staking_recommended_feature_1">Most profitable</string>
+    <string name="staking_recommended_feature_2">Not oversubscribed</string>
+    <string name="staking_recommended_feature_3">Having onchain identity</string>
+    <string name="staking_recommended_feature_4">Not slashed</string>
+    <string name="staking_recommended_feature_5">Limit of 2 validators per identity</string>
+    <string name="staking_recommended_section_title">Recommended validators</string>
+    <string name="staking_recommended_title">Validators</string>
+    <string name="staking_recommended_validators_apy">Estimated reward (APY)</string>
+    <string name="staking_redeem">Redeem</string>
+    <string name="staking_redeemable_format">Redeemable: %s</string>
+    <string name="staking_reward">Reward</string>
+    <string name="staking_reward_details_era">Era</string>
+    <string name="staking_reward_details_title">Reward details</string>
+    <string name="staking_reward_details_validator">Validator</string>
+
+    <string name="staking_reward_payouts_empty_rewards">Perfect! All rewards are paid.</string>
+    <string name="staking_reward_payouts_empty_rewards_v2_2_0">Awesome! You have no unpaid rewards</string>
+    <string name="staking_reward_payouts_title">Pending rewards</string>
+    <string name="staking_reward_payouts_title_v2_2_0">Unpaid rewards</string>
+    <string name="staking_rewards_apy">Rewards (APY)</string>
+    <string name="staking_rewards_destination_title_v2_0_0">Rewards destination</string>
+    <string name="staking_select_custom">Select by yourself</string>
+    <string name="staking_select_recommended">Select recommended</string>
+    <string name="staking_selected_validators_count_v1.9.1" formatted="false">selected %d (max %d)</string>
+    <string name="staking_selected_validators_mask">Validators (%d)</string>
+    <string name="staking_set_validators_message">Validators are not selected</string>
+    <string name="staking_set_validators_title">Select validators to start staking</string>
+    <string name="staking_setup_restake">Restake</string>
+    <string name="staking_setup_restake_v2_2_0">Restake rewards</string>
+    <string name="staking_setup_reward_destination_section_title">How to use your rewards?</string>
+    <string name="staking_setup_reward_destination_section_title_v2_2_0">Select your rewards type</string>
+    <string name="staking_setup_reward_payout_account">Payout account</string>
+    <string name="staking_slash">Slash</string>
+
+    <string name="staking_staking_period">Staking period</string>
+    <string name="staking_start_change_validators_custom_subtitle">You should trust your nominations to act competently and honest, basing your decision purely on their current profitability could lead to reduced profits or even loss of funds.</string>
+    <string name="staking_start_change_validators_custom_subtitle_v2_2_0">Choose your validators carefully, as they should act proficiently and honest. Basing your decision purely on the profitability could lead to reduced rewards or even loss of stake</string>
+    <string name="staking_start_change_validators_custom_title">Stake with your validators</string>
+
+    <string name="staking_start_change_validators_recommended_title">Stake with recommended validators</string>
+    <string name="staking_start_title">Start staking</string>
+    <string name="staking_stash_can_hint">Stash can bond more and set the controller.</string>
+    <string name="staking_stash_can_hint_v2_2_0">Stash is used to: stake more and set the controller</string>
+    <string name="staking_stash_missing_message">Stash account %s is unavailable to update staking setup.</string>
+    <string name="staking_story_nominator_page_1">Nominator earns passive income by locking his tokens for securing the network. To achieve that, the nominator should select a number of validators to support. The nominator should be careful when selecting validators. If selected validator won’t behave properly, slashing penalties would be applied to both of them, based on the severity of the incident.</string>
+    <string name="staking_story_nominator_page_2">Pezkuwi Wallet provides a support for nominators by helping them to select validators. The mobile app fetches data from the blockchain and composes a list of validators, which have: most profits, identity with contact info, not slashed and available to receive nominations. Pezkuwi Wallet also cares about decentralization, so if one person or a company runs several validator nodes, only up to 2 nodes from them will be shown in the recommended list.</string>
+    <string name="staking_story_nominator_title">Who is a nominator?</string>
+    <string name="staking_story_reward_page_1">Rewards for staking are available to payout at the end of each era (6 hours in Kusama and 24 hours in Polkadot). Network stores pending rewards during 84 eras and in most cases validators are paying out the rewards for everyone. However, validators might forget or something might happen with them, so nominators can payout their rewards by themselves.</string>
+    <string name="staking_story_reward_page_2">Although rewards are usually distributed by validators, Pezkuwi Wallet helps by alerting if there are any unpaid rewards that are close to expiring. You will receive alerts about this and other activities on the staking screen.</string>
+    <string name="staking_story_reward_title">Receiving rewards</string>
+    <string name="staking_story_staking_page_2">Staking is an important part of network security and reliability. Anyone can run validator nodes, but only those who have enough tokens staked will be elected by the network to participate in composing new blocks and receive the rewards. Validators often do not have enough tokens by themselves, so nominators are helping them by locking their tokens for them to achieve the required amount of stake.</string>
+    <string name="staking_story_staking_title">What is staking?</string>
+    <string name="staking_story_validator_page_1">The validator runs a blockchain node 24/7 and is required to have enough stake locked (both owned and provided by nominators) to be elected by the network. Validators should maintain their nodes\' performance and reliability to be rewarded. Being a validator is almost a full-time job, there are companies that are focused to be validators on the blockchain networks.</string>
+    <string name="staking_story_validator_page_2">Everyone can be a validator and run a blockchain node, but that requires a certain level of technical skills and responsibility. Polkadot and Kusama networks have a program, named Thousand Validators Programme, to provide support for beginners. Moreover, the network itself will always reward more validators, who have less stake (but enough to be elected) to improve decentralization.</string>
+    <string name="staking_story_validator_title">Who is a validator?</string>
+    <string name="staking_switch_account_to_stash">Switch your account to stash to set the controller.</string>
+    <string name="staking_title">Staking</string>
+    <string name="staking_total_rewards_v1.9.0">Rewarded</string>
+    <string name="staking_total_staked">Total staked</string>
+    <string name="staking_unbond_v1_9_0">Unstake</string>
+    <string name="staking_unbonding_empty_list_v1_9_0">Unstaking transactions will appear here</string>
+    <string name="staking_unbonding_empty_list_v2_2_0">Unstaking transactions will be displayed here</string>
+    <string name="staking_unbonding_format">Unstaking: %s</string>
+    <string name="staking_unbonding_hint">Your tokens will be available to redeem after the unstaking period.</string>
+    <string name="staking_unbonding_limit_reached_message">You have reached the unstaking requests limit (%d active requests).</string>
+    <string name="staking_unbonding_limit_reached_title">Unstaking requests limit reached</string>
+    <string name="staking_unbonding_period_v1_9_0">Unstaking period</string>
+    <string name="staking_validator_apy_percent">Estimated reward (%% APY)</string>
+    <string name="staking_validator_estimated_reward">Estimated reward</string>
+    <string name="staking_validator_info_title">Validator info</string>
+    <string name="staking_validator_my_oversubscribed_message">Oversubscribed. You will not receive rewards from the validator in this era.</string>
+    <string name="staking_validator_nominators">Nominators</string>
+    <string name="staking_validator_other_oversubscribed_message">Oversubscribed. Only the top staked nominators are paid rewards.</string>
+    <string name="staking_validator_own_stake">Own</string>
+    <string name="staking_validator_search_empty_title">No search results.\nBe sure you typed full account address</string>
+    <string name="staking_validator_slashed_desc">Validator is slashed for misbehaves (e.g. goes offline, attacks the network, or runs modified software) in the network.</string>
+    <string name="staking_validator_total_stake">Total stake</string>
+    <string name="staking_validator_total_stake_token">Total stake (%s)</string>
+    <string name="staking_warning_tiny_payout">The reward is less than the network fee.</string>
+    <string name="staking_year_period_title">Yearly</string>
+    <string name="staking_your_allocated_description">Your stake is allocated to the following validators.</string>
+    <string name="staking_your_allocated_description_v2_2_0">Your stake is assigned to next validators</string>
+    <string name="staking_your_elected_format">Elected (%s)</string>
+    <string name="staking_your_inactive_description">Validators who were not elected in this era.</string>
+    <string name="staking_your_inactive_description_v2_2_0">Validators without enough stake to be elected</string>
+    <string name="staking_your_not_allocated_description">Others, who are active without your stake allocation.</string>
+    <string name="staking_your_not_allocated_description_v2_2_0">Active validators without your stake assignment</string>
+    <string name="staking_your_not_elected_format">Not elected (%s)</string>
+    <string name="staking_your_oversubscribed_message">Your tokens are allocated to the oversubscribed validators. You will not receive rewards in this era.</string>
+    <string name="staking_your_stake">Your stake</string>
+    <string name="staking_your_validators">Your validators</string>
+    <string name="staking_your_validators_changing_title">Your validators will change in the next era.</string>
+    <string name="tabbar_staking_title">Staking</string>
+    <string name="tabbar_wallet_title">Wallet</string>
+    <string name="today">Today</string>
+    <string name="transaction_details_copy_hash">Copy hash</string>
+    <string name="transaction_details_extrinsic_fee">Fee</string>
+    <string name="transaction_details_from">From</string>
+    <string name="transaction_details_hash_title">Extrinsic Hash</string>
+    <string name="transaction_details_title">Transaction details</string>
+    <string name="transaction_details_view_explorer">View in %s</string>
+    <string name="transaction_details_view_polkascan">View in Polkascan</string>
+    <string name="transaction_details_view_subscan">View in Subscan</string>
+    <string name="transaction_status_completed">Completed</string>
+    <string name="transaction_status_failed">Failed</string>
+    <string name="transaction_status_pending">Pending</string>
+    <string name="transfer_title">Transfer</string>
+    <string name="transfers_empty">Incoming and outgoing\ntransfers will appear here</string>
+    <string name="transfers_empty_v2_2_0">Your operations will be displayed here</string>
+    <string name="username_setup_choose_title">Name</string>
+    <string name="username_setup_choose_title_v2_2_0">Wallet name</string>
+    <string name="username_setup_hint">This name will be displayed only for you and stored locally on your mobile device.</string>
+    <string name="validator_not_elected_description">This account is not elected by network to participate in the current era</string>
+    <string name="wallet_asset_buy">Buy</string>
+    <string name="wallet_asset_buy_with">Buy with</string>
+    <string name="wallet_asset_receive">Receive</string>
+    <string name="wallet_asset_receive_token">Receive %s</string>
+    <string name="wallet_asset_send">Send</string>
+    <string name="wallet_assets">Assets</string>
+    <string name="wallet_assets_total_title">Assets value</string>
+    <string name="wallet_balance_available">Available</string>
+    <string name="wallet_balance_bonded">Staked</string>
+    <string name="wallet_balance_details_title">Balance details</string>
+    <string name="wallet_balance_details_total">Total balance</string>
+    <string name="wallet_balance_details_total_after">Total after transfer</string>
+    <string name="wallet_balance_frozen">Frozen</string>
+    <string name="wallet_balance_locked">Locked</string>
+    <string name="wallet_balance_redeemable">Redeemable</string>
+    <string name="wallet_balance_reserved">Reserved</string>
+    <string name="wallet_balance_transferable">Transferable</string>
+    <string name="wallet_balance_unbonding_v1_9_0">Unstaking</string>
+    <string name="wallet_chain_management_title">Wallet</string>
+    <string name="wallet_extrinsic_details_title">Extrinsic details</string>
+    <string name="wallet_filters_extrinsics">Other transactions</string>
+    <string name="wallet_filters_header">Show</string>
+    <string name="wallet_filters_rewards_and_slashes">Rewards and Slashes</string>
+    <string name="wallet_filters_title">Filters</string>
+    <string name="wallet_filters_transfers">Transfers</string>
+    <string name="wallet_manage_assets_title">Manage assets</string>
+    <string name="wallet_nickname_create_caption_v2_2_0">Name examples: Main account, My validator, Dotsama crowdloans, etc.</string>
+    <string name="wallet_receive_description">Share this QR to sender</string>
+    <string name="wallet_receive_description_v2_2_0">Let sender scan this QR code</string>
+    <string name="wallet_receive_share_message" formatted="false">My %s address to receive %s:</string>
+    <string name="wallet_receive_share_qr">Share QR code</string>
+    <string name="wallet_search_empty_title">Make sure that the address is\nfrom the right network</string>
+    <string name="wallet_search_empty_title_v2_2_0">Address format is invalid.\nMake sure that address\nbelongs to the right network</string>
+    <string name="wallet_send_balance_minimal">Minimal balance</string>
+    <string name="wallet_send_confirm_transfer">Confirm transfer</string>
+    <string name="wallet_send_dead_recipient_message">Your transfer will fail since the final amount on the destination account will be less than the minimal balance. Please, try to increase the amount.</string>
+    <string name="wallet_send_existential_warning_message">Your transfer will remove account from blockstore since it will make total balance lower than minimal balance.</string>
+    <string name="wallet_send_existential_warning_message_v2_2_0">Your account will be removed from blockchain after transfer cause it makes total balance lower than minimal</string>
+    <string name="wallet_send_existential_warning_title">Transfer will remove account</string>
+    <string name="wallet_send_phishing_warning_text">Following address: %s is known to be used in phishing activities, thus we are not recommending sending tokens to that address. Would you like to proceed anyway?</string>
+    <string name="wallet_send_phishing_warning_title">Scam alert</string>
+    <string name="wallet_transfer_details_title">Transfer details</string>
+    <string name="yesterday">Yesterday</string>
+</resources>

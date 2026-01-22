@@ -1,0 +1,41 @@
+apply plugin: 'kotlin-parcelize'
+apply from: '../tests.gradle'
+apply from: '../scripts/secrets.gradle'
+
+android {
+
+    defaultConfig {
+
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    namespace 'io.novafoundation.nova.feature_versions_api'
+}
+
+dependencies {
+    implementation project(':common')
+
+    implementation kotlinDep
+
+    implementation androidDep
+    implementation materialDep
+    implementation constraintDep
+
+    implementation coroutinesDep
+    implementation coroutinesAndroidDep
+    implementation viewModelKtxDep
+    implementation liveDataKtxDep
+    implementation lifeCycleKtxDep
+
+    implementation daggerDep
+    ksp daggerCompiler
+
+    implementation lifecycleDep
+    ksp lifecycleCompiler
+}

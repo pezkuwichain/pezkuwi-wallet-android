@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="about_contact_us">Bi me re têkilî daynin</string>
+    <string name="about_github_v2_2_0">Github</string>
+    <string name="about_privacy">Polîtîkaya Nepenîtiyê</string>
+    <string name="about_rate_app">Me binirxînin</string>
+    <string name="about_telegram_v2_2_0">Telegram</string>
+    <string name="about_terms">Şert û Merc</string>
+    <string name="about_terms_v2_2_0">Şert û Merc</string>
+    <string name="about_title">Derbarê</string>
+    <string name="about_version">Guhertoya Sepanê</string>
+    <string name="about_website_v2_2_0">Malper</string>
+    <string name="accoount_enter_chain_address_format">Navnîşana %s ya derbasdar binivîse...</string>
+    <string name="accoount_enter_evm_address">Navnîşana EVM divê derbasdar be an vala be...</string>
+    <string name="accoount_enter_substrate_address">Navnîşana substrate ya derbasdar binivîse...</string>
+    <string name="account_add_account">Hesab zêde bike</string>
+    <string name="account_add_address">Navnîşan zêde bike</string>
+    <string name="account_add_already_exists_message">Hesab jixwe heye. Ji kerema xwe yekî din biceribîne.</string>
+    <string name="account_add_watch_only_description">Bi navnîşanê her cîzdanekê bişopîne</string>
+    <string name="account_add_watch_wallet">Cîzdanê tenê-temaşe zêde bike</string>
+    <string name="account_backup_mnemonic_title">Peyva xwe binivîse</string>
+    <string name="account_backup_secret_caption">Ji kerema xwe piştrast bike ku te peyva xwe rast û xwînbar nivîsandiye.</string>
+    <string name="account_chain_address_format">Navnîşana %s</string>
+    <string name="account_chain_not_found">Li ser %s hesab tune</string>
+    <string name="account_confirm_mnemonic">Mnemonîkê bipejirîne</string>
+    <string name="account_confirm_mnemonic_title">Ka em dîsa kontrol bikin</string>
+    <string name="account_confirmation_details">Peyvan bi rêza rast hilbijêre</string>
+    <string name="account_create_account">Hesabek nû ava bike</string>
+    <string name="account_create_wallet">Cîzdaneke nû ava bike</string>
+    <string name="account_delete_confirm">Ji bîr bike</string>
+    <string name="account_delete_confirmation_description">Beriya ku berdewam bikî, cîzdanê xwe derxîne.</string>
+    <string name="account_delete_confirmation_title">Cîzdanê ji bîr bike?</string>
+    <string name="account_details_watch_only_alert">Ev cîzdanê tenê-temaşekirinê ye, Pezkuwi Wallet dikare bakiyê û agahiyên din nîşanî te bide, lê tu nikarî bi vê cîzdanê danûstendinê bikî</string>
+    <string name="account_export">Hesab derxîne</string>
+    <string name="account_export_action">Derxîne</string>
+    <string name="account_import_wallet_subtitle">Pezkuwi Wallet bi hemû sepanan re hevaheng e</string>
+    <string name="account_watch_add_subtitle">Bêyî ku kilîta xwe ya taybet bixî Pezkuwi Wallet çalakiya her cîzdanekê bişopîne</string>
+
+    <string name="common_back">Paş</string>
+    <string name="common_cancel">Betal bike</string>
+    <string name="common_close">Bigire</string>
+    <string name="common_confirm">Bipejirîne</string>
+    <string name="common_continue">Berdewam bike</string>
+    <string name="common_copy">Kopî bike</string>
+    <string name="common_done">Qediya</string>
+    <string name="common_edit">Biguherîne</string>
+    <string name="common_error_general_title">Xeletî</string>
+    <string name="common_got_it">Fêm kir</string>
+    <string name="common_manage_wallets">Cîzdanan birêve bibe</string>
+    <string name="common_name">Nav</string>
+    <string name="common_next">Pêş</string>
+    <string name="common_ok">OK</string>
+    <string name="common_paste">Bişkîne</string>
+    <string name="common_receive">Werbigire</string>
+    <string name="common_save">Tomar bike</string>
+    <string name="common_search">Lêgerîn</string>
+    <string name="common_send">Bişîne</string>
+    <string name="common_settings">Mîheng</string>
+    <string name="common_share">Parve bike</string>
+    <string name="common_skip">Derbas bike</string>
+    <string name="common_success">Serkeftî</string>
+    <string name="common_try_again">Dîsa biceribîne</string>
+    <string name="common_view">Bibîne</string>
+    <string name="common_yes">Erê</string>
+    <string name="common_no">Na</string>
+
+    <string name="staking_rewards">Xelatên %s</string>
+    <string name="staking_start_title">Dest bi Stakingê bike</string>
+
+    <string name="wallet_details">Hûrguliyên Cîzdanê</string>
+    <string name="wallet_name">Navê Cîzdanê</string>
+
+    <string name="assets_title">Malên</string>
+    <string name="assets_total_balance">Bakiyê Giştî</string>
+
+    <string name="settings_about">Derbarê Sepanê</string>
+    <string name="settings_language">Ziman</string>
+    <string name="settings_security">Ewlehî</string>
+    <string name="settings_support">Piştgirî</string>
+
+    <string name="push_template_app_name_and_time">Pezkuwi Wallet • niha</string>
+    <string name="push_new_update_title">Nûvekirinek nû ya Pezkuwi Wallet heye!</string>
+    <string name="push_new_update_message">Ji bo hemû taybetmendiyên nû Pezkuwi Wallet v%s dakêşin!</string>
+    <string name="push_settings_announcements">Ragihandinên Pezkuwi</string>
+
+    <string name="gifts_header_title">Diyariyên Kripto bi Her Kesî re, Li Her Derê Parve Bikin</string>
+    <string name="gifts_header_subtitle">Di Pezkuwi Wallet de diyariyan bi lez, hêsan û bi ewlehî bişînin</string>
+    <string name="gifts_create">Diyarî Ava Bike</string>
+    <string name="common_gift">Diyarî</string>
+
+    <string name="swap_title">Guhêrîn</string>
+    <string name="swap_from">Ji</string>
+    <string name="swap_to">Bo</string>
+
+    <string name="dapp_browser_title">DApp Browser</string>
+    <string name="referendum_dapp_list_title">Pezkuwi DApp browserê bi kar bîne</string>
+
+    <string name="ledger_wallet_details_description">Ev cîzdan bi Ledger re hevedudanî ye. Pezkuwi Wallet dê alîkariya we bike ku hûn her operasyonek ku hûn dixwazin ava bikin, û dê ji we were xwestin ku wan bi karanîna Ledger îmze bikin</string>
+
+    <string name="fragment_waiting_top_up_time_out_error_message">Ji kerema xwe bi support@pezkuwichain.io re têkilî daynin. E-maila ku we ji bo derxistina kartê bi kar aniye diyar bikin.</string>
+
+    <string name="start_staking_fragment_more_info_clicable_part">Pezkuwi Wiki</string>
+
+    <string name="staking_start_change_validators_recommended_subtitle">Pezkuwi Wallet dê li gorî pîvanên ewlehî û qezencê doğrulayıcıyên herî baş hilbijêre</string>
+</resources>

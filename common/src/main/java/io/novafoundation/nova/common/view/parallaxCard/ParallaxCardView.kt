@@ -1,0 +1,392 @@
+package io.novafoundation.nova.common.view.parallaxCard
+
+import android.animation.ValueAnimator
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Outline
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.RectF
+import android.util.AttributeSet
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewOutlineProvider
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.withSave
+import io.novafoundation.nova.common.R
+import io.novafoundation.nova.common.di.FeatureUtils
+import io.novafoundation.nova.common.utils.dp
+import io.novafoundation.nova.common.utils.dpF
+import io.novafoundation.nova.common.utils.getColorOrNull
+import io.novafoundation.nova.common.view.parallaxCard.gyroscope.CardGyroscopeListener
+
+private const val DEVICE_ROTATION_ANGLE_RADIUS = 16f
+
+open class ParallaxCardView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr), ParallaxCardResourceManager.OnBakingPreparedCallback {
+
+    private val frostedGlassLayer: FrostedGlassLayer = FrostedGlassLayer()
+    private val cardRect = RectF()
+    private val cardPath = Path()
+    private val cardRadius = 12.dpF(context)
+    private var travelOffset = TravelVector(0f, 0f)
+
+    // We use padding to support vertical highlight animation.
+    private var highlightPadding = 100.dpF(context)
+    private var verticalParallaxHighlightPadding = 100.dpF(context)
+
+    private var parallaxHighlihtMaxTravel = TravelVector(0f, 0f)
+    private var cardHighlightMaxTravel = TravelVector(0f, 0f)
+    private val cardBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = context.getColor(R.color.container_card_actions_border)
+        strokeWidth = 2.dpF(context)
+        style = Paint.Style.STROKE
+    }
+
+    private val parallaxLayers: List<ParallaxLayer>
+
+    private val lruCache: BackingParallaxCardLruCache = FeatureUtils.getCommonApi(context).bakingParallaxCardCache()
+
+    private val helper: ParallaxCardResourceManager
+
+    private var gyroscopeListenerCallback: ((TravelVector) -> Unit)? = { rotation: TravelVector ->
+        travelOffset = rotation
+
+        if (helper.isPrepared) {
+            updateHighlights()
+            updateFrostedGlassLayer()
+        }
+
+        invalidate()
+    }
+
+    private var gyroscopeListener: CardGyroscopeListener? = CardGyroscopeListener(
+        context,
+        TravelVector(DEVICE_ROTATION_ANGLE_RADIUS, DEVICE_ROTATION_ANGLE_RADIUS),
+        gyroscopeListenerCallback
+    )
+
+    init {
+        clipToPadding = false
+
+        // Implement native shadow
+        outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(0, 0, width, height, cardRadius)
+            }
+        }
+
+        parallaxLayers = listOf(
+            ParallaxLayer(
+                id = "parallax_1",
+                bitmapId = R.drawable.ic_big_star,
+                alpha = 1f,
+                withHighlighting = true,
+                blurRadius = 0,
+                travelVector = TravelVector((-7).dpF(context), (-3).dpF(context))
+            ),
+            ParallaxLayer(
+                id = "parallax_2",
+                bitmapId = R.drawable.ic_middle_star,
+                alpha = 1f,
+                withHighlighting = true,
+                blurRadius = 2.dp(context),
+                travelVector = TravelVector((15).dpF(context), (8).dpF(context))
+            ),
+            ParallaxLayer(
+                id = "parallax_3",
+                bitmapId = R.drawable.ic_small_star,
+                alpha = 1f,
+                withHighlighting = true,
+                blurRadius = 3.dp(context),
+                travelVector = TravelVector((25).dpF(context), (19).dpF(context))
+            )
+        )
+
+        helper = ParallaxCardResourceManager(context, parallaxLayers, lruCache)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        helper.setBakingPreparedCallback(this)
+
+        setWillNotDraw(false)
+
+        postDelayed({
+            gyroscopeListener?.start()
+        }, 300) // Added small delay to avoid wrong parallax initial position
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        helper.onViewRemove()
+        gyroscopeListener?.cancel()
+        gyroscopeListener = null
+        gyroscopeListenerCallback = null
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+
+        cardHighlightMaxTravel.set(-width.toFloat() / 2, -highlightPadding)
+        parallaxHighlihtMaxTravel.set(-width.toFloat() / 2, -height.toFloat() / 2)
+
+        cardRect.setCardBounds(this)
+        cardPath.applyRoundRect(cardRect, cardRadius)
+        if (helper.isPrepared) {
+            updateLayers()
+        }
+    }
+
+    override fun onBakingPrepared() {
+        startFadeAnimation()
+        updateLayers()
+    }
+
+    private fun updateLayers() {
+        updateHighlights()
+        updateParallaxBitmapBounds()
+        updateFrostedGlassLayer()
+    }
+
+    private fun startFadeAnimation() {
+        if (handler == null) return
+
+        handler.post {
+            helper.cardHighlightShader.setAlpha(0f)
+            helper.cardBorderHighlightShader.setAlpha(0f)
+            helper.parallaxHighlightShader.setAlpha(0f)
+            helper.nestedViewBorderHighlightShader.setAlpha(0f)
+
+            val fadeAnimator = ValueAnimator.ofFloat(0f, 1f).setDuration(1000L)
+
+            fadeAnimator.addUpdateListener {
+                helper.cardHighlightShader.setAlpha(it.animatedFraction)
+                helper.cardBorderHighlightShader.setAlpha(it.animatedFraction)
+                helper.parallaxHighlightShader.setAlpha(it.animatedFraction)
+                helper.nestedViewBorderHighlightShader.setAlpha(it.animatedFraction)
+                invalidate()
+            }
+
+            fadeAnimator.start()
+        }
+    }
+
+    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
+        if (params is LayoutParams && params.cardBackgroundColor != null) {
+            frostedGlassLayer.layers.add(ViewWithLayoutParams(child, params))
+        }
+
+        super.addView(child, index, params)
+    }
+
+    override fun generateLayoutParams(attrs: AttributeSet?): LayoutParams {
+        return LayoutParams(context, attrs)
+    }
+
+    override fun generateDefaultLayoutParams(): ConstraintLayout.LayoutParams {
+        return LayoutParams(
+            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        )
+    }
+
+    override fun generateLayoutParams(p: ViewGroup.LayoutParams): ViewGroup.LayoutParams {
+        return LayoutParams(p)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        canvas.clipPath(cardPath)
+        drawCard(canvas)
+        drawParallax(canvas)
+        drawFrostedGlassLayer(canvas)
+    }
+
+    private fun drawCard(canvas: Canvas) {
+        // Card background and border
+        canvas.drawBitmap(helper.cardBackgroundBitmap, null, cardRect, null)
+        canvas.drawPath(cardPath, cardBorderPaint)
+
+        // Highlights
+        if (helper.isPrepared) {
+            canvas.drawPath(cardPath, helper.cardBorderHighlightShader.paint)
+            canvas.drawRect(cardRect, helper.cardHighlightShader.paint)
+        }
+    }
+
+    private fun drawParallax(canvas: Canvas) {
+        if (!helper.isPrepared) return
+
+        helper.parallaxLayers.forEach {
+            it.layerBitmap?.drawParallaxLayerByRange(canvas, it)
+        }
+    }
+
+    private fun drawBlurredParallax(canvas: Canvas) {
+        if (!helper.isPrepared) return
+
+        helper.parallaxLayers.forEach {
+            it.blurredLayerBitmap?.drawParallaxLayerByRange(canvas, it)
+        }
+    }
+
+    private fun drawFrostedGlassLayer(canvas: Canvas) {
+        frostedGlassLayer.layers.forEach {
+            canvas.withSave {
+                canvas.clipPath(it.borderPath)
+
+                // Blurred parallax
+                if (helper.isPrepared) {
+                    canvas.drawBitmap(helper.cardBackgroundBitmap, null, cardRect, null)
+                    drawBlurredParallax(canvas)
+                }
+
+                // Nested card background and border
+                canvas.drawPath(it.borderPath, it.cardPaint)
+                if (it.drawBorder) {
+                    canvas.drawPath(it.borderPath, cardBorderPaint)
+                }
+
+                // Highlight for border
+                if (helper.isPrepared && it.drawBorder) {
+                    canvas.drawPath(it.borderPath, helper.nestedViewBorderHighlightShader.paint)
+                }
+            }
+        }
+    }
+
+    private fun BitmapWithRect.drawParallaxLayerByRange(canvas: Canvas, parallaxLayer: ParallaxLayer) {
+        canvas.withSave {
+            travelOffsetInRange(parallaxLayer.travelVector)
+            helper.parallaxHighlightShader.setAlpha(parallaxLayer.alpha)
+            helper.parallaxHighlightShader.withHighlighting(parallaxLayer.withHighlighting)
+            canvas.drawBitmap(bitmap, null, rect, helper.parallaxHighlightShader.paint)
+        }
+    }
+
+    private fun Canvas.travelOffsetInRange(travelVector: TravelVector) {
+        val pixelOffset = getTravelOffsetInRange(travelVector)
+        translate(pixelOffset.x, pixelOffset.y)
+    }
+
+    private fun getTravelOffsetInRange(rangeRadius: TravelVector): TravelVector {
+        return travelOffset * rangeRadius
+    }
+
+    private fun updateHighlights() {
+        val cardHighlightOffset = getTravelOffsetInRange(cardHighlightMaxTravel)
+        val parallaxHighlightOffset = getTravelOffsetInRange(parallaxHighlihtMaxTravel)
+        helper.cardHighlightShader.normalizeMatrix(ScaleType.CENTER_INSIDE, cardHighlightOffset, -highlightPadding, -highlightPadding)
+        helper.cardBorderHighlightShader.normalizeMatrix(ScaleType.CENTER_INSIDE, cardHighlightOffset, -highlightPadding, -highlightPadding)
+        helper.nestedViewBorderHighlightShader.normalizeMatrix(ScaleType.CENTER_INSIDE, cardHighlightOffset, -highlightPadding, -highlightPadding)
+        helper.parallaxHighlightShader.normalizeMatrix(ScaleType.CENTER, parallaxHighlightOffset, -verticalParallaxHighlightPadding)
+    }
+
+    private fun updateParallaxBitmapBounds() {
+        val paddingOffset = 19.dpF(context)
+        helper.parallaxLayers.forEach {
+            it.layerBitmap?.normalizeBounds(ScaleType.CENTER, paddingVertical = -paddingOffset, paddingHorizontal = 0f)
+            it.blurredLayerBitmap?.normalizeBounds(ScaleType.CENTER, paddingVertical = -paddingOffset, paddingHorizontal = 0f)
+        }
+    }
+
+    private fun updateFrostedGlassLayer() {
+        frostedGlassLayer.layers.forEach {
+            it.borderPath.applyRoundRect(it.view, it.cardRadius)
+        }
+    }
+
+    private fun BitmapShaderHelper.normalizeMatrix(
+        scaleType: ScaleType,
+        shaderOffset: TravelVector,
+        paddingVertical: Float = 0f,
+        paddingHorizontal: Float = 0f
+    ) {
+        val scale = bitmap.calculateScale(scaleType, cardRect.width(), cardRect.height(), paddingVertical, paddingHorizontal)
+
+        matrix.setScale(scale, scale)
+        matrix.postTranslate(
+            cardRect.left + (cardRect.width() - bitmap.width * scale) / 2f + shaderOffset.x,
+            cardRect.top + (cardRect.height() - bitmap.height * scale) / 2f + shaderOffset.y
+        )
+
+        shader.setLocalMatrix(matrix)
+    }
+
+    private fun BitmapWithRect.normalizeBounds(
+        scaleType: ScaleType,
+        paddingVertical: Float = 0f,
+        paddingHorizontal: Float = 0f
+    ) {
+        val scale = bitmap.calculateScale(scaleType, cardRect.width(), cardRect.height(), paddingVertical, paddingHorizontal)
+
+        rect.set(
+            0f,
+            0f,
+            bitmap.width * scale,
+            bitmap.height * scale
+        )
+        rect.offset((cardRect.width() - rect.width()) / 2, (cardRect.height() - rect.height()) / 2)
+    }
+
+    private fun Bitmap.calculateScale(
+        scaleType: ScaleType,
+        targetWidth: Float,
+        targetHeight: Float,
+        paddingVertical: Float,
+        paddingHorizontal: Float
+    ): Float {
+        val wScale = (targetWidth - paddingHorizontal * 2) / this@calculateScale.width
+        val hScale = (targetHeight - paddingVertical * 2) / this@calculateScale.height
+        return if (scaleType == ScaleType.CENTER) {
+            wScale.coerceAtLeast(hScale)
+        } else {
+            wScale.coerceAtMost(hScale)
+        }
+    }
+
+    class LayoutParams : ConstraintLayout.LayoutParams {
+        val cardBackgroundColor: Int?
+        val cardBorderColor: Int?
+        val cardRadius: Float
+        val drawBorder: Boolean
+
+        constructor(source: ViewGroup.LayoutParams) : super(source) {
+            cardBackgroundColor = null
+            cardBorderColor = null
+            cardRadius = 0f
+            drawBorder = false
+        }
+
+        constructor(source: LayoutParams) : super(source) {
+            cardBackgroundColor = source.cardBackgroundColor
+            cardBorderColor = source.cardBorderColor
+            cardRadius = source.cardRadius
+            drawBorder = source.drawBorder
+        }
+
+        constructor(width: Int, height: Int) : super(width, height) {
+            cardBackgroundColor = null
+            cardBorderColor = null
+            cardRadius = 0f
+            drawBorder = true
+        }
+
+        constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+            val a = context.obtainStyledAttributes(attrs, R.styleable.ParallaxCardView_Layout)
+            cardBackgroundColor = a.getColorOrNull(
+                R.styleable.ParallaxCardView_Layout_layout_cardBackgroundColor
+            )
+            cardBorderColor = a.getColorOrNull(R.styleable.ParallaxCardView_Layout_layout_cardBorderColor)
+            cardRadius = a.getDimension(R.styleable.ParallaxCardView_Layout_layout_cardRadius, 0f)
+            drawBorder = a.getBoolean(R.styleable.ParallaxCardView_Layout_layout_drawBorder, true)
+            a.recycle()
+        }
+    }
+}

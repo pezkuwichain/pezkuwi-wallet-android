@@ -1,0 +1,18 @@
+
+android {
+    namespace 'io.novafoundation.nova.feature_ledger_api'
+}
+
+dependencies {
+    implementation coroutinesDep
+    implementation project(':runtime')
+    implementation project(":common")
+
+    implementation daggerDep
+
+    implementation substrateSdkDep
+
+    implementation androidDep
+
+    api project(':core-api')
+}

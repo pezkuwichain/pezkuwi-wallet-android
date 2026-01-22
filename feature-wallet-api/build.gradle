@@ -1,0 +1,37 @@
+apply plugin: 'kotlin-parcelize'
+
+android {
+    namespace 'io.novafoundation.nova.feature_wallet_api'
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation coroutinesDep
+    implementation project(':runtime')
+    implementation project(":feature-account-api")
+    implementation project(":feature-currency-api")
+    implementation project(':runtime')
+    implementation project(":common")
+
+    implementation androidDep
+    implementation materialDep
+
+    implementation daggerDep
+    implementation project(':feature-xcm:api')
+    ksp daggerCompiler
+
+    implementation substrateSdkDep
+
+    implementation constraintDep
+
+    implementation lifeCycleKtxDep
+
+    api project(':core-api')
+    api project(':core-db')
+
+
+    testImplementation project(':test-shared')
+}

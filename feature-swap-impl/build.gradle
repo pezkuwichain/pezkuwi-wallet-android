@@ -1,0 +1,62 @@
+apply plugin: 'kotlin-parcelize'
+
+android {
+    namespace 'io.novafoundation.nova.feature_swap_impl'
+
+
+    defaultConfig {
+
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(':feature-account-api')
+    implementation project(':feature-wallet-api')
+    implementation project(':feature-swap-api')
+    implementation project(":feature-swap-core")
+    implementation project(':feature-currency-api')
+    implementation project(':feature-buy-api')
+    implementation project(':feature-xcm:api')
+
+    implementation project(":common")
+    implementation project(":runtime")
+
+    implementation project(":bindings:hydra-dx-math")
+
+    implementation materialDep
+
+    implementation substrateSdkDep
+
+    implementation kotlinDep
+
+    
+    implementation androidDep
+
+    implementation coroutinesDep
+    implementation coroutinesAndroidDep
+    implementation lifeCycleKtxDep
+
+    implementation project(":core-db")
+
+    implementation viewModelKtxDep
+
+    implementation shimmerDep
+
+    implementation daggerDep
+    ksp daggerCompiler
+
+    testImplementation jUnitDep
+    testImplementation mockitoDep
+}

@@ -1,0 +1,24 @@
+package io.novafoundation.nova.runtime.network.updaters
+
+import io.novafoundation.nova.common.data.holders.ChainIdHolder
+import io.novafoundation.nova.common.utils.Modules
+import io.novafoundation.nova.common.utils.balances
+import io.novafoundation.nova.core.storage.StorageCache
+import io.novafoundation.nova.core.updater.GlobalScope
+import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
+import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
+import io.novasama.substrate_sdk_android.runtime.metadata.storageKey
+import io.novasama.substrate_sdk_android.runtime.metadata.storageOrNull
+
+class InactiveIssuanceUpdater(
+    chainIdHolder: ChainIdHolder,
+    storageCache: StorageCache,
+    chainRegistry: ChainRegistry
+) : SingleStorageKeyUpdater<Unit>(GlobalScope, chainIdHolder, chainRegistry, storageCache) {
+
+    override val requiredModules: List<String> = listOf(Modules.BALANCES)
+
+    override suspend fun storageKey(runtime: RuntimeSnapshot, scopeValue: Unit): String? {
+        return runtime.metadata.balances().storageOrNull("InactiveIssuance")?.storageKey()
+    }
+}

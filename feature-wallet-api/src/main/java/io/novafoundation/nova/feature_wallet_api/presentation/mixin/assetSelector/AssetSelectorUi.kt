@@ -1,0 +1,36 @@
+package io.novafoundation.nova.feature_wallet_api.presentation.mixin.assetSelector
+
+import coil.ImageLoader
+import io.novafoundation.nova.common.base.BaseFragment
+import io.novafoundation.nova.common.base.BaseViewModel
+import io.novafoundation.nova.feature_wallet_api.presentation.view.AssetSelectorBottomSheet
+
+interface WithAssetSelector {
+
+    val assetSelectorMixin: AssetSelectorMixin
+}
+
+fun <V> BaseFragment<V, *>.subscribeOnAssetChange(
+    selectorMixin: AssetSelectorMixin,
+    onAssetChanged: (AssetSelectorModel) -> Unit
+) where V : BaseViewModel {
+    selectorMixin.selectedAssetModelFlow.observe {
+        onAssetChanged(it)
+    }
+}
+
+fun <V> BaseFragment<V, *>.subscribeOnAssetClick(
+    title: String,
+    selectorMixin: AssetSelectorMixin,
+    imageLoader: ImageLoader
+) where V : BaseViewModel {
+    selectorMixin.showAssetChooser.observeEvent {
+        AssetSelectorBottomSheet(
+            title = title,
+            imageLoader = imageLoader,
+            context = requireContext(),
+            payload = it,
+            onClicked = { _, item -> selectorMixin.assetChosen(item) }
+        ).show()
+    }
+}

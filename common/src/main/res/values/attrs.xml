@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--fonts-->
+    <attr name="fontExtraLight" format="reference" />
+    <attr name="fontSemiBold" format="reference" />
+    <attr name="fontBold" format="reference" />
+    <attr name="fontExtraBold" format="reference" />
+    <attr name="fontRegular" format="reference" />
+    <!--fonts-->
+
+    <!--text sizes-->
+    <attr name="textSizeH1" format="reference" />
+    <attr name="textSizeH2" format="reference" />
+    <attr name="textSizeH3" format="reference" />
+    <attr name="textSizeH4" format="reference" />
+    <attr name="textSizeH5" format="reference" />
+    <attr name="textSizeCapsTitle1" format="reference" />
+    <attr name="textSizeCapsTitle2" format="reference" />
+    <attr name="textSizeB0" format="reference" />
+    <attr name="textSizeB1" format="reference" />
+    <attr name="textSizeB2" format="reference" />
+    <attr name="textSizeB3" format="reference" />
+
+    <attr name="textSizeTitle3" format="reference" />
+    <attr name="textSizeSubHeadline" format="reference" />
+
+    <!--text sizes-->
+
+    <!-- Views -->
+    <attr name="defaultTextInputStyle" format="reference" />
+
+    <declare-styleable name="Toolbar">
+        <attr name="contentBackground" format="reference|color" />
+        <attr name="dividerVisible" format="boolean" />
+        <attr name="titleText" format="string" />
+        <attr name="iconRight" format="reference|color" />
+        <attr name="textRight" format="string" />
+        <attr name="textRightVisible" format="boolean" />
+        <attr name="homeButtonIcon" format="reference|color" />
+        <attr name="homeButtonVisible" format="boolean" />
+        <attr name="titleTextAppearance" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="LabeledTextView">
+        <attr name="label" format="string" />
+        <attr name="message" format="string" />
+        <attr name="actionIcon" format="reference|color" />
+        <attr name="textIcon" format="reference|color" />
+        <attr name="enabled" format="boolean" />
+        <attr name="android:singleLine" />
+        <attr name="messageColor" format="color" />
+
+        <attr name="messageStyle" format="reference" />
+        <attr name="labelStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="AccountInfoView">
+        <attr name="accountActionIcon" format="reference|color" />
+        <attr name="accountActionIconTint" format="color" />
+        <attr name="textVisible" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ActionInputField">
+        <attr name="android:hint" format="string" />
+        <attr name="supportScan" format="boolean" />
+        <attr name="supportInsertion" format="boolean" />
+        <attr name="fieldSaveEnabled" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="InputField">
+        <attr name="android:inputType" />
+        <attr name="android:text" />
+        <attr name="android:maxLines" />
+        <attr name="android:gravity" />
+        <attr name="editTextHint" format="string" />
+        <attr name="editTextHintColor" format="color" />
+        <attr name="android:textAppearance" />
+        <attr name="editTextMinHeight" format="dimension" />
+        <attr name="editTextPaddingStart" format="dimension" />
+        <attr name="editTextPaddingEnd" format="dimension" />
+        <attr name="editTextPaddingTop" format="dimension" />
+        <attr name="editTextPaddingBottom" format="dimension" />
+        <attr name="backgroundMode" format="enum">
+            <enum name="inputState" value="0" />
+            <enum name="solid" value="1" />
+            <enum name="custom" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="AmountView">
+        <attr name="android:enabled" />
+    </declare-styleable>
+
+    <declare-styleable name="TableCellView">
+        <attr name="title" />
+        <attr name="dividerVisible" />
+        <attr name="primaryValueEndIcon" format="reference|color" />
+        <attr name="primaryValueStartIcon" format="reference|color" />
+        <attr name="primaryValueStyle" format="enum">
+            <enum name="primary" value="0" />
+            <enum name="secondary" value="1" />
+            <enum name="link" value="2" />
+            <enum name="positive" value="3" />
+        </attr>
+        <attr name="titleValueTextAppearance" format="reference" />
+        <attr name="primaryValueTextAppearance" format="reference" />
+        <attr name="secondaryValueTextAppearance" format="reference" />
+        <attr name="titleIcon" format="reference|color" />
+        <attr name="titleIconStart" format="reference|color" />
+        <attr name="titleIconTint" format="color" />
+        <attr name="titleIconStartTint" format="color" />
+        <attr name="primaryValueIconTint" format="color" />
+        <attr name="titleEllipsisable" format="boolean" />
+        <attr name="primaryValue" format="string" />
+        <attr name="shouldDrawDivider" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="GenericTableCellView">
+        <attr name="title" />
+        <attr name="titleIcon" />
+    </declare-styleable>
+
+    <declare-styleable name="TableView">
+        <attr name="title" />
+        <attr name="drawDividers" format="boolean" />
+        <attr name="showBackground" format="boolean" />
+        <attr name="childrenPaddingStart" format="dimension" />
+        <attr name="childrenPaddingEnd" format="dimension" />
+        <attr name="childrenPaddingTop" format="dimension" />
+        <attr name="childrenPaddingBottom" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="GoNextView">
+        <attr name="inProgress" format="boolean" />
+        <attr name="android:text" />
+        <attr name="android:textColor" />
+        <attr name="icon" />
+        <attr name="iconTint" />
+        <attr name="actionIcon" />
+        <attr name="dividerVisible" />
+        <attr name="android:textAppearance" format="reference" />
+        <attr name="actionTint" format="color" />
+        <attr name="android:background" />
+    </declare-styleable>
+
+    <declare-styleable name="PrimaryButton">
+        <attr name="appearance" format="enum">
+            <enum name="primary" value="0" />
+            <enum name="primaryTransparent" value="1" />
+            <enum name="secondary" value="2" />
+            <enum name="secondaryTransparent" value="3" />
+            <enum name="primaryPositive" value="4" />
+            <enum name="primaryNegative" value="5" />
+            <enum name="accentSecondaryTransparent" value="6" />
+            <enum name="cloudBackup" value="7" />
+        </attr>
+
+        <attr name="size" format="enum">
+            <enum name="large" value="0" />
+            <enum name="small" value="1" />
+            <enum name="extra_small" value="2" />
+        </attr>
+
+        <attr name="iconSrc" format="reference" />
+        <attr name="iconSize" format="dimension" />
+        <attr name="iconPadding" format="dimension" />
+
+        <attr name="android:textColor" />
+    </declare-styleable>
+
+    <declare-styleable name="PlaceholderView">
+        <attr name="android:text" />
+        <attr name="showButton" format="boolean" />
+        <attr name="image" format="color|reference" />
+        <attr name="imageTint" format="color" />
+        <attr name="placeholderBackgroundStyle" format="enum">
+            <enum name="dark" value="0" />
+            <enum name="light" value="1" />
+            <enum name="no_background" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="TitleImageContentSectionView">
+        <attr name="sectionTitle" format="string" />
+        <attr name="sectionContentEndIcon" format="reference|color" />
+        <attr name="sectionContentEndIconTint" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchView">
+        <attr name="android:hint" />
+    </declare-styleable>
+
+    <declare-styleable name="Switch">
+        <attr name="title" />
+        <attr name="subtitle" />
+        <attr name="dividerVisible" />
+    </declare-styleable>
+
+    <declare-styleable name="AdvertisementCard">
+        <attr name="title" />
+        <attr name="subtitle" />
+        <attr name="image" />
+        <attr name="advertisementCardBackground" format="color|reference" />
+        <attr name="learnMore" format="string" />
+        <attr name="action" format="string" />
+        <attr name="showClose" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="AlertView">
+        <attr name="alertMode" format="enum">
+            <enum name="warning" value="0" />
+            <enum name="error" value="1" />
+            <enum name="info" value="2" />
+        </attr>
+
+        <attr name="styleBackgroundColor" format="color" />
+        <attr name="styleIcon" format="color|reference" />
+        <attr name="styleIconTint" format="color" />
+
+        <attr name="android:text" />
+
+        <attr name="AlertView_description" format="string" />
+        <attr name="AlertView_action" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="IconButton">
+        <attr name="android:src" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchToolbar">
+        <attr name="android:hint" />
+    </declare-styleable>
+
+    <declare-styleable name="ButtonLarge">
+        <attr name="icon" />
+        <attr name="title" />
+        <attr name="subTitle" format="string" />
+        <attr name="buttonLargeStyle" format="enum">
+            <enum name="primary" value="0" />
+            <enum name="secondary" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ScanView">
+        <attr name="title" />
+        <attr name="subTitle" />
+    </declare-styleable>
+
+    <declare-styleable name="InstructionStepView">
+        <attr name="stepNumber" format="string" />
+        <attr name="stepText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="NovaConnectView">
+        <attr name="targetImage" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="LinkView">
+        <attr name="linkText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="TotalAmountView">
+        <attr name="title" />
+    </declare-styleable>
+
+    <declare-styleable name="BannerView">
+        <attr name="android:src" format="reference" />
+        <attr name="bannerBackground" format="reference|color" />
+        <attr name="android:scaleType" />
+        <attr name="closeIcon" format="reference" />
+        <attr name="showClose" />
+    </declare-styleable>
+
+    <declare-styleable name="ExpandableView">
+        <attr name="supportAnimation" format="boolean" />
+        <attr name="chevronId" format="reference" />
+        <attr name="expandableId" format="reference" />
+        <attr name="collapsedByDefault" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="PromoBannerView">
+        <attr name="promoBanner_image" format="reference" />
+        <attr name="promoBanner_background" format="reference|color" />
+        <attr name="promoBanner_title" format="string" />
+        <attr name="promoBanner_description" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ListChooserView">
+        <attr name="listChooserView_label" format="string" />
+        <attr name="listChooserView_value" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ReadMoreView">
+        <attr name="android:text" />
+    </declare-styleable>
+
+    <declare-styleable name="AddressView">
+        <attr name="android:textColor" />
+    </declare-styleable>
+
+    <declare-styleable name="ChipLabelView">
+        <attr name="iconStart" format="reference" />
+        <attr name="iconStartTint" format="color" />
+        <attr name="iconStartPadding" format="dimension" />
+        <attr name="iconEnd" format="reference" />
+        <attr name="iconEndTint" format="color" />
+        <attr name="iconEndPadding" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="ParallaxCardView_Layout">
+        <attr name="layout_cardBackgroundColor" format="color" />
+        <attr name="layout_cardBorderColor" format="color" />
+        <attr name="layout_cardRadius" format="dimension" />
+        <attr name="layout_drawBorder" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="TitledSearchToolbar">
+        <attr name="titleText" />
+        <attr name="android:hint" />
+    </declare-styleable>
+
+    <declare-styleable name="SlideShowView">
+        <attr name="SlideShowView_slideDelayMillis" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="HintsView">
+        <attr name="HintsView_singleHint" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="TabsView">
+        <attr name="TabsView_backgroundTint" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="TipsInputField">
+        <attr name="android:hint" />
+        <attr name="postfix" format="string" />
+        <attr name="android:digits" />
+        <attr name="android:inputType" />
+    </declare-styleable>
+
+    <declare-styleable name="SettingsItemView">
+        <attr name="title" />
+        <attr name="settingValue" format="string" />
+        <attr name="icon" />
+    </declare-styleable>
+
+    <declare-styleable name="SettingsSwitcherView">
+        <attr name="title" />
+        <attr name="icon" />
+        <attr name="switcherTextColor" />
+    </declare-styleable>
+
+    <declare-styleable name="WarningCheckBox">
+        <attr name="android:icon" />
+        <attr name="iconTint" />
+        <attr name="android:text" />
+    </declare-styleable>
+
+    <declare-styleable name="TapToViewContainer">
+        <attr name="title" />
+        <attr name="subtitle" />
+        <attr name="cornerRadius" />
+        <attr name="tapToViewBackground" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SegmentedTabLayout">
+        <attr name="tabIndicatorFullHeight" format="boolean" />
+        <attr name="tabIndicatorMargin" format="dimension" />
+        <attr name="backgroundCornerRadius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="MaskableDrawable">
+        <attr name="md_dotSize" format="dimension" />
+        <attr name="md_dotSpacing" format="dimension" />
+        <attr name="md_dotColor" format="color" />
+        <attr name="md_dotCount" format="integer" />
+        <attr name="md_gravity" format="enum">
+            <enum name="start" value="0" />
+            <enum name="center" value="1" />
+            <enum name="end" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

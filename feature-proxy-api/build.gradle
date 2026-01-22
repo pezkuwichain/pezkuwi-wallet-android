@@ -1,0 +1,11 @@
+
+android {
+    namespace 'io.novafoundation.nova.feature_proxy_api'
+}
+
+dependencies {
+    implementation project(":common")
+    implementation project(':runtime')
+
+    implementation substrateSdkDep
+}

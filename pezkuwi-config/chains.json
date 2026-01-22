@@ -1,0 +1,186 @@
+[
+  {
+    "chainId": "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+    "name": "Pezkuwi",
+    "icon": "https://pezkuwichain.io/pezkuwichain_logo.png",
+    "addressPrefix": 42,
+    "options": [
+      "governance-v2",
+      "proxy",
+      "multisig",
+      "pushSupport"
+    ],
+    "nodeSelectionStrategy": "roundRobin",
+    "nodes": [
+      {
+        "url": "wss://rpc.pezkuwichain.io",
+        "name": "Pezkuwi Mainnet"
+      },
+      {
+        "url": "wss://mainnet.pezkuwichain.io",
+        "name": "Pezkuwi Mainnet (Alt)"
+      }
+    ],
+    "explorers": [
+      {
+        "name": "Pezkuwi Explorer",
+        "extrinsic": "https://explorer.pezkuwichain.io/extrinsic/{value}",
+        "account": "https://explorer.pezkuwichain.io/account/{value}",
+        "event": "https://explorer.pezkuwichain.io/event/{value}"
+      }
+    ],
+    "externalApi": {
+      "history": [],
+      "staking": []
+    },
+    "assets": [
+      {
+        "assetId": 0,
+        "symbol": "HEZ",
+        "precision": 12,
+        "name": "Hezkurd",
+        "priceId": null,
+        "staking": [
+          "relaychain",
+          "nomination-pools"
+        ],
+        "type": "Native",
+        "icon": "https://pezkuwichain.io/tokens/HEZ.png",
+        "buyProviders": {},
+        "sellProviders": {},
+        "typeExtras": null
+      }
+    ],
+    "types": null,
+    "additional": {
+      "themeColor": "#009639",
+      "defaultBlockTimeMillis": 6000
+    }
+  },
+  {
+    "chainId": "0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f",
+    "parentId": "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+    "name": "Pezkuwi Asset Hub",
+    "icon": "https://pezkuwichain.io/pezkuwichain_logo.png",
+    "addressPrefix": 42,
+    "options": [
+      "swap-hub",
+      "assethub-fees",
+      "proxy",
+      "multisig"
+    ],
+    "nodeSelectionStrategy": "roundRobin",
+    "nodes": [
+      {
+        "url": "wss://asset-hub-rpc.pezkuwichain.io",
+        "name": "Pezkuwi Asset Hub"
+      }
+    ],
+    "explorers": [
+      {
+        "name": "Pezkuwi Explorer",
+        "extrinsic": "https://explorer.pezkuwichain.io/asset-hub/extrinsic/{value}",
+        "account": "https://explorer.pezkuwichain.io/asset-hub/account/{value}",
+        "event": "https://explorer.pezkuwichain.io/asset-hub/event/{value}"
+      }
+    ],
+    "externalApi": {},
+    "assets": [
+      {
+        "assetId": 0,
+        "symbol": "HEZ",
+        "precision": 12,
+        "name": "Hezkurd",
+        "priceId": null,
+        "staking": null,
+        "type": "Native",
+        "icon": "https://pezkuwichain.io/tokens/HEZ.png",
+        "buyProviders": {},
+        "sellProviders": {},
+        "typeExtras": null
+      },
+      {
+        "assetId": 1,
+        "symbol": "PEZ",
+        "precision": 12,
+        "name": "Pezkuwi",
+        "priceId": null,
+        "staking": null,
+        "type": "Statemine",
+        "icon": "https://pezkuwichain.io/tokens/PEZ.png",
+        "buyProviders": {},
+        "sellProviders": {},
+        "typeExtras": {
+          "assetId": "1"
+        }
+      },
+      {
+        "assetId": 1000,
+        "symbol": "USDT",
+        "precision": 6,
+        "name": "Tether USD",
+        "priceId": "tether",
+        "staking": null,
+        "type": "Statemine",
+        "icon": "https://pezkuwichain.io/tokens/USDT.png",
+        "buyProviders": {},
+        "sellProviders": {},
+        "typeExtras": {
+          "assetId": "1000"
+        }
+      }
+    ],
+    "types": null,
+    "additional": {
+      "themeColor": "#009639",
+      "defaultBlockTimeMillis": 6000
+    }
+  },
+  {
+    "chainId": "0x67fa177a097bfa18f77ea95e1d5918b4d05cba7813f32e9ef6c4f9a2a6e60b09",
+    "parentId": "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+    "name": "Pezkuwi People",
+    "icon": "https://pezkuwichain.io/pezkuwichain_logo.png",
+    "addressPrefix": 42,
+    "options": [
+      "proxy",
+      "multisig"
+    ],
+    "nodeSelectionStrategy": "roundRobin",
+    "nodes": [
+      {
+        "url": "wss://people-rpc.pezkuwichain.io",
+        "name": "Pezkuwi People Chain"
+      }
+    ],
+    "explorers": [
+      {
+        "name": "Pezkuwi Explorer",
+        "extrinsic": "https://explorer.pezkuwichain.io/people/extrinsic/{value}",
+        "account": "https://explorer.pezkuwichain.io/people/account/{value}",
+        "event": "https://explorer.pezkuwichain.io/people/event/{value}"
+      }
+    ],
+    "externalApi": {},
+    "assets": [
+      {
+        "assetId": 0,
+        "symbol": "HEZ",
+        "precision": 12,
+        "name": "Hezkurd",
+        "priceId": null,
+        "staking": null,
+        "type": "Native",
+        "icon": "https://pezkuwichain.io/tokens/HEZ.png",
+        "buyProviders": {},
+        "sellProviders": {},
+        "typeExtras": null
+      }
+    ],
+    "types": null,
+    "additional": {
+      "themeColor": "#009639",
+      "defaultBlockTimeMillis": 6000
+    }
+  }
+]

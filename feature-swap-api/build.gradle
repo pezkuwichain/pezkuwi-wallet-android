@@ -1,0 +1,31 @@
+apply plugin: 'kotlin-parcelize'
+
+android {
+
+    defaultConfig {
+
+
+
+        namespace 'io.novafoundation.nova.feature_swap_api'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation coroutinesDep
+
+    implementation substrateSdkDep
+    implementation daggerDep
+
+    implementation project(':runtime')
+    implementation project(':common')
+    implementation project(":feature-swap-core")
+
+    api project(":feature-wallet-api")
+    api project(":feature-account-api")
+
+    api project(':core-api')
+}
