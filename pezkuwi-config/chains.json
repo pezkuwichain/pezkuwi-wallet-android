@@ -103,7 +103,7 @@
         "assetId": 1,
         "symbol": "PEZ",
         "precision": 12,
-        "name": "Pezkuwi",
+        "name": "Pezkuwi Governance Token",
         "priceId": null,
         "staking": null,
         "type": "Statemine",
@@ -115,18 +115,34 @@
         }
       },
       {
-        "assetId": 1000,
-        "symbol": "USDT",
-        "precision": 6,
-        "name": "Tether USD",
-        "priceId": "tether",
+        "assetId": 2,
+        "symbol": "wHEZ",
+        "precision": 12,
+        "name": "Wrapped Hezkurd",
+        "priceId": null,
         "staking": null,
         "type": "Statemine",
-        "icon": "https://pezkuwichain.io/tokens/USDT.png",
+        "icon": "https://pezkuwichain.io/tokens/wHEZ.png",
         "buyProviders": {},
         "sellProviders": {},
         "typeExtras": {
-          "assetId": "1000"
+          "assetId": "2"
+        }
+      },
+      {
+        "assetId": 1984,
+        "symbol": "wUSDT",
+        "precision": 6,
+        "name": "Wrapped Tether USD",
+        "priceId": "tether",
+        "staking": null,
+        "type": "Statemine",
+        "icon": "https://pezkuwichain.io/tokens/wUSDT.png",
+        "buyProviders": {},
+        "sellProviders": {},
+        "typeExtras": {
+          "assetId": "1984",
+          "isSufficient": false
         }
       }
     ],
