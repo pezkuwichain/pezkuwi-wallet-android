@@ -1,6 +1,6 @@
 
 android {
-    namespace 'io.novafoundation.nova.core'
+    namespace 'io.pezkuwichain.wallet.core'
 }
 
 dependencies {

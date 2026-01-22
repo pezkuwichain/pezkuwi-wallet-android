@@ -146,7 +146,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    namespace 'io.novafoundation.nova.app'
+    namespace 'io.pezkuwichain.wallet.app'
 }
 
 void createBindReleaseFileTask(String destination) {

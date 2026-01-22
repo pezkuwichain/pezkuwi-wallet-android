@@ -38,9 +38,9 @@
     <string name="account_delete_confirmation_title">Zapomnieć portfel?</string>
     <string name="account_derivation_path_ethereum_invalid_title">Nieprawidłowa ścieżka derywacji dla Ethereum</string>
     <string name="account_derivation_path_substrate_invalid_title">Nieprawidłowa ścieżka derywacji dla Substrate</string>
-    <string name="account_details_parity_signer_alert">Ten portfel jest sparowany z %1$s. Nova pomoże Ci w zainicjowaniu wszelkich operacji, a Ty zostaniesz poproszony o ich podpisanie za pomocą %1$s</string>
+    <string name="account_details_parity_signer_alert">Ten portfel jest sparowany z %1$s. Pezkuwi pomoże Ci w zainicjowaniu wszelkich operacji, a Ty zostaniesz poproszony o ich podpisanie za pomocą %1$s</string>
     <string name="account_details_parity_signer_not_supported">Nieobsługiwany przez %s</string>
-    <string name="account_details_watch_only_alert">To jest portfel tylko do podglądu, Nova może pokazać Ci salda i inne informacje, ale nie możesz wykonywać żadnych transakcji tym portfelem</string>
+    <string name="account_details_watch_only_alert">To jest portfel tylko do podglądu, Pezkuwi może pokazać Ci salda i inne informacje, ale nie możesz wykonywać żadnych transakcji tym portfelem</string>
     <string name="account_enter_wallet_nickname">Wpisz pseudonim portfela...</string>
     <string name="account_error_try_another_one">Proszę, spróbuj inny.</string>
     <string name="account_ethereum_crypto_type">Typ kryptograficznej pary kluczy dla Ethereum</string>
@@ -64,7 +64,7 @@
     <string name="account_import_private_key">Importuj klucz prywatny</string>
     <string name="account_import_seed_hint">0xAB</string>
     <string name="account_import_seed_title">Wprowadź swój surowy seed</string>
-    <string name="account_import_wallet_subtitle">Nova jest kompatybilna ze wszystkimi aplikacjami</string>
+    <string name="account_import_wallet_subtitle">Pezkuwi jest kompatybilna ze wszystkimi aplikacjami</string>
     <string name="account_import_wallet_title">Importuj portfel</string>
     <string name="account_info_title">Konto</string>
     <string name="account_invalid_derivation_path_message_v2_2_0">Twoja ścieżka wyprowadzenia zawiera nieobsługiwane symbole lub ma niepoprawną strukturę</string>
@@ -98,12 +98,12 @@
     <string name="account_ledger_migration_generic">Polkadot</string>
     <string name="account_ledger_nano_x">Ledger Nano X</string>
     <string name="account_ledger_nano_x_legacy">Ledger Legacy</string>
-    <string name="account_ledger_select_device_all_description">Jeśli używasz Ledger przez Bluetooth, włącz Bluetooth na obu urządzeniach i przyznaj Nova uprawnienia do Bluetooth i lokalizacji. Dla USB, włącz OTG w ustawieniach telefonu.</string>
+    <string name="account_ledger_select_device_all_description">Jeśli używasz Ledger przez Bluetooth, włącz Bluetooth na obu urządzeniach i przyznaj Pezkuwi uprawnienia do Bluetooth i lokalizacji. Dla USB, włącz OTG w ustawieniach telefonu.</string>
     <string name="account_ledger_select_device_description">Proszę, włącz Bluetooth w ustawieniach telefonu i urządzeniu Ledger. Odblokuj urządzenie Ledger i otwórz aplikację %s.</string>
     <string name="account_ledger_select_device_title">Wybierz swoje urządzenie Ledger</string>
     <string name="account_ledger_select_device_usb_description">Proszę, włącz urządzenie Ledger. Odblokuj swoje urządzenie Ledger i otwórz aplikację %s.</string>
     <string name="account_migration_subtitle">Jesteś prawie na miejscu! 🎉\n Po prostu stuknij poniżej, aby ukończyć konfigurację i zacząć korzystać ze swoich kont bezproblemowo w Polkadot App i Pezkuwi Wallet</string>
-    <string name="account_migration_title">Witamy w Nova!</string>
+    <string name="account_migration_title">Witamy w Pezkuwi!</string>
     <string name="account_mnmonic_length_variants">fraza o długości 12, 15, 18, 21 lub 24 słowa</string>
     <string name="account_multisig">Multisig</string>
     <string name="account_multisig_group_label">Wspólna kontrola (multisig)</string>
@@ -178,7 +178,7 @@
     <string name="account_watch_only">tylko do przeglądania</string>
     <string name="account_welcome_hardware_wallet_subtitle">Polkadot Vault, Parity Signer lub Ledger</string>
     <string name="account_welcome_hardware_wallet_title">Sprzętowy portfel</string>
-    <string name="account_welcome_trust_wallet_subtitle">Używaj swoich kont Trust Wallet w Nova</string>
+    <string name="account_welcome_trust_wallet_subtitle">Używaj swoich kont Trust Wallet w Pezkuwi</string>
     <string name="account_welcome_trust_wallet_title">Trust Wallet</string>
     <string name="accounts_add_chain_account">Dodaj konto %s</string>
     <string name="accounts_add_wallet">Dodaj portfel</string>
@@ -199,13 +199,13 @@
     <string name="add_proxy_maximum_reached_error_title">Osiągnięto maksymalną liczbę proxy</string>
     <string name="added_networks_empty_placeholder">Dodane niestandardowe sieci\npojawią się tutaj</string>
     <string name="additional_payment_methods">+%d</string>
-    <string name="alert_nova_has_selected_ms_wallet">Nova automatycznie przełączyła się na Twój portfel multisig, abyś mógł zobaczyć oczekujące transakcje.</string>
+    <string name="alert_nova_has_selected_ms_wallet">Pezkuwi automatycznie przełączyła się na Twój portfel multisig, abyś mógł zobaczyć oczekujące transakcje.</string>
     <string name="appearance_colored_icon_title">Kolorowe</string>
     <string name="appearance_title">Wygląd</string>
     <string name="appearance_token_assets_title">ikony tokenów</string>
     <string name="appearance_white_icon_title">Białe</string>
-    <string name="asset_add_evm_token_already_exist_message">Wprowadzony adres kontraktu jest obecny w Nova jako token %s.</string>
-    <string name="asset_add_evm_token_already_exist_modifiable_message">Wprowadzony adres kontraktu jest obecny w Nova jako token %s. Czy na pewno chcesz go zmodyfikować?</string>
+    <string name="asset_add_evm_token_already_exist_message">Wprowadzony adres kontraktu jest obecny w Pezkuwi jako token %s.</string>
+    <string name="asset_add_evm_token_already_exist_modifiable_message">Wprowadzony adres kontraktu jest obecny w Pezkuwi jako token %s. Czy na pewno chcesz go zmodyfikować?</string>
     <string name="asset_add_evm_token_already_exist_title">Ten token już istnieje</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_message">Proszę upewnij się, że dostarczony adres url ma następującą formę: www.coingecko.com/en/coins/tether.</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_title">Nieprawidłowy link do CoinGecko</string>
@@ -419,7 +419,7 @@
     <string name="common_disconnect">Odłącz</string>
     <string name="common_do_not_close_app">Nie zamykaj aplikacji!</string>
     <string name="common_done">Gotowe</string>
-    <string name="common_dry_run_failed_message">Nova symuluje transakcję wcześniej, aby zapobiec błędom. Ta symulacja nie powiodła się. Spróbuj ponownie później lub z większą kwotą. Jeśli problem będzie się powtarzał, skontaktuj się z pomocą techniczną Pezkuwi Wallet w ustawieniach.</string>
+    <string name="common_dry_run_failed_message">Pezkuwi symuluje transakcję wcześniej, aby zapobiec błędom. Ta symulacja nie powiodła się. Spróbuj ponownie później lub z większą kwotą. Jeśli problem będzie się powtarzał, skontaktuj się z pomocą techniczną Pezkuwi Wallet w ustawieniach.</string>
     <string name="common_dry_run_failed_title">Symulacja transakcji nie powiodła się</string>
     <string name="common_edit">Edytuj</string>
     <string name="common_element_and_more_format" formatted="false">%s (+%s więcej)</string>
@@ -683,7 +683,7 @@
     <string name="crowdloan_main_description_v2_2_0">Wybierz parachainy do wniesienia swoich %s. Otrzymasz z powrotem swoje wniesione tokeny, a jeśli parachain wygra slot, otrzymasz nagrody po zakończeniu aukcji</string>
     <string name="crowdloan_missing_account_message">Musisz dodać konto %s do portfela, aby wnieść wkład</string>
     <string name="crowdloan_missing_bonus_action">Zastosuj bonus</string>
-    <string name="crowdloan_missing_bonus_message">Jeśli nie masz kodu referencyjnego, możesz zastosować kod referencyjny Nova, aby otrzymać bonus za swój wkład</string>
+    <string name="crowdloan_missing_bonus_message">Jeśli nie masz kodu referencyjnego, możesz zastosować kod referencyjny Pezkuwi, aby otrzymać bonus za swój wkład</string>
     <string name="crowdloan_missing_bonus_title">Nie zastosowano bonusu</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_message">Crowdloan Moonbeam obsługuje tylko konta kryptograficzne typu SR25519 lub ED25519. Proszę rozważyć użycie innego konta do wkładu</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_title">Nie można wnieść wkładu z tego konta</string>
@@ -704,7 +704,7 @@
     <string name="crowdloan_unlock_hint">Twoje %s tokeny zostaną zwrócone po okresie leasingu.</string>
     <string name="crowdloan_your_contributions">Twoje wkłady</string>
     <string name="crownloans_raised_format" formatted="false">Zebrano: %s z %s</string>
-    <string name="custom_network_already_exist_failure_message">Wprowadzony adres URL RPC jest obecny w Nova jako %s niestandardowa sieć. Czy na pewno chcesz ją zmodyfikować?</string>
+    <string name="custom_network_already_exist_failure_message">Wprowadzony adres URL RPC jest obecny w Pezkuwi jako %s niestandardowa sieć. Czy na pewno chcesz ją zmodyfikować?</string>
     <string name="custom_network_block_explorer_placeholder">https://networkscan.io</string>
     <string name="custom_network_block_explorer_title">Adres URL eksploratora bloków (Opcjonalny)</string>
     <string name="custom_network_chain_id_placeholder">012345</string>
@@ -761,7 +761,7 @@
     <string name="deep_linking_invalid_derivation_path">Nieprawidłowa ścieżka pochodna</string>
     <string name="deep_linking_invalid_mnemonic">Błędny format mnemonika</string>
     <string name="deep_linking_url_is_invalid">Nieprawidłowy format linku</string>
-    <string name="default_network_already_exist_failure_message">Wprowadzony adres URL RPC jest obecny w Nova jako %s sieć.</string>
+    <string name="default_network_already_exist_failure_message">Wprowadzony adres URL RPC jest obecny w Pezkuwi jako %s sieć.</string>
     <string name="default_notification_channel_name">Domyślny kanał powiadomień</string>
     <string name="delegate_more_tracks">+%d</string>
     <string name="delegate_search_hint">Szukaj po adresie lub nazwie</string>
@@ -784,7 +784,7 @@
     <string name="delegation_edit_delegation">Edytuj delegację</string>
     <string name="delegation_error_self_delegate_message">Nie możesz delegować do siebie, wybierz inny adres</string>
     <string name="delegation_error_self_delegate_title">Nie można delegować do siebie</string>
-    <string name="delegation_list_banner_description">Powiedz nam więcej o sobie, aby użytkownicy Nova lepiej Cię poznali</string>
+    <string name="delegation_list_banner_description">Powiedz nam więcej o sobie, aby użytkownicy Pezkuwi lepiej Cię poznali</string>
     <string name="delegation_list_banner_title">Czy jesteś Delegatem?</string>
     <string name="delegation_list_describe_yourself_action">Opisz siebie</string>
     <string name="delegation_multi_track_format">W %s tracks</string>
@@ -858,12 +858,12 @@
     <string name="gifts_assets_flow_title">Wybierz token do podarowania</string>
     <string name="gifts_claim_fee">Opłata sieciowa za odebranie</string>
     <string name="gifts_create">Stwórz prezent</string>
-    <string name="gifts_header_subtitle">Wysyłaj prezenty szybko, łatwo i bezpiecznie w Nova</string>
+    <string name="gifts_header_subtitle">Wysyłaj prezenty szybko, łatwo i bezpiecznie w Pezkuwi</string>
     <string name="gifts_header_title">Udostępniaj prezenty kryptograficzne każdemu, wszędzie</string>
     <string name="gifts_list_title">Stworzone przez Ciebie prezenty</string>
     <string name="gifts_network_flow_title">Wybierz sieć dla prezentu %s</string>
     <string name="gifts_placeholder_step_1">Wprowadź kwotę prezentu</string>
-    <string name="gifts_placeholder_step_2">%s jako link i zaproś kogoś do Nova</string>
+    <string name="gifts_placeholder_step_2">%s jako link i zaproś kogoś do Pezkuwi</string>
     <string name="gifts_placeholder_step_2_highlight">Udostępnij prezent bezpośrednio</string>
     <string name="gifts_placeholder_step_3">%s, a możesz odzyskać nieodebrane prezenty w każdej chwili z tego urządzenia</string>
     <string name="gifts_placeholder_step_3_highlight">Prezent jest dostępny natychmiastowo</string>
@@ -949,7 +949,7 @@
     <string name="ledger_verify_address_message_confirm_button">Naciśnij przycisk zatwierdzenia na swoim %s, aby zatwierdzić adres</string>
     <string name="ledger_verify_addresses_message_both_buttons">Naciśnij oba przyciski na swoim %s, aby zatwierdzić adresy</string>
     <string name="ledger_verify_addresses_message_confirm_button">Naciśnij przycisk potwierdzenia na swoim %s, aby zatwierdzić adresy</string>
-    <string name="ledger_wallet_details_description">Ten portfel jest sparowany z Ledger. Nova pomoże ci utworzyć dowolne operacje, jakie chcesz, a ty będziesz musiał je podpisać za pomocą Ledger</string>
+    <string name="ledger_wallet_details_description">Ten portfel jest sparowany z Ledger. Pezkuwi pomoże ci utworzyć dowolne operacje, jakie chcesz, a ty będziesz musiał je podpisać za pomocą Ledger</string>
     <string name="ledher_import_select_address_title">Wybierz konto do dodania do portfela</string>
     <string name="loading_network_info">Ładowanie informacji o sieci...</string>
     <string name="loading_transaction_details">Ładowanie szczegółów transakcji…</string>
@@ -1082,7 +1082,7 @@
     <string name="nft_owned_by">W posiadaniu</string>
     <string name="nft_price_not_listed">Bez ceny</string>
     <string name="nft_your_nfts">Twoje NFT</string>
-    <string name="no_ms_accounts_found_dialog_message">Nie dodałeś ani nie wybrałeś żadnych portfeli multisig w Nova. Dodaj i wybierz przynajmniej jeden, aby otrzymywać powiadomienia push multisig.</string>
+    <string name="no_ms_accounts_found_dialog_message">Nie dodałeś ani nie wybrałeś żadnych portfeli multisig w Pezkuwi. Dodaj i wybierz przynajmniej jeden, aby otrzymywać powiadomienia push multisig.</string>
     <string name="no_ms_accounts_found_dialog_title">Brak portfeli multisig</string>
     <string name="node_already_exist_failure_message">Wprowadzony URL już istnieje jako węzeł \"%s\".</string>
     <string name="node_already_exist_failure_title">Ten węzeł już istnieje</string>
@@ -1188,7 +1188,7 @@
     <string name="push_referendum_rejected_title">❌ Referendum odrzucone!</string>
     <string name="push_referendum_status_changed_title">🗳️ Status referendum zmieniony</string>
     <string name="push_referendum_to_status_changed_message" formatted="false">%s Referendum #%s zmieniło status na %s</string>
-    <string name="push_settings_announcements">Ogłoszenia Nova</string>
+    <string name="push_settings_announcements">Ogłoszenia Pezkuwi</string>
     <string name="push_settings_balances">Saldo</string>
     <string name="push_settings_enable">Włącz powiadomienia</string>
     <string name="push_settings_multisig_operations">Transakcje multisig</string>
@@ -1242,7 +1242,7 @@
     <string name="referendum_abstain_vote_invalid_conviction_title">Aktualizacja conviction</string>
     <string name="referendum_abstain_voters_title">Głosy wstrzymujące się</string>
     <string name="referendum_aye_format">Za: %s</string>
-    <string name="referendum_dapp_list_title">Użyj przeglądarki Nova DApp</string>
+    <string name="referendum_dapp_list_title">Użyj przeglądarki Pezkuwi DApp</string>
     <string name="referendum_description_fallback">Tylko wnioskodawca może edytować ten opis i tytuł. Jeśli posiadasz konto wnioskodawcy, odwiedź Polkassembly i uzupełnij informacje o swoim wniosku</string>
     <string name="referendum_details_requested_amount">Żądana kwota</string>
     <string name="referendum_details_timeline">Oś czasu</string>
@@ -1373,7 +1373,7 @@
     <string name="select_delegation_tracks_unavailable_tracks">Niedostępne trasy</string>
     <string name="select_gift_amount_title">Wyślij prezent na</string>
     <string name="select_ledger_grant_permissions">Włącz Bluetooth i przyznaj uprawnienia</string>
-    <string name="select_ledger_location_enable_request_message">Nova wymaga włączenia lokalizacji, aby móc przeprowadzać skanowanie Bluetooth w celu znalezienia urządzenia Ledger</string>
+    <string name="select_ledger_location_enable_request_message">Pezkuwi wymaga włączenia lokalizacji, aby móc przeprowadzać skanowanie Bluetooth w celu znalezienia urządzenia Ledger</string>
     <string name="select_ledger_location_enable_request_title">Proszę włączyć geolokalizację w ustawieniach urządzenia</string>
     <string name="select_network_title">Wybierz sieć</string>
     <string name="select_token_to_vote">Wybierz token do głosowania</string>
@@ -1469,7 +1469,7 @@
     <string name="staking_custom_validators_settings_sort_apr">Szacowane nagrody (%% APR)</string>
     <string name="staking_custom_validators_settings_sort_apy">Szacowane nagrody (%% APY)</string>
     <string name="staking_custom_validators_update_list">Zaktualizuj swoją listę</string>
-    <string name="staking_dashboard_browser_stake_header">Staking przez przeglądarkę Nova DApp</string>
+    <string name="staking_dashboard_browser_stake_header">Staking przez przeglądarkę Pezkuwi DApp</string>
     <string name="staking_dashboard_more_options">Więcej opcji stakingu</string>
     <string name="staking_dashboard_no_stake_header">Stake i zdobywaj nagrody</string>
     <string name="staking_details_migration_alert_title">%1$s staking jest dostępny na %2$s od %3$s</string>
@@ -1487,7 +1487,7 @@
     <string name="staking_hint_reward_bond_more_v2_2_0">Otrzymasz zwiększone nagrody od następnej ery</string>
     <string name="staking_hint_rewards_format">ZaStake\'owane tokeny generują nagrody każdą erę (%s).</string>
     <string name="staking_hint_rewards_format_v2_2_0">Tokeny w stake generują nagrody każdą erę (%s)</string>
-    <string name="staking_hint_unbond_kills_stash">Nova wallet zmieni cel nagród na Twoje konto, aby uniknąć resztek stake.</string>
+    <string name="staking_hint_unbond_kills_stash">Pezkuwi wallet zmieni cel nagród na Twoje konto, aby uniknąć resztek stake.</string>
     <string name="staking_hint_unstake_format">Jeśli chcesz unstake tokeny, będziesz musiał poczekać na okres unstaking (%s).</string>
     <string name="staking_hint_unstake_format_v2_2_0">Aby unstake tokeny, będziesz musiał poczekać na okres unstaking (%s)</string>
     <string name="staking_info">Informacje o stake</string>
@@ -1749,7 +1749,7 @@
     <string name="start_staking_fragment_min_stake_condition_duration">za %s</string>
     <string name="start_staking_fragment_min_stake_condition_no_min_stake">Stake w dowolnym momencie. Twój stake będzie aktywnie zarabiać nagrody %s</string>
     <string name="start_staking_fragment_more_info">Dowiedz się więcej o\n%1$s stakowaniu na %2$s</string>
-    <string name="start_staking_fragment_more_info_clicable_part">Nova Wiki</string>
+    <string name="start_staking_fragment_more_info_clicable_part">Pezkuwi Wiki</string>
     <string name="start_staking_fragment_reward_frequency_condition_automatic_and_manual">Nagrody naliczają się %1$s. Stake na ponad %2$s dla automatycznej wypłaty nagród, w przeciwnym razie musisz odbierać nagrody ręcznie</string>
     <string name="start_staking_fragment_reward_frequency_condition_duration">co %s</string>
     <string name="start_staking_fragment_reward_frequency_condition_fallback">Nagrody naliczają się %s</string>
@@ -1819,7 +1819,7 @@
     <string name="swap_main_settings_asset_out_not_selecting_button_state">Wybierz token do otrzymania</string>
     <string name="swap_main_settings_enter_amount_disabled_button_state">Wprowadź kwotę</string>
     <string name="swap_main_settings_wrong_amount_disabled_button_state">Wprowadź inną kwotę</string>
-    <string name="swap_minimum_balance_buy_in_alert" formatted="false">Aby zapłacić opłatę sieciową za pomocą %s, Nova automatycznie zamieni %s na %s, aby utrzymać minimalne saldo %s na twoim koncie.</string>
+    <string name="swap_minimum_balance_buy_in_alert" formatted="false">Aby zapłacić opłatę sieciową za pomocą %s, Pezkuwi automatycznie zamieni %s na %s, aby utrzymać minimalne saldo %s na twoim koncie.</string>
     <string name="swap_network_fee_description">Opłaty sieciowe pobierane przez blockchain za przetwarzanie i walidację dowolnych transakcji. Mogą się różnić w zależności od warunków sieci lub szybkości transakcji.</string>
     <string name="swap_network_flow_title">Wybierz sieć do zamiany %s</string>
     <string name="swap_not_enought_liquidity_failure">W puli brakuje płynności do wymiany</string>
@@ -2035,14 +2035,14 @@
     <string name="wallet_transfer_details_title">Szczegóły transferu</string>
     <string name="web3names_address_with_description" formatted="false">%s (%s)</string>
     <string name="web3names_identifiers_sheet_title" formatted="false">%s adresy dla %s</string>
-    <string name="web3names_integrity_check_failed_message">Nova wykryła problemy z integralnością informacji o adresach %1$s. Proszę skontaktować się z właścicielem %1$s, aby rozwiązać problemy z integralnością.</string>
+    <string name="web3names_integrity_check_failed_message">Pezkuwi wykryła problemy z integralnością informacji o adresach %1$s. Proszę skontaktować się z właścicielem %1$s, aby rozwiązać problemy z integralnością.</string>
     <string name="web3names_integrity_check_failed_title">Błąd sprawdzania integralności</string>
     <string name="web3names_invalid_recepient_title">Nieprawidłowy odbiorca</string>
     <string name="web3names_no_valid_recepient_found_message" formatted="false">Nie znaleziono ważnego adresu dla %s w sieci %s</string>
     <string name="web3names_recepient_not_found_message">%s nie znaleziono</string>
     <string name="web3names_service_unavailable_message">%1$s usługi w3n są niedostępne. Spróbuj ponownie później lub wprowadź adres %1$s ręcznie</string>
     <string name="web3names_service_unavailable_title">Błąd rozwiązywania w3n</string>
-    <string name="web3names_unsupported_asset_message">Nova nie może rozwiązać kodu dla tokena %s</string>
+    <string name="web3names_unsupported_asset_message">Pezkuwi nie może rozwiązać kodu dla tokena %s</string>
     <string name="web3names_unsupported_asset_title">Token %s jest jeszcze nieobsługiwany</string>
     <string name="yesterday">Wczoraj</string>
     <string name="yield_boost_already_enabled_message">Yield Boost zostanie wyłączony dla obecnych kolatorów. Nowy kolator: %s</string>

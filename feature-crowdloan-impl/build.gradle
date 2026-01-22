@@ -28,7 +28,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'io.novafoundation.nova.feature_crowdloan_impl'
+    namespace 'io.pezkuwichain.wallet.feature_crowdloan_impl'
 
     buildFeatures {
         viewBinding true

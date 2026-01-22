@@ -289,7 +289,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="32dp"
             android:textColor="@color/text_secondary"
-            tools:text="Nova Wallet v2.0" />
+            tools:text="Pezkuwi Wallet v2.0" />
     </LinearLayout>
 
 </ScrollView>

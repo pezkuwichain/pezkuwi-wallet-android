@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'io.novafoundation.nova.feature_account_migration'
+    namespace 'io.pezkuwichain.wallet.feature_account_migration'
     compileSdk rootProject.compileSdkVersion
 
     

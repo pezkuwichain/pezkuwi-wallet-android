@@ -21,7 +21,7 @@ android {
             buildConfigField "String", "NOTIFICATION_DETAILS_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-android-releases/master/updates/changelogs/release/\""
         }
     }
-    namespace 'io.novafoundation.nova.feature_versions_impl'
+    namespace 'io.pezkuwichain.wallet.feature_versions_impl'
 
     buildFeatures {
         viewBinding true

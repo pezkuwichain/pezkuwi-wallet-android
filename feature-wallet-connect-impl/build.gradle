@@ -3,7 +3,7 @@ apply from: '../tests.gradle'
 apply from: "../scripts/secrets.gradle"
 
 android {
-    namespace 'io.novafoundation.nova.feature_wallet_connect_impl'
+    namespace 'io.pezkuwichain.wallet.feature_wallet_connect_impl'
 
 
     defaultConfig {

@@ -44,7 +44,7 @@
             app:layout_constraintStart_toEndOf="@+id/itemDelegateIcon"
             app:layout_constraintTop_toTopOf="@+id/itemDelegateIcon"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Novasama Technologies" />
+            tools:text="Dijital Kurdistan" />
 
         <io.novafoundation.nova.feature_governance_impl.presentation.view.NovaChipView
             android:id="@+id/itemDelegateType"

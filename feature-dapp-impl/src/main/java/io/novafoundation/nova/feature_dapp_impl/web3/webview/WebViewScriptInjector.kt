@@ -4,7 +4,7 @@ import android.webkit.WebView
 import androidx.annotation.RawRes
 import io.novafoundation.nova.common.resources.ResourceManager
 
-private const val JAVASCRIPT_INTERFACE_PREFIX = "Nova"
+private const val JAVASCRIPT_INTERFACE_PREFIX = "Pezkuwi"
 
 class WebViewScriptInjector(
     private val resourceManager: ResourceManager

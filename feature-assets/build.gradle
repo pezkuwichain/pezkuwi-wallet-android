@@ -18,7 +18,7 @@ android {
         }
     }
     
-    namespace 'io.novafoundation.nova.feature_assets'
+    namespace 'io.pezkuwichain.wallet.feature_assets'
 
     packagingOptions {
         resources.excludes.add("META-INF/NOTICE.md")

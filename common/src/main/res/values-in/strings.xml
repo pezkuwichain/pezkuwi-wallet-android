@@ -38,9 +38,9 @@
     <string name="account_delete_confirmation_title">Lupakan dompet?</string>
     <string name="account_derivation_path_ethereum_invalid_title">Jalur derivasi Ethereum tidak valid</string>
     <string name="account_derivation_path_substrate_invalid_title">Jalur derivasi Substrate tidak valid</string>
-    <string name="account_details_parity_signer_alert">Dompet ini dipasangkan dengan %1$s. Nova akan membantu Anda melakukan operasi apa pun yang Anda inginkan, dan Anda akan diminta untuk menandatanganinya menggunakan %1$s</string>
+    <string name="account_details_parity_signer_alert">Dompet ini dipasangkan dengan %1$s. Pezkuwi akan membantu Anda melakukan operasi apa pun yang Anda inginkan, dan Anda akan diminta untuk menandatanganinya menggunakan %1$s</string>
     <string name="account_details_parity_signer_not_supported">Tidak didukung oleh %s</string>
-    <string name="account_details_watch_only_alert">Ini adalah dompet hanya untuk ditonton, Nova dapat menunjukkan saldo dan informasi lainnya, tetapi Anda tidak dapat melakukan transaksi apa pun dengan dompet ini</string>
+    <string name="account_details_watch_only_alert">Ini adalah dompet hanya untuk ditonton, Pezkuwi dapat menunjukkan saldo dan informasi lainnya, tetapi Anda tidak dapat melakukan transaksi apa pun dengan dompet ini</string>
     <string name="account_enter_wallet_nickname">Masukkan nama panggilan dompet...</string>
     <string name="account_error_try_another_one">Silakan, coba yang lain.</string>
     <string name="account_ethereum_crypto_type">Jenis kripto pasangan kunci Ethereum</string>
@@ -64,7 +64,7 @@
     <string name="account_import_private_key">Impor kunci pribadi</string>
     <string name="account_import_seed_hint">0xAB</string>
     <string name="account_import_seed_title">Masukkan seed mentah Anda</string>
-    <string name="account_import_wallet_subtitle">Nova kompatibel dengan semua aplikasi</string>
+    <string name="account_import_wallet_subtitle">Pezkuwi kompatibel dengan semua aplikasi</string>
     <string name="account_import_wallet_title">Impor dompet</string>
     <string name="account_info_title">Akun</string>
     <string name="account_invalid_derivation_path_message_v2_2_0">Jalur derivasi Anda mengandung simbol yang tidak didukung atau memiliki struktur yang salah</string>
@@ -98,12 +98,12 @@
     <string name="account_ledger_migration_generic">Polkadot</string>
     <string name="account_ledger_nano_x">Ledger Nano X</string>
     <string name="account_ledger_nano_x_legacy">Ledger Legacy</string>
-    <string name="account_ledger_select_device_all_description">Jika menggunakan Ledger via Bluetooth, aktifkan Bluetooth pada kedua perangkat dan berikan izin Bluetooth dan lokasi ke Nova. Untuk USB, aktifkan OTG di pengaturan ponsel Anda.</string>
+    <string name="account_ledger_select_device_all_description">Jika menggunakan Ledger via Bluetooth, aktifkan Bluetooth pada kedua perangkat dan berikan izin Bluetooth dan lokasi ke Pezkuwi. Untuk USB, aktifkan OTG di pengaturan ponsel Anda.</string>
     <string name="account_ledger_select_device_description">Harap, aktifkan Bluetooth dalam pengaturan ponsel Anda dan perangkat Ledger. Buka perangkat Ledger Anda dan buka aplikasi %s.</string>
     <string name="account_ledger_select_device_title">Pilih Perangkat Ledger Anda</string>
     <string name="account_ledger_select_device_usb_description">Silakan, aktifkan perangkat Ledger. Buka kunci perangkat Ledger Anda dan buka aplikasi %s.</string>
     <string name="account_migration_subtitle">Anda hampir selesai! 🎉\n Cukup ketuk di bawah untuk menyelesaikan pengaturan dan mulai menggunakan akun Anda dengan lancar di Aplikasi Polkadot dan Pezkuwi Wallet</string>
-    <string name="account_migration_title">Selamat datang di Nova!</string>
+    <string name="account_migration_title">Selamat datang di Pezkuwi!</string>
     <string name="account_mnmonic_length_variants">Frasa 12, 15, 18, 21 atau 24 kata</string>
     <string name="account_multisig">Multisig</string>
     <string name="account_multisig_group_label">Kontrol bersama (multisig)</string>
@@ -178,7 +178,7 @@
     <string name="account_watch_only">hanya untuk ditonton</string>
     <string name="account_welcome_hardware_wallet_subtitle">Polkadot Vault, Parity Signer, atau Ledger</string>
     <string name="account_welcome_hardware_wallet_title">Dompet hardware</string>
-    <string name="account_welcome_trust_wallet_subtitle">Gunakan akun Trust Wallet Anda di Nova</string>
+    <string name="account_welcome_trust_wallet_subtitle">Gunakan akun Trust Wallet Anda di Pezkuwi</string>
     <string name="account_welcome_trust_wallet_title">Trust Wallet</string>
     <string name="accounts_add_chain_account">Tambah akun %s</string>
     <string name="accounts_add_wallet">Tambah dompet</string>
@@ -199,13 +199,13 @@
     <string name="add_proxy_maximum_reached_error_title">Jumlah maksimum proxy telah tercapai</string>
     <string name="added_networks_empty_placeholder">Jaringan kustom yang ditambahkan\nakan muncul di sini</string>
     <string name="additional_payment_methods">+%d</string>
-    <string name="alert_nova_has_selected_ms_wallet">Nova telah secara otomatis beralih ke dompet multisig Anda sehingga Anda dapat melihat transaksi yang tertunda.</string>
+    <string name="alert_nova_has_selected_ms_wallet">Pezkuwi telah secara otomatis beralih ke dompet multisig Anda sehingga Anda dapat melihat transaksi yang tertunda.</string>
     <string name="appearance_colored_icon_title">Berwarna</string>
     <string name="appearance_title">Penampilan</string>
     <string name="appearance_token_assets_title">ikon token</string>
     <string name="appearance_white_icon_title">Putih</string>
-    <string name="asset_add_evm_token_already_exist_message">Alamat kontrak yang dimasukkan ada dalam Nova sebagai token %s.</string>
-    <string name="asset_add_evm_token_already_exist_modifiable_message">Alamat kontrak yang dimasukkan ada dalam Nova sebagai token %s. Apakah Anda yakin ingin memodifikasinya?</string>
+    <string name="asset_add_evm_token_already_exist_message">Alamat kontrak yang dimasukkan ada dalam Pezkuwi sebagai token %s.</string>
+    <string name="asset_add_evm_token_already_exist_modifiable_message">Alamat kontrak yang dimasukkan ada dalam Pezkuwi sebagai token %s. Apakah Anda yakin ingin memodifikasinya?</string>
     <string name="asset_add_evm_token_already_exist_title">Token ini sudah ada</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_message">Pastikan URL yang disediakan memiliki bentuk berikut: www.coingecko.com/id/coins/tether.</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_title">Tautan CoinGecko Tidak Valid</string>
@@ -419,7 +419,7 @@
     <string name="common_disconnect">Putus</string>
     <string name="common_do_not_close_app">Jangan tutup aplikasinya!</string>
     <string name="common_done">Selesai</string>
-    <string name="common_dry_run_failed_message">Nova mensimulasikan transaksi sebelumnya untuk mencegah kesalahan. Simulasi ini tidak berhasil. Coba lagi nanti atau dengan jumlah yang lebih tinggi. Jika masalah berlanjut, silakan hubungi Dukungan Pezkuwi Wallet di Pengaturan.</string>
+    <string name="common_dry_run_failed_message">Pezkuwi mensimulasikan transaksi sebelumnya untuk mencegah kesalahan. Simulasi ini tidak berhasil. Coba lagi nanti atau dengan jumlah yang lebih tinggi. Jika masalah berlanjut, silakan hubungi Dukungan Pezkuwi Wallet di Pengaturan.</string>
     <string name="common_dry_run_failed_title">Simulasi transaksi gagal</string>
     <string name="common_edit">Edit</string>
     <string name="common_element_and_more_format" formatted="false">%s (+%s lainnya)</string>
@@ -665,7 +665,7 @@
     <string name="crowdloan_main_description_v2_2_0">Pilih parachains untuk berkontribusi %s Anda. Anda akan mendapatkan kembali token yang Anda kontribusikan, dan jika parachain menang, Anda akan menerima imbalan setelah akhir lelang</string>
     <string name="crowdloan_missing_account_message">Anda perlu menambahkan akun %s ke dompet untuk berkontribusi</string>
     <string name="crowdloan_missing_bonus_action">Terapkan bonus</string>
-    <string name="crowdloan_missing_bonus_message">Jika Anda tidak memiliki kode referral, Anda dapat menggunakan kode referral Nova untuk menerima bonus untuk kontribusi Anda</string>
+    <string name="crowdloan_missing_bonus_message">Jika Anda tidak memiliki kode referral, Anda dapat menggunakan kode referral Pezkuwi untuk menerima bonus untuk kontribusi Anda</string>
     <string name="crowdloan_missing_bonus_title">Anda belum menerapkan bonus</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_message">Crowdloan Moonbeam hanya mendukung akun tipe kripto SR25519 atau ED25519. Pertimbangkan untuk menggunakan akun lain untuk kontribusi</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_title">Tidak dapat berkontribusi dengan akun ini</string>
@@ -686,7 +686,7 @@
     <string name="crowdloan_unlock_hint">Token %s Anda akan dikembalikan setelah periode penyewaan berakhir.</string>
     <string name="crowdloan_your_contributions">Kontribusi Anda</string>
     <string name="crownloans_raised_format" formatted="false">Terkumpul: %s dari %s</string>
-    <string name="custom_network_already_exist_failure_message">URL RPC yang dimasukkan sudah ada di Nova sebagai jaringan kustom %s. Apakah Anda yakin ingin mengubahnya?</string>
+    <string name="custom_network_already_exist_failure_message">URL RPC yang dimasukkan sudah ada di Pezkuwi sebagai jaringan kustom %s. Apakah Anda yakin ingin mengubahnya?</string>
     <string name="custom_network_block_explorer_placeholder">https://networkscan.io</string>
     <string name="custom_network_block_explorer_title">URL Block explorer (Opsional)</string>
     <string name="custom_network_chain_id_placeholder">012345</string>
@@ -743,7 +743,7 @@
     <string name="deep_linking_invalid_derivation_path">Format derivasi tidak valid</string>
     <string name="deep_linking_invalid_mnemonic">Mnemonic tidak valid</string>
     <string name="deep_linking_url_is_invalid">URL tidak valid</string>
-    <string name="default_network_already_exist_failure_message">URL RPC yang dimasukkan sudah ada di Nova sebagai jaringan %s.</string>
+    <string name="default_network_already_exist_failure_message">URL RPC yang dimasukkan sudah ada di Pezkuwi sebagai jaringan %s.</string>
     <string name="default_notification_channel_name">Saluran Notifikasi Default</string>
     <string name="delegate_more_tracks">+%d</string>
     <string name="delegate_search_hint">Cari berdasarkan alamat atau nama</string>
@@ -766,7 +766,7 @@
     <string name="delegation_edit_delegation">Edit delegasi</string>
     <string name="delegation_error_self_delegate_message">Anda tidak dapat mendelagasikan kepada diri sendiri, harap pilih alamat yang berbeda</string>
     <string name="delegation_error_self_delegate_title">Tidak dapat melakukan delegasi kepada diri sendiri</string>
-    <string name="delegation_list_banner_description">Beritahu lebih banyak tentang diri Anda agar pengguna Nova lebih mengenal Anda</string>
+    <string name="delegation_list_banner_description">Beritahu lebih banyak tentang diri Anda agar pengguna Pezkuwi lebih mengenal Anda</string>
     <string name="delegation_list_banner_title">Apakah Anda seorang Delegasi?</string>
     <string name="delegation_list_describe_yourself_action">Deskripsikan dirimu</string>
     <string name="delegation_multi_track_format">Di seluruh %s trek</string>
@@ -840,12 +840,12 @@
     <string name="gifts_assets_flow_title">Pilih token untuk hadiah</string>
     <string name="gifts_claim_fee">Biaya jaringan pada klaim</string>
     <string name="gifts_create">Buat Hadiah</string>
-    <string name="gifts_header_subtitle">Kirim hadiah dengan cepat, mudah, dan aman di Nova</string>
+    <string name="gifts_header_subtitle">Kirim hadiah dengan cepat, mudah, dan aman di Pezkuwi</string>
     <string name="gifts_header_title">Bagikan Hadiah Kripto kepada Siapa Saja, Di Mana Saja</string>
     <string name="gifts_list_title">Hadiah yang Anda buat</string>
     <string name="gifts_network_flow_title">Pilih jaringan untuk hadiah %s</string>
     <string name="gifts_placeholder_step_1">Masukkan jumlah hadiah Anda</string>
-    <string name="gifts_placeholder_step_2">%s sebagai link dan undang siapa saja ke Nova</string>
+    <string name="gifts_placeholder_step_2">%s sebagai link dan undang siapa saja ke Pezkuwi</string>
     <string name="gifts_placeholder_step_2_highlight">Bagikan hadiah secara langsung</string>
     <string name="gifts_placeholder_step_3">%s, dan Anda dapat mengembalikan hadiah yang tidak diklaim kapan saja dari perangkat ini</string>
     <string name="gifts_placeholder_step_3_highlight">Hadiah tersedia seketika</string>
@@ -928,7 +928,7 @@
     <string name="ledger_verify_address_message_confirm_button">Tekan tombol konfirmasi di %s Anda untuk menyetujui alamat</string>
     <string name="ledger_verify_addresses_message_both_buttons">Tekan kedua tombol pada %s Anda untuk menyetujui alamat</string>
     <string name="ledger_verify_addresses_message_confirm_button">Tekan tombol konfirmasi pada %s Anda untuk menyetujui alamat</string>
-    <string name="ledger_wallet_details_description">Dompet ini dipasangkan dengan Ledger. Nova akan membantu Anda melakukan operasi apa pun yang Anda inginkan, dan Anda akan diminta untuk menandatanganinya menggunakan Ledger</string>
+    <string name="ledger_wallet_details_description">Dompet ini dipasangkan dengan Ledger. Pezkuwi akan membantu Anda melakukan operasi apa pun yang Anda inginkan, dan Anda akan diminta untuk menandatanganinya menggunakan Ledger</string>
     <string name="ledher_import_select_address_title">Pilih akun untuk ditambahkan ke dompet</string>
     <string name="loading_network_info">Memuat info jaringan...</string>
     <string name="loading_transaction_details">Memuat detail transaksi…</string>
@@ -1058,7 +1058,7 @@
     <string name="nft_owned_by">Dimiliki oleh</string>
     <string name="nft_price_not_listed">Tidak terdaftar</string>
     <string name="nft_your_nfts">NFT Anda</string>
-    <string name="no_ms_accounts_found_dialog_message">Anda belum menambahkan atau memilih dompet multisig di Nova. Tambahkan dan pilih setidaknya satu untuk menerima pemberitahuan dorong multisig.</string>
+    <string name="no_ms_accounts_found_dialog_message">Anda belum menambahkan atau memilih dompet multisig di Pezkuwi. Tambahkan dan pilih setidaknya satu untuk menerima pemberitahuan dorong multisig.</string>
     <string name="no_ms_accounts_found_dialog_title">Tidak ada dompet multisig</string>
     <string name="node_already_exist_failure_message">URL yang Anda masukkan sudah ada sebagai Node \"%s\".</string>
     <string name="node_already_exist_failure_title">Node ini sudah ada</string>
@@ -1164,7 +1164,7 @@
     <string name="push_referendum_rejected_title">❌ Referendum ditolak!</string>
     <string name="push_referendum_status_changed_title">🗳️ Status Referendum berubah</string>
     <string name="push_referendum_to_status_changed_message" formatted="false">%s Status Referendum #%s berubah menjadi %s</string>
-    <string name="push_settings_announcements">Pengumuman Nova</string>
+    <string name="push_settings_announcements">Pengumuman Pezkuwi</string>
     <string name="push_settings_balances">Saldo</string>
     <string name="push_settings_enable">Aktifkan pemberitahuan</string>
     <string name="push_settings_multisig_operations">Transaksi multisig</string>
@@ -1218,7 +1218,7 @@
     <string name="referendum_abstain_vote_invalid_conviction_title">Pembaruan keyakinan</string>
     <string name="referendum_abstain_voters_title">Suara abstain</string>
     <string name="referendum_aye_format">Ya: %s</string>
-    <string name="referendum_dapp_list_title">Gunakan browser Nova DApp</string>
+    <string name="referendum_dapp_list_title">Gunakan browser Pezkuwi DApp</string>
     <string name="referendum_description_fallback">Hanya penyarankan yang dapat mengedit deskripsi dan judul ini. Jika Anda memiliki akun penyarankan, kunjungi Polkassembly dan isi informasi tentang proposal Anda</string>
     <string name="referendum_details_requested_amount">Jumlah yang diminta</string>
     <string name="referendum_details_timeline">Jadwal waktu</string>
@@ -1346,7 +1346,7 @@
     <string name="select_delegation_tracks_unavailable_tracks">Unavailable tracks</string>
     <string name="select_gift_amount_title">Kirim hadiah pada</string>
     <string name="select_ledger_grant_permissions">Aktifkan Bluetooth &amp; Berikan Izin</string>
-    <string name="select_ledger_location_enable_request_message">Nova needs location to be enabled to be able to perform bluetooth scanning to find your Ledger device</string>
+    <string name="select_ledger_location_enable_request_message">Pezkuwi needs location to be enabled to be able to perform bluetooth scanning to find your Ledger device</string>
     <string name="select_ledger_location_enable_request_title">Please enable geo-location in device settings</string>
     <string name="select_network_title">Pilih jaringan</string>
     <string name="select_token_to_vote">Pilih token untuk memberikan suara</string>
@@ -1442,7 +1442,7 @@
     <string name="staking_custom_validators_settings_sort_apr">Perkiraan hadiah (%% APR)</string>
     <string name="staking_custom_validators_settings_sort_apy">Perkiraan hadiah (%% APY)</string>
     <string name="staking_custom_validators_update_list">Perbarui daftar Anda</string>
-    <string name="staking_dashboard_browser_stake_header">Staking melalui browser Nova DApp</string>
+    <string name="staking_dashboard_browser_stake_header">Staking melalui browser Pezkuwi DApp</string>
     <string name="staking_dashboard_more_options">Lebih banyak pilihan staking</string>
     <string name="staking_dashboard_no_stake_header">Stake dan dapatkan hadiah</string>
     <string name="staking_details_migration_alert_title">Staking %1$s aktif di %2$s mulai %3$s</string>
@@ -1460,7 +1460,7 @@
     <string name="staking_hint_reward_bond_more_v2_2_0">Anda akan mendapatkan hadiah yang lebih besar mulai dari era berikutnya</string>
     <string name="staking_hint_rewards_format">Token yang dipertaruhkan menghasilkan hadiah setiap era (%s).</string>
     <string name="staking_hint_rewards_format_v2_2_0">Token yang di-stake menghasilkan reward setiap era (%s)</string>
-    <string name="staking_hint_unbond_kills_stash">Dompet Nova akan mengubah tujuan reward\nsaat ke akun Anda untuk menghindari sisa stake.</string>
+    <string name="staking_hint_unbond_kills_stash">Dompet Pezkuwi akan mengubah tujuan reward\nsaat ke akun Anda untuk menghindari sisa stake.</string>
     <string name="staking_hint_unstake_format">Jika Anda ingin melepas token, Anda harus menunggu periode melepas (%s).</string>
     <string name="staking_hint_unstake_format_v2_2_0">Untuk melepas token, Anda harus menunggu periode melepas (%s)</string>
     <string name="staking_info">Informasi Staking</string>
@@ -1716,7 +1716,7 @@
     <string name="start_staking_fragment_min_stake_condition_duration">dalam %s</string>
     <string name="start_staking_fragment_min_stake_condition_no_min_stake">Stake kapan saja. Stake Anda akan aktif menghasilkan imbalan %s</string>
     <string name="start_staking_fragment_more_info">Temukan informasi lebih lanjut tentang\n%1$s staking di %2$s</string>
-    <string name="start_staking_fragment_more_info_clicable_part">Nova Wiki</string>
+    <string name="start_staking_fragment_more_info_clicable_part">Pezkuwi Wiki</string>
     <string name="start_staking_fragment_reward_frequency_condition_automatic_and_manual">Imbalan bertambah %1$s. Stake di atas %2$s untuk pembayaran imbalan otomatis, jika tidak Anda perlu menuntut imbalan secara manual</string>
     <string name="start_staking_fragment_reward_frequency_condition_duration">setiap %s</string>
     <string name="start_staking_fragment_reward_frequency_condition_fallback">Imbalan bertambah %s</string>
@@ -1783,7 +1783,7 @@
     <string name="swap_main_settings_asset_out_not_selecting_button_state">Pilih token untuk menerima</string>
     <string name="swap_main_settings_enter_amount_disabled_button_state">Masukkan jumlah</string>
     <string name="swap_main_settings_wrong_amount_disabled_button_state">Masukkan jumlah lain</string>
-    <string name="swap_minimum_balance_buy_in_alert" formatted="false">Untuk membayar biaya jaringan dengan %s, Nova secara otomatis akan menukar %s dengan %s untuk mempertahankan saldo minimum %s akun Anda.</string>
+    <string name="swap_minimum_balance_buy_in_alert" formatted="false">Untuk membayar biaya jaringan dengan %s, Pezkuwi secara otomatis akan menukar %s dengan %s untuk mempertahankan saldo minimum %s akun Anda.</string>
     <string name="swap_network_fee_description">Biaya jaringan yang dibebankan oleh blockchain untuk memproses dan memvalidasi transaksi. Bisa bervariasi tergantung pada kondisi jaringan atau kecepatan transaksi.</string>
     <string name="swap_network_flow_title">Pilih jaringan untuk menukar %s</string>
     <string name="swap_not_enought_liquidity_failure">Pool tidak memiliki likuiditas yang cukup untuk swap</string>
@@ -1993,14 +1993,14 @@
     <string name="wallet_transfer_details_title">Rincian Transfer</string>
     <string name="web3names_address_with_description" formatted="false">%s (%s)</string>
     <string name="web3names_identifiers_sheet_title" formatted="false">%s alamat untuk %s</string>
-    <string name="web3names_integrity_check_failed_message">Nova mendeteksi masalah dengan integritas informasi tentang alamat %1$s. Harap hubungi pemilik %1$s untuk menyelesaikan masalah integritas.</string>
+    <string name="web3names_integrity_check_failed_message">Pezkuwi mendeteksi masalah dengan integritas informasi tentang alamat %1$s. Harap hubungi pemilik %1$s untuk menyelesaikan masalah integritas.</string>
     <string name="web3names_integrity_check_failed_title">Pemeriksaan Integritas Gagal</string>
     <string name="web3names_invalid_recepient_title">Penerima Tidak Valid</string>
     <string name="web3names_no_valid_recepient_found_message" formatted="false">Tidak ada alamat yang valid ditemukan untuk %s di jaringan %s</string>
     <string name="web3names_recepient_not_found_message">Penerima %s tidak ditemukan</string>
     <string name="web3names_service_unavailable_message">Layanan %1$s w3n tidak tersedia. Coba lagi nanti atau masukkan alamat %1$s secara manual</string>
     <string name="web3names_service_unavailable_title">Kesalahan dalam memecahkan w3n</string>
-    <string name="web3names_unsupported_asset_message">Nova tidak dapat menyelesaikan kode untuk token %s</string>
+    <string name="web3names_unsupported_asset_message">Pezkuwi tidak dapat menyelesaikan kode untuk token %s</string>
     <string name="web3names_unsupported_asset_title">Token %s belum didukung</string>
     <string name="yesterday">Kemarin</string>
     <string name="yield_boost_already_enabled_message">Yield Boost akan dimatikan untuk collator saat ini. Collator baru: %s</string>

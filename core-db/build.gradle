@@ -23,7 +23,7 @@ android {
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
-    namespace 'io.novafoundation.nova.core_db'
+    namespace 'io.pezkuwichain.wallet.core_db'
 }
 
 dependencies {

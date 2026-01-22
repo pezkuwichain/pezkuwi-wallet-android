@@ -19,7 +19,7 @@ android {
             buildConfigField "String", "DAPP_METADATAS_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/dapps/dapps_full.json\""
         }
     }
-    namespace 'io.novafoundation.nova.feature_dapp_impl'
+    namespace 'io.pezkuwichain.wallet.feature_dapp_impl'
 
     packagingOptions {
         resources.excludes.add("META-INF/NOTICE.md")

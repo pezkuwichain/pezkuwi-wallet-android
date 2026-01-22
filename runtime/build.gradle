@@ -33,7 +33,7 @@ android {
             buildConfigField "String", "PRE_CONFIGURED_CHAIN_DETAILS_URL", "\"https://wallet.pezkuwichain.io/chain_details\""
         }
     }
-    namespace 'io.novafoundation.nova.runtime'
+    namespace 'io.pezkuwichain.wallet.runtime'
 }
 
 dependencies {

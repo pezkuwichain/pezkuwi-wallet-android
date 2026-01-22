@@ -1,6 +1,6 @@
 
 android {
-    namespace 'io.novafoundation.nova.caip'
+    namespace 'io.pezkuwichain.wallet.caip'
 
     defaultConfig {
 

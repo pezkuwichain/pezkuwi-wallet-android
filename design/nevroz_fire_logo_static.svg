@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Nevroz Fire Gradient - Kurdish Colors -->
+    <linearGradient id="fireGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#2E7D32;stop-opacity:1" /> <!-- Green base -->
+      <stop offset="25%" style="stop-color:#FF6F00;stop-opacity:1" /> <!-- Orange -->
+      <stop offset="55%" style="stop-color:#FFD600;stop-opacity:1" /> <!-- Yellow/Gold -->
+      <stop offset="100%" style="stop-color:#C62828;stop-opacity:1" /> <!-- Red tip -->
+    </linearGradient>
+
+    <!-- Inner flame gradient -->
+    <linearGradient id="innerFlame" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFD600;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF8F00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF5722;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Main Nevroz Fire - Outer flame -->
+  <path d="M256 50
+           C285 115 350 155 375 225
+           C400 295 375 365 350 405
+           C325 445 285 475 256 485
+           C227 475 187 445 162 405
+           C137 365 112 295 137 225
+           C162 155 227 115 256 50Z"
+        fill="url(#fireGradient)"
+        filter="url(#glow)"/>
+
+  <!-- Inner flame (yellow/orange core) -->
+  <path d="M256 130
+           C275 175 320 210 335 270
+           C350 330 335 380 310 415
+           C285 450 270 470 256 475
+           C242 470 227 450 202 415
+           C177 380 162 330 177 270
+           C192 210 237 175 256 130Z"
+        fill="url(#innerFlame)"
+        opacity="0.95"/>
+
+  <!-- Brightest core -->
+  <ellipse cx="256" cy="340" rx="55" ry="90" fill="#FFF8E1" opacity="0.85"/>
+
+  <!-- Core highlight -->
+  <ellipse cx="256" cy="360" rx="35" ry="60" fill="#FFFFFF" opacity="0.6"/>
+
+  <!-- Green sparks (Kurdistan green accent) -->
+  <circle cx="195" cy="170" r="10" fill="#43A047" opacity="0.85"/>
+  <circle cx="317" cy="190" r="8" fill="#43A047" opacity="0.8"/>
+  <circle cx="225" cy="140" r="6" fill="#66BB6A" opacity="0.7"/>
+  <circle cx="287" cy="155" r="7" fill="#4CAF50" opacity="0.75"/>
+  <circle cx="170" cy="220" r="5" fill="#81C784" opacity="0.6"/>
+  <circle cx="342" cy="240" r="5" fill="#81C784" opacity="0.6"/>
+</svg>

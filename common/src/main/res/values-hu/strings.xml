@@ -38,9 +38,9 @@
     <string name="account_delete_confirmation_title">Tárca felejtése?</string>
     <string name="account_derivation_path_ethereum_invalid_title">Érvénytelen Ethereum származtatási útvonal</string>
     <string name="account_derivation_path_substrate_invalid_title">Érvénytelen Substrate származtatási útvonal</string>
-    <string name="account_details_parity_signer_alert">Ez a tárca %1$s által van párosítva. Bármilyen művelet létrehozható majd Nova-ban, de %1$s szükséges majd azok alárírásához.</string>
+    <string name="account_details_parity_signer_alert">Ez a tárca %1$s által van párosítva. Bármilyen művelet létrehozható majd Pezkuwi-ban, de %1$s szükséges majd azok alárírásához.</string>
     <string name="account_details_parity_signer_not_supported">%s nem támogatja</string>
-    <string name="account_details_watch_only_alert">Ez csak egy nézhető tárca, aminek egyenlegét és egyéb információit láthatod Nova-ban, de semmilyen tranzakciót nem hajthatsz végre róla</string>
+    <string name="account_details_watch_only_alert">Ez csak egy nézhető tárca, aminek egyenlegét és egyéb információit láthatod Pezkuwi-ban, de semmilyen tranzakciót nem hajthatsz végre róla</string>
     <string name="account_enter_wallet_nickname">Tárca becenév megadása...</string>
     <string name="account_error_try_another_one">Kérlek, próbálj meg egy másikat.</string>
     <string name="account_ethereum_crypto_type">Ethereum kulcspár titkosítási típusa</string>
@@ -64,7 +64,7 @@
     <string name="account_import_private_key">Privát kulcs importálása</string>
     <string name="account_import_seed_hint">0xAB</string>
     <string name="account_import_seed_title">Add meg a nyers seed-et</string>
-    <string name="account_import_wallet_subtitle">A Nova minden alkalmazással kompatibilis</string>
+    <string name="account_import_wallet_subtitle">A Pezkuwi minden alkalmazással kompatibilis</string>
     <string name="account_import_wallet_title">Tárca importálása</string>
     <string name="account_info_title">Fiók</string>
     <string name="account_invalid_derivation_path_message_v2_2_0">A származtatási útvonal nem támogatott szimbólumokat tartalmaz vagy nem megfelelő a felépítése</string>
@@ -98,12 +98,12 @@
     <string name="account_ledger_migration_generic">Polkadot</string>
     <string name="account_ledger_nano_x">Ledger Nano X</string>
     <string name="account_ledger_nano_x_legacy">Ledger Legacy</string>
-    <string name="account_ledger_select_device_all_description">Ha Ledgert használ Bluetooth-on keresztül, engedélyezze a Bluetooth-t mindkét eszközön, és adja meg a Nova Bluetooth- és helyengedélyeket. USB esetén engedélyezze az OTG-t a telefon beállításaiban.</string>
+    <string name="account_ledger_select_device_all_description">Ha Ledgert használ Bluetooth-on keresztül, engedélyezze a Bluetooth-t mindkét eszközön, és adja meg a Pezkuwi Bluetooth- és helyengedélyeket. USB esetén engedélyezze az OTG-t a telefon beállításaiban.</string>
     <string name="account_ledger_select_device_description">Kérlek, kapcsold be a Bluetooth-t a telefonodon és a Ledger eszközön. Old fel a Ledger eszközt és nyisd meg a(z) %s alkalmazást.</string>
     <string name="account_ledger_select_device_title">Válaszd ki Ledger eszközöd</string>
     <string name="account_ledger_select_device_usb_description">Kérem, engedélyezze a Ledger eszközt. Oldja fel a Ledger eszköz zárolását, és nyissa meg a %s alkalmazást.</string>
     <string name="account_migration_subtitle">Már majdnem kész vagy! 🎉\n Csak koppints az alábbi gombra, hogy befejezd a beállítást, és zökkenőmentesen kezdd el használni a fiókjaidat mind a Polkadot App-ban, mind a Pezkuwi Wallet ben</string>
-    <string name="account_migration_title">Üdvözlünk a Nova-ban!</string>
+    <string name="account_migration_title">Üdvözlünk a Pezkuwi-ban!</string>
     <string name="account_mnmonic_length_variants">12, 15, 18, 21 vagy 24 szavas kifejezés</string>
     <string name="account_multisig">Többaláírás</string>
     <string name="account_multisig_group_label">Megosztott irányítás (többaláírás)</string>
@@ -199,13 +199,13 @@
     <string name="add_proxy_maximum_reached_error_title">A proxy-k száma elérte a maximumot</string>
     <string name="added_networks_empty_placeholder">Itt jelennek meg\na hozzáadott egyéni hálózatok</string>
     <string name="additional_payment_methods">+%d</string>
-    <string name="alert_nova_has_selected_ms_wallet">A Nova automatikusan átváltotta a multiszignós tárcájára, így megtekintheti a függőben lévő tranzakciókat.</string>
+    <string name="alert_nova_has_selected_ms_wallet">A Pezkuwi automatikusan átváltotta a multiszignós tárcájára, így megtekintheti a függőben lévő tranzakciókat.</string>
     <string name="appearance_colored_icon_title">Színes</string>
     <string name="appearance_title">Megjelenés</string>
     <string name="appearance_token_assets_title">token ikonjai</string>
     <string name="appearance_white_icon_title">Fehér</string>
     <string name="asset_add_evm_token_already_exist_message">A megadott szerződési cím már %s tokenként szerepel a Novában.</string>
-    <string name="asset_add_evm_token_already_exist_modifiable_message">A megadott szerződési cím már %s tokenként fel van véve Nova-ba. Biztosan módosítani szeretnéd?</string>
+    <string name="asset_add_evm_token_already_exist_modifiable_message">A megadott szerződési cím már %s tokenként fel van véve Pezkuwi-ba. Biztosan módosítani szeretnéd?</string>
     <string name="asset_add_evm_token_already_exist_title">A token már hozzá van adva</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_message">Győzödj meg róla, hogy a megadott URL formátum a következő: www.coingecko.com/en/coins/tether.</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_title">Érvénytelen CoinGecko hivatkozás</string>
@@ -419,7 +419,7 @@
     <string name="common_disconnect">Kapcsolat bontása</string>
     <string name="common_do_not_close_app">Ne zárja be az alkalmazást!</string>
     <string name="common_done">Kész</string>
-    <string name="common_dry_run_failed_message">A Nova előre szimulálja a tranzakciót a hibák megelőzése érdekében. Ez a szimuláció nem sikerült. Próbálja újra később vagy nagyobb összeggel. Ha a probléma továbbra is fennáll, kérjük, vegye fel a kapcsolatot a Pezkuwi Wallet Támogatással a Beállításokban.</string>
+    <string name="common_dry_run_failed_message">A Pezkuwi előre szimulálja a tranzakciót a hibák megelőzése érdekében. Ez a szimuláció nem sikerült. Próbálja újra később vagy nagyobb összeggel. Ha a probléma továbbra is fennáll, kérjük, vegye fel a kapcsolatot a Pezkuwi Wallet Támogatással a Beállításokban.</string>
     <string name="common_dry_run_failed_title">A tranzakciós szimuláció nem sikerült</string>
     <string name="common_edit">Szerkeszt</string>
     <string name="common_element_and_more_format" formatted="false">%s (további +%s)</string>
@@ -671,7 +671,7 @@
     <string name="crowdloan_main_description_v2_2_0">Válassz parachain-t, hogy hozzájárulj %s tokeneddel. Felajánlott tokenjeidet vissza fogod kapni, illetve, ha a parachain elnyeri a helyet, az aukció végén további jutalmakat is kapni fogsz.</string>
     <string name="crowdloan_missing_account_message">A hozzájáruláshoz hozzá kell adnod egy %s fiókot a tárcádhoz</string>
     <string name="crowdloan_missing_bonus_action">Bónusz alkalmazása</string>
-    <string name="crowdloan_missing_bonus_message">Amennyiben nem rendelkezel ajánlói kóddal, használd a Nova ajánlókódot, hogy bónuszt kaphass hozzájárulásodért</string>
+    <string name="crowdloan_missing_bonus_message">Amennyiben nem rendelkezel ajánlói kóddal, használd a Pezkuwi ajánlókódot, hogy bónuszt kaphass hozzájárulásodért</string>
     <string name="crowdloan_missing_bonus_title">Nem adtál hozzá bónuszt.</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_message">A Moonbeam közösségi hitel csak a SR25519 vagy ED25519 kriptotípusú számlákat támogatja. Kérlek, egy másik számlád használj ha hozzá szeretné járulásni.</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_title">Ezzel a fiókkal nem lehet hozzájárulni</string>
@@ -692,7 +692,7 @@
     <string name="crowdloan_unlock_hint">%s tokenjeid a lízingidőszak lejárta után kerülnek vissza.</string>
     <string name="crowdloan_your_contributions">Hozzájárulásaid</string>
     <string name="crownloans_raised_format" formatted="false">Összegyűlt: %s / %s</string>
-    <string name="custom_network_already_exist_failure_message">A megadott RPC URL már szerepel a Nova-ban mint %s egyéni hálózat. Biztosan módosítani szeretné?</string>
+    <string name="custom_network_already_exist_failure_message">A megadott RPC URL már szerepel a Pezkuwi-ban mint %s egyéni hálózat. Biztosan módosítani szeretné?</string>
     <string name="custom_network_block_explorer_placeholder">https://networkscan.io</string>
     <string name="custom_network_block_explorer_title">Blokk böngésző URL (Opcionális)</string>
     <string name="custom_network_chain_id_placeholder">012345</string>
@@ -749,7 +749,7 @@
     <string name="deep_linking_invalid_derivation_path">Érvénytelen származtatási útvonal</string>
     <string name="deep_linking_invalid_mnemonic">Érvénytelen mnemonika</string>
     <string name="deep_linking_url_is_invalid">Érvénytelen URL</string>
-    <string name="default_network_already_exist_failure_message">A megadott RPC URL már szerepel a Nova-ban mint %s hálózat.</string>
+    <string name="default_network_already_exist_failure_message">A megadott RPC URL már szerepel a Pezkuwi-ban mint %s hálózat.</string>
     <string name="default_notification_channel_name">Alapértelmezett Értesítési Csatorna</string>
     <string name="delegate_more_tracks">+%d</string>
     <string name="delegate_search_hint">Keresés cím vagy név alapján</string>
@@ -772,7 +772,7 @@
     <string name="delegation_edit_delegation">Delegálás szerkesztése</string>
     <string name="delegation_error_self_delegate_message">Nem delegálhatsz saját magadnak, kérlek, válassz egy másik címet</string>
     <string name="delegation_error_self_delegate_title">Nem delegálhatsz saját magadnak</string>
-    <string name="delegation_list_banner_description">Mesélj magadról, hogy a Nova felhasználók jobban megismerhessenek.</string>
+    <string name="delegation_list_banner_description">Mesélj magadról, hogy a Pezkuwi felhasználók jobban megismerhessenek.</string>
     <string name="delegation_list_banner_title">Delegált vagy?</string>
     <string name="delegation_list_describe_yourself_action">Mutasd be magad</string>
     <string name="delegation_multi_track_format">%s kategórián át</string>
@@ -846,7 +846,7 @@
     <string name="gifts_assets_flow_title">Válassz egy tokent ajándékként</string>
     <string name="gifts_claim_fee">Hálózati díj igényléskor</string>
     <string name="gifts_create">Ajándék Létrehozása</string>
-    <string name="gifts_header_subtitle">Küldj ajándékokat gyorsan, egyszerűen és biztonságosan a Nova segítségével</string>
+    <string name="gifts_header_subtitle">Küldj ajándékokat gyorsan, egyszerűen és biztonságosan a Pezkuwi segítségével</string>
     <string name="gifts_header_title">Küldj Kripto Ajándékot Bárkinek, Bárhol</string>
     <string name="gifts_list_title">Létrehozott ajándékaid</string>
     <string name="gifts_network_flow_title">Válassz hálózatot a(z) %s ajándékhoz</string>
@@ -935,7 +935,7 @@
     <string name="ledger_verify_address_message_confirm_button">Nyomja meg a megerősítő gombot a %s készülékén a cím jóváhagyásához</string>
     <string name="ledger_verify_addresses_message_both_buttons">Nyomd meg mindkét gombot a %s eszközödön a címek jóváhagyásához</string>
     <string name="ledger_verify_addresses_message_confirm_button">Nyomd meg a megerősítés gombot a %s eszközödön a címek jóváhagyásához</string>
-    <string name="ledger_wallet_details_description">Ez a tárca a Ledger-rel van párosítva. A Nova segít bármilyen művelet létrehozásában és azok aláírása a Ledger segítségével történik majd.</string>
+    <string name="ledger_wallet_details_description">Ez a tárca a Ledger-rel van párosítva. A Pezkuwi segít bármilyen művelet létrehozásában és azok aláírása a Ledger segítségével történik majd.</string>
     <string name="ledher_import_select_address_title">Válaszd ki a fiókot a hozzáadáshoz</string>
     <string name="loading_network_info">Hálózati információ betöltése...</string>
     <string name="loading_transaction_details">Tranzakció részleteinek betöltése…</string>
@@ -1172,7 +1172,7 @@
     <string name="push_referendum_rejected_title">❌ Referendum elutasítva!</string>
     <string name="push_referendum_status_changed_title">🗳️ A referendum státusza megváltozott</string>
     <string name="push_referendum_to_status_changed_message" formatted="false">%s Referendum #%s státusza megváltozott: %s</string>
-    <string name="push_settings_announcements">Nova közlemények</string>
+    <string name="push_settings_announcements">Pezkuwi közlemények</string>
     <string name="push_settings_balances">Egyenlegek</string>
     <string name="push_settings_enable">Értesítések engedélyezése</string>
     <string name="push_settings_multisig_operations">Többaláírásos tranzakciók</string>
@@ -1226,7 +1226,7 @@
     <string name="referendum_abstain_vote_invalid_conviction_title">Meggyőződés frissítése</string>
     <string name="referendum_abstain_voters_title">Tartózkodó szavazatok</string>
     <string name="referendum_aye_format">Igen: %s</string>
-    <string name="referendum_dapp_list_title">Nova DApp böngésző használata</string>
+    <string name="referendum_dapp_list_title">Pezkuwi DApp böngésző használata</string>
     <string name="referendum_description_fallback">A címet és leírást csak a javaslattevő szerkesztheti. Amennyiben az ajánlattevő fiók a sajátod, látogass el a Polkassembly oldalra és töltsd fel információkkal a javaslatot.</string>
     <string name="referendum_details_requested_amount">Igényelt összeg</string>
     <string name="referendum_details_timeline">Idővonal</string>
@@ -1355,7 +1355,7 @@
     <string name="select_delegation_tracks_unavailable_tracks">Nem elérhető kategóriák</string>
     <string name="select_gift_amount_title">Ajándék küldése</string>
     <string name="select_ledger_grant_permissions">Bluetooth engedélyezése és engedélyek megadása</string>
-    <string name="select_ledger_location_enable_request_message">A Nova-nak szüksége van a helymeghatározáshoz, hogy megtalálhassa a Ledger eszköt bluetooth-on keresztül</string>
+    <string name="select_ledger_location_enable_request_message">A Pezkuwi-nak szüksége van a helymeghatározáshoz, hogy megtalálhassa a Ledger eszköt bluetooth-on keresztül</string>
     <string name="select_ledger_location_enable_request_title">Kérlek, engedélyezd a helymeghatározást a készülék beállításaiban</string>
     <string name="select_network_title">Hálózat választása</string>
     <string name="select_token_to_vote">Válassz tokent a szavazáshoz</string>
@@ -1451,7 +1451,7 @@
     <string name="staking_custom_validators_settings_sort_apr">Becsült jutalmak (%% APR)</string>
     <string name="staking_custom_validators_settings_sort_apy">Becsült jutalom (%% APY)</string>
     <string name="staking_custom_validators_update_list">Lista frissítése</string>
-    <string name="staking_dashboard_browser_stake_header">Stake-elés a Nova DApp böngészőn keresztül</string>
+    <string name="staking_dashboard_browser_stake_header">Stake-elés a Pezkuwi DApp böngészőn keresztül</string>
     <string name="staking_dashboard_more_options">További stake-elési lehetőségek</string>
     <string name="staking_dashboard_no_stake_header">Stake és jutalom szerzés</string>
     <string name="staking_details_migration_alert_title">A(z) %1$s staking él a(z) %2$s-n, kezdve %3$s</string>
@@ -1727,7 +1727,7 @@
     <string name="start_staking_fragment_min_stake_condition_duration">%s múlva</string>
     <string name="start_staking_fragment_min_stake_condition_no_min_stake">Stake-elj bármikor. Jutalmakat %s múlva kaphatsz.</string>
     <string name="start_staking_fragment_more_info">Tudj meg többet a\n%1$s stake-elésről a %2$s oldalon</string>
-    <string name="start_staking_fragment_more_info_clicable_part">Nova Használati útmutató</string>
+    <string name="start_staking_fragment_more_info_clicable_part">Pezkuwi Használati útmutató</string>
     <string name="start_staking_fragment_reward_frequency_condition_automatic_and_manual">A jutalmak %1$s érkeznek. Automatikus kifizetéshez stake-elj többet, mint %2$s, ellenkező esetben manuálsan kell igényeled</string>
     <string name="start_staking_fragment_reward_frequency_condition_duration">minden %s</string>
     <string name="start_staking_fragment_reward_frequency_condition_fallback">A jutalmak %s érkeznek</string>
@@ -1795,7 +1795,7 @@
     <string name="swap_main_settings_asset_out_not_selecting_button_state">Token kiválasztása fogadáshoz</string>
     <string name="swap_main_settings_enter_amount_disabled_button_state">Összeg megadása</string>
     <string name="swap_main_settings_wrong_amount_disabled_button_state">Egyéb összeg megadása</string>
-    <string name="swap_minimum_balance_buy_in_alert" formatted="false">A %s tokennel történő hálózati díj fizetéséhez, Nova automatikus %s és %s konverziót fog végrehajtani, ahhoz, hogy fenntartsa a számla minimális egyenlegét, ami %s.</string>
+    <string name="swap_minimum_balance_buy_in_alert" formatted="false">A %s tokennel történő hálózati díj fizetéséhez, Pezkuwi automatikus %s és %s konverziót fog végrehajtani, ahhoz, hogy fenntartsa a számla minimális egyenlegét, ami %s.</string>
     <string name="swap_network_fee_description">A hálózati díjakat a blokklánc számítja fel a tranzakciók feldolgozásáért és hitelesítéséért. A díj összege változhat a hálózattól és a tranzakció sebességétől.</string>
     <string name="swap_network_flow_title">Válassza ki a hálózatot %s cseréjekor</string>
     <string name="swap_not_enought_liquidity_failure">Az pool-nak nincs elegendő likviditása a cseréhez</string>
@@ -2007,14 +2007,14 @@
     <string name="wallet_transfer_details_title">Átutalás részletei</string>
     <string name="web3names_address_with_description" formatted="false">%s (%s)</string>
     <string name="web3names_identifiers_sheet_title" formatted="false">%s címek a következőhöz: %s</string>
-    <string name="web3names_integrity_check_failed_message">A Nova problémákat észlet bizonyos %1$s címek integritásával kapcsolatban. Kérlek, vedd fel a kapcsolat a(z) %1$s tulajdonosával az integritási problémák kiküszöbölése érdekében.</string>
+    <string name="web3names_integrity_check_failed_message">A Pezkuwi problémákat észlet bizonyos %1$s címek integritásával kapcsolatban. Kérlek, vedd fel a kapcsolat a(z) %1$s tulajdonosával az integritási problémák kiküszöbölése érdekében.</string>
     <string name="web3names_integrity_check_failed_title">Az integritás ellenőrzése sikertelen</string>
     <string name="web3names_invalid_recepient_title">Érvénytelen címzett</string>
     <string name="web3names_no_valid_recepient_found_message" formatted="false">Nem található érvényes cím a(z) %s névhez a(z) %s hálózaton</string>
     <string name="web3names_recepient_not_found_message">A(z) %s nem található</string>
     <string name="web3names_service_unavailable_message">A %1$s w3n szolgáltatások nem elérhetőek. Próbáld meg később vagy add meg a(z) %1$s címet manuálisan.</string>
     <string name="web3names_service_unavailable_title">Sikertelen w3n keresés</string>
-    <string name="web3names_unsupported_asset_message">A %s token kód nem értelmezhető Nova számára</string>
+    <string name="web3names_unsupported_asset_message">A %s token kód nem értelmezhető Pezkuwi számára</string>
     <string name="web3names_unsupported_asset_title">%s token jelenleg nem támogatott</string>
     <string name="yesterday">Tegnap</string>
     <string name="yield_boost_already_enabled_message">A Yield Boost ki lesz kapcsolva a jelenlegi kollátornál. Új kollátor: %s</string>

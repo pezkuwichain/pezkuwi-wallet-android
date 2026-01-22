@@ -1,6 +1,6 @@
 
 android {
-    namespace 'io.novafoundation.nova.feature_swap_core'
+    namespace 'io.pezkuwichain.wallet.feature_swap_core'
 }
 
 dependencies {

@@ -126,7 +126,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/wcApproveSessionRequestSession"
-                tools:text="Some of the required networks requested by 1inch are not supported in Nova Wallet" />
+                tools:text="Some of the required networks requested by 1inch are not supported in Pezkuwi Wallet" />
 
             <io.novafoundation.nova.feature_account_api.view.AccountView
                 android:id="@+id/wcApproveSessionWallet"

@@ -9,7 +9,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'io.novafoundation.nova.feature_push_notifications'
+    namespace 'io.pezkuwichain.wallet.feature_push_notifications'
 
     buildFeatures {
         viewBinding true

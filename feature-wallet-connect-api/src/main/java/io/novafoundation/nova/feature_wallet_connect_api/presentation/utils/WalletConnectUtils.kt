@@ -4,9 +4,9 @@ import android.net.Uri
 
 object WalletConnectUtils {
     fun isWalletConnectPairingLink(data: Uri): Boolean {
-        val isNovaLink = data.scheme == "novawallet" && data.host == "wc"
+        val isPezkuwiLink = data.scheme == "pezkuwiwallet" && data.host == "wc"
         val isLinkFromOtherSource = data.scheme == "wc"
-        val isWalletConnectLink = isNovaLink || isLinkFromOtherSource
+        val isWalletConnectLink = isPezkuwiLink || isLinkFromOtherSource
 
         val isPairing = "symKey" in data.toString()
         return isWalletConnectLink && isPairing

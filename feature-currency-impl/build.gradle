@@ -13,7 +13,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'io.novafoundation.nova.feature_currency_impl'
+    namespace 'io.pezkuwichain.wallet.feature_currency_impl'
 
     buildFeatures {
         viewBinding true

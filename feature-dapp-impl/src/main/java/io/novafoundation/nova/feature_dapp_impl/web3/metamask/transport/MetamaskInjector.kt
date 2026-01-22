@@ -29,7 +29,7 @@ class MetamaskInjector(
     }
 
     override fun injectForPage(into: WebView, extensionStore: ExtensionsStore) {
-        webViewScriptInjector.injectScript(R.raw.metamask_min, into, scriptId = "novawallet-metamask-bundle")
+        webViewScriptInjector.injectScript(R.raw.metamask_min, into, scriptId = "pezkuwi-metamask-bundle")
         injectProvider(extensionStore, into)
     }
 
@@ -42,13 +42,13 @@ class MetamaskInjector(
         val providerConfigJson = gson.toJson(providerConfig)
 
         val content = """
-                window.ethereum = new novawallet.Provider($providerConfigJson);
-                window.web3 = new novawallet.Web3(window.ethereum);
-                novawallet.postMessage = (jsonString) => {
-                        Nova_Metamask.onNewMessage(JSON.stringify(jsonString))
+                window.ethereum = new pezkuwi.Provider($providerConfigJson);
+                window.web3 = new pezkuwi.Web3(window.ethereum);
+                pezkuwi.postMessage = (jsonString) => {
+                        Pezkuwi_Metamask.onNewMessage(JSON.stringify(jsonString))
                 };
         """.trimIndent()
 
-        webViewScriptInjector.injectScript(content, into, scriptId = "novawallet-metamask-provider")
+        webViewScriptInjector.injectScript(content, into, scriptId = "pezkuwi-metamask-provider")
     }
 }

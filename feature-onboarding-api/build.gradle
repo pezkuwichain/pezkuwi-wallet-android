@@ -1,6 +1,6 @@
 
 android {
-    namespace 'io.novafoundation.nova.feature_onboarding_api'
+    namespace 'io.pezkuwichain.wallet.feature_onboarding_api'
 }
 
 dependencies {

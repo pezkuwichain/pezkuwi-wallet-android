@@ -1,6 +1,6 @@
 
 android {
-    namespace 'io.novafoundation.nova.web3names'
+    namespace 'io.pezkuwichain.wallet.web3names'
 
     buildTypes {
         release {

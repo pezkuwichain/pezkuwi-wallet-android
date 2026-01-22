@@ -20,7 +20,7 @@ class PolkadotJsInjector(
     }
 
     override fun injectForPage(into: WebView, extensionStore: ExtensionsStore) {
-        webViewScriptInjector.injectScript(R.raw.polkadotjs_min, into, scriptId = "novawallet-polkadotjs-bundle")
-        webViewScriptInjector.injectScript(R.raw.javascript_interface_bridge, into, scriptId = "novawallet-polkadotjs-provider")
+        webViewScriptInjector.injectScript(R.raw.polkadotjs_min, into, scriptId = "pezkuwi-polkadotjs-bundle")
+        webViewScriptInjector.injectScript(R.raw.javascript_interface_bridge, into, scriptId = "pezkuwi-polkadotjs-provider")
     }
 }

@@ -8,7 +8,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'io.novafoundation.nova.feature_deep_linking'
+    namespace 'io.pezkuwichain.wallet.feature_deep_linking'
 
     buildFeatures {
         viewBinding true

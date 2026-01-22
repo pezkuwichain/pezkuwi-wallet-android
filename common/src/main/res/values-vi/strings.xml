@@ -38,9 +38,9 @@
     <string name="account_delete_confirmation_title">Quên ví?</string>
     <string name="account_derivation_path_ethereum_invalid_title">Đường dẫn dẫn xuất Ethereum không hợp lệ</string>
     <string name="account_derivation_path_substrate_invalid_title">Đường dẫn dẫn xuất Substrate không hợp lệ</string>
-    <string name="account_details_parity_signer_alert">Ví này được ghép nối với %1$s. Nova sẽ giúp bạn thực hiện bất kỳ thao tác nào bạn muốn, và bạn sẽ được yêu cầu ký chúng bằng %1$s</string>
+    <string name="account_details_parity_signer_alert">Ví này được ghép nối với %1$s. Pezkuwi sẽ giúp bạn thực hiện bất kỳ thao tác nào bạn muốn, và bạn sẽ được yêu cầu ký chúng bằng %1$s</string>
     <string name="account_details_parity_signer_not_supported">Không được hỗ trợ bởi %s</string>
-    <string name="account_details_watch_only_alert">Đây là ví chỉ xem, Nova có thể hiển thị cho bạn số dư và thông tin khác, nhưng bạn không thể thực hiện bất kỳ giao dịch nào với ví này</string>
+    <string name="account_details_watch_only_alert">Đây là ví chỉ xem, Pezkuwi có thể hiển thị cho bạn số dư và thông tin khác, nhưng bạn không thể thực hiện bất kỳ giao dịch nào với ví này</string>
     <string name="account_enter_wallet_nickname">Nhập biệt danh ví...</string>
     <string name="account_error_try_another_one">Vui lòng thử cái khác.</string>
     <string name="account_ethereum_crypto_type">Loại cặp khóa Ethereum</string>
@@ -64,7 +64,7 @@
     <string name="account_import_private_key">Nhập khóa riêng tư</string>
     <string name="account_import_seed_hint">0xAB</string>
     <string name="account_import_seed_title">Nhập seed gốc của bạn</string>
-    <string name="account_import_wallet_subtitle">Nova tương thích với tất cả các ứng dụng</string>
+    <string name="account_import_wallet_subtitle">Pezkuwi tương thích với tất cả các ứng dụng</string>
     <string name="account_import_wallet_title">Nhập ví</string>
     <string name="account_info_title">Tài khoản</string>
     <string name="account_invalid_derivation_path_message_v2_2_0">Đường dẫn dẫn xuất của bạn chứa các ký hiệu không được hỗ trợ hoặc có cấu trúc không chính xác</string>
@@ -98,12 +98,12 @@
     <string name="account_ledger_migration_generic">Polkadot</string>
     <string name="account_ledger_nano_x">Ledger Nano X</string>
     <string name="account_ledger_nano_x_legacy">Ledger Legacy</string>
-    <string name="account_ledger_select_device_all_description">Nếu sử dụng Ledger qua Bluetooth, hãy bật Bluetooth trên cả hai thiết bị và cấp quyền Bluetooth và vị trí cho Nova. Đối với USB, hãy bật OTG trong cài đặt điện thoại của bạn.</string>
+    <string name="account_ledger_select_device_all_description">Nếu sử dụng Ledger qua Bluetooth, hãy bật Bluetooth trên cả hai thiết bị và cấp quyền Bluetooth và vị trí cho Pezkuwi. Đối với USB, hãy bật OTG trong cài đặt điện thoại của bạn.</string>
     <string name="account_ledger_select_device_description">Hãy bật Bluetooth trong cài đặt điện thoại của bạn và thiết bị Ledger. Mở khóa thiết bị Ledger của bạn và mở ứng dụng %s.</string>
     <string name="account_ledger_select_device_title">Chọn thiết bị Ledger của bạn</string>
     <string name="account_ledger_select_device_usb_description">Vui lòng bật thiết bị Ledger. Mở khóa thiết bị Ledger của bạn và mở ứng dụng %s.</string>
     <string name="account_migration_subtitle">Bạn sắp hoàn tất! 🎉\n Chỉ cần nhấn bên dưới để hoàn tất thiết lập và bắt đầu sử dụng tài khoản của bạn một cách liền mạch trong cả Polkadot App và Pezkuwi Wallet</string>
-    <string name="account_migration_title">Chào mừng đến với Nova!</string>
+    <string name="account_migration_title">Chào mừng đến với Pezkuwi!</string>
     <string name="account_mnmonic_length_variants">Cụm từ gồm 12, 15, 18, 21 hoặc 24 từ</string>
     <string name="account_multisig">Đa chữ ký</string>
     <string name="account_multisig_group_label">Kiểm soát chung (đa chữ ký)</string>
@@ -119,7 +119,7 @@
     <string name="account_parity_signer_import_start_select_top">Hãy chắc chắn rằng bạn đã chọn cái đầu tiên</string>
     <string name="account_parity_signer_import_start_step_1">ứng dụng %s trên điện thoại thông minh của bạn</string>
     <string name="account_parity_signer_import_start_step_1_highlighted">mở Parity Signer</string>
-    <string name="account_parity_signer_import_start_step_2">%s bạn muốn thêm vào Ví Nova</string>
+    <string name="account_parity_signer_import_start_step_2">%s bạn muốn thêm vào Ví Pezkuwi</string>
     <string name="account_parity_signer_import_start_step_2_highlighted">Đi tới tab \'Keys\'. Chọn seed, sau đó tài khoản</string>
     <string name="account_parity_signer_import_start_step_3">Parity Signer sẽ cung cấp cho bạn %s</string>
     <string name="account_parity_signer_import_start_step_3_highlighted">quét mã QR</string>
@@ -178,7 +178,7 @@
     <string name="account_watch_only">chỉ xem</string>
     <string name="account_welcome_hardware_wallet_subtitle">Polkadot Vault, Parity Signer hoặc Ledger</string>
     <string name="account_welcome_hardware_wallet_title">Ví cứng</string>
-    <string name="account_welcome_trust_wallet_subtitle">Sử dụng tài khoản Trust Wallet của bạn trong Nova</string>
+    <string name="account_welcome_trust_wallet_subtitle">Sử dụng tài khoản Trust Wallet của bạn trong Pezkuwi</string>
     <string name="account_welcome_trust_wallet_title">Trust Wallet</string>
     <string name="accounts_add_chain_account">Thêm tài khoản %s</string>
     <string name="accounts_add_wallet">Thêm ví</string>
@@ -199,13 +199,13 @@
     <string name="add_proxy_maximum_reached_error_title">Đã đạt đến số lượng proxy tối đa</string>
     <string name="added_networks_empty_placeholder">Các mạng tùy chỉnh đã thêm\nsẽ xuất hiện ở đây</string>
     <string name="additional_payment_methods">+%d</string>
-    <string name="alert_nova_has_selected_ms_wallet">Nova đã tự động chuyển sang ví multisig của bạn để bạn có thể xem các giao dịch đang chờ xử lý.</string>
+    <string name="alert_nova_has_selected_ms_wallet">Pezkuwi đã tự động chuyển sang ví multisig của bạn để bạn có thể xem các giao dịch đang chờ xử lý.</string>
     <string name="appearance_colored_icon_title">Đã tô màu</string>
     <string name="appearance_title">Giao diện</string>
     <string name="appearance_token_assets_title">biểu tượng token</string>
     <string name="appearance_white_icon_title">Trắng</string>
-    <string name="asset_add_evm_token_already_exist_message">Địa chỉ hợp đồng đã nhập có sẵn trong Nova là token %s.</string>
-    <string name="asset_add_evm_token_already_exist_modifiable_message">Địa chỉ hợp đồng đã nhập có sẵn trong Nova là token %s. Bạn có chắc chắn muốn thay đổi không?</string>
+    <string name="asset_add_evm_token_already_exist_message">Địa chỉ hợp đồng đã nhập có sẵn trong Pezkuwi là token %s.</string>
+    <string name="asset_add_evm_token_already_exist_modifiable_message">Địa chỉ hợp đồng đã nhập có sẵn trong Pezkuwi là token %s. Bạn có chắc chắn muốn thay đổi không?</string>
     <string name="asset_add_evm_token_already_exist_title">Token này đã tồn tại</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_message">Hãy chắc chắn rằng URL được cung cấp có dạng sau: www.coingecko.com/en/coins/tether.</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_title">Liên kết CoinGecko không hợp lệ</string>
@@ -419,7 +419,7 @@
     <string name="common_disconnect">Ngắt kết nối</string>
     <string name="common_do_not_close_app">Không đóng ứng dụng!</string>
     <string name="common_done">Hoàn thành</string>
-    <string name="common_dry_run_failed_message">Nova mô phỏng giao dịch trước để ngăn ngừa lỗi. Mô phỏng này không thành công. Thử lại sau hoặc với số tiền lớn hơn. Nếu vấn đề vẫn tồn tại, vui lòng liên hệ Hỗ trợ Ví Nova trong Cài đặt.</string>
+    <string name="common_dry_run_failed_message">Pezkuwi mô phỏng giao dịch trước để ngăn ngừa lỗi. Mô phỏng này không thành công. Thử lại sau hoặc với số tiền lớn hơn. Nếu vấn đề vẫn tồn tại, vui lòng liên hệ Hỗ trợ Ví Pezkuwi trong Cài đặt.</string>
     <string name="common_dry_run_failed_title">Mô phỏng giao dịch thất bại</string>
     <string name="common_edit">Chỉnh sửa</string>
     <string name="common_element_and_more_format" formatted="false">%s (+%s thêm)</string>
@@ -665,7 +665,7 @@
     <string name="crowdloan_main_description_v2_2_0">Chọn parachains để đóng góp %s của bạn. Bạn sẽ nhận lại các token đã đóng góp, và nếu parachain thắng slot, bạn sẽ nhận được phần thưởng sau khi kết thúc cuộc đấu giá</string>
     <string name="crowdloan_missing_account_message">Bạn cần thêm tài khoản %s vào ví để đóng góp</string>
     <string name="crowdloan_missing_bonus_action">Áp dụng phần thưởng</string>
-    <string name="crowdloan_missing_bonus_message">Nếu bạn không có mã giới thiệu, bạn có thể áp dụng mã giới thiệu của Nova để nhận thưởng cho sự đóng góp của bạn</string>
+    <string name="crowdloan_missing_bonus_message">Nếu bạn không có mã giới thiệu, bạn có thể áp dụng mã giới thiệu của Pezkuwi để nhận thưởng cho sự đóng góp của bạn</string>
     <string name="crowdloan_missing_bonus_title">Bạn chưa áp dụng tiền thưởng</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_message">Moonbeam crowdloan chỉ hỗ trợ các tài khoản loại mã hóa SR25519 hoặc ED25519. Vui lòng xem xét sử dụng tài khoản khác để đóng góp</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_title">Không thể đóng góp bằng tài khoản này</string>
@@ -686,7 +686,7 @@
     <string name="crowdloan_unlock_hint">Các token %s của bạn sẽ được hoàn trả sau kỳ hạn cho thuê.</string>
     <string name="crowdloan_your_contributions">Các khoản đóng góp của bạn</string>
     <string name="crownloans_raised_format" formatted="false">Đã gây quỹ: %s trong %s</string>
-    <string name="custom_network_already_exist_failure_message">URL RPC đã nhập có mặt trong Nova như một mạng tùy chỉnh %s. Bạn có chắc chắn muốn chỉnh sửa nó không?</string>
+    <string name="custom_network_already_exist_failure_message">URL RPC đã nhập có mặt trong Pezkuwi như một mạng tùy chỉnh %s. Bạn có chắc chắn muốn chỉnh sửa nó không?</string>
     <string name="custom_network_block_explorer_placeholder">https://networkscan.io</string>
     <string name="custom_network_block_explorer_title">URL Trình khám phá khối (Tùy chọn)</string>
     <string name="custom_network_chain_id_placeholder">012345</string>
@@ -743,7 +743,7 @@
     <string name="deep_linking_invalid_derivation_path">Đường dẫn dẫn xuất không hợp lệ</string>
     <string name="deep_linking_invalid_mnemonic">Mnemonics không hợp lệ</string>
     <string name="deep_linking_url_is_invalid">URL không hợp lệ</string>
-    <string name="default_network_already_exist_failure_message">URL RPC đã nhập có mặt trong Nova như một mạng %s.</string>
+    <string name="default_network_already_exist_failure_message">URL RPC đã nhập có mặt trong Pezkuwi như một mạng %s.</string>
     <string name="default_notification_channel_name">Kênh thông báo mặc định</string>
     <string name="delegate_more_tracks">+%d</string>
     <string name="delegate_search_hint">Tìm kiếm theo địa chỉ hoặc tên</string>
@@ -766,7 +766,7 @@
     <string name="delegation_edit_delegation">Chỉnh sửa ủy nhiệm</string>
     <string name="delegation_error_self_delegate_message">Bạn không thể ủy thác cho chính mình, vui lòng chọn địa chỉ khác</string>
     <string name="delegation_error_self_delegate_title">Không thể ủy thác cho chính mình</string>
-    <string name="delegation_list_banner_description">Hãy cho chúng tôi biết thêm về bạn để người dùng Nova có thể hiểu rõ về bạn hơn</string>
+    <string name="delegation_list_banner_description">Hãy cho chúng tôi biết thêm về bạn để người dùng Pezkuwi có thể hiểu rõ về bạn hơn</string>
     <string name="delegation_list_banner_title">Bạn có phải là Delegate?</string>
     <string name="delegation_list_describe_yourself_action">Mô tả về bạn</string>
     <string name="delegation_multi_track_format">Qua %s tracks</string>
@@ -840,12 +840,12 @@
     <string name="gifts_assets_flow_title">Chọn một token để tặng</string>
     <string name="gifts_claim_fee">Phí mạng khi nhận</string>
     <string name="gifts_create">Tạo Quà</string>
-    <string name="gifts_header_subtitle">Gửi quà nhanh chóng, dễ dàng và an toàn trong Nova</string>
+    <string name="gifts_header_subtitle">Gửi quà nhanh chóng, dễ dàng và an toàn trong Pezkuwi</string>
     <string name="gifts_header_title">Chia sẻ Quà Crypto với Bất kỳ Ai, Ở Bất kỳ Đâu</string>
     <string name="gifts_list_title">Các món quà bạn đã tạo</string>
     <string name="gifts_network_flow_title">Chọn mạng cho quà %s</string>
     <string name="gifts_placeholder_step_1">Nhập số lượng quà của bạn</string>
-    <string name="gifts_placeholder_step_2">%s như một liên kết và mời bất kỳ ai đến với Nova</string>
+    <string name="gifts_placeholder_step_2">%s như một liên kết và mời bất kỳ ai đến với Pezkuwi</string>
     <string name="gifts_placeholder_step_2_highlight">Chia sẻ quà trực tiếp</string>
     <string name="gifts_placeholder_step_3">%s và bạn có thể trả lại các món quà chưa nhận bất cứ lúc nào từ thiết bị này</string>
     <string name="gifts_placeholder_step_3_highlight">Món quà có sẵn ngay lập tức</string>
@@ -928,7 +928,7 @@
     <string name="ledger_verify_address_message_confirm_button">Nhấn nút xác nhận trên %s của bạn để chấp thuận địa chỉ</string>
     <string name="ledger_verify_addresses_message_both_buttons">Nhấn cả hai nút trên %s của bạn để xác nhận địa chỉ</string>
     <string name="ledger_verify_addresses_message_confirm_button">Nhấn nút xác nhận trên %s của bạn để xác nhận địa chỉ</string>
-    <string name="ledger_wallet_details_description">Ví này đã được ghép đôi với Ledger. Nova sẽ giúp bạn thực hiện bất kỳ thao tác nào bạn muốn, và bạn sẽ được yêu cầu ký chúng bằng Ledger</string>
+    <string name="ledger_wallet_details_description">Ví này đã được ghép đôi với Ledger. Pezkuwi sẽ giúp bạn thực hiện bất kỳ thao tác nào bạn muốn, và bạn sẽ được yêu cầu ký chúng bằng Ledger</string>
     <string name="ledher_import_select_address_title">Chọn tài khoản để thêm vào ví</string>
     <string name="loading_network_info">Đang tải thông tin mạng...</string>
     <string name="loading_transaction_details">Đang tải chi tiết giao dịch…</string>
@@ -1058,7 +1058,7 @@
     <string name="nft_owned_by">Sở hữu bởi</string>
     <string name="nft_price_not_listed">Chưa niêm yết</string>
     <string name="nft_your_nfts">NFT của bạn</string>
-    <string name="no_ms_accounts_found_dialog_message">Bạn chưa thêm hoặc chọn bất kỳ ví multisig nào trong Nova. Thêm và chọn ít nhất một cái để nhận thông báo đẩy multisig.</string>
+    <string name="no_ms_accounts_found_dialog_message">Bạn chưa thêm hoặc chọn bất kỳ ví multisig nào trong Pezkuwi. Thêm và chọn ít nhất một cái để nhận thông báo đẩy multisig.</string>
     <string name="no_ms_accounts_found_dialog_title">Không có ví multisig</string>
     <string name="node_already_exist_failure_message">URL bạn nhập đã tồn tại dưới dạng Node \"%s\".</string>
     <string name="node_already_exist_failure_title">Node này đã tồn tại</string>
@@ -1164,7 +1164,7 @@
     <string name="push_referendum_rejected_title">❌ Trưng cầu dân ý bị từ chối!</string>
     <string name="push_referendum_status_changed_title">🗳️ Trạng thái trưng cầu dân ý đã thay đổi</string>
     <string name="push_referendum_to_status_changed_message" formatted="false">%s Trưng cầu dân ý #%s đã thay đổi trạng thái thành %s</string>
-    <string name="push_settings_announcements">Thông báo từ Nova</string>
+    <string name="push_settings_announcements">Thông báo từ Pezkuwi</string>
     <string name="push_settings_balances">Số dư</string>
     <string name="push_settings_enable">Bật thông báo</string>
     <string name="push_settings_multisig_operations">Giao dịch multisig</string>
@@ -1218,7 +1218,7 @@
     <string name="referendum_abstain_vote_invalid_conviction_title">Cập nhật độ xác tín</string>
     <string name="referendum_abstain_voters_title">Bỏ phiếu Abstain</string>
     <string name="referendum_aye_format">Đồng ý: %s</string>
-    <string name="referendum_dapp_list_title">Sử dụng trình duyệt Nova DApp</string>
+    <string name="referendum_dapp_list_title">Sử dụng trình duyệt Pezkuwi DApp</string>
     <string name="referendum_description_fallback">Chỉ người đề xuất mới có thể chỉnh sửa mô tả và tiêu đề này. Nếu bạn sở hữu tài khoản của người đề xuất, hãy truy cập Polkassembly và điền thông tin về đề xuất của bạn.</string>
     <string name="referendum_details_requested_amount">Số tiền yêu cầu</string>
     <string name="referendum_details_timeline">Dòng thời gian</string>
@@ -1346,7 +1346,7 @@
     <string name="select_delegation_tracks_unavailable_tracks">Track không có sẵn</string>
     <string name="select_gift_amount_title">Gửi quà vào</string>
     <string name="select_ledger_grant_permissions">Bật Bluetooth &amp; Cấp Quyền</string>
-    <string name="select_ledger_location_enable_request_message">Nova cần bật định vị để có thể thực hiện quét Bluetooth để tìm thiết bị Ledger của bạn</string>
+    <string name="select_ledger_location_enable_request_message">Pezkuwi cần bật định vị để có thể thực hiện quét Bluetooth để tìm thiết bị Ledger của bạn</string>
     <string name="select_ledger_location_enable_request_title">Vui lòng bật định vị địa lý trong cài đặt thiết bị</string>
     <string name="select_network_title">Chọn mạng</string>
     <string name="select_token_to_vote">Chọn token để bỏ phiếu</string>
@@ -1442,7 +1442,7 @@
     <string name="staking_custom_validators_settings_sort_apr">Phần thưởng ước tính (%% APR)</string>
     <string name="staking_custom_validators_settings_sort_apy">Phần thưởng ước tính (%% APY)</string>
     <string name="staking_custom_validators_update_list">Cập nhật danh sách của bạn</string>
-    <string name="staking_dashboard_browser_stake_header">Staking qua trình duyệt Nova DApp</string>
+    <string name="staking_dashboard_browser_stake_header">Staking qua trình duyệt Pezkuwi DApp</string>
     <string name="staking_dashboard_more_options">Thêm tùy chọn staking</string>
     <string name="staking_dashboard_no_stake_header">Stake và nhận phần thưởng</string>
     <string name="staking_details_migration_alert_title">Staking %1$s đang hoạt động trên %2$s bắt đầu %3$s</string>
@@ -1460,7 +1460,7 @@
     <string name="staking_hint_reward_bond_more_v2_2_0">Bạn sẽ nhận được phần thưởng tăng lên bắt đầu từ kỷ nguyên tiếp theo</string>
     <string name="staking_hint_rewards_format">Token đã staked tạo ra phần thưởng mỗi kỷ nguyên (%s).</string>
     <string name="staking_hint_rewards_format_v2_2_0">Tokens trong stake tạo ra phần thưởng mỗi kỷ nguyên (%s)</string>
-    <string name="staking_hint_unbond_kills_stash">Ví Nova sẽ thay đổi điểm đến phần thưởng\nvào tài khoản của bạn để tránh phần stake còn lại.</string>
+    <string name="staking_hint_unbond_kills_stash">Ví Pezkuwi sẽ thay đổi điểm đến phần thưởng\nvào tài khoản của bạn để tránh phần stake còn lại.</string>
     <string name="staking_hint_unstake_format">Nếu bạn muốn unstake tokens, bạn sẽ phải chờ đợi trong thời gian unstaking (%s).</string>
     <string name="staking_hint_unstake_format_v2_2_0">Để unstake tokens bạn sẽ phải đợi trong thời gian unstaking (%s)</string>
     <string name="staking_info">Thông tin Staking</string>
@@ -1620,7 +1620,7 @@
     <string name="staking_start_change_validators_custom_subtitle">Bạn nên tin tưởng các nominations của mình hành động một cách khôn ngoan và trung thực, chỉ dựa vào lợi nhuận hiện tại của họ có thể dẫn đến lợi nhuận giảm hoặc thậm chí mất vốn.</string>
     <string name="staking_start_change_validators_custom_subtitle_v2_2_0">Chọn lựa validators của bạn cẩn thận, vì họ nên hành động một cách chuyên nghiệp và trung thực. Chỉ quyết định dựa trên lợi nhuận có thể dẫn đến giảm phần thưởng hoặc thậm chí mất stake</string>
     <string name="staking_start_change_validators_custom_title">Stake với các validators của bạn</string>
-    <string name="staking_start_change_validators_recommended_subtitle">Ví Nova sẽ chọn những người xác thực hàng đầu dựa trên tiêu chí bảo mật và lợi nhuận</string>
+    <string name="staking_start_change_validators_recommended_subtitle">Ví Pezkuwi sẽ chọn những người xác thực hàng đầu dựa trên tiêu chí bảo mật và lợi nhuận</string>
     <string name="staking_start_change_validators_recommended_title">Stake với những người xác thực được khuyến nghị</string>
     <string name="staking_start_title">Bắt đầu staking</string>
     <string name="staking_stash">Stash</string>
@@ -1716,7 +1716,7 @@
     <string name="start_staking_fragment_min_stake_condition_duration">trong %s</string>
     <string name="start_staking_fragment_min_stake_condition_no_min_stake">Stake bất cứ lúc nào. Stake của bạn sẽ tích cực kiếm phần thưởng %s</string>
     <string name="start_staking_fragment_more_info">Tìm hiểu thêm thông tin về\nstake %1$s tại %2$s</string>
-    <string name="start_staking_fragment_more_info_clicable_part">Nova Wiki</string>
+    <string name="start_staking_fragment_more_info_clicable_part">Pezkuwi Wiki</string>
     <string name="start_staking_fragment_reward_frequency_condition_automatic_and_manual">Phần thưởng được tích lũy %1$s. Stake hơn %2$s để tự động trả phần thưởng, nếu không, bạn cần phải đòi phần thưởng thủ công</string>
     <string name="start_staking_fragment_reward_frequency_condition_duration">mỗi %s</string>
     <string name="start_staking_fragment_reward_frequency_condition_fallback">Phần thưởng được tích lũy %s</string>
@@ -1783,7 +1783,7 @@
     <string name="swap_main_settings_asset_out_not_selecting_button_state">Chọn một token để nhận</string>
     <string name="swap_main_settings_enter_amount_disabled_button_state">Nhập số tiền</string>
     <string name="swap_main_settings_wrong_amount_disabled_button_state">Nhập số tiền khác</string>
-    <string name="swap_minimum_balance_buy_in_alert" formatted="false">Để thanh toán phí mạng bằng %s, Nova sẽ tự động hoán đổi %s thành %s để duy trì số dư tối thiểu %s trong tài khoản của bạn.</string>
+    <string name="swap_minimum_balance_buy_in_alert" formatted="false">Để thanh toán phí mạng bằng %s, Pezkuwi sẽ tự động hoán đổi %s thành %s để duy trì số dư tối thiểu %s trong tài khoản của bạn.</string>
     <string name="swap_network_fee_description">Một khoản phí mạng được tính bởi blockchain để xử lý và xác nhận bất kỳ giao dịch nào. Có thể thay đổi tùy thuộc vào điều kiện mạng hoặc tốc độ giao dịch.</string>
     <string name="swap_network_flow_title">Chọn mạng để hoán đổi %s</string>
     <string name="swap_not_enought_liquidity_failure">Pool không có đủ thanh khoản để thực hiện hoán đổi</string>
@@ -1927,7 +1927,7 @@
     <plurals name="wallet_connect_session_approve_missing_accounts_alert">
         <item quantity="other">Các tài khoản %s bị thiếu. Thêm tài khoản vào ví trong Cài đặt</item>
     </plurals>
-    <string name="wallet_connect_session_approve_unsupported_chains_alert">Một số mạng lưới cần thiết được yêu cầu bởi \"%s\" không được hỗ trợ trong Ví Nova</string>
+    <string name="wallet_connect_session_approve_unsupported_chains_alert">Một số mạng lưới cần thiết được yêu cầu bởi \"%s\" không được hỗ trợ trong Ví Pezkuwi</string>
     <string name="wallet_connect_sessions_placeholder">Các phiên Wallet Connect sẽ xuất hiện ở đây</string>
     <string name="wallet_connect_title">WalletConnect</string>
     <string name="wallet_connect_unknown_dapp">dApp không xác định</string>
@@ -1993,14 +1993,14 @@
     <string name="wallet_transfer_details_title">Chi tiết chuyển khoản</string>
     <string name="web3names_address_with_description" formatted="false">%s (%s)</string>
     <string name="web3names_identifiers_sheet_title" formatted="false">Địa chỉ %s cho %s</string>
-    <string name="web3names_integrity_check_failed_message">Nova phát hiện các vấn đề liên quan đến tính toàn vẹn của thông tin về địa chỉ %1$s. Vui lòng liên hệ với chủ sở hữu %1$s để giải quyết các vấn đề liên quan đến tính toàn vẹn.</string>
+    <string name="web3names_integrity_check_failed_message">Pezkuwi phát hiện các vấn đề liên quan đến tính toàn vẹn của thông tin về địa chỉ %1$s. Vui lòng liên hệ với chủ sở hữu %1$s để giải quyết các vấn đề liên quan đến tính toàn vẹn.</string>
     <string name="web3names_integrity_check_failed_title">Kiểm tra tính toàn vẹn không thành công</string>
     <string name="web3names_invalid_recepient_title">Người nhận không hợp lệ</string>
     <string name="web3names_no_valid_recepient_found_message" formatted="false">Không tìm thấy địa chỉ hợp lệ cho %s trên mạng %s</string>
     <string name="web3names_recepient_not_found_message">%s không tìm thấy</string>
     <string name="web3names_service_unavailable_message">Dịch vụ %1$s w3n không khả dụng. Thử lại sau hoặc nhập thủ công địa chỉ %1$s</string>
     <string name="web3names_service_unavailable_title">Lỗi khi giải quyết w3n</string>
-    <string name="web3names_unsupported_asset_message">Nova không thể giải quyết mã cho token %s</string>
+    <string name="web3names_unsupported_asset_message">Pezkuwi không thể giải quyết mã cho token %s</string>
     <string name="web3names_unsupported_asset_title">Token %s chưa được hỗ trợ</string>
     <string name="yesterday">Hôm qua</string>
     <string name="yield_boost_already_enabled_message">Yield Boost sẽ được tắt cho các collator hiện tại. Collator mới: %s</string>

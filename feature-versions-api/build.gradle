@@ -15,7 +15,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'io.novafoundation.nova.feature_versions_api'
+    namespace 'io.pezkuwichain.wallet.feature_versions_api'
 }
 
 dependencies {

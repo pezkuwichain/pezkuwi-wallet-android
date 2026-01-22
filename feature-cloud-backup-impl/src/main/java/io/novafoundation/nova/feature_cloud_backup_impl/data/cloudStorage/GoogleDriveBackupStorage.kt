@@ -203,7 +203,7 @@ internal class GoogleDriveBackupStorage(
         credential.selectedAccount = account!!.account
 
         return Drive.Builder(NetHttpTransport(), GsonFactory(), credential)
-            .setApplicationName("Nova Wallet")
+            .setApplicationName("Pezkuwi Wallet")
             .build()
     }
 
@@ -211,9 +211,9 @@ internal class GoogleDriveBackupStorage(
 
     private fun backupFileName(): String {
         return if (debug) {
-            "novawallet_backup_debug.json"
+            "pezkuwiwallet_backup_debug.json"
         } else {
-            "novawallet_backup.json"
+            "pezkuwiwallet_backup.json"
         }
     }
 }

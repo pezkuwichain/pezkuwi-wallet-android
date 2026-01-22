@@ -42,7 +42,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/yourPoolIcon"
         app:layout_constraintTop_toTopOf="@+id/yourPoolIcon"
-        tools:text="✨ Nova Wallet ✨ — Pool #1 — Recommended Validators" />
+        tools:text="🔥 Pezkuwi Wallet 🔥 — Pool #1 — Recommended Validators" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/yourPoolLoadingGroup"

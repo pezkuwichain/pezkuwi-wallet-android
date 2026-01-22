@@ -25,7 +25,7 @@ android {
             buildConfigField "String", "DYNAMIC_CROSS_CHAIN_CONFIG_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/xcm/v8/transfers_dynamic.json\""
         }
     }
-    namespace 'io.novafoundation.nova.feature_wallet_impl'
+    namespace 'io.pezkuwichain.wallet.feature_wallet_impl'
 
     buildFeatures {
         viewBinding true

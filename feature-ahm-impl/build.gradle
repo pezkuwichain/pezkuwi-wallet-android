@@ -1,7 +1,7 @@
 apply plugin: 'kotlin-parcelize'
 
 android {
-    namespace 'io.novafoundation.nova.feature_ahm_impl'
+    namespace 'io.pezkuwichain.wallet.feature_ahm_impl'
 
     defaultConfig {
         buildConfigField "String", "AHM_CONFIG_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/migrations/asset_hub/migrations_dev.json\""

@@ -38,9 +38,9 @@
     <string name="account_delete_confirmation_title">지갑을 잊어버리겠습니까?</string>
     <string name="account_derivation_path_ethereum_invalid_title">유효하지 않은 Ethereum 파생 경로</string>
     <string name="account_derivation_path_substrate_invalid_title">유효하지 않은 Substrate 파생 경로</string>
-    <string name="account_details_parity_signer_alert">이 지갑은 %1$s와 쌍을 이루고 있습니다. Nova는 원하는 모든 작업을 수행하는 데 도움을 줄 것이며, %1$s를 사용하여 서명해야 합니다</string>
+    <string name="account_details_parity_signer_alert">이 지갑은 %1$s와 쌍을 이루고 있습니다. Pezkuwi는 원하는 모든 작업을 수행하는 데 도움을 줄 것이며, %1$s를 사용하여 서명해야 합니다</string>
     <string name="account_details_parity_signer_not_supported">%s에서 지원되지 않음</string>
-    <string name="account_details_watch_only_alert">이것은 watch-only 지갑으로, Nova는 잔액 및 기타 정보를 보여줄 수 있지만 이 지갑으로는 어떤 거래도 수행할 수 없습니다</string>
+    <string name="account_details_watch_only_alert">이것은 watch-only 지갑으로, Pezkuwi는 잔액 및 기타 정보를 보여줄 수 있지만 이 지갑으로는 어떤 거래도 수행할 수 없습니다</string>
     <string name="account_enter_wallet_nickname">지갑 닉네임을 입력하세요...</string>
     <string name="account_error_try_another_one">다른 것을 시도해 보세요.</string>
     <string name="account_ethereum_crypto_type">Ethereum 키페어 암호화 유형</string>
@@ -64,7 +64,7 @@
     <string name="account_import_private_key">개인 키 가져오기</string>
     <string name="account_import_seed_hint">0xAB</string>
     <string name="account_import_seed_title">원시 seed 입력</string>
-    <string name="account_import_wallet_subtitle">Nova는 모든 앱과 호환됩니다</string>
+    <string name="account_import_wallet_subtitle">Pezkuwi는 모든 앱과 호환됩니다</string>
     <string name="account_import_wallet_title">지갑 가져오기</string>
     <string name="account_info_title">계정</string>
     <string name="account_invalid_derivation_path_message_v2_2_0">파생 경로에 지원되지 않는 기호가 포함되어 있거나 구조가 잘못되었습니다</string>
@@ -98,12 +98,12 @@
     <string name="account_ledger_migration_generic">Polkadot</string>
     <string name="account_ledger_nano_x">Ledger Nano X</string>
     <string name="account_ledger_nano_x_legacy">레저 레거시</string>
-    <string name="account_ledger_select_device_all_description">Ledger를 Bluetooth로 사용하는 경우, 두 기기에서 Bluetooth를 활성화하고 Nova Bluetooth 및 위치 권한을 부여하세요. USB를 사용하려면, 전화 설정에서 OTG를 활성화하세요.</string>
+    <string name="account_ledger_select_device_all_description">Ledger를 Bluetooth로 사용하는 경우, 두 기기에서 Bluetooth를 활성화하고 Pezkuwi Bluetooth 및 위치 권한을 부여하세요. USB를 사용하려면, 전화 설정에서 OTG를 활성화하세요.</string>
     <string name="account_ledger_select_device_description">전화 설정에서 Bluetooth를 활성화하고 Ledger 장치를 여십시오. Ledger 장치를 잠금 해제하고 %s 앱을 여십시오.</string>
     <string name="account_ledger_select_device_title">Ledger 장치를 선택하십시오</string>
     <string name="account_ledger_select_device_usb_description">Ledger 장치를 활성화해주세요. Ledger 장치를 잠금 해제하고 %s 앱을 여세요.</string>
     <string name="account_migration_subtitle">거의 다 왔어요! 🎉\n 아래를 탭하여 설정을 완료하고 Polkadot 앱과 Pezkuwi Wallet에서 계정을 원활하게 사용하세요</string>
-    <string name="account_migration_title">Nova에 오신 것을 환영합니다!</string>
+    <string name="account_migration_title">Pezkuwi에 오신 것을 환영합니다!</string>
     <string name="account_mnmonic_length_variants">12, 15, 18, 21 또는 24 단어 구</string>
     <string name="account_multisig">다중 서명</string>
     <string name="account_multisig_group_label">공유 제어 (다중 서명)</string>
@@ -178,7 +178,7 @@
     <string name="account_watch_only">보기 전용</string>
     <string name="account_welcome_hardware_wallet_subtitle">Polkadot Vault, Parity Signer 또는 Ledger 사용</string>
     <string name="account_welcome_hardware_wallet_title">하드웨어 지갑</string>
-    <string name="account_welcome_trust_wallet_subtitle">Nova에서 Trust Wallet 계정을 사용하세요</string>
+    <string name="account_welcome_trust_wallet_subtitle">Pezkuwi에서 Trust Wallet 계정을 사용하세요</string>
     <string name="account_welcome_trust_wallet_title">Trust Wallet</string>
     <string name="accounts_add_chain_account">%s 계정 추가</string>
     <string name="accounts_add_wallet">지갑 추가</string>
@@ -199,13 +199,13 @@
     <string name="add_proxy_maximum_reached_error_title">최대 프록시 수에 도달했습니다</string>
     <string name="added_networks_empty_placeholder">추가된 사용자 정의 네트워크는 여기에 나타납니다</string>
     <string name="additional_payment_methods">+%d</string>
-    <string name="alert_nova_has_selected_ms_wallet">Nova가 자동으로 귀하의 멀티시그 지갑으로 전환되어, 대기 중인 거래를 확인할 수 있습니다.</string>
+    <string name="alert_nova_has_selected_ms_wallet">Pezkuwi가 자동으로 귀하의 멀티시그 지갑으로 전환되어, 대기 중인 거래를 확인할 수 있습니다.</string>
     <string name="appearance_colored_icon_title">컬러</string>
     <string name="appearance_title">외관</string>
     <string name="appearance_token_assets_title">토큰 아이콘</string>
     <string name="appearance_white_icon_title">화이트</string>
-    <string name="asset_add_evm_token_already_exist_message">입력된 계약 주소는 Nova에서 %s 토큰으로 이미 존재합니다.</string>
-    <string name="asset_add_evm_token_already_exist_modifiable_message">입력된 계약 주소는 Nova에서 %s 토큰으로 존재합니다. 수정하시겠습니까?</string>
+    <string name="asset_add_evm_token_already_exist_message">입력된 계약 주소는 Pezkuwi에서 %s 토큰으로 이미 존재합니다.</string>
+    <string name="asset_add_evm_token_already_exist_modifiable_message">입력된 계약 주소는 Pezkuwi에서 %s 토큰으로 존재합니다. 수정하시겠습니까?</string>
     <string name="asset_add_evm_token_already_exist_title">이 토큰은 이미 존재합니다</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_message">제공된 URL이 다음 형식을 갖추었는지 확인하세요: www.coingecko.com/en/coins/tether.</string>
     <string name="asset_add_evm_token_invalid_coin_gecko_link_title">유효하지 않은 CoinGecko 링크</string>
@@ -419,7 +419,7 @@
     <string name="common_disconnect">연결 끊기</string>
     <string name="common_do_not_close_app">앱을 닫지 마세요!</string>
     <string name="common_done">완료</string>
-    <string name="common_dry_run_failed_message">Nova는 오류를 방지하기 위해 거래를 사전에 시뮬레이션합니다. 이 시뮬레이션이 성공하지 못했습니다. 나중에 다시 시도하거나 더 높은 금액으로 시도하십시오. 문제가 지속되면, 설정의 Pezkuwi Wallet 지원팀에 문의하십시오.</string>
+    <string name="common_dry_run_failed_message">Pezkuwi는 오류를 방지하기 위해 거래를 사전에 시뮬레이션합니다. 이 시뮬레이션이 성공하지 못했습니다. 나중에 다시 시도하거나 더 높은 금액으로 시도하십시오. 문제가 지속되면, 설정의 Pezkuwi Wallet 지원팀에 문의하십시오.</string>
     <string name="common_dry_run_failed_title">거래 시뮬레이션 실패</string>
     <string name="common_edit">편집</string>
     <string name="common_element_and_more_format" formatted="false">%s (+%s 더)</string>
@@ -665,7 +665,7 @@
     <string name="crowdloan_main_description_v2_2_0">파라체인을 선택하여 %s을(를) 기여하세요. 기여한 토큰을 돌려받게 되며, 파라체인이 슬롯에 당선되면 경매 종료 후 보상을 받게 됩니다.</string>
     <string name="crowdloan_missing_account_message">기여를 위해 지갑에 %s 계정을 추가해야 합니다.</string>
     <string name="crowdloan_missing_bonus_action">보너스 적용</string>
-    <string name="crowdloan_missing_bonus_message">추천 코드가 없으시면 Nova 추천 코드를 적용하여 기여에 대한 보너스를 받을 수 있습니다</string>
+    <string name="crowdloan_missing_bonus_message">추천 코드가 없으시면 Pezkuwi 추천 코드를 적용하여 기여에 대한 보너스를 받을 수 있습니다</string>
     <string name="crowdloan_missing_bonus_title">보너스가 적용되지 않았습니다</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_message">Moonbeam crowdloan은 SR25519 또는 ED25519 암호화 유형 계정만 지원합니다. 다른 계정을 사용하여 기여하는 것을 고려해 주세요</string>
     <string name="crowdloan_moonbeam_encryption_not_supported_title">이 계정으로 기여할 수 없습니다</string>
@@ -686,7 +686,7 @@
     <string name="crowdloan_unlock_hint">임대 기간이 끝난 후 당신의 %s 토큰이 반환됩니다.</string>
     <string name="crowdloan_your_contributions">당신의 기여</string>
     <string name="crownloans_raised_format" formatted="false">모금액: %s 중 %s</string>
-    <string name="custom_network_already_exist_failure_message">입력한 RPC URL은 Nova에 %s 사용자 정의 네트워크로 이미 존재합니다. 정말로 수정하시겠습니까?</string>
+    <string name="custom_network_already_exist_failure_message">입력한 RPC URL은 Pezkuwi에 %s 사용자 정의 네트워크로 이미 존재합니다. 정말로 수정하시겠습니까?</string>
     <string name="custom_network_block_explorer_placeholder">https://networkscan.io</string>
     <string name="custom_network_block_explorer_title">블록 탐색기 URL (선택 사항)</string>
     <string name="custom_network_chain_id_placeholder">012345</string>
@@ -743,7 +743,7 @@
     <string name="deep_linking_invalid_derivation_path">잘못된 파생 경로</string>
     <string name="deep_linking_invalid_mnemonic">잘못된 니모닉</string>
     <string name="deep_linking_url_is_invalid">잘못된 URL</string>
-    <string name="default_network_already_exist_failure_message">입력한 RPC URL은 Nova에 %s 네트워크로 이미 존재합니다.</string>
+    <string name="default_network_already_exist_failure_message">입력한 RPC URL은 Pezkuwi에 %s 네트워크로 이미 존재합니다.</string>
     <string name="default_notification_channel_name">기본 알림 채널</string>
     <string name="delegate_more_tracks">+%d</string>
     <string name="delegate_search_hint">주소나 이름으로 검색</string>
@@ -766,7 +766,7 @@
     <string name="delegation_edit_delegation">위임 수정</string>
     <string name="delegation_error_self_delegate_message">자신에게 위임할 수 없습니다. 다른 주소를 선택하세요</string>
     <string name="delegation_error_self_delegate_title">자신에게 위임할 수 없음</string>
-    <string name="delegation_list_banner_description">Nova 사용자가 귀하를 더 잘 알 수 있도록 자신에 대해 더 알려주세요</string>
+    <string name="delegation_list_banner_description">Pezkuwi 사용자가 귀하를 더 잘 알 수 있도록 자신에 대해 더 알려주세요</string>
     <string name="delegation_list_banner_title">Delegate가 되셨습니까?</string>
     <string name="delegation_list_describe_yourself_action">자신을 설명하세요</string>
     <string name="delegation_multi_track_format">%s 트랙에 따라서</string>
@@ -840,12 +840,12 @@
     <string name="gifts_assets_flow_title">증여할 토큰 선택</string>
     <string name="gifts_claim_fee">청구 시 네트워크 수수료</string>
     <string name="gifts_create">선물 생성</string>
-    <string name="gifts_header_subtitle">Nova에서 빠르고 쉽게 안전하게 선물을 보내세요</string>
+    <string name="gifts_header_subtitle">Pezkuwi에서 빠르고 쉽게 안전하게 선물을 보내세요</string>
     <string name="gifts_header_title">누구와도 언제 어디서나 암호화폐 선물 공유</string>
     <string name="gifts_list_title">생성한 선물</string>
     <string name="gifts_network_flow_title">%s 선물에 대한 네트워크 선택</string>
     <string name="gifts_placeholder_step_1">선물 금액 입력</string>
-    <string name="gifts_placeholder_step_2">%s를 링크로 공유하고 Nova로 초대하세요</string>
+    <string name="gifts_placeholder_step_2">%s를 링크로 공유하고 Pezkuwi로 초대하세요</string>
     <string name="gifts_placeholder_step_2_highlight">선물을 직접 공유</string>
     <string name="gifts_placeholder_step_3">%s, 그리고 이 디바이스에서 언제든지 회수 가능</string>
     <string name="gifts_placeholder_step_3_highlight">선물이 즉시 사용 가능합니다</string>
@@ -928,7 +928,7 @@
     <string name="ledger_verify_address_message_confirm_button">%s의 확인 버튼을 눌러 주소를 승인하세요</string>
     <string name="ledger_verify_addresses_message_both_buttons">%s의 두 버튼을 눌러 주소를 승인하세요</string>
     <string name="ledger_verify_addresses_message_confirm_button">%s의 확인 버튼을 눌러 주소를 승인하세요</string>
-    <string name="ledger_wallet_details_description">이 지갑은 Ledger와 연동되어 있습니다. Nova는 원하는 모든 작업을 생성하는 데 도움을 줄 것이며, Ledger를 사용하여 서명하라는 요청을 받을 것입니다.</string>
+    <string name="ledger_wallet_details_description">이 지갑은 Ledger와 연동되어 있습니다. Pezkuwi는 원하는 모든 작업을 생성하는 데 도움을 줄 것이며, Ledger를 사용하여 서명하라는 요청을 받을 것입니다.</string>
     <string name="ledher_import_select_address_title">지갑에 추가할 계정을 선택하세요</string>
     <string name="loading_network_info">네트워크 정보를 불러오는 중...</string>
     <string name="loading_transaction_details">거래 세부 정보 로딩 중...</string>
@@ -1058,7 +1058,7 @@
     <string name="nft_owned_by">소유자</string>
     <string name="nft_price_not_listed">가격 미정</string>
     <string name="nft_your_nfts">당신의 NFT</string>
-    <string name="no_ms_accounts_found_dialog_message">Nova에 멀티시그 지갑을 추가하거나 선택하지 않았습니다. 멀티시그 푸시 알림을 받으려면 최소 한 개를 추가하고 선택하세요.</string>
+    <string name="no_ms_accounts_found_dialog_message">Pezkuwi에 멀티시그 지갑을 추가하거나 선택하지 않았습니다. 멀티시그 푸시 알림을 받으려면 최소 한 개를 추가하고 선택하세요.</string>
     <string name="no_ms_accounts_found_dialog_title">멀티시그 지갑 없음</string>
     <string name="node_already_exist_failure_message">입력된 URL이 \\\"%s\\\" 노드로 이미 존재합니다.</string>
     <string name="node_already_exist_failure_title">이 노드가 이미 존재합니다</string>
@@ -1164,7 +1164,7 @@
     <string name="push_referendum_rejected_title">❌ 국민투표 거부됨!</string>
     <string name="push_referendum_status_changed_title">🗳️ 국민투표 상태가 변경되었습니다</string>
     <string name="push_referendum_to_status_changed_message" formatted="false">%s 국민투표 #%s의 상태가 %s로 변경되었습니다</string>
-    <string name="push_settings_announcements">Nova 공지사항</string>
+    <string name="push_settings_announcements">Pezkuwi 공지사항</string>
     <string name="push_settings_balances">잔액</string>
     <string name="push_settings_enable">알림 활성화</string>
     <string name="push_settings_multisig_operations">다중 서명 거래</string>
@@ -1218,7 +1218,7 @@
     <string name="referendum_abstain_vote_invalid_conviction_title">확신도 업데이트</string>
     <string name="referendum_abstain_voters_title">기권 투표</string>
     <string name="referendum_aye_format">찬성: %s</string>
-    <string name="referendum_dapp_list_title">Nova DApp 브라우저 사용</string>
+    <string name="referendum_dapp_list_title">Pezkuwi DApp 브라우저 사용</string>
     <string name="referendum_description_fallback">제안자만 이 설명과 제목을 수정할 수 있습니다. 제안자의 계정을 소유하고 있다면, Polkassembly에 방문하여 제안에 대한 정보를 입력하세요.</string>
     <string name="referendum_details_requested_amount">요청된 금액</string>
     <string name="referendum_details_timeline">일정</string>
@@ -1346,7 +1346,7 @@
     <string name="select_delegation_tracks_unavailable_tracks">사용할 수 없는 트랙</string>
     <string name="select_gift_amount_title">선물 발송</string>
     <string name="select_ledger_grant_permissions">Bluetooth 활성화 및 권한 부여</string>
-    <string name="select_ledger_location_enable_request_message">Ledger 장치를 찾기 위해 블루투스 스캔을 수행하려면 Nova는 위치 기능을 활성화해야 합니다.</string>
+    <string name="select_ledger_location_enable_request_message">Ledger 장치를 찾기 위해 블루투스 스캔을 수행하려면 Pezkuwi는 위치 기능을 활성화해야 합니다.</string>
     <string name="select_ledger_location_enable_request_title">기기 설정에서 지리적 위치를 활성화해주세요.</string>
     <string name="select_network_title">네트워크 선택</string>
     <string name="select_token_to_vote">투표할 토큰 선택</string>
@@ -1442,7 +1442,7 @@
     <string name="staking_custom_validators_settings_sort_apr">예상 보상 (%% APR)</string>
     <string name="staking_custom_validators_settings_sort_apy">예상 보상 (%% APY)</string>
     <string name="staking_custom_validators_update_list">목록 업데이트</string>
-    <string name="staking_dashboard_browser_stake_header">Nova DApp 브라우저를 통한 Staking</string>
+    <string name="staking_dashboard_browser_stake_header">Pezkuwi DApp 브라우저를 통한 Staking</string>
     <string name="staking_dashboard_more_options">더 많은 Staking 옵션</string>
     <string name="staking_dashboard_no_stake_header">Stake하고 보상 받기</string>
     <string name="staking_details_migration_alert_title">%1$s Staking은 %2$s에서 %3$s부터 활성화됩니다</string>
@@ -1460,7 +1460,7 @@
     <string name="staking_hint_reward_bond_more_v2_2_0">다음 era부터 보상이 증가할 것입니다</string>
     <string name="staking_hint_rewards_format">Staked 토큰은 매 era마다 보상을 생성합니다 (%s).</string>
     <string name="staking_hint_rewards_format_v2_2_0">스테이크된 토큰은 각 에포크마다 보상을 생성합니다 (%s)</string>
-    <string name="staking_hint_unbond_kills_stash">남은 스테이크를 방지하기 위해 Nova wallet이 보상 대상을 귀하의 계정으로 변경합니다.</string>
+    <string name="staking_hint_unbond_kills_stash">남은 스테이크를 방지하기 위해 Pezkuwi wallet이 보상 대상을 귀하의 계정으로 변경합니다.</string>
     <string name="staking_hint_unstake_format">토큰을 언스테이크하려면 언스테이킹 기간을 기다려야 합니다 (%s).</string>
     <string name="staking_hint_unstake_format_v2_2_0">토큰을 언스테이크하려면 언스테이킹 기간을 기다려야 합니다 (%s)</string>
     <string name="staking_info">스테이킹 정보</string>
@@ -1716,7 +1716,7 @@
     <string name="start_staking_fragment_min_stake_condition_duration">%s 후</string>
     <string name="start_staking_fragment_min_stake_condition_no_min_stake">언제든지 Staking 가능합니다. Staking은 %s 동안 활발하게 보상을 얻습니다</string>
     <string name="start_staking_fragment_more_info">%1$s Staking에 대해 더 많은 정보를 알아보세요 %2$s에서</string>
-    <string name="start_staking_fragment_more_info_clicable_part">Nova Wiki</string>
+    <string name="start_staking_fragment_more_info_clicable_part">Pezkuwi Wiki</string>
     <string name="start_staking_fragment_reward_frequency_condition_automatic_and_manual">보상은 %1$s 동안 누적됩니다. 자동 보상 지급을 받으려면 %2$s 이상 Staking 하세요, 그렇지 않으면 수동으로 보상을 청구해야 합니다</string>
     <string name="start_staking_fragment_reward_frequency_condition_duration">%s마다</string>
     <string name="start_staking_fragment_reward_frequency_condition_fallback">보상은 %s 동안 누적됩니다</string>
@@ -1783,7 +1783,7 @@
     <string name="swap_main_settings_asset_out_not_selecting_button_state">받을 토큰 선택</string>
     <string name="swap_main_settings_enter_amount_disabled_button_state">금액 입력</string>
     <string name="swap_main_settings_wrong_amount_disabled_button_state">다른 금액 입력</string>
-    <string name="swap_minimum_balance_buy_in_alert" formatted="false">%s로 네트워크 수수료를 지불하기 위해, Nova는 계정의 최소 %s 잔액을 유지하기 위해 자동으로 %s를 %s로 교환합니다.</string>
+    <string name="swap_minimum_balance_buy_in_alert" formatted="false">%s로 네트워크 수수료를 지불하기 위해, Pezkuwi는 계정의 최소 %s 잔액을 유지하기 위해 자동으로 %s를 %s로 교환합니다.</string>
     <string name="swap_network_fee_description">블록체인이 모든 거래를 처리하고 검증하기 위해 부과하는 네트워크 수수료입니다. 네트워크 상태나 거래 속도에 따라 다를 수 있습니다.</string>
     <string name="swap_network_flow_title">%s 교환을 위한 네트워크 선택</string>
     <string name="swap_not_enought_liquidity_failure">풀에 교환할 수 있는 유동성이 충분하지 않습니다</string>
@@ -1993,14 +1993,14 @@
     <string name="wallet_transfer_details_title">전송 세부 사항</string>
     <string name="web3names_address_with_description" formatted="false">%s (%s)</string>
     <string name="web3names_identifiers_sheet_title" formatted="false">%s의 %s 주소</string>
-    <string name="web3names_integrity_check_failed_message">Nova에서 %1$s 주소에 대한 정보의 무결성 문제를 감지했습니다. %1$s의 소유자에게 연락하여 무결성 문제를 해결하세요.</string>
+    <string name="web3names_integrity_check_failed_message">Pezkuwi에서 %1$s 주소에 대한 정보의 무결성 문제를 감지했습니다. %1$s의 소유자에게 연락하여 무결성 문제를 해결하세요.</string>
     <string name="web3names_integrity_check_failed_title">무결성 검사 실패</string>
     <string name="web3names_invalid_recepient_title">유효하지 않은 수신자</string>
     <string name="web3names_no_valid_recepient_found_message" formatted="false">%s 네트워크에서 %s에 대한 유효한 주소를 찾을 수 없습니다.</string>
     <string name="web3names_recepient_not_found_message">%s을(를) 찾을 수 없습니다</string>
     <string name="web3names_service_unavailable_message">%1$s w3n 서비스가 사용할 수 없습니다. 나중에 다시 시도하거나 %1$s 주소를 수동으로 입력하십시오</string>
     <string name="web3names_service_unavailable_title">w3n 해상도 오류</string>
-    <string name="web3names_unsupported_asset_message">Nova에서 토큰 %s의 코드를 해석할 수 없습니다</string>
+    <string name="web3names_unsupported_asset_message">Pezkuwi에서 토큰 %s의 코드를 해석할 수 없습니다</string>
     <string name="web3names_unsupported_asset_title">토큰 %s은(는) 아직 지원되지 않습니다</string>
     <string name="yesterday">어제</string>
     <string name="yield_boost_already_enabled_message">지금 콜레이터의 Yield Boost가 비활성화됩니다. 새로운 콜레이터: %s</string>
