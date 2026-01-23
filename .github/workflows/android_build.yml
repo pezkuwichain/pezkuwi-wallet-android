@@ -32,18 +32,21 @@ on:
         type: boolean
         default: false
     secrets:
+      # Crowdloan secrets - NOT NEEDED for Pezkuwi (own blockchain)
       ACALA_PROD_AUTH_TOKEN:
-        required: true
+        required: false
       ACALA_TEST_AUTH_TOKEN:
-        required: true
+        required: false
       MOONBEAM_PROD_AUTH_TOKEN:
-        required: true
+        required: false
       MOONBEAM_TEST_AUTH_TOKEN:
-        required: true
+        required: false
+      # Fiat on-ramp - OPTIONAL (future update)
       MOONPAY_PRODUCTION_SECRET:
-        required: true
+        required: false
       MOONPAY_TEST_SECRET:
-        required: true
+        required: false
+      # EVM chain support - REQUIRED for cross-chain
       EHTERSCAN_API_KEY_MOONBEAM:
         required: true
       EHTERSCAN_API_KEY_MOONRIVER:
@@ -52,14 +55,17 @@ on:
         required: true
       INFURA_API_KEY:
         required: true
+      # RPC provider - use own nodes or Dwellir
       DWELLIR_API_KEY:
-        required: true
+        required: false
+      # WalletConnect - REQUIRED for dApp connections
       WALLET_CONNECT_PROJECT_ID:
         required: true
+      # Google OAuth - REQUIRED for cloud backup
       DEBUG_GOOGLE_OAUTH_ID:
         required: true
       RELEASE_GOOGLE_OAUTH_ID:
-          required: true
+        required: true
       # Special secrets for signing:
       CI_MARKET_KEYSTORE_PASS:
         required: false
