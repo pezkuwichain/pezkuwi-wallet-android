@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "815440502995",
+    "project_id": "pezkuwi-wallet-debug-dev",
+    "storage_bucket": "pezkuwi-wallet-debug-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815440502995:android:8383afc644e3feed7ff426",
+        "android_client_info": {
+          "package_name": "io.pezkuwichain.wallet.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815440502995-bqffk4enkmk23hsqlijk01nf3vf60o8m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRYO6PKnKyzqWxR-O3tfVC5J6e44kTUZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815440502995-bqffk4enkmk23hsqlijk01nf3vf60o8m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
