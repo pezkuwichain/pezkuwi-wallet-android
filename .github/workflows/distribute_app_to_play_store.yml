@@ -1,8 +1,8 @@
-name: Manual Firebase distribution
+name: Distribute app to Play Store
 
 on:
   workflow_dispatch:
-     inputs:
+    inputs:
       app_version:
         description: 'Version of application'
         required: true
