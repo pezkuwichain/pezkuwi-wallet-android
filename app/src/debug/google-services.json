@@ -12,7 +12,12 @@
           "package_name": "io.pezkuwichain.wallet.debug"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "633686702274-seee7qsisjmrps3npbnep2i8rtu44hdu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBY_4wMnmyc8etnkyNOd_I-bCFAxO2Z-Os"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "633686702274-seee7qsisjmrps3npbnep2i8rtu44hdu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
