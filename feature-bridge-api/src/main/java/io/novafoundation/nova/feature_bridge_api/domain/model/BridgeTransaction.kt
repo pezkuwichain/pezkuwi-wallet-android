@@ -3,8 +3,8 @@ package io.novafoundation.nova.feature_bridge_api.domain.model
 import java.math.BigDecimal
 
 enum class BridgeTransactionType {
-    DEPOSIT,    // Polkadot USDT -> Pezkuwi wUSDT
-    WITHDRAW    // Pezkuwi wUSDT -> Polkadot USDT
+    DEPOSIT, // Polkadot USDT -> Pezkuwi wUSDT
+    WITHDRAW // Pezkuwi wUSDT -> Polkadot USDT
 }
 
 enum class BridgeTransactionStatus {

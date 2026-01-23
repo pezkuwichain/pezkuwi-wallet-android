@@ -89,11 +89,12 @@ class BridgeDepositFragment : Fragment() {
 
                 for (x in 0 until width) {
                     for (y in 0 until height) {
-                        bitmap.setPixel(
-                            x, y,
-                            if (bitMatrix.get(x, y)) android.graphics.Color.BLACK
-                            else android.graphics.Color.WHITE
-                        )
+                        val color = if (bitMatrix.get(x, y)) {
+                            android.graphics.Color.BLACK
+                        } else {
+                            android.graphics.Color.WHITE
+                        }
+                        bitmap.setPixel(x, y, color)
                     }
                 }
 
