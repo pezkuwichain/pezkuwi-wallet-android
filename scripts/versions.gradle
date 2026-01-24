@@ -1,9 +1,34 @@
+def getVersionCodeFromFile() {
+    def versionFile = new File(rootProject.projectDir, 'version.properties')
+    if (!versionFile.exists()) {
+        versionFile.text = 'VERSION_CODE=1'
+    }
+    def props = new Properties()
+    props.load(versionFile.newDataInputStream())
+    return props.getProperty('VERSION_CODE', '1').toInteger()
+}
+
+def incrementVersionCode() {
+    def versionFile = new File(rootProject.projectDir, 'version.properties')
+    def currentCode = getVersionCodeFromFile()
+    def newCode = currentCode + 1
+    versionFile.text = "VERSION_CODE=${newCode}"
+    return newCode
+}
+
 def computeVersionName() {
     return "$rootProject.versionName"
 }
 
 def computeVersionCode() {
-    return Integer.valueOf(System.env.CI_BUILD_ID ?: rootProject.versionCode)
+    if (System.env.CI_BUILD_ID) {
+        return Integer.valueOf(System.env.CI_BUILD_ID)
+    }
+    // Local build - auto increment
+    if (gradle.startParameter.taskNames.any { it.contains('assemble') || it.contains('install') }) {
+        return incrementVersionCode()
+    }
+    return getVersionCodeFromFile()
 }
 
 def static releaseNotes() {
