@@ -11,7 +11,14 @@ import io.novafoundation.nova.feature_wallet_api.data.repository.PricePeriod
 import io.novafoundation.nova.feature_wallet_api.data.source.CoinPriceRemoteDataSource
 import io.novafoundation.nova.feature_wallet_api.domain.model.CoinRateChange
 import io.novafoundation.nova.feature_wallet_api.domain.model.HistoricalCoinRate
+import java.math.BigDecimal
 import kotlin.time.Duration.Companion.milliseconds
+
+private const val PRICE_ID_HEZ = "hezkurd"
+private const val PRICE_ID_PEZ = "pezkuwi"
+private const val PRICE_ID_DOT = "polkadot"
+private val HEZ_DOT_DIVISOR = BigDecimal(3)
+private val PEZ_DOT_DIVISOR = BigDecimal(10)
 
 class RealCoinPriceDataSource(
     private val priceApi: ProxyPriceApi,
@@ -38,16 +45,50 @@ class RealCoinPriceDataSource(
     }
 
     override suspend fun getCoinRates(priceIds: Set<String>, currency: Currency): Map<String, CoinRateChange?> {
-        val sortedPriceIds = priceIds.toList().sorted()
-        return apiCall { coingeckoApi.getAssetPrice(sortedPriceIds.asQueryParam(), currency = currency.coingeckoId, includeRateChange = true) }
-            .mapValues {
-                val price = it.value[currency.coingeckoId].orZero()
-                val recentRate = it.value[CoingeckoApi.getRecentRateFieldName(currency.coingeckoId)].orZero()
-                CoinRateChange(
-                    recentRate.toBigDecimal(),
-                    price.toBigDecimal()
-                )
+        // Ensure DOT is included for fallback calculation if HEZ or PEZ is requested
+        val needsFallback = priceIds.contains(PRICE_ID_HEZ) || priceIds.contains(PRICE_ID_PEZ)
+        val allPriceIds = if (needsFallback) priceIds + PRICE_ID_DOT else priceIds
+
+        val sortedPriceIds = allPriceIds.toList().sorted()
+        val rawRates = apiCall { coingeckoApi.getAssetPrice(sortedPriceIds.asQueryParam(), currency = currency.coingeckoId, includeRateChange = true) }
+
+        val rates = rawRates.mapValues {
+            val price = it.value[currency.coingeckoId].orZero()
+            val recentRate = it.value[CoingeckoApi.getRecentRateFieldName(currency.coingeckoId)].orZero()
+            CoinRateChange(
+                recentRate.toBigDecimal(),
+                price.toBigDecimal()
+            )
+        }.toMutableMap()
+
+        // Apply fallback pricing for HEZ and PEZ if their prices are zero or missing
+        val dotRate = rates[PRICE_ID_DOT]
+        if (dotRate != null && dotRate.rate > BigDecimal.ZERO) {
+            // HEZ fallback: 1 HEZ = DOT / 3
+            if (priceIds.contains(PRICE_ID_HEZ)) {
+                val hezRate = rates[PRICE_ID_HEZ]
+                if (hezRate == null || hezRate.rate <= BigDecimal.ZERO) {
+                    rates[PRICE_ID_HEZ] = CoinRateChange(
+                        recentRateChange = dotRate.recentRateChange,
+                        rate = dotRate.rate.divide(HEZ_DOT_DIVISOR, 10, java.math.RoundingMode.HALF_UP)
+                    )
+                }
             }
+
+            // PEZ fallback: 1 PEZ = DOT / 10
+            if (priceIds.contains(PRICE_ID_PEZ)) {
+                val pezRate = rates[PRICE_ID_PEZ]
+                if (pezRate == null || pezRate.rate <= BigDecimal.ZERO) {
+                    rates[PRICE_ID_PEZ] = CoinRateChange(
+                        recentRateChange = dotRate.recentRateChange,
+                        rate = dotRate.rate.divide(PEZ_DOT_DIVISOR, 10, java.math.RoundingMode.HALF_UP)
+                    )
+                }
+            }
+        }
+
+        // Return only requested priceIds
+        return rates.filterKeys { it in priceIds }
     }
 
     override suspend fun getCoinRate(priceId: String, currency: Currency): CoinRateChange? {
