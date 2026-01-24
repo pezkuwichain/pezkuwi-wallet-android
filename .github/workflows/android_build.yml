@@ -130,6 +130,8 @@ env:
 
   POLKASSEMBLY_SUMMARY_API_KEY: ${{ secrets.POLKASSEMBLY_SUMMARY_API_KEY }}
 
+  CI_BUILD_ID: ${{ github.run_number }}
+
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}-${{inputs.upload-name}}
   cancel-in-progress: true
