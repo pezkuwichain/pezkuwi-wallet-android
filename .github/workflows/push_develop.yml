@@ -65,14 +65,14 @@ jobs:
         run: |
           echo "App uploaded to: ${{ steps.s3_upload.outputs.s3_url }}"
 
-  # Appium mobile tests - temporarily disabled until browserstack-tests.yml is created
-  # appium-mobile-tests:
-  #   needs: [upload-to-s3]
-  #   uses: ./.github/workflows/appium-mobile-tests.yml
-  #   with:
-  #     app_url: ${{ needs.upload-to-s3.outputs.s3_url }}
-  #     test_grep: "android"
-  #     allure_job_run_id: ""
-  #   secrets:
-  #     WORKFLOW_TOKEN: ${{ secrets.PAT_TOKEN }}
-  #     ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
+  appium-mobile-tests:
+    needs: [upload-to-s3]
+    if: ${{ always() && needs.upload-to-s3.result == 'success' }}
+    uses: ./.github/workflows/appium-mobile-tests.yml
+    with:
+      app_url: ${{ needs.upload-to-s3.outputs.s3_url }}
+      test_grep: "android"
+      allure_job_run_id: ""
+    secrets:
+      WORKFLOW_TOKEN: ${{ secrets.PAT_TOKEN }}
+      ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
