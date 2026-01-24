@@ -698,7 +698,7 @@
     <string name="network_management_default_nodes">default nodes</string>
     <string name="added_networks_empty_placeholder">Added custom networks\nwill appear here</string>
 
-    <string name="integrate_networks_banner_title">Building for Polkadot?</string>
+    <string name="integrate_networks_banner_title">Building for Pezkuwichain?</string>
     <string name="integrate_networks_banner_description">Integrate all the features of the network you are building into Pezkuwi Wallet, making it accessible to everyone.</string>
     <string name="integrate_networks_banner_link">Integrate your network</string>
 
