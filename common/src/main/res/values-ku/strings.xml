@@ -5,53 +5,322 @@
     <string name="about_privacy">Polîtîkaya Nepenîtiyê</string>
     <string name="about_rate_app">Me binirxînin</string>
     <string name="about_telegram_v2_2_0">Telegram</string>
-    <string name="about_terms">Şert û Merc</string>
+    <string name="about_terms">Şert û Mercên Bikaranînê</string>
     <string name="about_terms_v2_2_0">Şert û Merc</string>
     <string name="about_title">Derbarê</string>
     <string name="about_version">Guhertoya Sepanê</string>
     <string name="about_website_v2_2_0">Malper</string>
-    <string name="accoount_enter_chain_address_format">Navnîşana %s ya derbasdar binivîse...</string>
-    <string name="accoount_enter_evm_address">Navnîşana EVM divê derbasdar be an vala be...</string>
+    <string name="accoount_enter_chain_address_format">Navnîşana %s bi awayekî rast binivîse...</string>
+    <string name="accoount_enter_evm_address">Divê navnîşana EVM derbasdar an vala be...</string>
     <string name="accoount_enter_substrate_address">Navnîşana substrate ya derbasdar binivîse...</string>
     <string name="account_add_account">Hesab zêde bike</string>
     <string name="account_add_address">Navnîşan zêde bike</string>
     <string name="account_add_already_exists_message">Hesab jixwe heye. Ji kerema xwe yekî din biceribîne.</string>
     <string name="account_add_watch_only_description">Bi navnîşanê her cîzdanekê bişopîne</string>
-    <string name="account_add_watch_wallet">Cîzdanê tenê-temaşe zêde bike</string>
+    <string name="account_add_watch_wallet">Cîzdanê tenê-temaşekirinê zêde bike</string>
     <string name="account_backup_mnemonic_title">Peyva xwe binivîse</string>
-    <string name="account_backup_secret_caption">Ji kerema xwe piştrast bike ku te peyva xwe rast û xwînbar nivîsandiye.</string>
+    <string name="account_backup_secret_caption">Ji kerema xwe piştrast bike ku te gotina xwe rast û xwînbar nivîsandiye.</string>
     <string name="account_chain_address_format">Navnîşana %s</string>
-    <string name="account_chain_not_found">Li ser %s hesab tune</string>
-    <string name="account_confirm_mnemonic">Mnemonîkê bipejirîne</string>
+    <string name="account_chain_not_found">Hesab li ser %s tune</string>
+    <string name="account_confirm_mnemonic">Mnemonîkê piştrast bike</string>
     <string name="account_confirm_mnemonic_title">Ka em dîsa kontrol bikin</string>
     <string name="account_confirmation_details">Peyvan bi rêza rast hilbijêre</string>
-    <string name="account_create_account">Hesabek nû ava bike</string>
-    <string name="account_create_wallet">Cîzdaneke nû ava bike</string>
+    <string name="account_create_account">Hesabek nû çêke</string>
+    <string name="account_create_details_v2_2_0">Li ser telefona xwe panoyê an dîmenên ekranê bi kar neyne, ji bo paşvekêşanê rêyên ewle bibînin (mînak kaxez)</string>
+    <string name="account_create_name_subtitle_v2_2_0">Nav tenê di vê sepanê de herêmî tê bikaranîn. Paşê dikarin biguherînin</string>
+    <string name="account_create_name_title_v2_2_0">Navê cîzdanê çêke</string>
+    <string name="account_create_title">Mnemonîka paşvekêşanê</string>
+    <string name="account_create_wallet">Cîzdaneke nû çêke</string>
+    <string name="account_creation_info">Mnemonîk ji bo vegerandina gihîştina hesabê tê bikaranîn. Binivîse, bêyî vê em nikarin gihîştina hesabê te vegerînin!</string>
+    <string name="account_custom_secret">Hesabên bi nehêniya guhertî</string>
     <string name="account_delete_confirm">Ji bîr bike</string>
-    <string name="account_delete_confirmation_description">Beriya ku berdewam bikî, cîzdanê xwe derxîne.</string>
-    <string name="account_delete_confirmation_title">Cîzdanê ji bîr bike?</string>
-    <string name="account_details_watch_only_alert">Ev cîzdanê tenê-temaşekirinê ye, Pezkuwi Wallet dikare bakiyê û agahiyên din nîşanî te bide, lê tu nikarî bi vê cîzdanê danûstendinê bikî</string>
-    <string name="account_export">Hesab derxîne</string>
+    <string name="account_delete_confirmation_description">Berî ku berdewam bikî, piştrast bike ku te cîzdanê xwe derxistiye.</string>
+    <string name="account_delete_confirmation_title">Cîzdanê ji bîr bikî?</string>
+    <string name="account_derivation_path_ethereum_invalid_title">Rêya derhêneriyê ya Ethereum nederbasdar e</string>
+    <string name="account_derivation_path_substrate_invalid_title">Rêya derhêneriyê ya Substrate nederbasdar e</string>
+    <string name="account_details_parity_signer_alert">Ev cîzdan bi %1$s re hevjot e. Pezkuwi Wallet dê alîkariya te bike ku her operasyonê çêkî, û ji te tê xwestin ku bi %1$s îmze bikî</string>
+    <string name="account_details_parity_signer_not_supported">Ji aliyê %s ve nayê piştgirîkirin</string>
+    <string name="account_details_watch_only_alert">Ev cîzdanê tenê-temaşekirinê ye, Pezkuwi Wallet dikare bakiye û agahiyên din nîşanî te bide, lê tu nikarî bi vê cîzdanê danûstandinekê bikî</string>
+    <string name="account_enter_wallet_nickname">Navê cîzdanê binivîse...</string>
+    <string name="account_error_try_another_one">Ji kerema xwe, yekî din biceribîne.</string>
+    <string name="account_ethereum_crypto_type">Tîpa krîptoyê ya cota mifteyên Ethereum</string>
+    <string name="account_ethereum_derivation_path">Rêya derhêneriya nehêniya Ethereum</string>
+    <string name="account_evm_accounts">Hesabên EVM</string>
+    <string name="account_export">Hesabê derxîne</string>
     <string name="account_export_action">Derxîne</string>
+    <string name="account_export_existing">Yê heyî têxe</string>
+    <string name="account_export_json_password_subtitle">Ev ji bo şîfrekirina daneyan û tomarkirina pelê JSON pêwîst e.</string>
+    <string name="account_export_json_password_title">Şîfreyek nû diyar bike</string>
+    <string name="account_export_json_title">Nehêniya xwe tomar bike û li cihekî ewle bihêle</string>
+    <string name="account_export_seed_title">Nehêniya xwe binivîse û li cihekî ewle bihêle</string>
+    <string name="account_import_invalid_keystore">JSONa vegerandinê nederbasdar e. Ji kerema xwe piştrast bike ku têketinê JSONek derbasdar heye.</string>
+    <string name="account_import_invalid_seed">Seed nederbasdar e. Ji kerema xwe piştrast bike ku têketina te 64 sembolên hex hene.</string>
+    <string name="account_import_json_no_network">JSON agahiya torê nahewîne. Ji kerema xwe li jêr diyar bike.</string>
+    <string name="account_import_json_title">JSONa Vegerandinê pêşkêş bike</string>
+    <string name="account_import_mnemonic_hint">Bi gelemperî gotinek 12 peyv (lê dikare 15, 18, 21 an 24 jî be)</string>
+    <string name="account_import_mnemonic_subtitle">Peyvan tenê bi valahiyekê ji hev cuda bike, bêyî virgul an nîşanên din</string>
+    <string name="account_import_mnemonic_title">Peyvan bi rêza rast binivîse</string>
+    <string name="account_import_password_placeholder">Şîfre</string>
+    <string name="account_import_private_key">Mifteya taybet têxe</string>
+    <string name="account_import_seed_hint">0xAB</string>
+    <string name="account_import_seed_title">Seeda xwe ya xav binivîse</string>
     <string name="account_import_wallet_subtitle">Pezkuwi Wallet bi hemû sepanan re hevaheng e</string>
-    <string name="account_watch_add_subtitle">Bêyî ku kilîta xwe ya taybet bixî Pezkuwi Wallet çalakiya her cîzdanekê bişopîne</string>
+    <string name="account_import_wallet_title">Cîzdanê têxe</string>
+    <string name="account_info_title">Hesab</string>
+    <string name="account_invalid_derivation_path_message_v2_2_0">Rêya derhêneriyê sembolên nepiştgirî dihewîne an avahiya wê çewt e</string>
+    <string name="account_invalid_derivation_path_title">Rêya derhêneriyê nederbasdar e</string>
+    <string name="account_json_file">Pelê JSON</string>
+    <string name="account_ledger_generic_import_start_step_1">Bi sepana Ledger Live piştrast bike ku li ser amûra Ledger %s</string>
+    <string name="account_ledger_generic_import_start_step_1_highlighted">sepana Polkadot hatiye sazkirin</string>
+    <string name="account_ledger_generic_import_start_step_2">Li ser amûra Ledger %s veke</string>
+    <string name="account_ledger_generic_import_start_step_2_highlighted">sepana Polkadot veke</string>
+    <string name="account_ledger_generic_item_subtitle">Flex, Stax, Nano X, Nano S Plus</string>
+    <string name="account_ledger_generic_item_title">Ledger (Sepana Polkadot ya Giştî)</string>
+    <string name="account_ledger_import_fill_description">Piştrast bike ku sepana Torê bi Ledger Live li ser amûra Ledger hatiye sazkirin. Li ser amûra Ledger sepana torê veke.</string>
+    <string name="account_ledger_import_fill_disabled_hint">Bi kêmanî yek hesab zêde bike</string>
+    <string name="account_ledger_import_fill_title">Hesaban li cîzdana xwe zêde bike</string>
+    <string name="account_ledger_import_start_guide">Rêbernameya Girêdana Ledger</string>
+    <string name="account_ledger_import_start_step_1">Piştrast bike ku li ser amûra Ledger bi Ledger Live %s</string>
+    <string name="account_ledger_import_start_step_1_highlighted">sepana torê hatiye sazkirin</string>
+    <string name="account_ledger_import_start_step_2">Li ser amûra Ledger %s</string>
+    <string name="account_ledger_import_start_step_2_highlighted">sepana torê veke</string>
+    <string name="account_ledger_import_start_step_3">Destûr bide Pezkuwi Wallet %s</string>
+    <string name="account_ledger_import_start_step_3_highlighted">bigihîje Bluetooth</string>
+    <string name="account_ledger_import_start_step_4">%s ji bo zêdekirina cîzdanê</string>
+    <string name="account_ledger_import_start_step_4_highlighted">Hesabê hilbijêre</string>
+    <string name="account_ledger_import_start_step_otg">%s di mîhengên telefonê de</string>
+    <string name="account_ledger_import_start_step_otg_highlighted">OTG çalak bike</string>
+    <string name="account_ledger_import_start_title">Ledger girêbide</string>
+    <string name="account_ledger_legacy_warning_message">Ji bo îmzekirina danûstandinan û veguhastina hesabên xwe bo sepana nû ya Generic Ledger, sepana Migration saz bike û veke. Sepanên kevn ên Legacy û Migration di pêşerojê de nayên piştgirîkirin.</string>
+    <string name="account_ledger_legacy_warning_title">Sepana nû ya Ledger derket</string>
+    <string name="account_ledger_migration_app">Polkadot Migration</string>
+    <string name="account_ledger_migration_deprecation_message">Sepana koçberiyê di demek nêz de bêkar dibe. Wê bikar bîne da ku hesabên xwe biguhezîne sepana nû ya Ledger û fonên xwe winda nekî.</string>
+    <string name="account_ledger_migration_generic">Polkadot</string>
+    <string name="account_ledger_nano_x">Ledger Nano X</string>
+    <string name="account_ledger_nano_x_legacy">Ledger Legacy</string>
+    <string name="account_ledger_select_device_all_description">Ger Ledger bi Bluetooth bikar tînî, Bluetooth li ser her du amûran çalak bike û destûrên Bluetooth û cîhê bide Pezkuwi Wallet. Ji bo USB, di mîhengên telefonê de OTG çalak bike.</string>
+    <string name="account_ledger_select_device_description">Ji kerema xwe Bluetooth li ser mîhengên telefonê û amûra Ledger çalak bike. Kilîta amûra Ledger veke û sepana %s veke.</string>
+    <string name="account_ledger_select_device_title">Amûra Ledger hilbijêre</string>
+    <string name="account_ledger_select_device_usb_description">Ji kerema xwe amûra Ledger çalak bike. Amûra Ledger veke û sepana %s veke.</string>
+    <string name="account_migration_subtitle">Hema hat temamkirin! 🎉\n Ji bo temamkirina sazkirinê û bikaranîna hesabên xwe hem di Sepana Polkadot hem jî di Pezkuwi Wallet de, tenê li jêr bitikîne</string>
+    <string name="account_migration_title">Bi xêr hatî Pezkuwi Wallet!</string>
+    <string name="account_mnmonic_length_variants">Gotinek 12, 15, 18, 21 an 24 peyv</string>
+    <string name="account_multisig">Pir-îmze</string>
+    <string name="account_multisig_group_label">Kontrola hevpar (pir-îmze)</string>
+    <string name="account_needed_message">Ji bo vê torê hesabê te tune, dikare hesab çêkî an hesab veguhezî.</string>
+    <string name="account_needed_title">Hesab Pêwîst e</string>
+    <string name="account_no_chain_projection">Hesab nehat dîtin</string>
+    <string name="account_pair_public_key">Mifteyê hevjot bike</string>
+    <string name="account_parity_signer">Parity Signer</string>
+    <string name="account_parity_signer_chain_not_supported" formatted="false">%s, %s piştgirî nake</string>
+    <string name="account_parity_signer_import_preview_description">Hesabên ku bi serkeftî ji %s hatin xwendin</string>
+    <string name="account_parity_signer_import_preview_title">Va hesabên te ne</string>
+    <string name="account_parity_signer_import_scan_invalid_qr">Koda QR nederbasdar e, ji kerema xwe piştrast bike ku koda QR ji %s dixwînî</string>
+    <string name="account_parity_signer_import_start_select_top">Piştrast bike ku yê jorîn hilbijartî</string>
+    <string name="account_parity_signer_import_start_step_1">Sepana %s veke</string>
+    <string name="account_parity_signer_import_start_step_1_highlighted">Parity Signer veke</string>
+    <string name="account_parity_signer_import_start_step_2">%s hesabê ku dixwazî li Pezkuwi Wallet zêde bikî hilbijêre</string>
+    <string name="account_parity_signer_import_start_step_2_highlighted">Biçe beşa \'Mifteyên\'. Seed hilbijêre, paşê hesab hilbijêre</string>
+    <string name="account_parity_signer_import_start_step_3">Parity Signer dê %s pêşkêşî te bike</string>
+    <string name="account_parity_signer_import_start_step_3_highlighted">koda QR ji bo şopandinê</string>
+    <string name="account_parity_signer_import_start_title">Ji %s cîzdan zêde bike</string>
+    <string name="account_parity_signer_not_supported_subtitle">%s îmzekirina peyamên rasthatî piştgirî nake - tenê danûstandin</string>
+    <string name="account_parity_signer_not_supported_title">Îmze nayê piştgirîkirin</string>
+    <string name="account_parity_signer_scan_from">Koda QR ji %s bişopîne</string>
+    <string name="account_parity_signer_show_mode_legacy">Kevn</string>
+    <string name="account_parity_signer_show_mode_new">Nû (Vault v7+)</string>
+    <string name="account_parity_signer_sign_have_error">Di %s de xeletiyek heye</string>
+    <string name="account_parity_signer_sign_qr_code_expired">Dema koda QR qediya</string>
+    <string name="account_parity_signer_sign_qr_code_expired_descrition" formatted="false">Ji bo ewlehiyê danûstandinên çêkirî tenê %s derbasdar in.\nJi kerema xwe koda QR ya nû çêke û bi %s îmze bike</string>
+    <string name="account_parity_signer_sign_qr_code_valid_format">Koda QR %s derbasdar e</string>
+    <string name="account_parity_signer_sign_qr_invalid_message">Ji kerema xwe piştrast bike ku koda QR ya danûstandina îmzeyê ya niha dixwînî</string>
+    <string name="account_parity_signer_sign_title">Bi %s îmze bike</string>
+    <string name="account_polkadot_vault">Polkadot Vault</string>
+    <string name="account_polkadot_vault_import_start_empty_derivation_hint">Hay jê be, divê navê rêya derhêneriyê vala be</string>
+    <string name="account_polkadot_vault_import_start_step_1">Sepana %s veke</string>
+    <string name="account_polkadot_vault_import_start_step_1_highlighted">Polkadot Vault veke</string>
+    <string name="account_polkadot_vault_import_start_step_2">%s dixwazî li Pezkuwi Wallet zêde bikî</string>
+    <string name="account_polkadot_vault_import_start_step_2_highlighted">Li Mifteya Derhêner bitikîne</string>
+    <string name="account_polkadot_vault_import_start_step_3">Polkadot Vault dê %s</string>
+    <string name="account_polkadot_vault_import_start_step_3_highlighted">koda QR ji bo şopandinê</string>
+    <string name="account_polkadot_vault_import_start_step_3_private">Li sembola goşeya jorîn a rastê bitikîne û %s hilbijêre</string>
+    <string name="account_polkadot_vault_import_start_step_3_private_highlighted">Mifteya Taybet Derxîne</string>
+    <string name="account_private_key">Mifteya taybet</string>
+    <string name="account_proxied">Wekîl</string>
+    <string name="account_proxieds">Yên ku ji te re hatine spartin (Proxied)</string>
+    <string name="account_proxy_type_any">Her tişt</string>
+    <string name="account_proxy_type_auction">Mezat</string>
+    <string name="account_proxy_type_cancel_proxy">Wekîlê betal bike</string>
+    <string name="account_proxy_type_governance">Rêvebirî</string>
+    <string name="account_proxy_type_identity_judgement">Nirxandina Nasnameyê</string>
+    <string name="account_proxy_type_nomination_pools">Hewzên Namzedkirinê</string>
+    <string name="account_proxy_type_non_transfer">Ne-Veguheztin</string>
+    <string name="account_proxy_type_staking">Staking</string>
+    <string name="account_restore_account">Jixwe hesabek min heye</string>
+    <string name="account_secrets">agahiyên nehênî</string>
+    <string name="account_seed_hex_symbols">64 sembolên şazdehan</string>
+    <string name="account_select_hardware_wallet">Cîzdana hardware hilbijêre</string>
+    <string name="account_select_secret_source">Tîpa nehêniya xwe hilbijêre</string>
+    <string name="account_select_wallet">Cîzdan hilbijêre</string>
+    <string name="account_shared_secret">Hesabên bi nehêniya hevpar</string>
+    <string name="account_substrate_accounts">Hesabên Substrate</string>
+    <string name="account_substrate_crypto_type">Tîpa krîptoyê ya cota mifteyên Substrate</string>
+    <string name="account_substrate_derivation_path">Rêya derhêneriya nehêniya Substrate</string>
+    <string name="account_wallet_name">Navê cîzdanê</string>
+    <string name="account_wallet_nickname">Navê cîzdanê</string>
+    <string name="account_watch_add_evm_address_description">Moonbeam, Moonriver û torên din</string>
+    <string name="account_watch_add_evm_address_optional">Navnîşana EVM (Bijartî)</string>
+    <string name="account_watch_add_presets">Cîzdanên pêşwext</string>
+    <string name="account_watch_add_substrate_address_description">Polkadot, Kusama, Karura, KILT û 50+ tor</string>
+    <string name="account_watch_add_subtitle">Di Pezkuwi Wallet de bêyî mifteya xwe ya taybet çalakiya her cîzdanekê bişopîne</string>
+    <string name="account_watch_key_missing_description">Cîzdana te tenê ji bo temaşekirinê ye, yanî tu nikarî tu danûstandinekê bikî</string>
+    <string name="account_watch_key_missing_title">Xeletî! Mifteyê kêm e</string>
+    <string name="account_watch_only">tenê-temaşe</string>
+    <string name="account_welcome_hardware_wallet_subtitle">Polkadot Vault, Ledger an Parity Signer bikar bîne</string>
+    <string name="account_welcome_hardware_wallet_title">Cîzdana hardware girêbide</string>
+    <string name="account_welcome_trust_wallet_subtitle">Hesabên xwe yên Trust Wallet di Pezkuwi Wallet de bikar bîne</string>
+    <string name="account_welcome_trust_wallet_title">Trust Wallet</string>
+    <string name="accounts_add_chain_account">Hesabê %s zêde bike</string>
+    <string name="accounts_add_wallet">Cîzdan zêde bike</string>
+    <string name="accounts_change_chain_account">Hesabê %s biguherîne</string>
+    <string name="accounts_change_chain_secrets">Hesabê biguherîne</string>
+    <string name="accounts_ledger_legacy">Ledger (Kevn)</string>
+    <string name="accounts_update_proxieds_title">Ji te re hat spartin</string>
+    <string name="active_multisig_title">Kontrola hevpar</string>
+    <string name="add_custom_node">Girêka xwerû zêde bike</string>
+    <string name="add_delegation_missing_account_message">Ji bo delegekirinê divê hesabê %s li cîzdanê zêde bikî</string>
+    <string name="add_network_title">Agahiyên torê binivîse</string>
+    <string name="add_proxy_confirmation_delegate_to">Ji bo hesabê delege bike</string>
+    <string name="add_proxy_confirmation_delegating_account">Hesabê delegekirinê</string>
+    <string name="add_proxy_confirmation_delegating_wallet">Cîzdana delegekirinê</string>
+    <string name="add_proxy_confirmation_grant_access_type">Tîpa gihîştinê bide</string>
+    <string name="add_proxy_deposit_description_message">Depozît wekî rezerv di hesabê te de dimîne heta ku proxy were rakirin.</string>
+    <string name="add_proxy_maximum_reached_error_message" formatted="false">Te li %s gihîşt sînorê proxyên zêdekirî (%s). Ji bo zêdekirinên nû proxyên heyî rake.</string>
+    <string name="add_proxy_maximum_reached_error_title">Hejmara herî zêde ya proxy gihîşt</string>
+    <string name="added_networks_empty_placeholder">Torên xwerû yên zêdekirî\nli vir xuya dibin</string>
+    <string name="additional_payment_methods">+%d</string>
+    <string name="alert_nova_has_selected_ms_wallet">Pezkuwi Wallet ji bo dîtina danûstandinên li bendê otomatîk çû cîzdana multisig.</string>
+    <string name="appearance_colored_icon_title">Rengîn</string>
+    <string name="appearance_title">Xuyang</string>
+    <string name="appearance_token_assets_title">sembolên token</string>
+    <string name="appearance_white_icon_title">Spî</string>
+    <string name="asset_add_evm_token_already_exist_message">Navnîşana peymanê ya têketî jixwe di Pezkuwi Wallet de wekî tokena %s heye.</string>
+    <string name="asset_add_evm_token_already_exist_modifiable_message">Navnîşana peymanê ya têketî jixwe di Pezkuwi Wallet de wekî tokena %s heye. Ma tu dixwazî biguherînî?</string>
+    <string name="asset_add_evm_token_already_exist_title">Ev token jixwe heye</string>
+    <string name="asset_add_evm_token_invalid_coin_gecko_link_message">Ji kerema xwe piştrast bike ku URL di vê formatê de ye: www.coingecko.com/en/coins/tether.</string>
+    <string name="asset_add_evm_token_invalid_coin_gecko_link_title">Girêdana CoinGecko nederbasdar e</string>
+    <string name="asset_add_evm_token_invalid_contract_address_message">Navnîşana peymanê ya têketî peymana ERC-20 ya %s nîne.</string>
+    <string name="asset_add_evm_token_invalid_contract_address_title">Navnîşana peymanê nederbasdar e</string>
+    <string name="asset_add_evm_token_invalid_decimals_message">Decîmal divê bi kêmanî 0 û herî zêde 36 be.</string>
+    <string name="asset_add_evm_token_invalid_decimals_title">Nirxa decîmalê nederbasdar e</string>
+    <string name="asset_add_token_enter_contract_address">Navnîşana peymanê binivîse</string>
+    <string name="asset_add_token_enter_decimals">Hejmara decîmalan binivîse</string>
+    <string name="asset_add_token_enter_symbol">Sembol binivîse</string>
+    <string name="asset_details_source_asset_alert_button">Biçe %s</string>
+    <string name="asset_details_source_asset_alert_message">Ji %1$s, bakiyeya te ya %2$s, Staking û Rêvebirî niha li ser %3$s e - bi performansa çêtir û lêçûnên kêmtir.</string>
+    <string name="asset_details_source_asset_alert_title" formatted="false">Tokenên te yên %s niha li ser %s in</string>
+    <string name="asset_view_networks">Tor</string>
+    <string name="asset_view_tokens">Token</string>
+    <string name="assets_add_token">Token zêde bike</string>
+    <string name="assets_add_token_enter_info_address_label">Navnîşana peymanê</string>
+    <string name="assets_add_token_enter_info_decimals_label">Decîmal</string>
+    <string name="assets_add_token_enter_info_symbol_label">Sembol</string>
+    <string name="assets_add_token_enter_info_title">Agahiya tokena ERC-20 binivîse</string>
+    <string name="assets_add_token_select_chain_title">Ji bo zêdekirina tokena ERC-20 torê hilbijêre</string>
+    <string name="assets_balance_details_locks_crowdloans">Crowdloans</string>
+    <string name="assets_balance_details_locks_democrac_v1">Rêvebirî v1</string>
+    <string name="assets_balance_details_locks_democrac_v2">OpenGov</string>
+    <string name="assets_balance_details_locks_phrelect">Hilbijart</string>
+    <string name="assets_balance_details_locks_staking">Staking</string>
+    <string name="assets_balance_details_locks_vesting">Vesting</string>
+    <string name="assets_buy_tokens_placeholder_button">Token Bikire</string>
+    <string name="assets_crowdloan_unlock_banner_description">Ma te DOT ji Crowdloan vegerand? Îro dest bi stakekirina DOT bike û xelatên herî bilind bistîne!</string>
+    <string name="assets_crowdloan_unlock_banner_title">DOT xwe zêde bike 🚀</string>
+    <string name="assets_filter_title">Tokenan Fîltre bike</string>
+    <string name="assets_gifts_flow_placeholder">Tokena te ya diyariyê tune.\nTokenan bikire an bi hesabê xwe ve bîne.</string>
+    <string name="assets_manage_tokens_all_networks">Hemû Tor</string>
+    <string name="assets_manage_tokens_title">Tokenan Birêve bibe</string>
+    <string name="assets_receive_ledger_not_supported_message" formatted="false">%s neşîne hesabê ku di bin kontrola Ledger de ye ji ber ku Ledger şandina %s piştgirî nake, lewma mal dê di vê hesabê de asê bimîne</string>
+    <string name="assets_receive_ledger_not_supported_title">Ledger vê tokenê piştgirî nake</string>
+    <string name="assets_search_hint">Li gorî navê tor an tokenê bigere</string>
+    <string name="assets_search_placeholder">Tu tor an token bi navê têketî nehat dîtin</string>
+    <string name="assets_search_token_hint">Li gorî tokenê bigere</string>
+    <string name="assets_select_send_your_wallets">Cîzdanên te</string>
+    <string name="assets_send_flow_placeholder">Tokena te ya şandinê tune.\nTokenan bikire an bistîne.</string>
+    <string name="assets_swap_flow_pay_title">Tokena dravdanê</string>
+    <string name="assets_swap_flow_receive_title">Tokena wergirtinê</string>
+    <string name="backup_diff_subtitle">Berî destpêkirina guhertinan, %s ji bo cîzdanên guhertî û rakirî!</string>
+    <string name="backup_diff_subtitle_highlighted">Piştrast bike ku te şîfreyên xwe tomar kirine</string>
+    <string name="backup_diff_title">Nûvekirinên Paşvekêşanê Bicîh bîne?</string>
+    <string name="backup_mnemonic_attention_title">Amade be ji bo tomarkirina cîzdanê xwe!</string>
+    <string name="backup_secrets_warning_condition_1">Ev şîfre gihîştina tam û daîmî dide te ji bo hemû cîzdanên girêdayî û fonên di nav wan de.\n%s</string>
+    <string name="backup_secrets_warning_condition_1_highlight">PARVE NEKE.</string>
+    <string name="backup_secrets_warning_condition_2">Şîfreya xwe di tu form an malperê de binivîse.\n%s</string>
+    <string name="backup_secrets_warning_condition_2_highlight">FON DIKARIN DAÎMÎ WINDA BIBIN.</string>
+    <string name="backup_secrets_warning_condition_3">Piştgirî an rêvebir tu carî û di tu rewşê de şîfreya te naxwazin.\n%s</string>
+    <string name="backup_secrets_warning_condition_3_highlight">HEY JÊ BE JI KESÊN XAPÎNOK.</string>
+    <string name="backup_secrets_warning_disabled_button">Ji bo berdewamkirinê Binirxîne û Qebûl bike</string>
+    <string name="backup_settings_delete_backup">Paşvekêşanê jê bibe</string>
+    <string name="backup_settings_manual_subtitle">Dikare bi destan Gotina Nehênî paşve bikêşî da ku gihîştina fonên cîzdanê misoger bikî ger gihîştina vê amûrê winda bikî</string>
+    <string name="backup_settings_manual_switcher_title">Bi destan paşve bikêşe</string>
+    <string name="backup_settings_manual_title">Bi Destan</string>
+    <string name="backup_settings_no_wallets_error_message">Te tu cîzdanek bi şîfre zêde nekiriye.</string>
+    <string name="backup_settings_no_wallets_error_title">Tu cîzdan ji bo paşvekêşanê tune</string>
+    <string name="backup_settings_subtitle">Dikare paşvekêşana Google Drive çalak bikî da ku paşvekêşanên cîzdanê yên şîfrekirî bi şîfreyeke ku tu diyar dikî tomar bikî.</string>
+    <string name="backup_settings_switcher_text">Li Google Drive paşve bikêşe</string>
+    <string name="backup_settings_title">Google Drive</string>
+    <string name="backup_settings_toolbar_title">Paşvekêşan</string>
+    <string name="backup_title">Paşvekêşan</string>
+    <string name="banxa_provider_description">Pêvajoya KYC ya rasterast û bi bandor</string>
+    <string name="biometric_auth_title">Pejirandina Biyometrîk</string>
+    <string name="browser_tabs_close_all">Hemûyan Bigire</string>
+    <string name="buy_completed">Kirrîn dest pê kir! Ji kerema xwe heta 60 hûrdem bisekine. Dikare rewşê ji e-nameyê bişopînî.</string>
+    <string name="buy_network_flow_title">Ji bo kirrîna %s torê hilbijêre</string>
+    <string name="buy_order_completed_message">Kirrîn dest pê kir! Ji kerema xwe heta 60 hûrdem bisekine. Dikare rewşê ji e-nameyê bişopînî.</string>
+    <string name="buy_token_not_supported_message">Niha tu dabînkerê me piştgirî nade kirrîna vê tokenê. Ji kerema xwe tokenek din, torek din hilbijêre an paşê dîsa kontrol bike.</string>
+    <string name="buy_token_not_supported_title">Ev token ji aliyê taybetmendiya kirrînê ve nayê piştgirîkirin</string>
+    <string name="chain_migration_details_fee_in_any_tokens">Gengaz e ku karmizenê bi her tokenê bidî</string>
+    <string name="chain_migration_details_hint_auto_migration">Koçberî otomatîk çêdibe, tu tiştî nekirî</string>
+    <string name="chain_migration_details_hint_history">Dîroka danûstandinên kevn li %s dimîne</string>
+    <string name="chain_migration_details_in_progress_title">Bakiyeya te ya %1$s bi %2$s, Staking û Rêvebirî li ser %3$s e. Ev taybetmendî dibe ku heta 24 saetan neyên bikaranîn.</string>
+    <string name="chain_migration_details_lower_fee">%1$sx lêçûnên danûstandinê kêmtir\n(ji %2$s bo %3$s)</string>
+    <string name="chain_migration_details_minimal_balance">%1$sx kêmbûna bakiyeya hindiktirîn\n(ji %2$s bo %3$s)</string>
+    <string name="chain_migration_details_subtitle">Çi Asset Hub mezin dike?</string>
+    <string name="chain_migration_details_title">Bakiyeya te ya destpêkê bi %1$s, %2$s, Staking û Governance li ser %3$s e</string>
+    <string name="chain_migration_details_tokens">Bêtir token têne piştgirîkirin: %s, û tokenên din ên ekosîstemê</string>
+    <string name="chain_migration_details_unified_access">Gihîştina yekgirtî: %s, mal, staking û rêvebirî</string>
+    <string name="chain_network_management_auto_balance">Girêkên hevsengiya otomatîk</string>
+    <string name="chain_network_management_enabling">Girêdanê çalak dike</string>
+    <string name="change_cloud_backup_password_subtitle">Şîfreyeke binivîse ku dê ji bo vegerandina cîzdanên te ji paşvekêşana cloudê were bikaranîn. Bîr bîne ku ev şîfre di pêşerojê de nayê vegerandin, ji ber vê yekê piştrast bike ku bîr dikî!</string>
+    <string name="change_cloud_backup_password_title">Şîfreya paşvekêşanê nû bike</string>
+    <string name="choose_amount_asset">Mal</string>
+    <string name="choose_amount_available_balance">Bakiyeya berdest</string>
+    <string name="choose_amount_error_balance">Mixabin, daxwaza kontrola bakiyeyê têk çû. Ji kerema xwe, paşê dîsa biceribîne.</string>
+    <string name="choose_amount_error_fee">Mixabin, em negihîştin dabînkerê veguhastinê. Ji kerema xwe, paşê dîsa biceribîne.</string>
+    <string name="choose_amount_error_too_big">Mixabin, fonên te yên têr tune ji bo xercekirina miqdarê diyarkirî</string>
 
+    <!-- Common strings -->
+    <string name="common_all">Hemû</string>
     <string name="common_back">Paş</string>
     <string name="common_cancel">Betal bike</string>
     <string name="common_close">Bigire</string>
     <string name="common_confirm">Bipejirîne</string>
     <string name="common_continue">Berdewam bike</string>
     <string name="common_copy">Kopî bike</string>
+    <string name="common_details">Hûrgulî</string>
     <string name="common_done">Qediya</string>
     <string name="common_edit">Biguherîne</string>
     <string name="common_error_general_title">Xeletî</string>
     <string name="common_got_it">Fêm kir</string>
+    <string name="common_loading">Tê barkirin...</string>
     <string name="common_manage_wallets">Cîzdanan birêve bibe</string>
     <string name="common_name">Nav</string>
     <string name="common_next">Pêş</string>
+    <string name="common_no">Na</string>
     <string name="common_ok">OK</string>
     <string name="common_paste">Bişkîne</string>
     <string name="common_receive">Werbigire</string>
+    <string name="common_refresh">Nû bike</string>
     <string name="common_save">Tomar bike</string>
     <string name="common_search">Lêgerîn</string>
     <string name="common_send">Bişîne</string>
@@ -62,44 +331,150 @@
     <string name="common_try_again">Dîsa biceribîne</string>
     <string name="common_view">Bibîne</string>
     <string name="common_yes">Erê</string>
-    <string name="common_no">Na</string>
+    <string name="common_network">Tor</string>
+    <string name="common_amount">Miqdar</string>
+    <string name="common_fee">Karmizend</string>
+    <string name="common_total">Giştî</string>
+    <string name="common_balance">Bakiye</string>
+    <string name="common_available">Berdest</string>
+    <string name="common_locked">Kilîtkirî</string>
+    <string name="common_address">Navnîşan</string>
+    <string name="common_connecting">girêdan...</string>
+    <string name="common_testnet">Testnet</string>
+    <string name="common_add_network">Tor zêde bike</string>
+    <string name="common_not_available">Ne berdest</string>
+    <string name="common_gift">Diyarî</string>
+    <string name="common_max">Zêde</string>
+    <string name="common_min">Kêm</string>
 
-    <string name="staking_rewards">Xelatên %s</string>
-    <string name="staking_start_title">Dest bi Stakingê bike</string>
-
+    <!-- Wallet -->
     <string name="wallet_details">Hûrguliyên Cîzdanê</string>
     <string name="wallet_name">Navê Cîzdanê</string>
+    <string name="wallet_balance">Bakiyeya Cîzdanê</string>
+    <string name="wallet_send">Bişîne</string>
+    <string name="wallet_receive">Werbigire</string>
 
-    <string name="assets_title">Malên</string>
-    <string name="assets_total_balance">Bakiyê Giştî</string>
+    <!-- Assets -->
+    <string name="assets_title">Mal</string>
+    <string name="assets_total_balance">Bakiyeya Giştî</string>
 
+    <!-- Settings -->
     <string name="settings_about">Derbarê Sepanê</string>
     <string name="settings_language">Ziman</string>
     <string name="settings_security">Ewlehî</string>
     <string name="settings_support">Piştgirî</string>
+    <string name="settings_networks">Tor</string>
+    <string name="settings_wallets">Cîzdan</string>
+    <string name="settings_currency">Dirav</string>
+    <string name="settings_appearance">Xuyang</string>
+    <string name="settings_push_notifications">Agahdariyên Push</string>
+    <string name="settings_push_notifications_only_available_with_google_services_error">Agahdariyên push tenê ji bo amûrên bi karûbarên Google hene.</string>
+    <string name="settings_push_notifications_only_available_from_google_play_error">Agahdariyên push tenê ji bo guhertoya Pezkuwi Wallet ya ku ji Google Play hatiye daxistin hene.</string>
 
+    <!-- Staking -->
+    <string name="staking_title">Staking</string>
+    <string name="staking_rewards">Xelatên %s</string>
+    <string name="staking_start_title">Dest bi Stakingê bike</string>
+    <string name="staking_your_stake">Stakea te</string>
+    <string name="staking_rewards_title">Xelat</string>
+    <string name="staking_validators">Validator</string>
+    <string name="staking_collators">Collator</string>
+    <string name="staking_nominate">Namzed bike</string>
+    <string name="staking_unbond">Veqetîne</string>
+    <string name="staking_bond_more">Zêdetir zêde bike</string>
+    <string name="staking_redeem">Vegerîne</string>
+    <string name="staking_start_change_validators_recommended_subtitle">Pezkuwi Wallet dê li gorî pîvanên ewlehî û qezencê validatorên herî baş hilbijêre</string>
+
+    <!-- Push notifications -->
     <string name="push_template_app_name_and_time">Pezkuwi Wallet • niha</string>
     <string name="push_new_update_title">Nûvekirinek nû ya Pezkuwi Wallet heye!</string>
     <string name="push_new_update_message">Ji bo hemû taybetmendiyên nû Pezkuwi Wallet v%s dakêşin!</string>
     <string name="push_settings_announcements">Ragihandinên Pezkuwi</string>
+    <string name="push_staking_reward_title">Xelata staking hat</string>
+    <string name="push_staking_reward_message">Te xelatek staking a %s wergirt</string>
 
+    <!-- Gifts -->
     <string name="gifts_header_title">Diyariyên Kripto bi Her Kesî re, Li Her Derê Parve Bikin</string>
     <string name="gifts_header_subtitle">Di Pezkuwi Wallet de diyariyan bi lez, hêsan û bi ewlehî bişînin</string>
-    <string name="gifts_create">Diyarî Ava Bike</string>
-    <string name="common_gift">Diyarî</string>
+    <string name="gifts_create">Diyarî Çêke</string>
 
-    <string name="swap_title">Guhêrîn</string>
+    <!-- Swap -->
+    <string name="swap_title">Biguherîne</string>
     <string name="swap_from">Ji</string>
     <string name="swap_to">Bo</string>
+    <string name="swap_rate">Rêje</string>
+    <string name="swap_slippage">Slippage</string>
+    <string name="swap_confirm">Guheztinê bipejirîne</string>
 
-    <string name="dapp_browser_title">DApp Browser</string>
-    <string name="referendum_dapp_list_title">Pezkuwi DApp browserê bi kar bîne</string>
+    <!-- DApp -->
+    <string name="dapp_browser_title">Geroka DApp</string>
+    <string name="referendum_dapp_list_title">Geroka DApp ya Pezkuwi bikar bîne</string>
 
-    <string name="ledger_wallet_details_description">Ev cîzdan bi Ledger re hevedudanî ye. Pezkuwi Wallet dê alîkariya we bike ku hûn her operasyonek ku hûn dixwazin ava bikin, û dê ji we were xwestin ku wan bi karanîna Ledger îmze bikin</string>
+    <!-- Ledger -->
+    <string name="ledger_wallet_details_description">Ev cîzdan bi Ledger re hevjot e. Pezkuwi Wallet dê alîkariya te bike ku her operasyoneke ku bixwazî çêkî, û ji te tê xwestin ku wan bi Ledger îmze bikî</string>
 
-    <string name="fragment_waiting_top_up_time_out_error_message">Ji kerema xwe bi support@pezkuwichain.io re têkilî daynin. E-maila ku we ji bo derxistina kartê bi kar aniye diyar bikin.</string>
+    <!-- Network Integration -->
+    <string name="integrate_networks_banner_title">Ji bo Pezkuwichain ava dikî?</string>
+    <string name="integrate_networks_banner_description">Hemû taybetmendiyên tora ku ava dikî têxe Pezkuwi Wallet, da ku ji her kesî re berdest be.</string>
+    <string name="integrate_networks_banner_link">Tora xwe têxe</string>
 
+    <!-- Network Management -->
+    <string name="network_management_custom_nodes">girêkên xwerû</string>
+    <string name="network_management_default_nodes">girêkên pêşwext</string>
+    <string name="network_management_default_page_title">Pêşwext</string>
+    <string name="network_management_added_page_title">Zêdekirî</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_terms_and_conditions_1_v2_2_1">Bi berdewamkirinê, tu dipejirînî\n%1$s û %2$s</string>
+    <string name="onboarding_create_wallet">Cîzdaneke nû çêke</string>
+    <string name="onboarding_restore_wallet">Jixwe cîzdanekî min heye</string>
+    <string name="onboarding_welcome_title">Bi xêr hatî Pezkuwi Wallet</string>
+    <string name="onboarding_welcome_subtitle">Cîzdana blockchain ya pêşketî ji bo ekosîstema Pezkuwichain</string>
+
+    <!-- Error messages -->
+    <string name="fragment_waiting_top_up_time_out_error_message">Ji kerema xwe bi support@pezkuwichain.io re têkilî daynin. E-nameya ku ji bo derxistina kartê bi kar anî diyar bike.</string>
+
+    <!-- Wiki -->
     <string name="start_staking_fragment_more_info_clicable_part">Pezkuwi Wiki</string>
 
-    <string name="staking_start_change_validators_recommended_subtitle">Pezkuwi Wallet dê li gorî pîvanên ewlehî û qezencê doğrulayıcıyên herî baş hilbijêre</string>
+    <!-- Governance -->
+    <string name="governance_title">Rêvebirî</string>
+    <string name="governance_referenda">Referandum</string>
+    <string name="governance_vote">Deng bide</string>
+    <string name="governance_delegate">Delege bike</string>
+
+    <!-- Crowdloans -->
+    <string name="crowdloan_title">Crowdloan</string>
+    <string name="crowdloan_contribute">Beşdar bibe</string>
+
+    <!-- NFT -->
+    <string name="nft_title">NFT</string>
+    <string name="nft_collection">Koleksîyon</string>
+    <string name="nft_send">NFT bişîne</string>
+
+    <!-- Transaction -->
+    <string name="transaction_details">Hûrguliyên Danûstandinê</string>
+    <string name="transaction_hash">Hasha Danûstandinê</string>
+    <string name="transaction_status">Rewş</string>
+    <string name="transaction_pending">Li Bendê</string>
+    <string name="transaction_success">Serkeftî</string>
+    <string name="transaction_failed">Têkçû</string>
+
+    <!-- Security -->
+    <string name="security_pin_title">PIN</string>
+    <string name="security_pin_create">PIN çêke</string>
+    <string name="security_pin_confirm">PIN bipejirîne</string>
+    <string name="security_biometric">Biyometrîk</string>
+
+    <!-- Language names -->
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_kurdish">Kurdî</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+
 </resources>
