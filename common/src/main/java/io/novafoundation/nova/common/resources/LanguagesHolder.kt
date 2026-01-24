@@ -8,6 +8,7 @@ class LanguagesHolder {
 
     companion object {
 
+        private val KURDISH = Language("ku", "KURDISH")
         private val ENGLISH = Language("en", "ENGLISH")
         private val CHINESE = Language("zh", "CHINESE")
         private val ITALIAN = Language("it", "ITALIAN")
@@ -30,6 +31,7 @@ class LanguagesHolder {
 
     fun getLanguages(): List<Language> {
         val defaultLanguage = listOf(getDefaultLanguage())
+        val kurdish = listOf(KURDISH)
         val otherLanguages = listOf(
             CHINESE,
             FRENCH,
@@ -46,6 +48,6 @@ class LanguagesHolder {
             VIETNAMESE
         )
 
-        return defaultLanguage + otherLanguages.sortedBy { it.name }
+        return defaultLanguage + kurdish + otherLanguages.sortedBy { it.name }
     }
 }
