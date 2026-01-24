@@ -6,9 +6,9 @@ val TokenSymbol.mainTokensFirstAscendingOrder
     get() = when (this.value) {
         "HEZ" -> 0
         "PEZ" -> 1
-        "DOT" -> 2
-        "KSM" -> 3
-        "USDT" -> 4
+        "USDT" -> 2
+        "DOT" -> 3
+        "KSM" -> 4
         "USDC" -> 5
         else -> 6
     }

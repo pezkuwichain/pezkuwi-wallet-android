@@ -410,9 +410,9 @@ private inline fun Chain.Explorer.format(
 object ChainGeneses {
 
     // Pezkuwi chains (priority)
-    const val PEZKUWI = "91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3"
-    const val PEZKUWI_ASSET_HUB = "68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f"
-    const val PEZKUWI_PEOPLE = "67fa177a097bfa18f77ea95e1d5918b4d05cba7813f32e9ef6c4f9a2a6e60b09"
+    const val PEZKUWI = "f648cb6f70ebce04b0234c92d3ce08f1064f596a014c2d7005c53c1292eb8ed5"
+    const val PEZKUWI_ASSET_HUB = "b40985810ab834baaa6a2de423e299d73c675bee874c73a715309996b08828cc"
+    const val PEZKUWI_PEOPLE = "3d766dd2530ffb9b530d797c76732ed0b38f2a78f89f75a5c6f0e9232a0bd268"
 
     const val KUSAMA = "b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe"
     const val POLKADOT = "91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3"
