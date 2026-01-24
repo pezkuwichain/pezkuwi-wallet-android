@@ -15,7 +15,7 @@ jobs:
       is_rc: ${{ steps.check_ref.outputs.ref_contains_rc }}
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Check if "rc" or "hotfix" is present in github.ref
         id: check_ref
         run: |
@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Find Comment
-        uses: peter-evans/find-comment@v2
+        uses: peter-evans/find-comment@v3
         id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -58,7 +58,7 @@ jobs:
           VERSION=${VERSION/hotfix/rc} # Replace "hotfix" with "rc"
           echo "version=${VERSION#*rc/}" >> $GITHUB_OUTPUT
 
-      - uses: tibdex/github-app-token@v1
+      - uses: tibdex/github-app-token@v2
         id: generate-token
         with:
           app_id: ${{ secrets.PR_APP_ID }}
@@ -68,7 +68,7 @@ jobs:
         run: python .github/scripts/pr_comment_extract_data.py
 
       - name: Create new branch and file in pezkuwi-wallet-android-releases repo
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ steps.generate-token.outputs.token }}
           repository: pezkuwichain/pezkuwi-wallet-android-releases

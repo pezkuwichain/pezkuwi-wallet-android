@@ -24,11 +24,8 @@ runs:
       shell: bash
 
     - name: 🦀 Install Rust
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@stable
       with:
-        profile: minimal
-        toolchain: stable
-        override: true
         components: rustfmt, clippy
 
     - name: Add targets
