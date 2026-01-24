@@ -4,11 +4,13 @@ import io.novafoundation.nova.common.utils.TokenSymbol
 
 val TokenSymbol.mainTokensFirstAscendingOrder
     get() = when (this.value) {
-        "DOT" -> 0
-        "KSM" -> 1
-        "USDT" -> 2
-        "USDC" -> 3
-        else -> 4
+        "HEZ" -> 0
+        "PEZ" -> 1
+        "DOT" -> 2
+        "KSM" -> 3
+        "USDT" -> 4
+        "USDC" -> 5
+        else -> 6
     }
 
 val TokenSymbol.alphabeticalOrder
