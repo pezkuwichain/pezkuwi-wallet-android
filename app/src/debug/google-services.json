@@ -7,12 +7,57 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:633686702274:android:897282d4fda3f5ed7e635b",
+        "android_client_info": {
+          "package_name": "io.pezkuwichain.wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "633686702274-42ktqav1laf6d4ol7f714ib3s6lka73f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.pezkuwichain.wallet",
+            "certificate_hash": "8fb4f8977fc9b990e9d501a0041f5723f23b65d2"
+          }
+        },
+        {
+          "client_id": "633686702274-seee7qsisjmrps3npbnep2i8rtu44hdu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY_4wMnmyc8etnkyNOd_I-bCFAxO2Z-Os"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "633686702274-seee7qsisjmrps3npbnep2i8rtu44hdu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:633686702274:android:018702ece3f601067e635b",
         "android_client_info": {
           "package_name": "io.pezkuwichain.wallet.debug"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "633686702274-3dduat8jpbqfnie9kvqr441np1gcbm90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.pezkuwichain.wallet.debug",
+            "certificate_hash": "fc2d7bde71183e18377baf8076b35b3c68f9b02e"
+          }
+        },
         {
           "client_id": "633686702274-seee7qsisjmrps3npbnep2i8rtu44hdu.apps.googleusercontent.com",
           "client_type": 3
