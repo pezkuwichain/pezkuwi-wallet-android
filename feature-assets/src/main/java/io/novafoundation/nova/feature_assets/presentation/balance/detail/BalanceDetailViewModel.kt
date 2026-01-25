@@ -71,6 +71,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -79,6 +80,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import android.util.Log
+import io.novafoundation.nova.common.utils.LOG_TAG
 
 private const val ORIGIN_MIGRATION_ALERT = "ORIGIN_MIGRATION_ALERT"
 
@@ -125,9 +128,17 @@ class BalanceDetailViewModel(
         .distinctUntilChangedBy { it.fullId }
 
     private val balanceLocksFlow = balanceLocksInteractor.balanceLocksFlow(assetPayload.chainId, assetPayload.chainAssetId)
+        .catch { error ->
+            Log.e(LOG_TAG, "Failed to load balance locks: ${error.message}")
+            emit(emptyList())
+        }
         .shareInBackground()
 
     private val balanceHoldsFlow = balanceLocksInteractor.balanceHoldsFlow(assetPayload.chainId, assetPayload.chainAssetId)
+        .catch { error ->
+            Log.e(LOG_TAG, "Failed to load balance holds: ${error.message}")
+            emit(emptyList())
+        }
         .shareInBackground()
 
     private val selectedAccountFlow = accountUseCase.selectedMetaAccountFlow()
@@ -166,12 +177,20 @@ class BalanceDetailViewModel(
         swapAvailabilityInteractor.swapAvailableFlow(it, viewModelScope)
     }
         .onStart { emit(false) }
+        .catch { error ->
+            Log.e(LOG_TAG, "Failed to check swap availability: ${error.message}")
+            emit(false)
+        }
         .shareInBackground()
 
     val giftsButtonEnabled = chainAssetFlow.map {
         giftsAvailableGiftAssetsUseCase.isGiftsAvailable(it)
     }
         .onStart { emit(false) }
+        .catch { error ->
+            Log.e(LOG_TAG, "Failed to check gifts availability: ${error.message}")
+            emit(false)
+        }
         .shareInBackground()
 
     val sendEnabled = assetFlow.map {
@@ -279,13 +298,17 @@ class BalanceDetailViewModel(
 
     fun sync() {
         launch {
-            swapAvailabilityInteractor.sync(viewModelScope)
+            runCatching {
+                swapAvailabilityInteractor.sync(viewModelScope)
 
-            val currency = currencyInteractor.getSelectedCurrency()
-            val deferredAssetSync = async { walletInteractor.syncAssetsRates(currency) }
-            val deferredTransactionsSync = async { transactionHistoryMixin.syncFirstOperationsPage() }
+                val currency = currencyInteractor.getSelectedCurrency()
+                val deferredAssetSync = async { walletInteractor.syncAssetsRates(currency) }
+                val deferredTransactionsSync = async { transactionHistoryMixin.syncFirstOperationsPage() }
 
-            awaitAll(deferredAssetSync, deferredTransactionsSync)
+                awaitAll(deferredAssetSync, deferredTransactionsSync)
+            }.onFailure { error ->
+                Log.e(LOG_TAG, "Sync failed: ${error.message}")
+            }
 
             _hideRefreshEvent.value = Event(Unit)
         }
