@@ -42,6 +42,7 @@ import io.novasama.substrate_sdk_android.runtime.metadata.storage
 import io.novasama.substrate_sdk_android.runtime.metadata.storageKey
 import io.novasama.substrate_sdk_android.runtime.metadata.storageOrNull
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
@@ -63,15 +64,22 @@ class NativeAssetBalance(
         accountId: AccountId,
         subscriptionBuilder: SharedRequestsBuilder
     ): Flow<*> {
-        return remoteStorage.subscribe(chain.id, subscriptionBuilder) {
-            combine(
-                metadata.balances.locks.observe(accountId),
-                metadata.balances.freezes.observe(accountId)
-            ) { locks, freezes ->
-                val all = locks.orEmpty() + freezes.orEmpty()
+        return runCatching {
+            remoteStorage.subscribe(chain.id, subscriptionBuilder) {
+                combine(
+                    metadata.balances.locks.observe(accountId),
+                    metadata.balances.freezes.observe(accountId)
+                ) { locks, freezes ->
+                    val all = locks.orEmpty() + freezes.orEmpty()
 
-                lockDao.updateLocks(all, metaAccount.id, chain.id, chainAsset.id)
+                    lockDao.updateLocks(all, metaAccount.id, chain.id, chainAsset.id)
+                }
+            }.catch { error ->
+                Log.e(LOG_TAG, "Balance locks sync failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
             }
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to start balance locks sync for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            emptyFlow()
         }
     }
 
@@ -82,15 +90,23 @@ class NativeAssetBalance(
         accountId: AccountId,
         subscriptionBuilder: SharedRequestsBuilder
     ): Flow<*> {
-        val runtime = chainRegistry.getRuntime(chain.id)
-        val storage = runtime.metadata.balances().storageOrNull("Holds") ?: return emptyFlow<Nothing>()
-        val key = storage.storageKey(runtime, accountId)
+        return runCatching {
+            val runtime = chainRegistry.getRuntime(chain.id)
+            val storage = runtime.metadata.balances().storageOrNull("Holds") ?: return emptyFlow<Nothing>()
+            val key = storage.storageKey(runtime, accountId)
 
-        return subscriptionBuilder.subscribe(key)
-            .map { change ->
-                val holds = bindBalanceHolds(storage.decodeValue(change.value, runtime)).orEmpty()
-                holdsDao.updateHolds(holds, metaAccount.id, chain.id, chainAsset.id)
-            }
+            subscriptionBuilder.subscribe(key)
+                .map { change ->
+                    val holds = bindBalanceHolds(storage.decodeValue(change.value, runtime)).orEmpty()
+                    holdsDao.updateHolds(holds, metaAccount.id, chain.id, chainAsset.id)
+                }
+                .catch { error ->
+                    Log.e(LOG_TAG, "Balance holds sync failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+                }
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to start balance holds sync for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            emptyFlow()
+        }
     }
 
     override fun isSelfSufficient(chainAsset: Chain.Asset): Boolean {
@@ -98,13 +114,22 @@ class NativeAssetBalance(
     }
 
     override suspend fun existentialDeposit(chainAsset: Chain.Asset): BigInteger {
-        val runtime = chainRegistry.getRuntime(chainAsset.chainId)
-
-        return runtime.metadata.balances().numberConstant("ExistentialDeposit", runtime)
+        return runCatching {
+            val runtime = chainRegistry.getRuntime(chainAsset.chainId)
+            runtime.metadata.balances().numberConstant("ExistentialDeposit", runtime)
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to query existential deposit for ${chainAsset.symbol}: ${error.message}")
+            BigInteger.ZERO
+        }
     }
 
     override suspend fun queryAccountBalance(chain: Chain, chainAsset: Chain.Asset, accountId: AccountId): ChainAssetBalance {
-        return accountInfoRepository.getAccountInfo(chain.id, accountId).data.toChainAssetBalance(chainAsset)
+        return runCatching {
+            accountInfoRepository.getAccountInfo(chain.id, accountId).data.toChainAssetBalance(chainAsset)
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to query balance for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            ChainAssetBalance.fromFree(chainAsset, BigInteger.ZERO)
+        }
     }
 
     override suspend fun subscribeAccountBalanceUpdatePoint(
@@ -112,10 +137,17 @@ class NativeAssetBalance(
         chainAsset: Chain.Asset,
         accountId: AccountId,
     ): Flow<TransferableBalanceUpdatePoint> {
-        return remoteStorage.subscribe(chain.id) {
-            metadata.system.account.observeWithRaw(accountId).map {
-                TransferableBalanceUpdatePoint(it.at!!)
+        return runCatching {
+            remoteStorage.subscribe(chain.id) {
+                metadata.system.account.observeWithRaw(accountId).map {
+                    TransferableBalanceUpdatePoint(it.at!!)
+                }
+            }.catch { error ->
+                Log.e(LOG_TAG, "Balance subscription failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
             }
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to setup balance subscription for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            emptyFlow()
         }
     }
 
@@ -146,6 +178,10 @@ class NativeAssetBalance(
                 } else {
                     BalanceSyncUpdate.NoCause
                 }
+            }
+            .catch { error ->
+                Log.e(LOG_TAG, "Balance sync failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+                emit(BalanceSyncUpdate.NoCause)
             }
     }
 
