@@ -5,6 +5,7 @@
     "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/icons/chains/Pezkuwi.png",
     "addressPrefix": 42,
     "options": [
+      "crowdloans",
       "governance-v2",
       "proxy",
       "multisig",
