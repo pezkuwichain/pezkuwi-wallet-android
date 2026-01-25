@@ -19,7 +19,6 @@ jobs:
       branch: ${{ github.event.inputs.branch }}
       gradlew-command: assembleReleaseMarket
       keystore-file-name: market_key.jks
-      keystore-file-base64: ${{ secrets.RELEASE_MARKET_KEY_FILE }}
     secrets: inherit
 
   upload:
