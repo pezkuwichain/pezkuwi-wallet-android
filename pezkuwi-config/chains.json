@@ -1,6 +1,6 @@
 [
   {
-    "chainId": "f648cb6f70ebce04b0234c92d3ce08f1064f596a014c2d7005c53c1292eb8ed5",
+    "chainId": "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75",
     "name": "Pezkuwi",
     "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/icons/chains/Pezkuwi.png",
     "addressPrefix": 42,
@@ -60,7 +60,7 @@
   },
   {
     "chainId": "b40985810ab834baaa6a2de423e299d73c675bee874c73a715309996b08828cc",
-    "parentId": "f648cb6f70ebce04b0234c92d3ce08f1064f596a014c2d7005c53c1292eb8ed5",
+    "parentId": "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75",
     "name": "Pezkuwi Asset Hub",
     "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/icons/chains/PezkuwiAssetHub.png",
     "addressPrefix": 42,
@@ -139,7 +139,7 @@
   },
   {
     "chainId": "3d766dd2530ffb9b530d797c76732ed0b38f2a78f89f75a5c6f0e9232a0bd268",
-    "parentId": "f648cb6f70ebce04b0234c92d3ce08f1064f596a014c2d7005c53c1292eb8ed5",
+    "parentId": "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75",
     "name": "Pezkuwi People",
     "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/icons/chains/PezkuwiPeople.png",
     "addressPrefix": 42,
