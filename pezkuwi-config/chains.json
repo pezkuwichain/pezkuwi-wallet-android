@@ -46,7 +46,7 @@
           "relaychain",
           "nomination-pools"
         ],
-        "type": "Native",
+        "type": "native",
         "icon": "https://pezkuwichain.io/tokens/HEZ.png",
         "buyProviders": {},
         "sellProviders": {},
@@ -84,7 +84,7 @@
         "staking": [
           "relaychain"
         ],
-        "type": "Native",
+        "type": "native",
         "icon": "https://pezkuwichain.io/tokens/HEZ.png"
       }
     ],
@@ -129,7 +129,7 @@
         "name": "Hezkurd",
         "priceId": "hezkurd",
         "staking": null,
-        "type": "Native",
+        "type": "native",
         "icon": "https://pezkuwichain.io/tokens/HEZ.png",
         "buyProviders": {},
         "sellProviders": {},
@@ -142,7 +142,7 @@
         "name": "Pezkuwi",
         "priceId": "pezkuwi",
         "staking": null,
-        "type": "Statemine",
+        "type": "statemine",
         "icon": "https://pezkuwichain.io/tokens/PEZ.png",
         "buyProviders": {},
         "sellProviders": {},
@@ -157,7 +157,7 @@
         "name": "Tether USD",
         "priceId": "tether",
         "staking": null,
-        "type": "Statemine",
+        "type": "statemine",
         "icon": "https://pezkuwichain.io/tokens/wUSDT.png",
         "buyProviders": {},
         "sellProviders": {},
@@ -207,7 +207,7 @@
         "name": "Hezkurd",
         "priceId": "hezkurd",
         "staking": null,
-        "type": "Native",
+        "type": "native",
         "icon": "https://pezkuwichain.io/tokens/HEZ.png",
         "buyProviders": {},
         "sellProviders": {},
