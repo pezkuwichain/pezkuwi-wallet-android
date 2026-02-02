@@ -14,8 +14,6 @@ app/*.apk
 /coverage
 
 *.jks
-!develop_key.jks
-!app/pezkuwi_debug.jks
 .java-version
 
 # ignore database schemas

@@ -19,12 +19,6 @@ android {
             keyAlias readRawSecretOrNull('CI_KEYSTORE_KEY_ALIAS')
             keyPassword readRawSecretOrNull('CI_KEYSTORE_KEY_PASS')
         }
-        debugFixedKey {
-            storeFile file('pezkuwi_debug.jks')
-            storePassword 'pezkuwi123'
-            keyAlias 'pezkuwidebug'
-            keyPassword 'pezkuwi123'
-        }
         market {
             storeFile file('market_key.jks')
             storePassword readRawSecretOrNull('CI_MARKET_KEYSTORE_PASS')
@@ -40,8 +34,6 @@ android {
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.debugFixedKey
-
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
 

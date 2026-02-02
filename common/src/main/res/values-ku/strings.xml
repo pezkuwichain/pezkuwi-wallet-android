@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyEllipsis">
 
-    <!--<string name="account_ledger_generic_item_subtitle">Flex, Stax, Nano X, Nano S Plus</string>-->
     <string name="account_ledger_generic_item_subtitle">Flex, Stax, Nano</string>
 
     <string name="ledger_device_nano_gen5">Ledger Nano Gen5</string>
 
-    <string name="multisig_gifts_not_supported_title">Gifting e ne supported ji bo Multisig wallets</string>
+    <string name="multisig_gifts_not_supported_title">Diyarîkirin ji bo cîzdanên Multisig nayê piştgirî kirin</string>
     <string name="multisig_gifts_not_supported_message">Bo create an manage gifts, ji kerema xwe switch to a different type of wallet.</string>
 
     <string name="account_wallet_name">Cîzdan name</string>
@@ -22,7 +21,8 @@
     <string name="account_polkadot_vault_import_start_step_3_private">Tap  icon in  top-right corner û select %s</string>
     <string name="account_polkadot_vault_import_start_step_3_private_highlighted">Derxe Taybetî Key</string>
 
-    <string name="reclaim_gift_success">You’ve successfully reclaimed yê te gift</string>
+    <string name="reclaim_gift_success">Te diyariya xwe bi serkeftî paşve girt</string>
+    <string name="gifts_placeholder_step_1">Mîqdara diyariyê binivîse</string>
 
     <string name="reclaim_gift_confirmation_title">Paş bixe %s Diyarî?</string>
     <string name="reclaim_gift_confirmation_message">If you reclaim ev gift,  shared link dê be disabled, û tokens dê be refunded to yê te wallet.\nDo you want to continue?</string>
@@ -34,7 +34,11 @@
     <string name="claim_gift_no_account_alert_title">Use another wallet, create a nû one, an add a %s account to ev wallet in Mîheng.</string>
 
     <string name="claim_gift_uncontrollable_wallet_title">You dikare’t receive a gift bi a %s wallet</string>
-    <string name="claim_gift_uncontrollable_wallet_message">Create a nû wallet an import an existing one to claim  gift</string>
+    <string name="claim_gift_uncontrollable_wallet_message">Ji bo wergirtina diyariyê cîzdanek nû biafirîne an yekê heyî import bike</string>
+    <string name="account_create_wallet">Cîzdanek nû biafirîne</string>
+    <string name="cloud_backup_will_be_changed_subtitle">Cîzdanên nû bixweber li Cloud Backupê têne zêdekirin. Tu dikarî vê yekê di Mîhengan de biguherînî.</string>
+    <string name="start_create_wallet_input_hint">Cîzdana min a nû</string>
+    <string name="onboarding_create_wallet">Cîzdanek nû biafirîne</string>
 
     <string name="common_manage_wallets">Cîzdanan birêve bibe</string>
 
@@ -74,7 +78,6 @@
     <string name="assets_gifts_flow_placeholder">You don’t have tokens to gift.\nBuy an Deposit tokens to yê te account.</string>
 
     <string name="gifts_create">Diyarî çêke</string>
-    <string name="gifts_placeholder_step_1">Enter yê te gift amount</string>
     <string name="gifts_placeholder_step_2">%s as a link û invite anyone to Pezkuwi Cîzdan</string>
     <string name="gifts_placeholder_step_2_highlight">Parve bike  gift directly</string>
     <string name="gifts_placeholder_step_3">%s, û you dikare return unclaimed gifts anytime ji ev device</string>
@@ -608,7 +611,6 @@
     <string name="cloud_backup_removing_warning_title">Cîzdan dê be removed in  Cloud Paşvekişandin</string>
     <string name="cloud_backup_removing_warning_subtitle">Ensure you have saved Passphrase ji bo  wallet before proceeding. </string>
 
-    <string name="account_create_wallet">Create a nû wallet</string>
 
     <string name="enter_backup_password_hint">Paşvekişandin password</string>
 
@@ -718,7 +720,6 @@
 
     <string name="account_export_existing">Têxe existing</string>
     <string name="cloud_backup_will_be_changed_title">Cîzdan changes dê be updated in  Cloud Paşvekişandin</string>
-    <string name="cloud_backup_will_be_changed_subtitle">Nû wallets in automatically added to  Cloud Paşvekişandin. You dikare disable Cloud Paşvekişandin in Mîheng.</string>
     <string name="common_check_box_auto_continue">Automatically continue in  future</string>
 
     <string name="wallet_management_add_account_title">How to add wallet?</string>
@@ -901,10 +902,8 @@
     <string name="mnemonic_card_title">Ji kerema xwe %s anyone</string>
     <string name="mnemonic_card_title_highlight">do ne share bi</string>
 
-    <!--<string name="account_backup_mnemonic_title">Write down  phrase û store it in a safe place</string>-->
     <string name="account_backup_mnemonic_title">Write down yê te Passphrase</string>
 
-    <string name="start_create_wallet_input_hint">My nû wallet</string>
     <string name="start_create_wallet_name_your_wallet">Give yê te wallet a name</string>
     <string name="start_create_wallet_enter_wallet_name">Enter wallet name</string>
 
@@ -2470,7 +2469,6 @@
     <string name="network_info_title">Girêk Agahdarî</string>
     <string name="network_status_connecting">Tê girêdan…</string>
     <string name="onboarding_create_account">Create account</string>
-    <string name="onboarding_create_wallet">Create a nû wallet</string>
     <string name="onboarding_privacy_policy">Polîtîkaya Nepenîtiyê</string>
     <string name="onboarding_restore_account">Têxe account</string>
     <string name="onboarding_restore_wallet">Already have a wallet</string>

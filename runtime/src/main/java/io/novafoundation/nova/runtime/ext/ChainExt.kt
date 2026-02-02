@@ -410,13 +410,14 @@ private inline fun Chain.Explorer.format(
 object ChainGeneses {
 
     // Pezkuwi chains (priority)
-    const val PEZKUWI = "f648cb6f70ebce04b0234c92d3ce08f1064f596a014c2d7005c53c1292eb8ed5"
-    const val PEZKUWI_ASSET_HUB = "b40985810ab834baaa6a2de423e299d73c675bee874c73a715309996b08828cc"
-    const val PEZKUWI_PEOPLE = "3d766dd2530ffb9b530d797c76732ed0b38f2a78f89f75a5c6f0e9232a0bd268"
+    const val PEZKUWI = "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75"
+    const val PEZKUWI_ASSET_HUB = "00d0e1d0581c3cd5c5768652d52f4520184018b44f56a2ae1e0dc9d65c00c948"
+    const val PEZKUWI_PEOPLE = "58269e9c184f721e0309332d90cafc410df1519a5dc27a5fd9b3bf5fd2d129f8"
 
     const val KUSAMA = "b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe"
     const val POLKADOT = "91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3"
-    const val WESTEND = "e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e"
+    // Westend constant now points to Zagros Testnet
+    const val WESTEND = "96eb58af1bb7288115b5e4ff1590422533e749293f231974536dc6672417d06f"
 
     const val KUSAMA_ASSET_HUB = "48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a"
 

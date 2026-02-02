@@ -59,7 +59,39 @@
     }
   },
   {
-    "chainId": "b40985810ab834baaa6a2de423e299d73c675bee874c73a715309996b08828cc",
+    "chainId": "96eb58af1bb7288115b5e4ff1590422533e749293f231974536dc6672417d06f",
+    "name": "Zagros Testnet",
+    "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/icons/chains/Pezkuwi.png",
+    "addressPrefix": 42,
+    "options": [
+      "testnet"
+    ],
+    "nodes": [
+      {
+        "url": "wss://testnet-rpc.pezkuwichain.io",
+        "name": "Zagros Node"
+      }
+    ],
+    "assets": [
+      {
+        "assetId": 0,
+        "symbol": "HEZ",
+        "precision": 12,
+        "name": "Hezkurd",
+        "priceId": "hezkurd",
+        "staking": [
+          "relaychain"
+        ],
+        "type": "Native",
+        "icon": "https://pezkuwichain.io/tokens/HEZ.png"
+      }
+    ],
+    "additional": {
+      "themeColor": "#009639"
+    }
+  },
+  {
+    "chainId": "00d0e1d0581c3cd5c5768652d52f4520184018b44f56a2ae1e0dc9d65c00c948",
     "parentId": "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75",
     "name": "Pezkuwi Asset Hub",
     "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/icons/chains/PezkuwiAssetHub.png",
@@ -138,7 +170,7 @@
     }
   },
   {
-    "chainId": "3d766dd2530ffb9b530d797c76732ed0b38f2a78f89f75a5c6f0e9232a0bd268",
+    "chainId": "58269e9c184f721e0309332d90cafc410df1519a5dc27a5fd9b3bf5fd2d129f8",
     "parentId": "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75",
     "name": "Pezkuwi People",
     "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/icons/chains/PezkuwiPeople.png",
