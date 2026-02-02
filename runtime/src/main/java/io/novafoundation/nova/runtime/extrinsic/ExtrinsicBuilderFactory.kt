@@ -56,7 +56,7 @@ class ExtrinsicBuilderFactory(
                 setTransactionExtension(CheckSpecVersion(metadataProof.usedVersion.specVersion))
                 setTransactionExtension(CheckTxVersion(metadataProof.usedVersion.transactionVersion))
 
-                CustomTransactionExtensions.defaultValues().forEach(::setTransactionExtension)
+                CustomTransactionExtensions.defaultValues(runtime).forEach(::setTransactionExtension)
             }
         }
     }

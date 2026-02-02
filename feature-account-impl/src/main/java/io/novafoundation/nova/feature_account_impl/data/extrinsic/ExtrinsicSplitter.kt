@@ -153,7 +153,7 @@ internal class RealExtrinsicSplitter @Inject constructor(
             setTransactionExtension(CheckSpecVersion(0))
             setTransactionExtension(CheckTxVersion(0))
 
-            CustomTransactionExtensions.defaultValues().forEach(::setTransactionExtension)
+            CustomTransactionExtensions.defaultValues(runtime).forEach(::setTransactionExtension)
 
             call(call)
 
