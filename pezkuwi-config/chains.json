@@ -9,7 +9,8 @@
       "governance-v2",
       "proxy",
       "multisig",
-      "pushSupport"
+      "pushSupport",
+      "fullSyncByDefault"
     ],
     "nodeSelectionStrategy": "roundRobin",
     "nodes": [
@@ -64,7 +65,8 @@
     "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/icons/chains/Pezkuwi.png",
     "addressPrefix": 42,
     "options": [
-      "testnet"
+      "testnet",
+      "fullSyncByDefault"
     ],
     "nodes": [
       {
@@ -100,7 +102,8 @@
       "swap-hub",
       "assethub-fees",
       "proxy",
-      "multisig"
+      "multisig",
+      "fullSyncByDefault"
     ],
     "nodeSelectionStrategy": "roundRobin",
     "nodes": [
@@ -177,7 +180,8 @@
     "addressPrefix": 42,
     "options": [
       "proxy",
-      "multisig"
+      "multisig",
+      "fullSyncByDefault"
     ],
     "nodeSelectionStrategy": "roundRobin",
     "nodes": [

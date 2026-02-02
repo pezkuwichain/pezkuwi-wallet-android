@@ -4,12 +4,18 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 
 val Chain.mainChainsFirstAscendingOrder
     get() = when (genesisHash) {
+        // Pezkuwi ecosystem first
         Chain.Geneses.PEZKUWI -> 0
         Chain.Geneses.PEZKUWI_ASSET_HUB -> 1
         Chain.Geneses.PEZKUWI_PEOPLE -> 2
-        Chain.Geneses.POLKADOT_ASSET_HUB -> 3
-        Chain.Geneses.KUSAMA_ASSET_HUB -> 4
-        else -> 5
+        // Then Polkadot ecosystem
+        Chain.Geneses.POLKADOT -> 3
+        Chain.Geneses.POLKADOT_ASSET_HUB -> 4
+        // Then Kusama ecosystem
+        Chain.Geneses.KUSAMA -> 5
+        Chain.Geneses.KUSAMA_ASSET_HUB -> 6
+        // Everything else
+        else -> 7
     }
 
 val Chain.testnetsLastAscendingOrder
