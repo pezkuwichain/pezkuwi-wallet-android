@@ -5,7 +5,14 @@ import io.novasama.substrate_sdk_android.runtime.definitions.types.primitives.Fi
 import io.novasama.substrate_sdk_android.runtime.definitions.types.skipAliases
 
 fun RuntimeSnapshot.isEthereumAddress(): Boolean {
-    val addressType = typeRegistry["Address"]!!.skipAliases()!!
+    // Try different address type names used by different chains
+    val addressType = typeRegistry["Address"]
+        ?: typeRegistry["MultiAddress"]
+        ?: typeRegistry["sp_runtime::multiaddress::MultiAddress"]
+        ?: typeRegistry["pezsp_runtime::multiaddress::MultiAddress"]
+        ?: return false  // If no address type found, assume not Ethereum
 
-    return addressType is FixedByteArray && addressType.length == 20
+    val resolvedType = addressType.skipAliases() ?: return false
+
+    return resolvedType is FixedByteArray && resolvedType.length == 20
 }

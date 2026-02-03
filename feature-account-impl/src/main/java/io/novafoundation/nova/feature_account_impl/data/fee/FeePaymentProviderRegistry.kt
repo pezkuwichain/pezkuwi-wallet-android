@@ -20,7 +20,9 @@ internal class RealFeePaymentProviderRegistry(
         val chain = chainRegistry.getChain(chainId)
 
         return when (chainId) {
-            Chain.Geneses.POLKADOT_ASSET_HUB -> assetHubFactory.create(chain)
+            Chain.Geneses.PEZKUWI_ASSET_HUB,
+            Chain.Geneses.POLKADOT_ASSET_HUB,
+            Chain.Geneses.KUSAMA_ASSET_HUB -> assetHubFactory.create(chain)
             Chain.Geneses.HYDRA_DX -> hydrationFactory.create(chain)
             else -> DefaultFeePaymentProvider(chain)
         }

@@ -24,7 +24,7 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novafoundation.nova.runtime.multiNetwork.getRuntime
 import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
-import io.novasama.substrate_sdk_android.runtime.definitions.types.instances.AddressInstanceConstructor
+import io.novafoundation.nova.common.utils.PezkuwiAddressConstructor
 import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
 import io.novasama.substrate_sdk_android.runtime.extrinsic.call
 import java.math.BigInteger
@@ -88,7 +88,7 @@ open class OrmlAssetTransfers(
             moduleIndex = moduleIndex,
             callIndex = callIndex,
             arguments = mapOf(
-                "dest" to AddressInstanceConstructor.constructInstance(runtime.typeRegistry, target),
+                "dest" to PezkuwiAddressConstructor.constructInstance(runtime.typeRegistry, target),
                 "currency_id" to chainAsset.ormlCurrencyId(runtime),
                 "amount" to amount
             )

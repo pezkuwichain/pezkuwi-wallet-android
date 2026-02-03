@@ -144,13 +144,36 @@ internal class FeeLoaderV2Provider<F, D>(
 
     private suspend fun onFeeError(error: Throwable, feeConstructor: FeeConstructor<F>) {
         if (error !is CancellationException) {
-            Log.e(LOG_TAG, "Failed to sync fee", error)
+            // Build full error chain for debugging
+            val errorChain = buildString {
+                var current: Throwable? = error
+                var depth = 0
+                while (current != null && depth < 5) {
+                    if (depth > 0) append(" -> ")
+                    append("${current.javaClass.simpleName}: ${current.message}")
+                    current = current.cause
+                    depth++
+                }
+            }
+            val errorMsg = errorChain
+            Log.e(LOG_TAG, "Failed to sync fee: $errorMsg", error)
 
             fee.emit(FeeStatus.Error)
 
-            awaitFeeRetry()
-
-            loadFee(feeConstructor)
+            // Show detailed error in retry dialog with runtime diagnostics
+            val diagnostics = try {
+                io.novafoundation.nova.runtime.multiNetwork.runtime.RuntimeFactory.lastDiagnostics
+            } catch (e: Exception) { "N/A" }
+            retryEvent.postValue(
+                Event(
+                    RetryPayload(
+                        title = resourceManager.getString(R.string.choose_amount_network_error),
+                        message = "DEBUG: $errorMsg | Runtime: $diagnostics",
+                        onRetry = { loadFee(feeConstructor) },
+                        onCancel = { }
+                    )
+                )
+            )
         }
     }
 

@@ -6,7 +6,7 @@ import io.novafoundation.nova.common.utils.composeCall
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Balance
 import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
-import io.novasama.substrate_sdk_android.runtime.definitions.types.instances.AddressInstanceConstructor
+import io.novafoundation.nova.common.utils.PezkuwiAddressConstructor
 
 class NativeAssetIssuer(
     private val runtimeSnapshot: RuntimeSnapshot
@@ -17,7 +17,7 @@ class NativeAssetIssuer(
             moduleName = Modules.BALANCES,
             callName = "force_set_balance",
             arguments = mapOf(
-                "who" to AddressInstanceConstructor.constructInstance(runtimeSnapshot.typeRegistry, destination.value),
+                "who" to PezkuwiAddressConstructor.constructInstance(runtimeSnapshot.typeRegistry, destination.value),
                 "new_free" to amount
             )
         )

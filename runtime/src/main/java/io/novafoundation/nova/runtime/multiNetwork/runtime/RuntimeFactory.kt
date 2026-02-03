@@ -47,6 +47,10 @@ class RuntimeFactory(
     private val gson: Gson,
     private val concurrencyLimit: Int = 1
 ) {
+    companion object {
+        @Volatile
+        var lastDiagnostics: String = "not yet initialized"
+    }
 
     private val dispatcher = newLimitedThreadPoolExecutor(concurrencyLimit).asCoroutineDispatcher()
     private val semaphore = Semaphore(concurrencyLimit)
@@ -88,9 +92,13 @@ class RuntimeFactory(
             )
         }
 
+        Log.d("RuntimeFactory", "DEBUG: TypesUsage for chain $chainId = $typesUsage")
+
         val (types, baseHash, ownHash) = when (typesUsage) {
             TypesUsage.BASE -> {
+                Log.d("RuntimeFactory", "DEBUG: Loading BASE types for $chainId")
                 val (types, baseHash) = constructBaseTypes(typePreset)
+                Log.d("RuntimeFactory", "DEBUG: BASE types loaded, hash=$baseHash, typeCount=${types.size}")
 
                 Triple(types, baseHash, null)
             }
@@ -104,6 +112,15 @@ class RuntimeFactory(
         }
 
         val typeRegistry = TypeRegistry(types, DynamicTypeResolver(DynamicTypeResolver.DEFAULT_COMPOUND_EXTENSIONS + GenericsExtension))
+
+        // DEBUG: Check for ExtrinsicSignature
+        val hasExtrinsicSignature = typeRegistry["ExtrinsicSignature"] != null
+        val hasMultiSignature = typeRegistry["MultiSignature"] != null
+        Log.d("RuntimeFactory", "DEBUG: Chain $chainId - ExtrinsicSignature=$hasExtrinsicSignature, MultiSignature=$hasMultiSignature, typesUsage=$typesUsage, typeCount=${types.size}")
+
+        // Store diagnostic info for error messages
+        lastDiagnostics = "typesUsage=$typesUsage, ExtrinsicSig=$hasExtrinsicSignature, MultiSig=$hasMultiSignature, typeCount=${types.size}"
+
         val runtimeMetadata = VersionedRuntimeBuilder.buildMetadata(metadataReader, typeRegistry)
 
         ConstructedRuntime(
@@ -154,7 +171,12 @@ class RuntimeFactory(
 
     private suspend fun constructBaseTypes(initialPreset: TypePreset): Pair<TypePreset, String> {
         val baseTypesRaw = runCatching { runtimeFilesCache.getBaseTypes() }
-            .getOrElse { throw BaseTypesNotInCacheException }
+            .getOrElse {
+                Log.e("RuntimeFactory", "DEBUG: BaseTypes NOT in cache!")
+                throw BaseTypesNotInCacheException
+            }
+
+        Log.d("RuntimeFactory", "DEBUG: BaseTypes loaded, length=${baseTypesRaw.length}, contains ExtrinsicSignature=${baseTypesRaw.contains("ExtrinsicSignature")}")
 
         val typePreset = parseBaseDefinitions(fromJson(baseTypesRaw), initialPreset)
 

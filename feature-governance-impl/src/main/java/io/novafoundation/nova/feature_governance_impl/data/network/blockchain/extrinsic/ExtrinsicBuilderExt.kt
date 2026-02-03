@@ -13,7 +13,7 @@ import io.novafoundation.nova.runtime.multiNetwork.runtime.types.custom.vote.Con
 import io.novafoundation.nova.runtime.util.constructAccountLookupInstance
 import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.definitions.types.composite.DictEnum
-import io.novasama.substrate_sdk_android.runtime.definitions.types.instances.AddressInstanceConstructor
+import io.novafoundation.nova.common.utils.PezkuwiAddressConstructor
 import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
 import io.novasama.substrate_sdk_android.runtime.extrinsic.call
 import io.novasama.substrate_sdk_android.runtime.metadata.call
@@ -55,7 +55,7 @@ fun ExtrinsicBuilder.convictionVotingUnlock(
         callName = "unlock",
         arguments = mapOf(
             "class" to trackId.value,
-            "target" to AddressInstanceConstructor.constructInstance(runtime.typeRegistry, accountId)
+            "target" to PezkuwiAddressConstructor.constructInstance(runtime.typeRegistry, accountId)
         )
     )
 }
@@ -137,7 +137,7 @@ fun CallBuilder.convictionVotingDelegate(
         callName = "delegate",
         arguments = mapOf(
             "class" to trackId.value,
-            "to" to AddressInstanceConstructor.constructInstance(runtime.typeRegistry, delegate),
+            "to" to PezkuwiAddressConstructor.constructInstance(runtime.typeRegistry, delegate),
             "conviction" to conviction.prepareForEncoding(),
             "balance" to amount
         )

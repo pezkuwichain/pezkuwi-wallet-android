@@ -1,11 +1,17 @@
 package io.novafoundation.nova.runtime.extrinsic
 
+import android.util.Log
 import io.novafoundation.nova.runtime.extrinsic.extensions.AuthorizeCall
 import io.novafoundation.nova.runtime.extrinsic.extensions.ChargeAssetTxPayment
 import io.novafoundation.nova.runtime.extrinsic.extensions.CheckAppId
+import io.novafoundation.nova.runtime.extrinsic.extensions.CheckNonZeroSender
+import io.novafoundation.nova.runtime.extrinsic.extensions.CheckWeight
+import io.novafoundation.nova.runtime.extrinsic.extensions.WeightReclaim
 import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
 import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
 import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtension.TransactionExtension
+
+private const val TAG = "CustomTxExtensions"
 
 object CustomTransactionExtensions {
 
@@ -34,21 +40,33 @@ object CustomTransactionExtensions {
 
     fun defaultValues(runtime: RuntimeSnapshot): List<TransactionExtension> {
         val extensions = mutableListOf<TransactionExtension>()
+        val isPezkuwi = isPezkuwiChain(runtime)
 
-        // Add AuthorizeCall only for PezkuwiChain networks
-        if (isPezkuwiChain(runtime)) {
+        Log.d(TAG, "isPezkuwiChain: $isPezkuwi")
+
+        if (isPezkuwi) {
+            // Pezkuwi needs: AuthorizeCall, CheckNonZeroSender, CheckWeight, WeightReclaim
+            // Other extensions (CheckMortality, CheckGenesis, etc.) are set in ExtrinsicBuilderFactory
+            Log.d(TAG, "Adding Pezkuwi extensions: AuthorizeCall, CheckNonZeroSender, CheckWeight, WeightReclaim")
             extensions.add(AuthorizeCall())
+            extensions.add(CheckNonZeroSender())
+            extensions.add(CheckWeight())
+            extensions.add(WeightReclaim())
+        } else {
+            // Other chains (Asset Hub, etc.) use ChargeAssetTxPayment and CheckAppId
+            Log.d(TAG, "Adding default extensions: ChargeAssetTxPayment, CheckAppId")
+            extensions.add(ChargeAssetTxPayment())
+            extensions.add(CheckAppId())
         }
-
-        extensions.add(ChargeAssetTxPayment())
-        extensions.add(CheckAppId())
 
         return extensions
     }
 
     private fun isPezkuwiChain(runtime: RuntimeSnapshot): Boolean {
-        val genesisHash = runtime.metadata.extrinsic.signedExtensions
-            .any { it.id == "AuthorizeCall" }
-        return genesisHash
+        val signedExtIds = runtime.metadata.extrinsic.signedExtensions.map { it.id }
+        Log.d(TAG, "Metadata signed extensions: $signedExtIds")
+        val hasAuthorizeCall = signedExtIds.any { it == "AuthorizeCall" }
+        Log.d(TAG, "Has AuthorizeCall: $hasAuthorizeCall")
+        return hasAuthorizeCall
     }
 }

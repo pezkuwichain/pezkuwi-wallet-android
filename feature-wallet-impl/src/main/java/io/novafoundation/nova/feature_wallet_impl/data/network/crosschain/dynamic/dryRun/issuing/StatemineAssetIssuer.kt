@@ -12,7 +12,7 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.prepareIdForEncoding
 import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
-import io.novasama.substrate_sdk_android.runtime.definitions.types.instances.AddressInstanceConstructor
+import io.novafoundation.nova.common.utils.PezkuwiAddressConstructor
 
 class StatemineAssetIssuer(
     private val chainId: ChainId,
@@ -38,7 +38,7 @@ class StatemineAssetIssuer(
             callName = "mint",
             arguments = mapOf(
                 "id" to assetType.prepareIdForEncoding(runtimeSnapshot),
-                "beneficiary" to AddressInstanceConstructor.constructInstance(runtimeSnapshot.typeRegistry, destination.value),
+                "beneficiary" to PezkuwiAddressConstructor.constructInstance(runtimeSnapshot.typeRegistry, destination.value),
                 "amount" to amount
             )
         )

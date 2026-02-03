@@ -7,7 +7,7 @@ android {
 
         
 
-        buildConfigField "String", "CHAINS_URL", "\"https://wallet.pezkuwichain.io/chains.json\""
+        buildConfigField "String", "CHAINS_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/chains/v22/android/chains.json\""
         buildConfigField "String", "EVM_ASSETS_URL", "\"https://wallet.pezkuwichain.io/evm_assets.json\""
         buildConfigField "String", "PRE_CONFIGURED_CHAINS_URL", "\"https://wallet.pezkuwichain.io/pre_configured_chains.json\""
         buildConfigField "String", "PRE_CONFIGURED_CHAIN_DETAILS_URL", "\"https://wallet.pezkuwichain.io/chain_details\""
@@ -27,7 +27,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "CHAINS_URL", "\"https://wallet.pezkuwichain.io/chains.json\""
+            buildConfigField "String", "CHAINS_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/chains/v22/android/chains.json\""
             buildConfigField "String", "EVM_ASSETS_URL", "\"https://wallet.pezkuwichain.io/evm_assets.json\""
             buildConfigField "String", "PRE_CONFIGURED_CHAINS_URL", "\"https://wallet.pezkuwichain.io/pre_configured_chains.json\""
             buildConfigField "String", "PRE_CONFIGURED_CHAIN_DETAILS_URL", "\"https://wallet.pezkuwichain.io/chain_details\""

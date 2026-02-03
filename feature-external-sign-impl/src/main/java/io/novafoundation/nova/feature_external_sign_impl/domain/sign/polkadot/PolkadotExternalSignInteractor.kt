@@ -231,7 +231,7 @@ class PolkadotExternalSignInteractor(
                 setTransactionExtension(CheckTxVersion(transactionVersion))
 
                 call(parsedExtrinsic.call)
-                CustomTransactionExtensions.applyDefaultValues(builder = this)
+                CustomTransactionExtensions.applyDefaultValues(builder = this, runtime = runtime)
                 applyCustomSignedExtensions(parsedExtrinsic)
 
                 signer.setSignerData(signingContext, signingMode)

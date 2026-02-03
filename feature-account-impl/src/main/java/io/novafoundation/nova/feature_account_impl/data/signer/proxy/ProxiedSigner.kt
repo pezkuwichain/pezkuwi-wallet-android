@@ -30,7 +30,7 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.definitions.types.composite.DictEnum
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
-import io.novasama.substrate_sdk_android.runtime.definitions.types.instances.AddressInstanceConstructor
+import io.novafoundation.nova.common.utils.PezkuwiAddressConstructor
 import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
 import io.novasama.substrate_sdk_android.runtime.extrinsic.signer.SignedRaw
 import io.novasama.substrate_sdk_android.runtime.extrinsic.signer.SignerPayloadRaw
@@ -205,7 +205,7 @@ class ProxiedSigner(
             moduleName = Modules.PROXY,
             callName = "proxy",
             arguments = mapOf(
-                "real" to AddressInstanceConstructor.constructInstance(runtime.typeRegistry, proxiedAccountId),
+                "real" to PezkuwiAddressConstructor.constructInstance(runtime.typeRegistry, proxiedAccountId),
                 "force_proxy_type" to DictEnum.Entry(proxyType.name, null),
                 "call" to proxiedCall
             )

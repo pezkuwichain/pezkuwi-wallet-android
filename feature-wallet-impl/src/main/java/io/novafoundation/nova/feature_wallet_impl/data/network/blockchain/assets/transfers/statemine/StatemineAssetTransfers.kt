@@ -27,7 +27,7 @@ import io.novafoundation.nova.runtime.multiNetwork.getRuntime
 import io.novafoundation.nova.runtime.storage.source.StorageDataSource
 import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
-import io.novasama.substrate_sdk_android.runtime.definitions.types.instances.AddressInstanceConstructor
+import io.novafoundation.nova.common.utils.PezkuwiAddressConstructor
 import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
 import io.novasama.substrate_sdk_android.runtime.extrinsic.call
 import io.novasama.substrate_sdk_android.runtime.metadata.storage
@@ -109,7 +109,7 @@ class StatemineAssetTransfers(
             callName = "transfer",
             arguments = mapOf(
                 "id" to assetType.prepareIdForEncoding(runtime),
-                "target" to AddressInstanceConstructor.constructInstance(runtime.typeRegistry, target),
+                "target" to PezkuwiAddressConstructor.constructInstance(runtime.typeRegistry, target),
                 "amount" to amount
             )
         )

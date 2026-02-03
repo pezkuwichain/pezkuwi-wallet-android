@@ -6,7 +6,7 @@ import io.novafoundation.nova.feature_staking_impl.data.nominationPools.network.
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Balance
 import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.definitions.types.composite.DictEnum
-import io.novasama.substrate_sdk_android.runtime.definitions.types.instances.AddressInstanceConstructor
+import io.novafoundation.nova.common.utils.PezkuwiAddressConstructor
 import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
 import io.novasama.substrate_sdk_android.runtime.extrinsic.call
 import java.math.BigInteger
@@ -47,7 +47,7 @@ fun NominationPoolsCalls.unbond(unbondAccount: AccountId, unbondPoints: PoolPoin
         moduleName = Modules.NOMINATION_POOLS,
         callName = "unbond",
         arguments = mapOf(
-            "member_account" to AddressInstanceConstructor.constructInstance(extrinsicBuilder.runtime.typeRegistry, unbondAccount),
+            "member_account" to PezkuwiAddressConstructor.constructInstance(extrinsicBuilder.runtime.typeRegistry, unbondAccount),
             "unbonding_points" to unbondPoints.value
         )
     )
@@ -58,7 +58,7 @@ fun NominationPoolsCalls.withdrawUnbonded(memberAccount: AccountId, numberOfSlas
         moduleName = Modules.NOMINATION_POOLS,
         callName = "withdraw_unbonded",
         arguments = mapOf(
-            "member_account" to AddressInstanceConstructor.constructInstance(extrinsicBuilder.runtime.typeRegistry, memberAccount),
+            "member_account" to PezkuwiAddressConstructor.constructInstance(extrinsicBuilder.runtime.typeRegistry, memberAccount),
             "num_slashing_spans" to numberOfSlashingSpans
         )
     )
@@ -77,7 +77,7 @@ fun NominationPoolsCalls.migrateDelegation(memberAccount: AccountId) {
         moduleName = Modules.NOMINATION_POOLS,
         callName = "migrate_delegation",
         arguments = mapOf(
-            "member_account" to AddressInstanceConstructor.constructInstance(extrinsicBuilder.runtime.typeRegistry, memberAccount),
+            "member_account" to PezkuwiAddressConstructor.constructInstance(extrinsicBuilder.runtime.typeRegistry, memberAccount),
         )
     )
 }

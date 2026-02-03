@@ -8,7 +8,7 @@ import io.novafoundation.nova.runtime.ext.currencyId
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
-import io.novasama.substrate_sdk_android.runtime.definitions.types.instances.AddressInstanceConstructor
+import io.novafoundation.nova.common.utils.PezkuwiAddressConstructor
 
 class OrmlAssetIssuer(
     private val ormlType: Chain.Asset.Type.Orml,
@@ -20,7 +20,7 @@ class OrmlAssetIssuer(
             moduleName = Modules.TOKENS,
             callName = "set_balance",
             arguments = mapOf(
-                "who" to AddressInstanceConstructor.constructInstance(runtimeSnapshot.typeRegistry, destination.value),
+                "who" to PezkuwiAddressConstructor.constructInstance(runtimeSnapshot.typeRegistry, destination.value),
                 "currency_id" to ormlType.currencyId(runtimeSnapshot),
                 "new_free" to amount,
                 "new_reserved" to Balance.ZERO
