@@ -350,7 +350,13 @@ class RealExtrinsicService(
         }
 
         // Build extrinsic
-        val extrinsic = extrinsicBuilder.buildExtrinsic()
+        val extrinsic = try {
+            extrinsicBuilder.buildExtrinsic()
+        } catch (e: Exception) {
+            Log.e("RealExtrinsicService", "Failed to build extrinsic for chain ${chain.name}", e)
+            Log.e("RealExtrinsicService", "SigningMode: $signingMode, Chain: ${chain.id}")
+            throw e
+        }
 
         val signingHierarchy = signer.getSigningHierarchy()
 
