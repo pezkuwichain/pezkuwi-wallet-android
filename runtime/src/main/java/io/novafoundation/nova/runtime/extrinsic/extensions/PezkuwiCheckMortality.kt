@@ -23,8 +23,8 @@ class PezkuwiCheckMortality(
     blockHash: ByteArray
 ) : FixedValueTransactionExtension(
     name = "CheckMortality",
-    implicit = blockHash,  // blockHash goes into signer payload
-    explicit = createEraEntry(era)  // Era as DictEnum.Entry
+    implicit = blockHash, // blockHash goes into signer payload
+    explicit = createEraEntry(era) // Era as DictEnum.Entry
 ) {
     companion object {
         /**
@@ -41,7 +41,7 @@ class PezkuwiCheckMortality(
 
             // Calculate the two-byte encoding
             val encoded = ((countTrailingZeroBits(period) - 1).coerceIn(1, 15)) or
-                          ((phase / quantizeFactor).toInt() shl 4)
+                ((phase / quantizeFactor).toInt() shl 4)
 
             val firstByte = encoded and 0xFF
             val secondByte = (encoded shr 8) and 0xFF

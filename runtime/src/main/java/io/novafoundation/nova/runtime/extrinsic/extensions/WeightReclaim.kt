@@ -14,5 +14,5 @@ import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtensi
 class WeightReclaim : FixedValueTransactionExtension(
     name = "WeightReclaim",
     implicit = null,
-    explicit = null  // PhantomData encodes to nothing
+    explicit = null // PhantomData encodes to nothing
 )

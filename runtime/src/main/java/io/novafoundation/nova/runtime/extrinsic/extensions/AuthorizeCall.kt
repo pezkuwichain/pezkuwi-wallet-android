@@ -14,5 +14,5 @@ import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtensi
 class AuthorizeCall : FixedValueTransactionExtension(
     name = "AuthorizeCall",
     implicit = null,
-    explicit = null  // PhantomData encodes to nothing
+    explicit = null // PhantomData encodes to nothing
 )

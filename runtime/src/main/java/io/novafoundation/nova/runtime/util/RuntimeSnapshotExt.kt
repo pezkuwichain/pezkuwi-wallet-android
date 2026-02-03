@@ -10,7 +10,7 @@ fun RuntimeSnapshot.isEthereumAddress(): Boolean {
         ?: typeRegistry["MultiAddress"]
         ?: typeRegistry["sp_runtime::multiaddress::MultiAddress"]
         ?: typeRegistry["pezsp_runtime::multiaddress::MultiAddress"]
-        ?: return false  // If no address type found, assume not Ethereum
+        ?: return false // If no address type found, assume not Ethereum
 
     val resolvedType = addressType.skipAliases() ?: return false
 

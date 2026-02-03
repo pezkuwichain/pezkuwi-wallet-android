@@ -116,7 +116,10 @@ class RuntimeFactory(
         // DEBUG: Check for ExtrinsicSignature
         val hasExtrinsicSignature = typeRegistry["ExtrinsicSignature"] != null
         val hasMultiSignature = typeRegistry["MultiSignature"] != null
-        Log.d("RuntimeFactory", "DEBUG: Chain $chainId - ExtrinsicSignature=$hasExtrinsicSignature, MultiSignature=$hasMultiSignature, typesUsage=$typesUsage, typeCount=${types.size}")
+        Log.d(
+            "RuntimeFactory",
+            "Chain $chainId - ExtrinsicSig=$hasExtrinsicSignature, MultiSig=$hasMultiSignature, types=$typesUsage"
+        )
 
         // Store diagnostic info for error messages
         lastDiagnostics = "typesUsage=$typesUsage, ExtrinsicSig=$hasExtrinsicSignature, MultiSig=$hasMultiSignature, typeCount=${types.size}"
@@ -176,7 +179,7 @@ class RuntimeFactory(
                 throw BaseTypesNotInCacheException
             }
 
-        Log.d("RuntimeFactory", "DEBUG: BaseTypes loaded, length=${baseTypesRaw.length}, contains ExtrinsicSignature=${baseTypesRaw.contains("ExtrinsicSignature")}")
+        Log.d("RuntimeFactory", "BaseTypes loaded, len=${baseTypesRaw.length}")
 
         val typePreset = parseBaseDefinitions(fromJson(baseTypesRaw), initialPreset)
 
