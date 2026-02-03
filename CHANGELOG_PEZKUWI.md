@@ -69,6 +69,22 @@ Log.e("RuntimeFactory", "DEBUG: BaseTypes NOT in cache!")
 
 ---
 
+### 6. RealExtrinsicService.kt - Extrinsic build hata log'u
+**Dosya:** `feature-account-impl/src/main/java/io/novafoundation/nova/feature_account_impl/data/extrinsic/RealExtrinsicService.kt`
+**Eklenen:**
+```kotlin
+val extrinsic = try {
+    extrinsicBuilder.buildExtrinsic()
+} catch (e: Exception) {
+    Log.e("RealExtrinsicService", "Failed to build extrinsic for chain ${chain.name}", e)
+    Log.e("RealExtrinsicService", "SigningMode: $signingMode, Chain: ${chain.id}")
+    throw e
+}
+```
+**Temizleme:** try-catch bloğunu kaldır, sadece `extrinsicBuilder.buildExtrinsic()` bırak
+
+---
+
 ## FEATURE DEĞİŞİKLİKLERİ (Kalıcı)
 
 ### 1. PezkuwiAddressConstructor.kt - YENİ DOSYA
@@ -147,16 +163,74 @@ class PezkuwiCheckMortality(
 
 ---
 
-### 6. chains.json - feeViaRuntimeCall ve types
-**Dosya:** `pezkuwi-config/chains.json`
+### 6. CHAINS_URL - GitHub'a yönlendirme
+**Dosya:** `runtime/build.gradle`
 **Değişiklik:**
-- Pezkuwi chain'lerine `"feeViaRuntimeCall": true` eklendi
-- `"types": { "overridesCommon": false }` eklendi (base types yüklenmesi için - ExtrinsicSignature type hatası düzeltmek için)
+```gradle
+// ÖNCE:
+buildConfigField "String", "CHAINS_URL", "\"https://wallet.pezkuwichain.io/chains.json\""
+
+// SONRA:
+buildConfigField "String", "CHAINS_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/chains/v22/android/chains.json\""
+```
+**Neden:** wallet.pezkuwichain.io/chains.json Telegram miniapp için kullanılıyor ve `"types": null`. Android için ayrı chains.json gerekli.
+
+---
+
+### 7. chains/v22/android/chains.json - Android-specific chains
+**Repo:** `pezkuwi-wallet-utils`
+**Dosya:** `chains/v22/android/chains.json`
+**Açıklama:** Android uygulama için özel chains.json. wallet.pezkuwichain.io'dan kopyalandı ve şu değişiklikler yapıldı:
+- `"types": { "overridesCommon": false }` eklendi (TypesUsage.BASE için)
+- `"feeViaRuntimeCall": true` eklendi
 **Etkilenen chain'ler:**
 - Pezkuwi Mainnet (bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75)
 - Pezkuwi Asset Hub (00d0e1d0581c3cd5c5768652d52f4520184018b44f56a2ae1e0dc9d65c00c948)
 - Pezkuwi People Chain (58269e9c184f721e0309332d90cafc410df1519a5dc27a5fd9b3bf5fd2d129f8)
 - Zagros Testnet (96eb58af1bb7288115b5e4ff1590422533e749293f231974536dc6672417d06f)
+
+---
+
+### 8. default.json - MultiAddress inline tanımı
+**Repo:** `pezkuwi-wallet-utils`
+**Dosya:** `chains/types/default.json`
+**Değişiklik:** MultiAddress artık GenericMultiAddress'e referans vermiyor, inline enum olarak tanımlı:
+```json
+"MultiAddress": {
+  "type": "enum",
+  "type_mapping": [
+    ["Id", "AccountId"],
+    ["Index", "Compact<u32>"],
+    ["Raw", "Bytes"],
+    ["Address32", "H256"],
+    ["Address20", "H160"]
+  ]
+}
+```
+**Neden:** v14Preset() GenericMultiAddress içermiyor, bu yüzden type çözümlenemiyordu.
+
+---
+
+### 9. PezkuwiIntegrationTest.kt - YENİ DOSYA
+**Dosya:** `app/src/androidTest/java/io/novafoundation/nova/PezkuwiIntegrationTest.kt`
+**Açıklama:** Pezkuwi chain'leri için integration testleri:
+- Runtime type kontrolü (ExtrinsicSignature, MultiSignature, Address, MultiAddress)
+- ExtrinsicBuilder oluşturma
+- Transfer call yapısı kontrolü
+- Signed extensions kontrolü
+- Utility asset kontrolü
+**Çalıştırma:**
+```bash
+./gradlew :app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=io.novafoundation.nova.PezkuwiIntegrationTest
+```
+
+---
+
+### 10. GitHub Actions - Branch senkronizasyonu
+**Dosya:** `.github/workflows/sync-branches.yml`
+**Açıklama:** main ve master branch'lerini otomatik senkronize eder.
+- main'e push → master güncellenir
+- master'a push → main güncellenir
 
 ---
 
@@ -197,14 +271,37 @@ class PezkuwiCheckMortality(
    - Pezkuwi Era type'ı `pezsp_runtime.generic.era.Era` DictEnum olarak tanımlı
    - Çözüm: `PezkuwiCheckMortality` custom extension'ı oluşturuldu, Era'yı `DictEnum.Entry("MortalX", secondByte)` olarak veriyor
 
-5. **"IllegalStateException: Type ExtrinsicSignature was not found"** - ExtrinsicSignature type hatası (DEVAM EDİYOR)
+5. **"IllegalStateException: Type ExtrinsicSignature was not found"** - ExtrinsicSignature type hatası ✅ ÇÖZÜLDÜ
    - SDK "ExtrinsicSignature" type'ını arıyor ama Pezkuwi chain'leri `"types": null` kullanıyordu
    - `TypesUsage.NONE` olduğu için base types (default.json) yüklenmiyordu
-   - Denenen çözüm: chains.json'da `"types": { "overridesCommon": false }` eklendi → `TypesUsage.BASE` kullanılıyor
-   - Base types URL: `https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/chains/types/default.json`
-   - default.json'da `"ExtrinsicSignature": "MultiSignature"` tanımlı
-   - Cache temizlenip uninstall/reinstall yapıldı ama hata devam ediyor
-   - Debug diagnostics eklendi - test sonucunu bekliyoruz
+   - **Çözüm:**
+     - `runtime/build.gradle` içinde CHAINS_URL GitHub'a yönlendirildi
+     - `pezkuwi-wallet-utils/chains/v22/android/chains.json` oluşturuldu (`"types": { "overridesCommon": false }`)
+     - Artık `TypesUsage.BASE` kullanılıyor ve default.json yükleniyor
+
+6. **"IllegalStateException: Type Address was not found"** - Address type hatası ✅ ÇÖZÜLDÜ
+   - v14Preset() `GenericMultiAddress` içermiyor
+   - default.json'da `"MultiAddress": "GenericMultiAddress"` tanımlıydı ama GenericMultiAddress çözümlenemiyordu
+   - **Çözüm:** default.json'da MultiAddress inline enum olarak tanımlandı:
+   ```json
+   "MultiAddress": {
+     "type": "enum",
+     "type_mapping": [
+       ["Id", "AccountId"],
+       ["Index", "Compact<u32>"],
+       ["Raw", "Bytes"],
+       ["Address32", "H256"],
+       ["Address20", "H160"]
+     ]
+   }
+   ```
+
+7. **"TypeReference is null"** - Transfer onaylama hatası (DEVAM EDİYOR)
+   - Fee hesaplama çalışıyor ✅
+   - Transfer onaylama sırasında hata oluşuyor
+   - Muhtemelen signing sırasında bir type çözümlenemiyor
+   - Debug logging eklendi: `RealExtrinsicService.kt`
+   - Stack trace bekleniyor
 
 ---
 
@@ -248,8 +345,9 @@ Production release öncesi yapılacaklar:
 - [ ] CustomTransactionExtensions.kt - Log satırlarını kaldır
 - [ ] ExtrinsicBuilderFactory.kt - Log satırlarını kaldır
 - [ ] PezkuwiAddressConstructor.kt - Log satırlarını kaldır (varsa)
-- [ ] Test et: Transfer işlemi çalışıyor mu?
-- [ ] Test et: Fee hesaplama çalışıyor mu?
+- [ ] RealExtrinsicService.kt - try-catch debug bloğunu kaldır
+- [x] Test et: Fee hesaplama çalışıyor mu? ✅
+- [ ] Test et: Transfer işlemi çalışıyor mu? (TypeReference hatası devam ediyor)
 
 ---
 
@@ -279,4 +377,4 @@ RuntimeSnapshot
 
 ---
 
-*Son güncelleme: 2026-02-03 (Debug diagnostics eklendi, extension analizi yapıldı)*
+*Son güncelleme: 2026-02-03 06:30 (CHAINS_URL GitHub'a yönlendirildi, MultiAddress inline tanımlandı, Integration test eklendi, TypeReference hatası araştırılıyor)*
