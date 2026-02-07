@@ -3,7 +3,6 @@ package io.novafoundation.nova.runtime.extrinsic.signer
 import android.util.Log
 import io.novafoundation.nova.sr25519.BizinikiwSr25519
 import io.novasama.substrate_sdk_android.encrypt.SignatureWrapper
-import io.novasama.substrate_sdk_android.encrypt.keypair.Keypair
 import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.extrinsic.signer.SignedRaw
 import io.novasama.substrate_sdk_android.runtime.extrinsic.signer.SignerPayloadRaw

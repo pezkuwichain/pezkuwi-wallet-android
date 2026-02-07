@@ -1,6 +1,5 @@
 package io.novafoundation.nova.runtime.extrinsic.signer
 
-import org.bouncycastle.jcajce.provider.digest.Keccak
 import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder

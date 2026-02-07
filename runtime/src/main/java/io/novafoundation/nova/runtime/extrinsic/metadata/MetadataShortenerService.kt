@@ -173,7 +173,11 @@ internal class RealMetadataShortenerService(
         val atLeastMinimumVersion = runtimeMetadata.metadataVersion >= MINIMUM_METADATA_VERSION_TO_CALCULATE_HASH
         val hasSignedExtension = runtimeMetadata.extrinsic.hasSignedExtension(DefaultSignedExtensions.CHECK_METADATA_HASH)
 
-        Log.d("MetadataShortenerService", "Chain: ${chain.name}, disabledByConfig=$disabledByConfig, canBeEnabled=$canBeEnabled, atLeastMinimumVersion=$atLeastMinimumVersion, hasSignedExtension=$hasSignedExtension")
+        Log.d(
+            "MetadataShortenerService",
+            "Chain: ${chain.name}, disabledByConfig=$disabledByConfig, canBeEnabled=$canBeEnabled, " +
+                "atLeastMinimumVersion=$atLeastMinimumVersion, hasSignedExtension=$hasSignedExtension"
+        )
         Log.d("MetadataShortenerService", "chain.additional: ${chain.additional}, disabledCheckMetadataHash=${chain.additional?.disabledCheckMetadataHash}")
 
         val result = canBeEnabled && atLeastMinimumVersion && hasSignedExtension

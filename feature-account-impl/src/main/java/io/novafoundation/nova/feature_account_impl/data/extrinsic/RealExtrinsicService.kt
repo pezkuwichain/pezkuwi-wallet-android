@@ -369,9 +369,11 @@ class RealExtrinsicService(
                 val hasMultiSignature = typeRegistry["MultiSignature"] != null
                 val hasMultiAddress = typeRegistry["MultiAddress"] != null
                 val hasAddress = typeRegistry["Address"] != null
-                Log.e("RealExtrinsicService",
+                Log.e(
+                    "RealExtrinsicService",
                     "Types: ExtrinsicSig=$hasExtrinsicSignature, MultiSig=$hasMultiSignature, " +
-                    "MultiAddress=$hasMultiAddress, Address=$hasAddress")
+                        "MultiAddress=$hasMultiAddress, Address=$hasAddress"
+                )
 
                 // Check extrinsic extensions
                 val signedExtensions = runtime.metadata.extrinsic.signedExtensions.map { it.id }
