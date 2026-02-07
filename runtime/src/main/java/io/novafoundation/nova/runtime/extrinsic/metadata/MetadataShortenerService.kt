@@ -168,10 +168,16 @@ internal class RealMetadataShortenerService(
     }
 
     private fun shouldCalculateMetadataHash(runtimeMetadata: RuntimeMetadata, chain: Chain): Boolean {
-        val canBeEnabled = chain.additional.shouldDisableMetadataHashCheck().not()
+        val disabledByConfig = chain.additional.shouldDisableMetadataHashCheck()
+        val canBeEnabled = disabledByConfig.not()
         val atLeastMinimumVersion = runtimeMetadata.metadataVersion >= MINIMUM_METADATA_VERSION_TO_CALCULATE_HASH
         val hasSignedExtension = runtimeMetadata.extrinsic.hasSignedExtension(DefaultSignedExtensions.CHECK_METADATA_HASH)
 
-        return canBeEnabled && atLeastMinimumVersion && hasSignedExtension
+        Log.d("MetadataShortenerService", "Chain: ${chain.name}, disabledByConfig=$disabledByConfig, canBeEnabled=$canBeEnabled, atLeastMinimumVersion=$atLeastMinimumVersion, hasSignedExtension=$hasSignedExtension")
+        Log.d("MetadataShortenerService", "chain.additional: ${chain.additional}, disabledCheckMetadataHash=${chain.additional?.disabledCheckMetadataHash}")
+
+        val result = canBeEnabled && atLeastMinimumVersion && hasSignedExtension
+        Log.d("MetadataShortenerService", "shouldCalculateMetadataHash result: $result (will use ${if (result) "ENABLED" else "DISABLED"} mode)")
+        return result
     }
 }

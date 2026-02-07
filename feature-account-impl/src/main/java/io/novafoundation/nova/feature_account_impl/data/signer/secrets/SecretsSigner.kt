@@ -2,8 +2,10 @@ package io.novafoundation.nova.feature_account_impl.data.signer.secrets
 
 import io.novafoundation.nova.common.base.errors.SigningCancelledException
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
+import io.novafoundation.nova.common.data.secrets.v2.getAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.getChainAccountKeypair
 import io.novafoundation.nova.common.data.secrets.v2.getMetaAccountKeypair
+import io.novafoundation.nova.common.data.secrets.v2.seed
 import io.novafoundation.nova.common.di.scope.FeatureScope
 import io.novafoundation.nova.common.sequrity.TwoFactorVerificationResult
 import io.novafoundation.nova.common.sequrity.TwoFactorVerificationService
@@ -91,7 +93,9 @@ class SecretsSigner(
         // Use PezkuwiKeyPairSigner for Pezkuwi chains (bizinikiwi context)
         // Use standard KeyPairSigner for other chains (substrate context)
         return if (chain?.isPezkuwiChain == true) {
-            val pezkuwiSigner = PezkuwiKeyPairSigner(keypair)
+            // Get the original seed for Pezkuwi signing
+            val seed = getSeed(accountId) ?: error("No seed found for Pezkuwi signing")
+            val pezkuwiSigner = PezkuwiKeyPairSigner.fromSeed(seed)
             pezkuwiSigner.signInheritedImplication(inheritedImplication, accountId)
         } else {
             val delegate = createDelegate(accountId, keypair)
@@ -107,12 +111,19 @@ class SecretsSigner(
 
         // Use PezkuwiKeyPairSigner for Pezkuwi chains (bizinikiwi context)
         return if (chain?.isPezkuwiChain == true) {
-            val pezkuwiSigner = PezkuwiKeyPairSigner(keypair)
+            // Get the original seed for Pezkuwi signing
+            val seed = getSeed(payload.accountId) ?: error("No seed found for Pezkuwi signing")
+            val pezkuwiSigner = PezkuwiKeyPairSigner.fromSeed(seed)
             pezkuwiSigner.signRaw(payload)
         } else {
             val delegate = createDelegate(payload.accountId, keypair)
             delegate.signRaw(payload)
         }
+    }
+
+    private suspend fun getSeed(accountId: AccountId): ByteArray? {
+        val secrets = secretStoreV2.getAccountSecrets(metaAccount.id, accountId)
+        return secrets.seed()
     }
 
     override suspend fun maxCallsPerTransaction(): Int? {

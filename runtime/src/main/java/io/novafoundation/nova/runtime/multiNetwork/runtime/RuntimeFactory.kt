@@ -6,6 +6,7 @@ import io.novafoundation.nova.common.utils.md5
 import io.novafoundation.nova.common.utils.newLimitedThreadPoolExecutor
 import io.novafoundation.nova.core_db.dao.ChainDao
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.TypesUsage
+import io.novafoundation.nova.runtime.multiNetwork.runtime.types.custom.pezkuwi.PezkuwiPathTypeMapping
 import io.novafoundation.nova.runtime.multiNetwork.runtime.types.custom.vote.SiVoteTypeMapping
 import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
 import io.novasama.substrate_sdk_android.runtime.definitions.TypeDefinitionParser.parseBaseDefinitions
@@ -111,18 +112,15 @@ class RuntimeFactory(
             TypesUsage.NONE -> Triple(typePreset, null, null)
         }
 
-        val typeRegistry = TypeRegistry(types, DynamicTypeResolver(DynamicTypeResolver.DEFAULT_COMPOUND_EXTENSIONS + GenericsExtension))
+        // Add Pezkuwi type aliases for chains that use pezsp_* types
+        val finalTypes = addPezkuwiTypeAliases(types)
 
-        // DEBUG: Check for ExtrinsicSignature
-        val hasExtrinsicSignature = typeRegistry["ExtrinsicSignature"] != null
-        val hasMultiSignature = typeRegistry["MultiSignature"] != null
-        Log.d(
-            "RuntimeFactory",
-            "Chain $chainId - ExtrinsicSig=$hasExtrinsicSignature, MultiSig=$hasMultiSignature, types=$typesUsage"
-        )
+        val typeRegistry = TypeRegistry(finalTypes, DynamicTypeResolver(DynamicTypeResolver.DEFAULT_COMPOUND_EXTENSIONS + GenericsExtension))
 
         // Store diagnostic info for error messages
-        lastDiagnostics = "typesUsage=$typesUsage, ExtrinsicSig=$hasExtrinsicSignature, MultiSig=$hasMultiSignature, typeCount=${types.size}"
+        val hasExtrinsicSignature = typeRegistry["ExtrinsicSignature"] != null
+        val hasAddress = typeRegistry["Address"] != null
+        lastDiagnostics = "typesUsage=$typesUsage, ExtrinsicSig=$hasExtrinsicSignature, Address=$hasAddress, typeCount=${finalTypes.size}"
 
         val runtimeMetadata = VersionedRuntimeBuilder.buildMetadata(metadataReader, typeRegistry)
 
@@ -167,7 +165,13 @@ class RuntimeFactory(
 
         val withoutVersioning = parseBaseDefinitions(ownTypesTree, baseTypes)
 
-        val typePreset = parseNetworkVersioning(ownTypesTree, withoutVersioning, runtimeVersion)
+        // Try to parse versioning, but if it fails (e.g., no versioning field), use base definitions
+        val typePreset = try {
+            parseNetworkVersioning(ownTypesTree, withoutVersioning, runtimeVersion)
+        } catch (e: IllegalArgumentException) {
+            Log.w("RuntimeFactory", "No versioning info in chain types for $chainId, using base definitions")
+            withoutVersioning
+        }
 
         return typePreset to ownTypesRaw.md5()
     }
@@ -188,5 +192,47 @@ class RuntimeFactory(
 
     private fun fromJson(types: String): TypeDefinitionsTree = gson.fromJson(types, TypeDefinitionsTree::class.java)
 
-    private fun allSiTypeMappings() = SiTypeMapping.default() + SiVoteTypeMapping()
+    // NOTE: Don't use PezkuwiExtrinsicTypeMapping here - its aliases create broken TypeReferences.
+    // Instead, addPezkuwiTypeAliases() handles copying actual type instances in the RuntimeFactory.
+    private fun allSiTypeMappings() = SiTypeMapping.default() + PezkuwiPathTypeMapping() + SiVoteTypeMapping()
+
+    /**
+     * For Pezkuwi chains that use pezsp_* type paths, copy the actual type instances
+     * to the standard type names (Address, ExtrinsicSignature, etc.).
+     *
+     * Pezkuwi chains use pezsp_* prefixes instead of sp_* prefixes for their type paths.
+     * This function ensures that code looking for standard type names will find the
+     * correct Pezkuwi types.
+     */
+    private fun addPezkuwiTypeAliases(types: TypePreset): TypePreset {
+        val hasPezspTypes = types.keys.any { it.startsWith("pezsp_") || it.startsWith("pezframe_") || it.startsWith("pezpallet_") }
+        if (!hasPezspTypes) {
+            return types
+        }
+
+        val mutableTypes = types.toMutableMap()
+
+        // Map Pezkuwi type paths to standard type names.
+        // These types are parsed as actual types from metadata (not aliased to built-ins),
+        // and we copy them to standard names so existing code can find them.
+        val pezkuwiTypeAliases = listOf(
+            "pezsp_runtime.multiaddress.MultiAddress" to "Address",
+            "pezsp_runtime.multiaddress.MultiAddress" to "MultiAddress",
+            "pezsp_runtime.MultiSignature" to "ExtrinsicSignature",
+            "pezsp_runtime.MultiSignature" to "MultiSignature",
+            "pezsp_runtime.generic.era.Era" to "Era",
+            // Fee-related types
+            "pezframe_support.dispatch.DispatchInfo" to "DispatchInfo",
+            "pezpallet_transaction_payment.types.RuntimeDispatchInfo" to "RuntimeDispatchInfo",
+            "pezframe_support.dispatch.DispatchClass" to "DispatchClass"
+        )
+
+        for ((pezspPath, standardName) in pezkuwiTypeAliases) {
+            types[pezspPath]?.let { pezspType ->
+                mutableTypes[standardName] = pezspType
+            }
+        }
+
+        return mutableTypes
+    }
 }

@@ -15,14 +15,6 @@ private const val TAG = "CustomTxExtensions"
 
 object CustomTransactionExtensions {
 
-    // PezkuwiChain genesis hashes (mainnet and teyrchains)
-    private val PEZKUWI_GENESIS_HASHES = setOf(
-        "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75", // Pezkuwi Mainnet
-        "00d0e1d0581c3cd5c5768652d52f4520184018b44f56a2ae1e0dc9d65c00c948", // Asset Hub
-        "58269e9c184f721e0309332d90cafc410df1519a5dc27a5fd9b3bf5fd2d129f8", // People Chain
-        "96eb58af1bb7288115b5e4ff1590422533e749293f231974536dc6672417d06f" // Zagros Testnet
-    )
-
     fun applyDefaultValues(builder: ExtrinsicBuilder) {
         defaultValues().forEach(builder::setTransactionExtension)
     }
@@ -40,33 +32,32 @@ object CustomTransactionExtensions {
 
     fun defaultValues(runtime: RuntimeSnapshot): List<TransactionExtension> {
         val extensions = mutableListOf<TransactionExtension>()
-        val isPezkuwi = isPezkuwiChain(runtime)
+        val signedExtIds = runtime.metadata.extrinsic.signedExtensions.map { it.id }
 
-        Log.d(TAG, "isPezkuwiChain: $isPezkuwi")
+        Log.d(TAG, "Metadata signed extensions: $signedExtIds")
 
-        if (isPezkuwi) {
-            // Pezkuwi needs: AuthorizeCall, CheckNonZeroSender, CheckWeight, WeightReclaim
-            // Other extensions (CheckMortality, CheckGenesis, etc.) are set in ExtrinsicBuilderFactory
-            Log.d(TAG, "Adding Pezkuwi extensions: AuthorizeCall, CheckNonZeroSender, CheckWeight, WeightReclaim")
+        // Add extensions based on what the metadata requires
+        if ("AuthorizeCall" in signedExtIds) {
             extensions.add(AuthorizeCall())
+        }
+        if ("CheckNonZeroSender" in signedExtIds) {
             extensions.add(CheckNonZeroSender())
+        }
+        if ("CheckWeight" in signedExtIds) {
             extensions.add(CheckWeight())
+        }
+        if ("WeightReclaim" in signedExtIds || "StorageWeightReclaim" in signedExtIds) {
             extensions.add(WeightReclaim())
-        } else {
-            // Other chains (Asset Hub, etc.) use ChargeAssetTxPayment and CheckAppId
-            Log.d(TAG, "Adding default extensions: ChargeAssetTxPayment, CheckAppId")
+        }
+        if ("ChargeAssetTxPayment" in signedExtIds) {
+            // Default to native fee payment (null assetId)
             extensions.add(ChargeAssetTxPayment())
+        }
+        if ("CheckAppId" in signedExtIds) {
             extensions.add(CheckAppId())
         }
 
+        Log.d(TAG, "Extensions to add: ${extensions.map { it.name }}")
         return extensions
-    }
-
-    private fun isPezkuwiChain(runtime: RuntimeSnapshot): Boolean {
-        val signedExtIds = runtime.metadata.extrinsic.signedExtensions.map { it.id }
-        Log.d(TAG, "Metadata signed extensions: $signedExtIds")
-        val hasAuthorizeCall = signedExtIds.any { it == "AuthorizeCall" }
-        Log.d(TAG, "Has AuthorizeCall: $hasAuthorizeCall")
-        return hasAuthorizeCall
     }
 }

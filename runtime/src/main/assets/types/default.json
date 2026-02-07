@@ -3550,7 +3550,16 @@
       ]
     },
     "ModuleId": "LockIdentifier",
-    "MultiAddress": "GenericMultiAddress",
+    "MultiAddress": {
+      "type": "enum",
+      "type_mapping": [
+        ["Id", "AccountId"],
+        ["Index", "Compact<AccountIndex>"],
+        ["Raw", "Bytes"],
+        ["Address32", "[u8; 32]"],
+        ["Address20", "[u8; 20]"]
+      ]
+    },
     "MultiSigner": {
       "type": "enum",
       "type_mapping": [

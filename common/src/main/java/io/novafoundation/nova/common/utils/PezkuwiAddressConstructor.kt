@@ -48,9 +48,19 @@ object PezkuwiAddressConstructor {
         // Check the actual type structure
         return when (resolvedType) {
             is DictEnum -> {
-                Log.d(TAG, "Type is DictEnum with variants: ${resolvedType.elements.keys}")
-                // MultiAddress type - wrap in Id variant
-                DictEnum.Entry(MULTI_ADDRESS_ID, accountId)
+                // Use the actual variant name from the type
+                // Standard chains use "Id", but Pezkuwi uses numeric variants like "0"
+                val variantNames = resolvedType.elements.values.map { it.name }
+                Log.d(TAG, "Type is DictEnum with variants: $variantNames")
+
+                // Use "Id" if available, otherwise use the first variant (index 0)
+                val idVariantName = if (variantNames.contains(MULTI_ADDRESS_ID)) {
+                    MULTI_ADDRESS_ID
+                } else {
+                    resolvedType.elements[0]?.name ?: MULTI_ADDRESS_ID
+                }
+                Log.d(TAG, "Using variant name: $idVariantName")
+                DictEnum.Entry(idVariantName, accountId)
             }
             is FixedByteArray -> {
                 Log.d(TAG, "Type is FixedByteArray with length: ${resolvedType.length}, returning raw accountId")
@@ -58,9 +68,15 @@ object PezkuwiAddressConstructor {
                 accountId
             }
             null -> {
-                Log.d(TAG, "Resolved type is null, returning raw accountId for Pezkuwi")
-                // For Pezkuwi, if alias doesn't resolve, try raw accountId
-                accountId
+                Log.d(TAG, "Resolved type is null for type: $foundTypeName")
+                // If this is a MultiAddress type that couldn't resolve, use variant "0"
+                if (foundTypeName?.contains("MultiAddress") == true || foundTypeName?.contains("multiaddress") == true) {
+                    Log.d(TAG, "Type appears to be MultiAddress, using variant 0")
+                    DictEnum.Entry("0", accountId)
+                } else {
+                    Log.d(TAG, "Returning raw accountId")
+                    accountId
+                }
             }
             else -> {
                 Log.d(TAG, "Unknown type: ${resolvedType.javaClass.simpleName}, returning raw accountId")

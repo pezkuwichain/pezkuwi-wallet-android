@@ -66,7 +66,14 @@ class RpcCalls(
         val chainId = chain.id
         val runtime = chainRegistry.getRuntime(chainId)
 
+        // Pezkuwi chains have issues with V15 automatic type resolution for RuntimeDispatchInfo
+        // Use pre-V15 method with explicit return type for Pezkuwi chains
+        val isPezkuwiChain = runtime.metadata.extrinsic.signedExtensions.any { it.id == "AuthorizeCall" }
+
         return when {
+            // For Pezkuwi chains, prefer pre-V15 method which uses explicit return type
+            isPezkuwiChain && chain.additional.feeViaRuntimeCall() && runtime.hasFeeDecodeType() -> queryFeeViaRuntimeApiPreV15(chainId, extrinsic)
+
             chain.additional.feeViaRuntimeCall() && runtime.metadata.hasDetectedPaymentApi() -> queryFeeViaRuntimeApiV15(chainId, extrinsic)
 
             chain.additional.feeViaRuntimeCall() && runtime.hasFeeDecodeType() -> queryFeeViaRuntimeApiPreV15(chainId, extrinsic)

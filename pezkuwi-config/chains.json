@@ -53,9 +53,6 @@
         "typeExtras": null
       }
     ],
-    "types": {
-      "overridesCommon": false
-    },
     "additional": {
       "themeColor": "#009639",
       "defaultBlockTimeMillis": 6000,
@@ -91,12 +88,10 @@
         "icon": "https://pezkuwichain.io/tokens/HEZ.png"
       }
     ],
-    "types": {
-      "overridesCommon": false
-    },
     "additional": {
       "themeColor": "#009639",
-      "feeViaRuntimeCall": true
+      "feeViaRuntimeCall": true,
+      "disabledCheckMetadataHash": true
     }
   },
   {
@@ -173,13 +168,11 @@
         }
       }
     ],
-    "types": {
-      "overridesCommon": false
-    },
     "additional": {
       "themeColor": "#009639",
       "defaultBlockTimeMillis": 6000,
-      "feeViaRuntimeCall": true
+      "feeViaRuntimeCall": true,
+      "disabledCheckMetadataHash": true
     }
   },
   {
@@ -224,13 +217,11 @@
         "typeExtras": null
       }
     ],
-    "types": {
-      "overridesCommon": false
-    },
     "additional": {
       "themeColor": "#009639",
       "defaultBlockTimeMillis": 6000,
-      "feeViaRuntimeCall": true
+      "feeViaRuntimeCall": true,
+      "disabledCheckMetadataHash": true
     }
   },
   {

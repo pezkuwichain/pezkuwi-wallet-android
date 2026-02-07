@@ -1,19 +1,44 @@
 package io.novafoundation.nova
 
 import android.content.Context
+import android.util.Log
 import androidx.test.core.app.ApplicationProvider
+import io.novafoundation.nova.common.address.AccountIdKey
 import io.novafoundation.nova.common.di.FeatureUtils
 import io.novafoundation.nova.common.utils.balances
+import io.novafoundation.nova.feature_account_api.data.signer.CallExecutionType
+import io.novafoundation.nova.feature_account_api.data.signer.NovaSigner
+import io.novafoundation.nova.feature_account_api.data.signer.SigningContext
+import io.novafoundation.nova.feature_account_api.data.signer.SigningMode
+import io.novafoundation.nova.feature_account_api.data.signer.SubmissionHierarchy
+import io.novafoundation.nova.feature_account_api.data.signer.setSignerData
+import io.novafoundation.nova.feature_account_api.domain.model.LightMetaAccount
+import io.novafoundation.nova.feature_account_api.domain.model.MetaAccount
+import io.novafoundation.nova.feature_account_impl.domain.account.model.DefaultMetaAccount
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.nativeTransfer
 import io.novafoundation.nova.feature_wallet_api.di.WalletFeatureApi
+import io.novafoundation.nova.runtime.ext.Geneses
 import io.novafoundation.nova.runtime.ext.utilityAsset
+import io.novafoundation.nova.runtime.extrinsic.ExtrinsicBuilderFactory
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novafoundation.nova.runtime.multiNetwork.getRuntime
+import io.novasama.substrate_sdk_android.encrypt.SignatureWrapper
+import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.extrinsic.BatchMode
-import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
-import io.novafoundation.nova.runtime.ext.Geneses
+import io.novasama.substrate_sdk_android.runtime.extrinsic.Nonce
+import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
+import io.novasama.substrate_sdk_android.runtime.extrinsic.signer.SignedRaw
+import io.novasama.substrate_sdk_android.runtime.extrinsic.signer.SignerPayloadRaw
+import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtension.InheritedImplication
+import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtension.extensions.CheckNonce.Companion.setNonce
+import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtension.extensions.verifySignature.GeneralTransactionSigner
+import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtension.extensions.verifySignature.VerifySignature.Companion.setVerifySignature
+import io.novasama.substrate_sdk_android.runtime.metadata.callOrNull
+import io.novasama.substrate_sdk_android.runtime.metadata.moduleOrNull
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Test
 import java.math.BigInteger
 
@@ -34,7 +59,7 @@ class PezkuwiIntegrationTest : BaseIntegrationTest() {
         WalletFeatureApi::class.java
     )
 
-    private val extrinsicBuilderFactory = runtimeApi.extrinsicBuilderFactory()
+    private val extrinsicBuilderFactory = runtimeApi.provideExtrinsicBuilderFactory()
     private val rpcCalls = runtimeApi.rpcCalls()
 
     /**
@@ -59,7 +84,6 @@ class PezkuwiIntegrationTest : BaseIntegrationTest() {
         assertNotNull("Address type should exist", address)
 
         println("Pezkuwi Mainnet: All required types present")
-        println("TypeRegistry size: ${runtime.typeRegistry.keys.size}")
     }
 
     /**
@@ -106,20 +130,13 @@ class PezkuwiIntegrationTest : BaseIntegrationTest() {
         val runtime = chainRegistry.getRuntime(chain.id)
 
         // Check if balances module exists
-        val balancesModule = runtime.metadata.modules.find {
-            it.name.equals("Balances", ignoreCase = true)
-        }
+        val balancesModule = runtime.metadata.moduleOrNull("Balances")
         assertNotNull("Balances module should exist", balancesModule)
 
         // Check transfer call exists
-        val hasTransferKeepAlive = balancesModule?.calls?.any {
-            it.key.equals("transfer_keep_alive", ignoreCase = true)
-        } ?: false
-
-        val hasTransferAllowDeath = balancesModule?.calls?.any {
-            it.key.equals("transfer_allow_death", ignoreCase = true) ||
-            it.key.equals("transfer", ignoreCase = true)
-        } ?: false
+        val hasTransferKeepAlive = balancesModule?.callOrNull("transfer_keep_alive") != null
+        val hasTransferAllowDeath = balancesModule?.callOrNull("transfer_allow_death") != null ||
+            balancesModule?.callOrNull("transfer") != null
 
         assertTrue("Transfer call should exist", hasTransferKeepAlive || hasTransferAllowDeath)
 
@@ -162,8 +179,146 @@ class PezkuwiIntegrationTest : BaseIntegrationTest() {
         println("Pezkuwi utility asset: ${utilityAsset.symbol}, precision: ${utilityAsset.precision}")
     }
 
+    /**
+     * Test 7: Build and sign a transfer extrinsic (THIS IS THE CRITICAL TEST)
+     * This test will catch "TypeReference is null" errors during signing
+     */
+    @Test
+    fun testPezkuwiBuildSignedTransferExtrinsic() = runTest {
+        val chain = chainRegistry.getChain(Chain.Geneses.PEZKUWI)
+        val signer = TestSigner()
+
+        val builder = extrinsicBuilderFactory.create(
+            chain = chain,
+            options = ExtrinsicBuilderFactory.Options(BatchMode.BATCH)
+        )
+
+        // Add transfer call
+        val recipientAccountId = ByteArray(32) { 2 }
+        builder.nativeTransfer(accountId = recipientAccountId, amount = BigInteger.ONE)
+
+        // Set signer data (this is where TypeReference errors can occur)
+        try {
+            with(builder) {
+                signer.setSignerData(TestSigningContext(chain), SigningMode.SUBMISSION)
+            }
+            Log.d("PezkuwiTest", "Signer data set successfully")
+        } catch (e: Exception) {
+            Log.e("PezkuwiTest", "Failed to set signer data", e)
+            fail("Failed to set signer data: ${e.message}")
+        }
+
+        // Build the extrinsic (this is where TypeReference errors can also occur)
+        try {
+            val extrinsic = builder.buildExtrinsic()
+            assertNotNull("Built extrinsic should not be null", extrinsic)
+            Log.d("PezkuwiTest", "Extrinsic built successfully: ${extrinsic.extrinsicHex}")
+            println("Pezkuwi: Transfer extrinsic built and signed successfully!")
+        } catch (e: Exception) {
+            Log.e("PezkuwiTest", "Failed to build extrinsic", e)
+            fail("Failed to build extrinsic: ${e.message}\nCause: ${e.cause?.message}")
+        }
+    }
+
+    /**
+     * Test 8: Build extrinsic for fee calculation (uses fake signature)
+     */
+    @Test
+    fun testPezkuwiBuildFeeExtrinsic() = runTest {
+        val chain = chainRegistry.getChain(Chain.Geneses.PEZKUWI)
+        val signer = TestSigner()
+
+        val builder = extrinsicBuilderFactory.create(
+            chain = chain,
+            options = ExtrinsicBuilderFactory.Options(BatchMode.BATCH)
+        )
+
+        val recipientAccountId = ByteArray(32) { 2 }
+        builder.nativeTransfer(accountId = recipientAccountId, amount = BigInteger.ONE)
+
+        // Set signer data for FEE mode (uses fake signature)
+        try {
+            with(builder) {
+                signer.setSignerData(TestSigningContext(chain), SigningMode.FEE)
+            }
+            val extrinsic = builder.buildExtrinsic()
+            assertNotNull("Fee extrinsic should not be null", extrinsic)
+            println("Pezkuwi: Fee extrinsic built successfully!")
+        } catch (e: Exception) {
+            Log.e("PezkuwiTest", "Failed to build fee extrinsic", e)
+            fail("Failed to build fee extrinsic: ${e.message}")
+        }
+    }
+
     // Helper extension
     private suspend fun ChainRegistry.pezkuwiMainnet(): Chain {
         return getChain(Chain.Geneses.PEZKUWI)
+    }
+
+    // Test signer for building extrinsics without real keys
+    private inner class TestSigner : NovaSigner, GeneralTransactionSigner {
+
+        val accountId = ByteArray(32) { 1 }
+
+        override suspend fun callExecutionType(): CallExecutionType {
+            return CallExecutionType.IMMEDIATE
+        }
+
+        override val metaAccount: MetaAccount = DefaultMetaAccount(
+            id = 0,
+            globallyUniqueId = "0",
+            substrateAccountId = accountId,
+            substrateCryptoType = null,
+            substratePublicKey = null,
+            ethereumAddress = null,
+            ethereumPublicKey = null,
+            isSelected = true,
+            name = "test",
+            type = LightMetaAccount.Type.SECRETS,
+            chainAccounts = emptyMap(),
+            status = LightMetaAccount.Status.ACTIVE,
+            parentMetaId = null
+        )
+
+        override suspend fun getSigningHierarchy(): SubmissionHierarchy {
+            return SubmissionHierarchy(metaAccount, CallExecutionType.IMMEDIATE)
+        }
+
+        override suspend fun signRaw(payload: SignerPayloadRaw): SignedRaw {
+            error("Not implemented")
+        }
+
+        context(ExtrinsicBuilder)
+        override suspend fun setSignerDataForSubmission(context: SigningContext) {
+            setNonce(BigInteger.ZERO)
+            setVerifySignature(this@TestSigner, accountId)
+        }
+
+        context(ExtrinsicBuilder)
+        override suspend fun setSignerDataForFee(context: SigningContext) {
+            setSignerDataForSubmission(context)
+        }
+
+        override suspend fun submissionSignerAccountId(chain: Chain): AccountId {
+            return accountId
+        }
+
+        override suspend fun maxCallsPerTransaction(): Int? {
+            return null
+        }
+
+        override suspend fun signInheritedImplication(
+            inheritedImplication: InheritedImplication,
+            accountId: AccountId
+        ): SignatureWrapper {
+            // Return a fake Sr25519 signature for testing
+            return SignatureWrapper.Sr25519(ByteArray(64))
+        }
+    }
+
+    private class TestSigningContext(override val chain: Chain) : SigningContext {
+        override suspend fun getNonce(accountId: AccountIdKey): Nonce {
+            return Nonce.ZERO
+        }
     }
 }
