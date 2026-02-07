@@ -1,0 +1,1 @@
+/home/mamostehp/pezWallet/pezkuwi-wallet-android/bindings/sr25519-bizinikiwi/rust/target/x86_64-linux-android/release/libsr25519_bizinikiwi_java.so: /home/mamostehp/pezWallet/pezkuwi-wallet-android/bindings/sr25519-bizinikiwi/rust/src/lib.rs

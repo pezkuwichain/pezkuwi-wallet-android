@@ -645,3 +645,16 @@ fun SignatureVerifier.verifyMultiChain(
         verify(signature, Signer.MessageHashing.SUBSTRATE, message, publicKey)
     }
 }
+
+/**
+ * Check if this chain is part of the Pezkuwi ecosystem.
+ * Pezkuwi chains use "bizinikiwi" signing context instead of "substrate".
+ */
+val Chain.isPezkuwiChain: Boolean
+    get() = id in PEZKUWI_CHAIN_IDS
+
+private val PEZKUWI_CHAIN_IDS = setOf(
+    ChainGeneses.PEZKUWI,
+    ChainGeneses.PEZKUWI_ASSET_HUB,
+    ChainGeneses.PEZKUWI_PEOPLE
+)

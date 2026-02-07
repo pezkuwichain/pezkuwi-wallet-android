@@ -1,0 +1,10 @@
+/home/mamostehp/pezWallet/pezkuwi-wallet-android/bindings/sr25519-bizinikiwi/rust/target/i686-linux-android/release/deps/merlin-73912840624a2575.d: /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/lib.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/constants.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/strobe.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/transcript.rs
+
+/home/mamostehp/pezWallet/pezkuwi-wallet-android/bindings/sr25519-bizinikiwi/rust/target/i686-linux-android/release/deps/libmerlin-73912840624a2575.rlib: /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/lib.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/constants.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/strobe.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/transcript.rs
+
+/home/mamostehp/pezWallet/pezkuwi-wallet-android/bindings/sr25519-bizinikiwi/rust/target/i686-linux-android/release/deps/libmerlin-73912840624a2575.rmeta: /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/lib.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/constants.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/strobe.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/transcript.rs
+
+/home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/lib.rs:
+/home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/constants.rs:
+/home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/strobe.rs:
+/home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/transcript.rs:

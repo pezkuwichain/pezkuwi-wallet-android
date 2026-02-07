@@ -259,6 +259,7 @@ dependencies {
     implementation project(':feature-gift-impl')
 
     implementation project(':bindings:metadata_shortener')
+    implementation project(':bindings:sr25519-bizinikiwi')
 
     implementation project(":feature-xcm:impl")
 

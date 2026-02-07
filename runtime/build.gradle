@@ -45,6 +45,7 @@ dependencies {
     implementation project(":core-api")
 
     implementation project(":bindings:metadata_shortener")
+    implementation project(":bindings:sr25519-bizinikiwi")
 
     implementation gsonDep
     implementation substrateSdkDep

@@ -1,0 +1,10 @@
+/home/mamostehp/pezWallet/pezkuwi-wallet-android/bindings/sr25519-bizinikiwi/rust/target/armv7-linux-androideabi/release/deps/merlin-3d2ca2593e6f5cff.d: /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/lib.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/constants.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/strobe.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/transcript.rs
+
+/home/mamostehp/pezWallet/pezkuwi-wallet-android/bindings/sr25519-bizinikiwi/rust/target/armv7-linux-androideabi/release/deps/libmerlin-3d2ca2593e6f5cff.rlib: /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/lib.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/constants.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/strobe.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/transcript.rs
+
+/home/mamostehp/pezWallet/pezkuwi-wallet-android/bindings/sr25519-bizinikiwi/rust/target/armv7-linux-androideabi/release/deps/libmerlin-3d2ca2593e6f5cff.rmeta: /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/lib.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/constants.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/strobe.rs /home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/transcript.rs
+
+/home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/lib.rs:
+/home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/constants.rs:
+/home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/strobe.rs:
+/home/mamostehp/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/merlin-3.0.0/src/transcript.rs:
