@@ -1,5 +1,6 @@
 package io.novafoundation.nova.feature_wallet_impl.data.network.crosschain.common
 
+import android.util.Log
 import io.novafoundation.nova.common.di.scope.FeatureScope
 import io.novafoundation.nova.common.utils.composeCall
 import io.novafoundation.nova.common.utils.metadata
@@ -53,6 +54,19 @@ class TransferAssetUsingTypeTransactor @Inject constructor(
         val multiAssetIdVersion = forceXcmVersion ?: xcmVersionDetector.lowestPresentMultiAssetIdVersion(transfer.originChain.id).orDefault()
 
         val transferTypeParam = configuration.transferTypeParam(multiAssetsVersion)
+
+        // Debug logging for XCM transfer
+        val destLocation = configuration.destinationChainLocationOnOrigin()
+        Log.d("XCM_TRANSFER", "=== XCM TRANSFER DEBUG ===")
+        Log.d("XCM_TRANSFER", "Origin chain: ${configuration.originChain.chain.name} (${configuration.originChain.chain.id})")
+        Log.d("XCM_TRANSFER", "Origin parachainId: ${configuration.originChain.parachainId}")
+        Log.d("XCM_TRANSFER", "Destination chain: ${configuration.destinationChain.chain.name} (${configuration.destinationChain.chain.id})")
+        Log.d("XCM_TRANSFER", "Destination parachainId: ${configuration.destinationChain.parachainId}")
+        Log.d("XCM_TRANSFER", "Destination location (relative): parents=${destLocation.parents}, interior=${destLocation.interior}")
+        Log.d("XCM_TRANSFER", "Destination junctions: ${destLocation.interior}")
+        Log.d("XCM_TRANSFER", "Transfer type: ${configuration.transferType}")
+        Log.d("XCM_TRANSFER", "XCM Version: $multiLocationVersion")
+        Log.d("XCM_TRANSFER", "==========================")
 
         return chainRegistry.withRuntime(configuration.originChainId) {
             composeCall(

@@ -1,5 +1,6 @@
 package io.novafoundation.nova.feature_xcm_api.multiLocation
 
+import android.util.Log
 import io.novafoundation.nova.common.address.AccountIdKey
 import io.novafoundation.nova.common.address.intoKey
 import io.novafoundation.nova.common.data.network.runtime.binding.bindAccountId
@@ -69,7 +70,8 @@ private fun bindJunction(instance: Any?): Junction {
     return when (asDictEnum.name) {
         "GeneralKey" -> Junction.GeneralKey(bindGeneralKey(asDictEnum.value))
         "PalletInstance" -> Junction.PalletInstance(bindNumber(asDictEnum.value))
-        "Parachain" -> Junction.ParachainId(bindNumber(asDictEnum.value))
+        // Accept both "Parachain" (Polkadot ecosystem) and "Teyrchain" (Pezkuwi ecosystem)
+        "Parachain", "Teyrchain" -> Junction.ParachainId(bindNumber(asDictEnum.value), asDictEnum.name)
         "GeneralIndex" -> Junction.GeneralIndex(bindNumber(asDictEnum.value))
         "GlobalConsensus" -> bindGlobalConsensusJunction(asDictEnum.value)
         "AccountKey20" -> Junction.AccountKey20(bindAccountIdJunction(asDictEnum.value, accountIdKey = "key"))
@@ -146,7 +148,10 @@ private fun MultiLocation.Interior.toEncodableInstance(xcmVersion: XcmVersion) =
 private fun Junction.toEncodableInstance(xcmVersion: XcmVersion) = when (this) {
     is Junction.GeneralKey -> DictEnum.Entry("GeneralKey", encodableGeneralKey(xcmVersion, key))
     is Junction.PalletInstance -> DictEnum.Entry("PalletInstance", index)
-    is Junction.ParachainId -> DictEnum.Entry("Parachain", id)
+    is Junction.ParachainId -> {
+        Log.d("XCM_ENCODE", "Encoding ParachainId: id=$id, junctionTypeName=$junctionTypeName")
+        DictEnum.Entry(junctionTypeName, id)
+    }
     is Junction.AccountKey20 -> DictEnum.Entry("AccountKey20", accountId.toJunctionAccountIdInstance(accountIdKey = "key", xcmVersion))
     is Junction.AccountId32 -> DictEnum.Entry("AccountId32", accountId.toJunctionAccountIdInstance(accountIdKey = "id", xcmVersion))
     is Junction.GeneralIndex -> DictEnum.Entry("GeneralIndex", index)

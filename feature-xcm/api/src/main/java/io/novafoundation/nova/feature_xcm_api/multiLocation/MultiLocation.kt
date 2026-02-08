@@ -37,9 +37,17 @@ abstract class MultiLocation(
 
     sealed class Junction {
 
-        data class ParachainId(val id: ParaId) : Junction() {
+        data class ParachainId(
+            val id: ParaId,
+            val junctionTypeName: String = JUNCTION_TYPE_PARACHAIN
+        ) : Junction() {
 
-            constructor(id: Int) : this(id.toBigInteger())
+            constructor(id: Int, junctionTypeName: String = JUNCTION_TYPE_PARACHAIN) : this(id.toBigInteger(), junctionTypeName)
+
+            companion object {
+                const val JUNCTION_TYPE_PARACHAIN = "Parachain"
+                const val JUNCTION_TYPE_TEYRCHAIN = "Teyrchain"
+            }
         }
 
         data class GeneralKey(val key: HexString) : Junction()

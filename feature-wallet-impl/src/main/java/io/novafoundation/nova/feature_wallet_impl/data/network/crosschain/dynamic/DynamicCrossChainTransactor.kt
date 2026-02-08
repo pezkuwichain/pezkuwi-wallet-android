@@ -1,5 +1,6 @@
 package io.novafoundation.nova.feature_wallet_impl.data.network.crosschain.dynamic
 
+import android.util.Log
 import io.novafoundation.nova.common.address.AccountIdKey
 import io.novafoundation.nova.common.data.network.runtime.binding.WeightV2
 import io.novafoundation.nova.common.di.scope.FeatureScope
@@ -129,6 +130,16 @@ class DynamicCrossChainTransactor @Inject constructor(
     ) {
         val totalTransferAmount = transfer.amountPlanks + crossChainFee
         val assetAbsoluteMultiLocation = configuration.transferType.assetAbsoluteLocation
+
+        // Debug logging for Dynamic XCM transfer
+        Log.d("XCM_DYNAMIC", "=== DYNAMIC XCM TRANSFER DEBUG ===")
+        Log.d("XCM_DYNAMIC", "Origin chain: ${configuration.originChain.chain.name} (${configuration.originChain.chain.id})")
+        Log.d("XCM_DYNAMIC", "Origin parachainId: ${configuration.originChain.parachainId}")
+        Log.d("XCM_DYNAMIC", "Destination chain: ${configuration.destinationChain.chain.name} (${configuration.destinationChain.chain.id})")
+        Log.d("XCM_DYNAMIC", "Destination parachainId: ${configuration.destinationChain.parachainId}")
+        Log.d("XCM_DYNAMIC", "Destination location: ${configuration.destinationChainLocation}")
+        Log.d("XCM_DYNAMIC", "Transfer type: ${configuration.transferType}")
+        Log.d("XCM_DYNAMIC", "================================")
 
         when (val transferType = configuration.transferType) {
             is XcmTransferType.Teleport -> buildTeleportProgram(

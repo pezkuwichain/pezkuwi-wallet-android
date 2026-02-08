@@ -41,6 +41,9 @@ class AbsoluteMultiLocation(
     }
 }
 
-fun AbsoluteMultiLocation.Companion.chainLocation(parachainId: ParaId?): AbsoluteMultiLocation {
-    return listOfNotNull(parachainId?.let(MultiLocation.Junction::ParachainId)).asLocation()
+fun AbsoluteMultiLocation.Companion.chainLocation(
+    parachainId: ParaId?,
+    junctionTypeName: String = MultiLocation.Junction.ParachainId.JUNCTION_TYPE_PARACHAIN
+): AbsoluteMultiLocation {
+    return listOfNotNull(parachainId?.let { MultiLocation.Junction.ParachainId(it, junctionTypeName) }).asLocation()
 }

@@ -2,10 +2,12 @@ package io.novafoundation.nova.runtime.repository
 
 import io.novafoundation.nova.common.data.network.runtime.binding.ParaId
 import io.novafoundation.nova.common.data.network.runtime.binding.bindNumber
-import io.novafoundation.nova.common.utils.parachainInfoOrNull
+import io.novafoundation.nova.common.utils.Modules
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
 import io.novafoundation.nova.runtime.storage.source.StorageDataSource
-import io.novasama.substrate_sdk_android.runtime.metadata.storage
+import io.novasama.substrate_sdk_android.runtime.metadata.module.Module
+import io.novasama.substrate_sdk_android.runtime.metadata.moduleOrNull
+import io.novasama.substrate_sdk_android.runtime.metadata.storageOrNull
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -26,7 +28,13 @@ internal class RealParachainInfoRepository(
             paraIdCache.getValue(chainId)
         } else {
             remoteStorageSource.query(chainId) {
-                runtime.metadata.parachainInfoOrNull()?.storage("ParachainId")?.query(binding = ::bindNumber)
+                // Try Polkadot-style first (ParachainInfo.ParachainId)
+                // Then try Pezkuwi-style (TeyrchainInfo.TeyrchainId)
+                val polkadotModule = runtime.metadata.moduleOrNull(Modules.PARACHAIN_INFO)
+                val pezkuwiModule = runtime.metadata.moduleOrNull(Modules.TEYRCHAIN_INFO)
+
+                polkadotModule?.storageOrNull("ParachainId")?.query(binding = ::bindNumber)
+                    ?: pezkuwiModule?.storageOrNull("TeyrchainId")?.query(binding = ::bindNumber)
             }
                 .also { paraIdCache[chainId] = it }
         }
