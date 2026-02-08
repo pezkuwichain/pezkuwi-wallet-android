@@ -33,8 +33,13 @@ class DynamicCrossChainOriginAssetRemote(
 )
 
 class DynamicXcmTransferRemote(
-    val chainId: ChainId,
-    val assetId: Int,
+    val destination: XcmTransferDestinationRemote,
+    val type: String?,
     val hasDeliveryFee: Boolean?,
     val supportsXcmExecute: Boolean?,
+)
+
+class XcmTransferDestinationRemote(
+    val chainId: ChainId,
+    val assetId: Int,
 )

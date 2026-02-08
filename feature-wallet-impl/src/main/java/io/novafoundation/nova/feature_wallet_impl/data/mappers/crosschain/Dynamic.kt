@@ -63,7 +63,10 @@ private fun constructTransfersForChain(configRemote: DynamicCrossChainOriginChai
             assetId = assetConfig.assetId,
             destinations = assetConfig.xcmTransfers.map { transfer ->
                 TransferDestination(
-                    fullChainAssetId = FullChainAssetId(transfer.chainId, transfer.assetId),
+                    fullChainAssetId = FullChainAssetId(
+                        transfer.destination.chainId,
+                        transfer.destination.assetId
+                    ),
                     hasDeliveryFee = transfer.hasDeliveryFee ?: false,
                     supportsXcmExecute = transfer.supportsXcmExecute ?: false,
                 )
