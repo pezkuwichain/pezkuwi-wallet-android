@@ -299,9 +299,6 @@
     <string name="account_migration_accepted_url" translatable="false">%s://polkadot/migration-accepted?key=%s</string>
     <string name="account_ledger_import_start_step_3_highlighted">access Bluetooth</string>
 
-    <string name="branch_io_link_host" translatable="false">pezkuwi-wallet.app.link</string>
-    <string name="branch_io_link_host_alternate" translatable="false">pezkuwi-wallet-alternate.app.link</string>
-
     <string name="ledger_verify_addresses_message_both_buttons">Press both buttons on your %s to approve the addresses</string>
     <string name="ledger_verify_addresses_message_confirm_button">Press confirm button on your %s to approve the addresses</string>
 
@@ -1438,6 +1435,7 @@
     <string name="staking_dashboard_more_options">More staking options</string>
     <string name="staking_dashboard_no_stake_header">Stake and earn rewards</string>
     <string name="staking_dashboard_browser_stake_header">Staking via Pezkuwi DApp browser</string>
+    <string name="staking_dashboard_syncing">Loading staking info…</string>
 
     <string name="common_waiting">Waiting</string>
     <string name="common_per_year">/ year</string>
