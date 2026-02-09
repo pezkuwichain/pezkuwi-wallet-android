@@ -56,6 +56,7 @@ import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.pools.
 import io.novafoundation.nova.feature_staking_impl.presentation.nominationPools.common.PoolDisplayFormatter
 import io.novafoundation.nova.feature_staking_impl.presentation.nominationPools.common.RealPoolDisplayFormatter
 import io.novafoundation.nova.runtime.call.MultiChainRuntimeCallsApi
+import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.di.LOCAL_STORAGE_SOURCE
 import io.novafoundation.nova.runtime.di.REMOTE_STORAGE_SOURCE
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
@@ -151,12 +152,14 @@ class NominationPoolModule {
         poolAccountDerivation: PoolAccountDerivation,
         relaychainStakingInteractor: StakingInteractor,
         nominationPoolMemberUseCase: NominationPoolMemberUseCase,
+        chainRegistry: ChainRegistry,
     ): NominationPoolsNetworkInfoInteractor = RealNominationPoolsNetworkInfoInteractor(
         relaychainStakingSharedComputation = relaychainStakingSharedComputation,
         nominationPoolGlobalsRepository = nominationPoolGlobalsRepository,
         poolAccountDerivation = poolAccountDerivation,
         relaychainStakingInteractor = relaychainStakingInteractor,
-        nominationPoolMemberUseCase = nominationPoolMemberUseCase
+        nominationPoolMemberUseCase = nominationPoolMemberUseCase,
+        chainRegistry = chainRegistry
     )
 
     @Provides

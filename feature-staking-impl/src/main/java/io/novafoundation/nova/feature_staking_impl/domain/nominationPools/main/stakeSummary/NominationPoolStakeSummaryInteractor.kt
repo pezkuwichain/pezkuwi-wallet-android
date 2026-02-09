@@ -9,8 +9,10 @@ import io.novafoundation.nova.feature_staking_api.domain.model.EraIndex
 import io.novafoundation.nova.feature_staking_api.domain.model.Exposure
 import io.novafoundation.nova.feature_staking_api.domain.model.Nominations
 import io.novafoundation.nova.feature_staking_impl.data.StakingOption
+import io.novafoundation.nova.feature_staking_impl.data.stakingType
 import io.novafoundation.nova.feature_staking_impl.data.nominationPools.network.blockhain.models.PoolMember
 import io.novafoundation.nova.feature_staking_impl.domain.common.StakingSharedComputation
+import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.stakingBackingChainId
 import io.novafoundation.nova.feature_staking_impl.domain.common.isWaiting
 import io.novafoundation.nova.feature_staking_impl.domain.model.StakeSummary
 import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.common.NominationPoolSharedComputation
@@ -48,12 +50,14 @@ class RealNominationPoolStakeSummaryInteractor(
         sharedComputationScope: CoroutineScope,
     ): Flow<StakeSummary<PoolMemberStatus>> = flowOfAll {
         val chainId = stakingOption.assetWithChain.chain.id
+        // For nomination pools on parachains (like Asset Hub), get exposures from parent relay chain
+        val stakingBackingChainId = stakingOption.assetWithChain.chain.stakingBackingChainId(stakingOption.stakingType)
         val poolStash = poolAccountDerivation.bondedAccountOf(poolMember.poolId, chainId)
 
         combineTransform(
             nominationPoolSharedComputation.participatingBondedPoolStateFlow(poolStash, poolMember.poolId, chainId, sharedComputationScope),
             nominationPoolSharedComputation.participatingPoolNominationsFlow(poolStash, poolMember.poolId, chainId, sharedComputationScope),
-            stakingSharedComputation.electedExposuresWithActiveEraFlow(chainId, sharedComputationScope)
+            stakingSharedComputation.electedExposuresWithActiveEraFlow(stakingBackingChainId, sharedComputationScope)
         ) { bondedPoolState, poolNominations, (eraStakers, activeEra) ->
             val activeStaked = bondedPoolState.amountOf(poolMember.points)
 
