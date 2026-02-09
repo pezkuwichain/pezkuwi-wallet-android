@@ -13,9 +13,11 @@ import io.novafoundation.nova.feature_account_api.data.model.AccountIdMap
 import io.novafoundation.nova.feature_staking_api.domain.model.Exposure
 import io.novafoundation.nova.feature_staking_impl.data.StakingOption
 import io.novafoundation.nova.feature_staking_impl.data.chain
+import io.novafoundation.nova.feature_staking_impl.data.stakingType
 import io.novafoundation.nova.feature_staking_api.domain.nominationPool.model.PoolId
 import io.novafoundation.nova.feature_staking_impl.data.unwrapNominationPools
 import io.novafoundation.nova.feature_staking_impl.domain.common.StakingSharedComputation
+import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.stakingBackingChainId
 import io.novafoundation.nova.feature_staking_impl.domain.common.electedExposuresInActiveEra
 import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.common.NominationPoolSharedComputation
 import io.novafoundation.nova.feature_staking_impl.domain.rewards.RewardCalculator
@@ -28,6 +30,8 @@ class NominationPoolRewardCalculatorFactory(
 
     suspend fun create(stakingOption: StakingOption, sharedComputationScope: CoroutineScope): NominationPoolRewardCalculator {
         val chainId = stakingOption.chain.id
+        // For nomination pools on parachains (like Asset Hub), get exposures from parent relay chain
+        val stakingBackingChainId = stakingOption.chain.stakingBackingChainId(stakingOption.stakingType)
 
         val delegateOption = stakingOption.unwrapNominationPools()
 
@@ -38,7 +42,7 @@ class NominationPoolRewardCalculatorFactory(
 
         return RealNominationPoolRewardCalculator(
             directStakingDelegate = delegate,
-            exposures = sharedStakingSharedComputation.electedExposuresInActiveEra(stakingOption.assetWithChain.chain.id, sharedComputationScope),
+            exposures = sharedStakingSharedComputation.electedExposuresInActiveEra(stakingBackingChainId, sharedComputationScope),
             commissions = poolCommissions,
             poolStashesById = allPoolAccounts
         )

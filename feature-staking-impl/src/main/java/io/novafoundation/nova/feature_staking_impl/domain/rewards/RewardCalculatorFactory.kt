@@ -13,6 +13,7 @@ import io.novafoundation.nova.feature_staking_impl.data.repository.VaraRepositor
 import io.novafoundation.nova.feature_staking_impl.data.stakingType
 import io.novafoundation.nova.feature_staking_impl.data.unwrapNominationPools
 import io.novafoundation.nova.feature_staking_impl.domain.common.StakingSharedComputation
+import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.stakingBackingChainId
 import io.novafoundation.nova.feature_staking_impl.domain.common.electedExposuresInActiveEra
 import io.novafoundation.nova.feature_staking_impl.domain.common.eraTimeCalculator
 import io.novafoundation.nova.feature_staking_impl.domain.error.accountIdNotFound
@@ -64,10 +65,12 @@ class RewardCalculatorFactory(
     }
 
     suspend fun create(stakingOption: StakingOption, scope: CoroutineScope): RewardCalculator = withContext(Dispatchers.Default) {
-        val chainId = stakingOption.assetWithChain.chain.id
+        val chain = stakingOption.assetWithChain.chain
+        // For nomination pools on parachains (like Asset Hub), get exposures from parent relay chain
+        val stakingBackingChainId = chain.stakingBackingChainId(stakingOption.stakingType)
 
-        val exposures = shareStakingSharedComputation.get().electedExposuresInActiveEra(chainId, scope)
-        val validatorsPrefs = stakingRepository.getValidatorPrefs(chainId, exposures.keys)
+        val exposures = shareStakingSharedComputation.get().electedExposuresInActiveEra(stakingBackingChainId, scope)
+        val validatorsPrefs = stakingRepository.getValidatorPrefs(stakingBackingChainId, exposures.keys)
 
         create(stakingOption, exposures, validatorsPrefs, scope)
     }
