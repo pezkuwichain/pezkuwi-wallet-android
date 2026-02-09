@@ -135,6 +135,12 @@ private const val SHARED_SUBSCRIPTIONS = "RealSwapService.SharedSubscriptions"
 
 private val ADDITIONAL_ESTIMATE_BUFFER = 3.seconds
 
+private val PEZKUWI_CHAIN_IDS = setOf(
+    Chain.Geneses.PEZKUWI,
+    Chain.Geneses.PEZKUWI_ASSET_HUB,
+    Chain.Geneses.PEZKUWI_PEOPLE
+)
+
 internal class RealSwapService(
     private val assetConversionFactory: AssetConversionExchangeFactory,
     private val hydraDxExchangeFactory: HydraDxExchangeFactory,
@@ -155,19 +161,23 @@ internal class RealSwapService(
     override suspend fun warmUpCommonChains(computationScope: CoroutineScope): Result<Unit> {
         return runCatching {
             withContext(Dispatchers.Default) {
-                warmUpChain(Chain.Geneses.HYDRA_DX, computationScope)
-                warmUpChain(Chain.Geneses.POLKADOT_ASSET_HUB, computationScope)
+                // Warm up each chain independently - failures shouldn't affect other chains
+                warmUpChainSafely(Chain.Geneses.HYDRA_DX, computationScope)
+                warmUpChainSafely(Chain.Geneses.POLKADOT_ASSET_HUB, computationScope)
+                warmUpChainSafely(Chain.Geneses.PEZKUWI_ASSET_HUB, computationScope)
             }
         }
     }
 
-    private suspend fun warmUpChain(chainId: ChainId, computationScope: CoroutineScope) {
-        nodeVisitFilter(computationScope).warmUpChain(chainId)
+    private suspend fun warmUpChainSafely(chainId: ChainId, computationScope: CoroutineScope) {
+        try {
+            nodeVisitFilter(computationScope).warmUpChain(chainId)
+        } catch (e: Exception) {
+            Log.w("SwapService", "Failed to warm up chain $chainId: ${e.message}")
+        }
     }
 
     override suspend fun sync(coroutineScope: CoroutineScope) {
-        Log.d("Swaps", "Syncing swap service")
-
         exchangeRegistry(coroutineScope)
             .allExchanges()
             .forEachAsync { it.sync() }
@@ -250,7 +260,7 @@ internal class RealSwapService(
                     val actualSwapLimit = operation.estimatedSwapLimit.replaceAmountIn(newAmountIn, shouldReplaceBuyWithSell)
                     val segmentSubmissionArgs = AtomicSwapOperationSubmissionArgs(actualSwapLimit)
 
-                    Log.d("SwapSubmission", "$displayData with $actualSwapLimit")
+                    if (debug) Log.d("SwapSubmission", "$displayData with $actualSwapLimit")
 
                     operation.execute(segmentSubmissionArgs).onFailure {
                         Log.e("SwapSubmission", "Swap failed on stage '$displayData'", it)
@@ -621,7 +631,7 @@ internal class RealSwapService(
 
         override suspend fun roughlyEstimateFee(path: Path<QuotedEdge<SwapGraphEdge>>): PathRoughFeeEstimation {
             // USDT is used to determine usd to selected currency rate without making a separate request to price api
-            val usdtOnAssetHub = chainRegistry.getUSDTOnAssetHub() ?: return PathRoughFeeEstimation.zero()
+            val usdtOnAssetHub = chainRegistry.getUSDTOnAssetHub(path) ?: return PathRoughFeeEstimation.zero()
 
             val operationPrototypes = path.constructAtomicOperationPrototypes()
 
@@ -639,9 +649,26 @@ internal class RealSwapService(
             )
         }
 
-        private suspend fun ChainRegistry.getUSDTOnAssetHub(): Chain.Asset? {
-            val assetHub = getChain(Chain.Geneses.POLKADOT_ASSET_HUB)
-            return assetHub.assets.find { it.symbol.value == "USDT" }
+        private suspend fun ChainRegistry.getUSDTOnAssetHub(path: Path<QuotedEdge<SwapGraphEdge>>): Chain.Asset? {
+            // Determine which ecosystem the swap is in based on the path
+            val involvesPezkuwi = path.any { edge ->
+                edge.edge.from.chainId in PEZKUWI_CHAIN_IDS || edge.edge.to.chainId in PEZKUWI_CHAIN_IDS
+            }
+
+            val assetHubGenesis = if (involvesPezkuwi) {
+                Chain.Geneses.PEZKUWI_ASSET_HUB
+            } else {
+                Chain.Geneses.POLKADOT_ASSET_HUB
+            }
+
+            return try {
+                val assetHub = getChain(assetHubGenesis)
+                assetHub.assets.find { it.symbol.value == "USDT" || it.symbol.value == "wUSDT" }
+            } catch (e: Exception) {
+                // Fallback to Polkadot Asset Hub if Pezkuwi Asset Hub is not available
+                val assetHub = getChain(Chain.Geneses.POLKADOT_ASSET_HUB)
+                assetHub.assets.find { it.symbol.value == "USDT" }
+            }
         }
 
         private fun Map<FullChainAssetId, Token>.fiatToPlanks(fiat: BigDecimal, chainAsset: Chain.Asset): Balance {
@@ -734,6 +761,8 @@ internal class RealSwapService(
     }
 
     private fun logFee(fee: SwapFee) {
+        if (!debug) return
+
         val route = fee.segments.joinToString(separator = "\n") { segment ->
             val allFees = buildList {
                 add(segment.fee.submissionFee)
@@ -750,6 +779,8 @@ internal class RealSwapService(
     }
 
     private suspend fun logQuotes(quotedTrades: List<QuotedTrade>) {
+        if (!debug) return
+
         val allCandidates = quotedTrades.sortedDescending()
             .map { trade -> formatTrade(trade) }
             .joinToString(separator = "\n")

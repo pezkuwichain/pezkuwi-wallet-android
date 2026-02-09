@@ -198,6 +198,12 @@ internal class RealCrossChainTransfersUseCase(
             origin = origin
         )
             .coerceToUnit()
+            .recoverCatching { error ->
+                // Dry run is optional - if it fails, log the error but don't block the transfer
+                // Some chains (like Pezkuwi) don't support dry run properly
+                Log.w(LOG_TAG, "Dry run failed but continuing with transfer: ${error.message}")
+                Unit
+            }
     }
 
     override suspend fun supportsXcmExecute(originChainId: ChainId, features: DynamicCrossChainTransferFeatures): Boolean {

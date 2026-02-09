@@ -4,7 +4,7 @@ import android.util.Log
 import io.novafoundation.nova.common.address.AccountIdKey
 import io.novafoundation.nova.common.di.scope.FeatureScope
 import io.novafoundation.nova.common.utils.LOG_TAG
-import io.novafoundation.nova.common.utils.xcmPalletName
+import io.novafoundation.nova.common.utils.xcmPalletNameOrNull
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.AssetSourceRegistry
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.tranfers.AssetTransferBase
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.tranfers.amount
@@ -254,7 +254,7 @@ class RealXcmTransferDryRunner @Inject constructor(
         dryRunEffects: DryRunEffects,
         runtimeSnapshot: RuntimeSnapshot,
     ): Balance {
-        val xcmPalletName = runtimeSnapshot.metadata.xcmPalletName()
+        val xcmPalletName = runtimeSnapshot.metadata.xcmPalletNameOrNull() ?: return Balance.ZERO
         val event = dryRunEffects.emittedEvents.findEvent(xcmPalletName, "FeesPaid") ?: return Balance.ZERO
 
         val usedXcmVersion = dryRunEffects.senderXcmVersion()
@@ -269,7 +269,7 @@ class RealXcmTransferDryRunner @Inject constructor(
         dryRunEffects: DryRunEffects,
         runtimeSnapshot: RuntimeSnapshot,
     ): Balance {
-        val xcmPalletName = runtimeSnapshot.metadata.xcmPalletName()
+        val xcmPalletName = runtimeSnapshot.metadata.xcmPalletNameOrNull() ?: return Balance.ZERO
         val event = dryRunEffects.emittedEvents.findEvent(xcmPalletName, "AssetsTrapped") ?: return Balance.ZERO
 
         val feesDecoded = event.arguments[ASSETS_TRAPPED_ARGUMENT_INDEX]
@@ -290,10 +290,24 @@ class RealXcmTransferDryRunner @Inject constructor(
         dryRunEffects: DryRunEffects,
         destination: RelativeMultiLocation
     ): VersionedRawXcmMessage {
+        val forwardedXcms = dryRunEffects.forwardedXcms
+
+        // For teleport transfers, forwarded XCMs might be empty or structured differently
+        if (forwardedXcms.isEmpty()) {
+            error("Dry run did not produce any forwarded XCMs. This transfer type may not support dry run fee estimation.")
+        }
+
         val usedXcmVersion = dryRunEffects.senderXcmVersion()
         val versionedDestination = destination.versionedXcm(usedXcmVersion)
 
-        val forwardedXcmsToDestination = dryRunEffects.forwardedXcms.getByLocation(versionedDestination)
+        val forwardedXcmsToDestination = forwardedXcms.getByLocation(versionedDestination)
+
+        // If destination location not found, try first available forwarded XCM
+        if (forwardedXcmsToDestination.isEmpty()) {
+            Log.w(LOG_TAG, "No forwarded XCM found for destination $destination, using first available")
+            val firstAvailable = forwardedXcms.firstOrNull()?.second?.firstOrNull()
+            return firstAvailable ?: error("No forwarded XCMs available for dry run")
+        }
 
         // There should only be one forwarded message during dry run
         return forwardedXcmsToDestination.first()

@@ -33,11 +33,31 @@ class DynamicCrossChainOriginAssetRemote(
 )
 
 class DynamicXcmTransferRemote(
-    val destination: XcmTransferDestinationRemote,
+    // New format: nested destination object
+    val destination: XcmTransferDestinationRemote?,
+    // Legacy format: chainId and assetId at root level
+    val chainId: ChainId?,
+    val assetId: Int?,
     val type: String?,
     val hasDeliveryFee: Boolean?,
     val supportsXcmExecute: Boolean?,
-)
+) {
+    /**
+     * Get the destination chainId, supporting both new and legacy formats.
+     */
+    fun getDestinationChainId(): ChainId {
+        return destination?.chainId ?: chainId
+            ?: throw IllegalStateException("XCM transfer has no destination chainId")
+    }
+
+    /**
+     * Get the destination assetId, supporting both new and legacy formats.
+     */
+    fun getDestinationAssetId(): Int {
+        return destination?.assetId ?: assetId
+            ?: throw IllegalStateException("XCM transfer has no destination assetId")
+    }
+}
 
 class XcmTransferDestinationRemote(
     val chainId: ChainId,

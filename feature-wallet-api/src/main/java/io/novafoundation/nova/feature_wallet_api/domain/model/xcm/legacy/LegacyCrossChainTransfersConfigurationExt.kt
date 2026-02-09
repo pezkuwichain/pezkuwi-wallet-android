@@ -8,6 +8,8 @@ import io.novafoundation.nova.feature_wallet_api.domain.model.xcm.legacy.LegacyC
 import io.novafoundation.nova.feature_xcm_api.chain.XcmChain
 import io.novafoundation.nova.feature_xcm_api.multiLocation.MultiLocation.Interior
 import io.novafoundation.nova.feature_xcm_api.multiLocation.MultiLocation.Junction
+import io.novafoundation.nova.feature_xcm_api.multiLocation.MultiLocation.Junction.ParachainId.Companion.JUNCTION_TYPE_PARACHAIN
+import io.novafoundation.nova.feature_xcm_api.multiLocation.MultiLocation.Junction.ParachainId.Companion.JUNCTION_TYPE_TEYRCHAIN
 import io.novafoundation.nova.feature_xcm_api.multiLocation.RelativeMultiLocation
 import io.novafoundation.nova.feature_xcm_api.multiLocation.toInterior
 import io.novafoundation.nova.runtime.ext.fullId
@@ -17,6 +19,17 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.FullChainAssetId
 import java.math.BigInteger
 import io.novafoundation.nova.feature_wallet_api.domain.model.xcm.dynamic.reserve.XcmTransferType as XcmReserveTransferType
+
+// Pezkuwi chain IDs - these chains use "Teyrchain" instead of "Parachain" in XCM
+private val PEZKUWI_CHAIN_IDS = setOf(
+    "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75", // PEZKUWI
+    "00d0e1d0581c3cd5c5768652d52f4520184018b44f56a2ae1e0dc9d65c00c948", // PEZKUWI_ASSET_HUB
+    "58269e9c184f721e0309332d90cafc410df1519a5dc27a5fd9b3bf5fd2d129f8"  // PEZKUWI_PEOPLE
+)
+
+private fun junctionTypeNameForChain(chainId: ChainId): String {
+    return if (chainId in PEZKUWI_CHAIN_IDS) JUNCTION_TYPE_TEYRCHAIN else JUNCTION_TYPE_PARACHAIN
+}
 
 fun LegacyCrossChainTransfersConfiguration.XcmFee.Mode.Proportional.weightToFee(weight: Weight): BigInteger {
     val pico = BigInteger.TEN.pow(12)
@@ -98,7 +111,7 @@ suspend fun LegacyCrossChainTransfersConfiguration.transferConfiguration(
         ),
         assetLocation = originAssetLocationOf(assetTransfers),
         reserveChainLocation = reserveAssetLocation.multiLocation,
-        destinationChainLocation = destinationLocation(originChain, destinationXcmChain.parachainId),
+        destinationChainLocation = destinationLocation(originChain, destinationXcmChain.parachainId, destinationChain.id),
         destinationFee = destinationFee,
         reserveFee = reserveFee,
         originChainAsset = originAsset,
@@ -133,25 +146,27 @@ private fun LegacyCrossChainTransfersConfiguration.matchInstructions(
 
 private fun destinationLocation(
     originChain: Chain,
-    destinationParaId: ParaId?
+    destinationParaId: ParaId?,
+    destinationChainId: ChainId
 ) = when {
     // parachain -> parachain
-    originChain.isParachain && destinationParaId != null -> SiblingParachain(destinationParaId)
+    originChain.isParachain && destinationParaId != null -> SiblingParachain(destinationParaId, destinationChainId)
 
     // parachain -> relaychain
     originChain.isParachain -> ParentChain()
 
     // relaychain -> parachain
-    destinationParaId != null -> ChildParachain(destinationParaId)
+    destinationParaId != null -> ChildParachain(destinationParaId, destinationChainId)
 
     // relaychain -> relaychain ?
     else -> throw UnsupportedOperationException("Unsupported cross-chain transfer")
 }
 
-private fun ChildParachain(paraId: ParaId): RelativeMultiLocation {
+private fun ChildParachain(paraId: ParaId, destinationChainId: ChainId): RelativeMultiLocation {
+    val junctionTypeName = junctionTypeNameForChain(destinationChainId)
     return RelativeMultiLocation(
         parents = 0,
-        interior = listOf(Junction.ParachainId(paraId)).toInterior()
+        interior = listOf(Junction.ParachainId(paraId, junctionTypeName)).toInterior()
     )
 }
 
@@ -162,10 +177,11 @@ private fun ParentChain(): RelativeMultiLocation {
     )
 }
 
-private fun SiblingParachain(paraId: ParaId): RelativeMultiLocation {
+private fun SiblingParachain(paraId: ParaId, destinationChainId: ChainId): RelativeMultiLocation {
+    val junctionTypeName = junctionTypeNameForChain(destinationChainId)
     return RelativeMultiLocation(
         parents = 1,
-        listOf(Junction.ParachainId(paraId)).toInterior()
+        listOf(Junction.ParachainId(paraId, junctionTypeName)).toInterior()
     )
 }
 

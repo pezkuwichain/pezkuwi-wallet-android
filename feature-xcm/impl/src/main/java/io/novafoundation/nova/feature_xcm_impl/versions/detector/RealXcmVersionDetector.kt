@@ -3,7 +3,7 @@ package io.novafoundation.nova.feature_xcm_impl.versions.detector
 import android.util.Log
 import io.novafoundation.nova.common.di.scope.FeatureScope
 import io.novafoundation.nova.common.utils.enumValueOfOrNull
-import io.novafoundation.nova.common.utils.xcmPalletName
+import io.novafoundation.nova.common.utils.xcmPalletNameOrNull
 import io.novafoundation.nova.feature_xcm_api.versions.XcmVersion
 import io.novafoundation.nova.feature_xcm_api.versions.detector.XcmVersionDetector
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
@@ -26,7 +26,7 @@ class RealXcmVersionDetector @Inject constructor(
     override suspend fun lowestPresentMultiLocationVersion(chainId: ChainId): XcmVersion? {
         return lowestPresentXcmTypeVersionFromCallArgument(
             chainId = chainId,
-            getCall = { it.moduleOrNull(it.xcmPalletName())?.callOrNull("reserve_transfer_assets") },
+            getCall = { it.xcmPalletNameOrNull()?.let { pallet -> it.moduleOrNull(pallet) }?.callOrNull("reserve_transfer_assets") },
             argumentName = "dest"
         )
     }
@@ -34,7 +34,7 @@ class RealXcmVersionDetector @Inject constructor(
     override suspend fun lowestPresentMultiAssetsVersion(chainId: ChainId): XcmVersion? {
         return lowestPresentXcmTypeVersionFromCallArgument(
             chainId = chainId,
-            getCall = { it.moduleOrNull(it.xcmPalletName())?.callOrNull("reserve_transfer_assets") },
+            getCall = { it.xcmPalletNameOrNull()?.let { pallet -> it.moduleOrNull(pallet) }?.callOrNull("reserve_transfer_assets") },
             argumentName = "assets"
         )
     }
@@ -42,7 +42,7 @@ class RealXcmVersionDetector @Inject constructor(
     override suspend fun lowestPresentMultiAssetIdVersion(chainId: ChainId): XcmVersion? {
         return lowestPresentXcmTypeVersionFromCallArgument(
             chainId = chainId,
-            getCall = { it.moduleOrNull(it.xcmPalletName())?.callOrNull("transfer_assets_using_type_and_then") },
+            getCall = { it.xcmPalletNameOrNull()?.let { pallet -> it.moduleOrNull(pallet) }?.callOrNull("transfer_assets_using_type_and_then") },
             argumentName = "remote_fees_id"
         )
     }
@@ -55,7 +55,7 @@ class RealXcmVersionDetector @Inject constructor(
         val actualCheckedType = multiLocationType?.skipAliases() ?: return null
         val versionedType = getVersionedType(
             chainId = chainId,
-            getCall = { moduleOrNull(xcmPalletName())?.callOrNull("reserve_transfer_assets") },
+            getCall = { xcmPalletNameOrNull()?.let { moduleOrNull(it) }?.callOrNull("reserve_transfer_assets") },
             argumentName = "dest"
         ) ?: return null
 

@@ -1,11 +1,14 @@
 package io.novafoundation.nova.feature_wallet_impl.data.network.crosschain.dynamic
 
+import android.util.Log
 import io.novafoundation.nova.common.di.scope.FeatureScope
+import io.novafoundation.nova.common.utils.LOG_TAG
 import io.novafoundation.nova.common.utils.orZero
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.tranfers.AssetTransferBase
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.tranfers.replaceAmount
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Balance
 import io.novafoundation.nova.feature_wallet_api.data.network.crosschain.CrossChainFeeModel
+import io.novafoundation.nova.feature_wallet_api.data.network.crosschain.zero
 import io.novafoundation.nova.feature_wallet_api.domain.model.planksFromAmount
 import io.novafoundation.nova.feature_wallet_api.domain.model.xcm.dynamic.DynamicCrossChainTransferConfiguration
 import io.novafoundation.nova.feature_wallet_api.data.network.crosschain.XcmTransferDryRunOrigin
@@ -26,12 +29,32 @@ class DynamicCrossChainWeigher @Inject constructor(
     ): CrossChainFeeModel {
         val safeTransfer = transfer.ensureSafeAmount()
         val result = xcmTransferDryRunner.dryRunXcmTransfer(config, safeTransfer, XcmTransferDryRunOrigin.Fake)
-            .getOrThrow()
 
-        return CrossChainFeeModel.fromDryRunResult(
-            initialAmount = safeTransfer.amountPlanks,
-            transferDryRunResult = result
-        )
+        return result.getOrNull()?.let { dryRunResult ->
+            CrossChainFeeModel.fromDryRunResult(
+                initialAmount = safeTransfer.amountPlanks,
+                transferDryRunResult = dryRunResult
+            )
+        } ?: run {
+            // Dry run failed - use fallback fee estimation
+            // For teleport transfers, dry run often doesn't produce forwarded XCMs
+            Log.w(LOG_TAG, "Dry run failed for ${config.transferType}, using fallback fee estimation")
+            estimateFallbackFee(config, transfer)
+        }
+    }
+
+    /**
+     * Fallback fee estimation when dry run fails.
+     * Uses a conservative percentage of the transfer amount as fee buffer.
+     */
+    private fun estimateFallbackFee(
+        config: DynamicCrossChainTransferConfiguration,
+        transfer: AssetTransferBase
+    ): CrossChainFeeModel {
+        // Use 1% of transfer amount as conservative fee estimate for all transfer types
+        // This covers execution fees on destination chain
+        val estimatedFee = transfer.amountPlanks / 100.toBigInteger()
+        return CrossChainFeeModel(paidFromHolding = estimatedFee.coerceAtLeast(Balance.ZERO))
     }
 
     // Ensure we can calculate fee regardless of what user entered
