@@ -1,6 +1,7 @@
 package io.novafoundation.nova.feature_staking_impl.domain.nominationPools
 
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
+import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
 
 /**
  * Finds the staking type that backs nomination pools.
@@ -22,4 +23,18 @@ fun Chain.Asset.findStakingTypeBackingNominationPools(): Chain.Asset.StakingType
  */
 fun Chain.Asset.hasLocalNominationPoolsBacking(): Boolean {
     return staking.any { it != Chain.Asset.StakingType.NOMINATION_POOLS }
+}
+
+/**
+ * Returns the chain ID where staking exposures (validators, eras) live.
+ *
+ * For nomination pools on a parachain (e.g. Asset Hub in Polkadot 2.0),
+ * the staking ledger/exposures are on the parent relay chain.
+ * For relay chains or chains with local staking, returns the chain's own ID.
+ */
+fun Chain.stakingBackingChainId(stakingType: Chain.Asset.StakingType): ChainId {
+    if (stakingType == Chain.Asset.StakingType.NOMINATION_POOLS && parentId != null) {
+        return parentId!!
+    }
+    return id
 }

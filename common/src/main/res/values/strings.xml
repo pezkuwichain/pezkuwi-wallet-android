@@ -2739,4 +2739,6 @@
     <string name="wallet_send_phishing_warning_title">Scam alert</string>
     <string name="wallet_transfer_details_title">Transfer details</string>
     <string name="yesterday">Yesterday</string>
+    <string name="branch_io_link_host" translatable="false">pezkuwi-wallet.app.link</string>
+    <string name="branch_io_link_host_alternate" translatable="false">pezkuwi-wallet-alternate.app.link</string>
 </resources>
