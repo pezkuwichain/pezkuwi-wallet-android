@@ -212,7 +212,8 @@ class StakingFeatureModule {
         bagListRepository: BagListRepository,
         totalIssuanceRepository: TotalIssuanceRepository,
         eraTimeCalculatorFactory: EraTimeCalculatorFactory,
-        stakingConstantsRepository: StakingConstantsRepository
+        stakingConstantsRepository: StakingConstantsRepository,
+        chainRegistry: ChainRegistry
     ) = StakingSharedComputation(
         stakingRepository = stakingRepository,
         computationalCache = computationalCache,
@@ -221,7 +222,8 @@ class StakingFeatureModule {
         bagListRepository = bagListRepository,
         totalIssuanceRepository = totalIssuanceRepository,
         eraTimeCalculatorFactory = eraTimeCalculatorFactory,
-        stakingConstantsRepository = stakingConstantsRepository
+        stakingConstantsRepository = stakingConstantsRepository,
+        chainRegistry = chainRegistry
     )
 
     @Provides
@@ -297,7 +299,8 @@ class StakingFeatureModule {
         sessionRepository: SessionRepository,
         chainStateRepository: ChainStateRepository,
         electionsSessionRegistry: ElectionsSessionRegistry,
-    ) = EraTimeCalculatorFactory(stakingRepository, sessionRepository, chainStateRepository, electionsSessionRegistry)
+        chainRegistry: ChainRegistry,
+    ) = EraTimeCalculatorFactory(stakingRepository, sessionRepository, chainStateRepository, electionsSessionRegistry, chainRegistry)
 
     @Provides
     @FeatureScope

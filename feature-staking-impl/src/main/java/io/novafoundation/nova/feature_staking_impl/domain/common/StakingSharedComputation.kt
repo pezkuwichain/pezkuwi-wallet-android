@@ -18,6 +18,8 @@ import io.novafoundation.nova.feature_staking_impl.domain.minimumStake
 import io.novafoundation.nova.feature_staking_impl.domain.rewards.RewardCalculator
 import io.novafoundation.nova.feature_staking_impl.domain.rewards.RewardCalculatorFactory
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Balance
+import io.novafoundation.nova.runtime.ext.timelineChainIdOrSelf
+import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.ChainWithAsset
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
@@ -43,15 +45,18 @@ class StakingSharedComputation(
     private val bagListRepository: BagListRepository,
     private val totalIssuanceRepository: TotalIssuanceRepository,
     private val eraTimeCalculatorFactory: EraTimeCalculatorFactory,
-    private val stakingConstantsRepository: StakingConstantsRepository
+    private val stakingConstantsRepository: StakingConstantsRepository,
+    private val chainRegistry: ChainRegistry
 ) {
 
     fun eraCalculatorFlow(stakingOption: StakingOption, scope: CoroutineScope): Flow<EraTimeCalculator> {
-        val chainId = stakingOption.assetWithChain.chain.id
+        val chain = stakingOption.assetWithChain.chain
+        val chainId = chain.id
+        val timelineChainId = chain.timelineChainIdOrSelf()
         val key = "ERA_TIME_CALCULATOR:$chainId"
 
         return computationalCache.useSharedFlow(key, scope) {
-            val activeEraFlow = activeEraFlow(chainId, scope)
+            val activeEraFlow = activeEraFlow(timelineChainId, scope)
 
             eraTimeCalculatorFactory.create(stakingOption, activeEraFlow)
         }
@@ -79,14 +84,17 @@ class StakingSharedComputation(
         val key = "MIN_STAKE:$chainId"
 
         return computationalCache.useSharedFlow(key, scope) {
-            val minBond = stakingRepository.minimumNominatorBond(chainId)
-            val bagListLocator = bagListRepository.bagListLocatorOrNull(chainId)
-            val totalIssuance = totalIssuanceRepository.getTotalIssuance(chainId)
-            val bagListScoreConverter = BagListScoreConverter.U128(totalIssuance)
-            val maxElectingVoters = bagListRepository.maxElectingVotes(chainId)
-            val bagListSize = bagListRepository.bagListSize(chainId)
+            val chain = chainRegistry.getChain(chainId)
+            val timelineChainId = chain.timelineChainIdOrSelf()
 
-            electedExposuresWithActiveEraFlow(chainId, scope).map { (exposures, activeEraIndex) ->
+            val minBond = stakingRepository.minimumNominatorBond(timelineChainId)
+            val bagListLocator = bagListRepository.bagListLocatorOrNull(timelineChainId)
+            val totalIssuance = totalIssuanceRepository.getTotalIssuance(timelineChainId)
+            val bagListScoreConverter = BagListScoreConverter.U128(totalIssuance)
+            val maxElectingVoters = bagListRepository.maxElectingVotes(timelineChainId)
+            val bagListSize = bagListRepository.bagListSize(timelineChainId)
+
+            electedExposuresWithActiveEraFlow(timelineChainId, scope).map { (exposures, activeEraIndex) ->
                 val minStake = minimumStake(
                     exposures = exposures.values,
                     minimumNominatorBond = minBond,
