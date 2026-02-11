@@ -5,6 +5,9 @@ on:
     branches:
       ['master']
 
+permissions:
+  contents: write
+
 jobs:
   update-tag:
     runs-on: ubuntu-latest
@@ -12,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.WRITE_SECRET_PAT }}
+          fetch-depth: 0
 
       - name: Version in build.gradle
         run: |
@@ -21,12 +24,14 @@ jobs:
           echo Version in gradle file: $versionName
           echo "GRADLE_APP_VERSION=$versionName" >> "$GITHUB_ENV"
 
-      - name: Was version changed?
+      - name: Check if tag exists
         id: version
         run: |
-          if [[ ${{ env.GRADLE_APP_VERSION }} == ${{ secrets.ANDROID_APP_VERSION }} ]]; then
+          if git rev-parse "v${{ env.GRADLE_APP_VERSION }}" >/dev/null 2>&1; then
+            echo "Tag already exists"
             echo "changed=false" >> $GITHUB_OUTPUT
           else
+            echo "Tag does not exist"
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
@@ -35,12 +40,4 @@ jobs:
         with:
           tag: 'v${{ env.GRADLE_APP_VERSION }}'
           message: Release v${{ env.GRADLE_APP_VERSION }}
-
-      - name: Write app version to secrets
-        if: steps.version.outputs.changed == 'true'
-        uses: hmanzur/actions-set-secret@v2.0.0
-        with:
-          name: 'ANDROID_APP_VERSION'
-          value: ${{ env.GRADLE_APP_VERSION }}
-          repository: pezkuwichain/pezkuwi-wallet-android
-          token: ${{ secrets.WRITE_SECRET_PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
