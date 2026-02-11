@@ -13,7 +13,6 @@ import io.novafoundation.nova.feature_staking_impl.data.repository.VaraRepositor
 import io.novafoundation.nova.feature_staking_impl.data.stakingType
 import io.novafoundation.nova.feature_staking_impl.data.unwrapNominationPools
 import io.novafoundation.nova.feature_staking_impl.domain.common.StakingSharedComputation
-import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.stakingBackingChainId
 import io.novafoundation.nova.feature_staking_impl.domain.common.electedExposuresInActiveEra
 import io.novafoundation.nova.feature_staking_impl.domain.common.eraTimeCalculator
 import io.novafoundation.nova.feature_staking_impl.domain.error.accountIdNotFound
@@ -28,7 +27,6 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain.Asset.Staki
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain.Asset.StakingType.TURING
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain.Asset.StakingType.UNSUPPORTED
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
-import io.novafoundation.nova.runtime.ext.timelineChainIdOrSelf
 import io.novafoundation.nova.runtime.repository.TotalIssuanceRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,10 +47,7 @@ class RewardCalculatorFactory(
         validatorsPrefs: AccountIdMap<ValidatorPrefs?>,
         scope: CoroutineScope
     ): RewardCalculator = withContext(Dispatchers.Default) {
-        val timelineChainId = stakingOption.assetWithChain.chain.timelineChainIdOrSelf()
-        val totalIssuance = totalIssuanceRepository.getTotalIssuance(timelineChainId)
-
-        Log.d("RewardCalculatorFactory", "totalIssuance for $timelineChainId: $totalIssuance")
+        val totalIssuance = totalIssuanceRepository.getTotalIssuance(stakingOption.assetWithChain.chain.id)
 
         val validators = exposures.keys.mapNotNull { accountIdHex ->
             val exposure = exposures[accountIdHex] ?: accountIdNotFound(accountIdHex)
@@ -65,22 +60,14 @@ class RewardCalculatorFactory(
             )
         }
 
-        Log.d("RewardCalculatorFactory", "Validators count for reward calculation: ${validators.size}")
-        if (validators.isNotEmpty()) {
-            val totalStaked = validators.sumOf { it.totalStake }
-            Log.d("RewardCalculatorFactory", "Total staked: $totalStaked, stakedPortion: ${totalStaked.toDouble() / totalIssuance.toDouble()}")
-        }
-
         stakingOption.createRewardCalculator(validators, totalIssuance, scope)
     }
 
     suspend fun create(stakingOption: StakingOption, scope: CoroutineScope): RewardCalculator = withContext(Dispatchers.Default) {
-        val chain = stakingOption.assetWithChain.chain
-        // For nomination pools on parachains (like Asset Hub), get exposures from parent relay chain
-        val stakingBackingChainId = chain.stakingBackingChainId(stakingOption.stakingType)
+        val chainId = stakingOption.assetWithChain.chain.id
 
-        val exposures = shareStakingSharedComputation.get().electedExposuresInActiveEra(stakingBackingChainId, scope)
-        val validatorsPrefs = stakingRepository.getValidatorPrefs(stakingBackingChainId, exposures.keys)
+        val exposures = shareStakingSharedComputation.get().electedExposuresInActiveEra(chainId, scope)
+        val validatorsPrefs = stakingRepository.getValidatorPrefs(chainId, exposures.keys)
 
         create(stakingOption, exposures, validatorsPrefs, scope)
     }
@@ -95,16 +82,10 @@ class RewardCalculatorFactory(
                 val custom = customRelayChainCalculator(validators, totalIssuance, scope)
                 if (custom != null) return custom
 
-                val timelineChainId = chain.timelineChainIdOrSelf()
-                val activePublicParachains = parasRepository.activePublicParachains(timelineChainId)
-                Log.d("RewardCalculatorFactory", "activePublicParachains for $timelineChainId: $activePublicParachains")
+                val activePublicParachains = parasRepository.activePublicParachains(assetWithChain.chain.id)
+                val inflationConfig = InflationConfig.create(chain.id, activePublicParachains)
 
-                val inflationConfig = InflationConfig.create(timelineChainId, activePublicParachains)
-                Log.d("RewardCalculatorFactory", "Using Default InflationConfig for $timelineChainId")
-
-                val calculator = RewardCurveInflationRewardCalculator(validators, totalIssuance, inflationConfig)
-                Log.d("RewardCalculatorFactory", "expectedAPY: ${calculator.expectedAPY}, maxAPY: ${calculator.maxAPY}")
-                calculator
+                RewardCurveInflationRewardCalculator(validators, totalIssuance, inflationConfig)
             }
 
             ALEPH_ZERO -> AlephZeroRewardCalculator(validators, chainAsset = assetWithChain.asset)

@@ -18,7 +18,6 @@ import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.common
 import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.main.alerts.NominationPoolAlert.RedeemTokens
 import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.main.alerts.NominationPoolAlert.WaitingForNextEra
 import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.main.alerts.RealNominationPoolsAlertsInteractor.AlertsResolutionContext.PoolContext
-import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.stakingBackingChainId
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novasama.substrate_sdk_android.hash.isPositive
 import io.novasama.substrate_sdk_android.runtime.AccountId
@@ -50,13 +49,11 @@ class RealNominationPoolsAlertsInteractor(
         return flowOfAll {
             val poolId = poolMember.poolId
             val poolStash = poolAccountDerivation.bondedAccountOf(poolId, chain.id)
-            // For nomination pools on parachains (like Asset Hub), get exposures from parent relay chain
-            val stakingBackingChainId = chain.stakingBackingChainId(Chain.Asset.StakingType.NOMINATION_POOLS)
 
             combine(
                 nominationPoolsSharedComputation.participatingPoolNominationsFlow(poolStash, poolId, chain.id, shareComputationScope),
                 nominationPoolsSharedComputation.unbondingPoolsFlow(poolId, chain.id, shareComputationScope),
-                stakingSharedComputation.electedExposuresWithActiveEraFlow(stakingBackingChainId, shareComputationScope),
+                stakingSharedComputation.electedExposuresWithActiveEraFlow(chain.id, shareComputationScope),
             ) { poolNominations, unbondingPools, (eraStakers, activeEra) ->
                 val alertsContext = AlertsResolutionContext(
                     eraStakers = eraStakers,

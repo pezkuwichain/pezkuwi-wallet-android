@@ -12,9 +12,6 @@ import io.novafoundation.nova.feature_staking_impl.domain.StakingInteractor
 import io.novafoundation.nova.feature_staking_impl.domain.common.StakingSharedComputation
 import io.novafoundation.nova.feature_staking_impl.domain.common.electedExposuresInActiveEraFlow
 import io.novafoundation.nova.feature_staking_impl.domain.model.NetworkInfo
-import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.stakingBackingChainId
-import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
-import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novafoundation.nova.feature_staking_impl.domain.model.StakingPeriod
 import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.common.NominationPoolMemberUseCase
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Balance
@@ -22,8 +19,6 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.math.BigInteger
 
@@ -40,7 +35,6 @@ class RealNominationPoolsNetworkInfoInteractor(
     private val poolAccountDerivation: PoolAccountDerivation,
     private val relaychainStakingInteractor: StakingInteractor,
     private val nominationPoolMemberUseCase: NominationPoolMemberUseCase,
-    private val chainRegistry: ChainRegistry,
 ) : NominationPoolsNetworkInfoInteractor {
 
     override fun observeShouldShowNetworkInfo(): Flow<Boolean> {
@@ -50,13 +44,9 @@ class RealNominationPoolsNetworkInfoInteractor(
     override fun observeNetworkInfo(
         chainId: ChainId,
         sharedComputationScope: CoroutineScope
-    ): Flow<NetworkInfo> = flow {
-        // For nomination pools on parachains (like Asset Hub), get exposures from parent relay chain
-        val chain = chainRegistry.getChain(chainId)
-        val stakingBackingChainId = chain.stakingBackingChainId(Chain.Asset.StakingType.NOMINATION_POOLS)
-
-        val networkInfoFlow = combine(
-            relaychainStakingSharedComputation.electedExposuresInActiveEraFlow(stakingBackingChainId, sharedComputationScope),
+    ): Flow<NetworkInfo> {
+        return combine(
+            relaychainStakingSharedComputation.electedExposuresInActiveEraFlow(chainId, sharedComputationScope),
             nominationPoolGlobalsRepository.observeMinJoinBond(chainId),
             nominationPoolGlobalsRepository.lastPoolIdFlow(chainId),
             lockupDurationFlow(sharedComputationScope),
@@ -69,8 +59,6 @@ class RealNominationPoolsNetworkInfoInteractor(
                 nominatorsCount = null
             )
         }
-
-        emitAll(networkInfoFlow)
     }
 
     private fun lockupDurationFlow(sharedComputationScope: CoroutineScope) = flowOf { relaychainStakingInteractor.getLockupDuration(sharedComputationScope) }

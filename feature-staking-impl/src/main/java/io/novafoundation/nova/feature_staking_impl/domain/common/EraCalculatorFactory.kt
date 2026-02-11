@@ -9,7 +9,6 @@ import io.novafoundation.nova.feature_staking_impl.data.chain
 import io.novafoundation.nova.feature_staking_impl.data.repository.SessionRepository
 import io.novafoundation.nova.feature_staking_impl.data.repository.consensus.ElectionsSessionRegistry
 import io.novafoundation.nova.runtime.ext.timelineChainIdOrSelf
-import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.repository.ChainStateRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -97,7 +96,6 @@ class EraTimeCalculatorFactory(
     private val sessionRepository: SessionRepository,
     private val chainStateRepository: ChainStateRepository,
     private val electionsSessionRegistry: ElectionsSessionRegistry,
-    private val chainRegistry: ChainRegistry,
 ) {
 
     suspend fun create(
@@ -105,8 +103,8 @@ class EraTimeCalculatorFactory(
         activeEraFlow: Flow<EraIndex>
     ): Flow<EraTimeCalculator> {
         val stakingChain = stakingOption.chain
+        val stakingChainId = stakingChain.id
         val timelineChainId = stakingChain.timelineChainIdOrSelf()
-        val timelineChain = chainRegistry.getChain(timelineChainId)
 
         val electionsSession = electionsSessionRegistry.electionsSessionFor(stakingOption)
 
@@ -114,7 +112,7 @@ class EraTimeCalculatorFactory(
         val sessionLength = electionsSession.sessionLength(timelineChainId)
 
         val eraAndStartSessionIndex = activeEraFlow.map { activeEra ->
-            val eraStartSessionIndex = stakingRepository.eraStartSessionIndex(timelineChainId, activeEra)
+            val eraStartSessionIndex = stakingRepository.eraStartSessionIndex(stakingChainId, activeEra)
             activeEra to eraStartSessionIndex
         }
 
@@ -126,7 +124,7 @@ class EraTimeCalculatorFactory(
         ) { (activeEra, eraStartSessionIndex), currentSessionIndex, currentEpochIndex, currentSlot ->
             EraTimeCalculator(
                 startTimeStamp = System.currentTimeMillis().toBigInteger(),
-                eraLength = stakingRepository.eraLength(timelineChain),
+                eraLength = stakingRepository.eraLength(stakingChain),
                 blockCreationTime = chainStateRepository.predictedBlockTime(timelineChainId),
                 currentSessionIndex = currentSessionIndex,
                 currentEpochIndex = currentEpochIndex ?: currentSessionIndex,

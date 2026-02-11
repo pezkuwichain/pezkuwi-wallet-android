@@ -102,13 +102,7 @@ class StakingDashboardViewModel(
     fun onNoStakeItemClicked(index: Int) = launch {
         val withoutStakeItems = stakingDashboardFlow.firstLoaded().withoutStake
         val withoutStakeItem = withoutStakeItems.getOrNull(index) ?: return@launch
-        val noStakeItemState = withoutStakeItem.stakingState as? NoStake
-
-        if (noStakeItemState == null) {
-            // Item is still syncing (NotYetResolved state)
-            showToast(resourceManager.getString(R.string.staking_dashboard_syncing))
-            return@launch
-        }
+        val noStakeItemState = withoutStakeItem.stakingState as? NoStake ?: return@launch
 
         val stakingTypes = noStakeItemState.flowType.allStakingTypes
         val chain = withoutStakeItem.chain
