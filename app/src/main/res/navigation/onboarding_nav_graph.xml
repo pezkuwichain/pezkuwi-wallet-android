@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_nav_graph"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="io.novafoundation.nova.feature_onboarding_impl.presentation.welcome.WelcomeFragment"
+        android:label="welcomeFragment"
+        tools:layout="@layout/fragment_welcome">
+
+        <action
+            android:id="@+id/action_welcomeFragment_to_startCreateWallet"
+            app:destination="@id/create_wallet_nav_graph"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_welcomeFragment_to_mnemonic_nav_graph"
+            app:destination="@id/mnemonic_nav_graph"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_welcomeFragment_to_importWalletOptionsFragment"
+            app:destination="@id/import_wallet_options_nav_graph"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createWatchWalletFragment"
+        android:name="io.novafoundation.nova.feature_account_impl.presentation.watchOnly.create.CreateWatchWalletFragment"
+        android:label="CreateWatchWalletFragment"
+        tools:layout="@layout/fragment_create_watch_wallet">
+
+        <action
+            android:id="@+id/action_watchWalletFragment_to_pincodeFragment"
+            app:destination="@id/pincodeFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <include app:graph="@navigation/mnemonic_nav_graph" />
+    <include app:graph="@navigation/create_wallet_nav_graph" />
+    <include app:graph="@navigation/restore_cloud_backup_nav_graph" />
+    <include app:graph="@navigation/import_wallet_options_nav_graph" />
+</navigation>

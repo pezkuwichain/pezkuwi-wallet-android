@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:background="@color/chips_background"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <ImageView
+        android:id="@+id/chipIcon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        tools:layout_marginVertical="3dp"
+        tools:src="@drawable/ic_info" />
+
+    <Space
+        android:id="@+id/chipDrawablePadding"
+        android:layout_width="6dp"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/chipText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:lines="1"
+        android:textColor="@color/chip_text"
+        tools:layout_marginEnd="8dp"
+        tools:layout_marginVertical="4.5dp"
+        tools:style="@style/TextAppearance.NovaFoundation.SemiBold.Caps1"
+        tools:text="main agenda" />
+
+</merge>

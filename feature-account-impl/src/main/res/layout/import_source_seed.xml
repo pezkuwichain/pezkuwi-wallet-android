@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:background="@color/secondary_screen_background"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/recovery_raw_seed"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="24dp"
+            android:text="@string/account_seed_hex_symbols"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </FrameLayout>
+
+    <io.novafoundation.nova.common.view.InsertableInputField
+        android:id="@+id/importSeedInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/account_import_seed_hint"
+        app:fieldSaveEnabled="false"
+        app:supportInsertion="false"
+        app:supportScan="true" />
+
+    <TextView
+        style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/account_wallet_name"
+        android:textColor="@color/text_secondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <io.novafoundation.nova.common.view.input.TextInputView
+        android:id="@+id/importSeedUsernameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/common_name" />
+
+</merge>

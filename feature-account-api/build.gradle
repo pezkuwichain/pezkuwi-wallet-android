@@ -1,0 +1,44 @@
+apply plugin: 'kotlin-parcelize'
+
+android {
+    namespace 'io.novafoundation.nova.feature_account_api'
+
+    packagingOptions {
+        resources.excludes.add("META-INF/NOTICE.md")
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation coroutinesDep
+    implementation project(':runtime')
+    implementation project(":common")
+    implementation project(":feature-currency-api")
+    implementation project(":feature-proxy-api")
+    implementation project(':feature-cloud-backup-api')
+    implementation project(':feature-ledger-api')
+    implementation project(':feature-xcm:api')
+    implementation project(':web3names')
+    implementation project(':feature-deep-linking')
+
+    implementation liveDataKtxDep
+    implementation lifeCycleKtxDep
+    implementation androidDep
+    implementation materialDep
+
+    implementation web3jDep
+
+//    implementation fragmentKtxDep
+
+    implementation constraintDep
+
+    implementation daggerDep
+    ksp daggerCompiler
+
+    api substrateSdkDep
+
+    api project(':core-api')
+}

@@ -1,0 +1,220 @@
+package io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.balances.utility
+
+import android.util.Log
+import io.novafoundation.nova.common.data.network.runtime.binding.bindList
+import io.novafoundation.nova.common.data.network.runtime.binding.bindNumber
+import io.novafoundation.nova.common.data.network.runtime.binding.castToDictEnum
+import io.novafoundation.nova.common.data.network.runtime.binding.castToStruct
+import io.novafoundation.nova.common.utils.LOG_TAG
+import io.novafoundation.nova.common.utils.balances
+import io.novafoundation.nova.common.utils.decodeValue
+import io.novafoundation.nova.common.utils.metadata
+import io.novafoundation.nova.common.utils.numberConstant
+import io.novafoundation.nova.common.utils.system
+import io.novafoundation.nova.core.updater.SharedRequestsBuilder
+import io.novafoundation.nova.core_db.dao.HoldsDao
+import io.novafoundation.nova.core_db.dao.LockDao
+import io.novafoundation.nova.core_db.model.BalanceHoldLocal
+import io.novafoundation.nova.feature_account_api.domain.model.MetaAccount
+import io.novafoundation.nova.feature_wallet_api.data.cache.AssetCache
+import io.novafoundation.nova.feature_wallet_api.data.cache.bindAccountInfoOrDefault
+import io.novafoundation.nova.feature_wallet_api.data.cache.updateAsset
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.balances.AssetBalance
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.balances.BalanceSyncUpdate
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.balances.model.ChainAssetBalance
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.balances.model.TransferableBalanceUpdatePoint
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.balances.model.toChainAssetBalance
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Balance
+import io.novafoundation.nova.feature_wallet_api.data.repository.AccountInfoRepository
+import io.novafoundation.nova.feature_wallet_api.domain.model.BalanceHold
+import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.balances.updateLocks
+import io.novafoundation.nova.runtime.ext.utilityAsset
+import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
+import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
+import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainAssetId
+import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
+import io.novafoundation.nova.runtime.multiNetwork.getRuntime
+import io.novafoundation.nova.runtime.storage.source.StorageDataSource
+import io.novafoundation.nova.runtime.storage.typed.account
+import io.novafoundation.nova.runtime.storage.typed.system
+import io.novasama.substrate_sdk_android.runtime.AccountId
+import io.novasama.substrate_sdk_android.runtime.metadata.storage
+import io.novasama.substrate_sdk_android.runtime.metadata.storageKey
+import io.novasama.substrate_sdk_android.runtime.metadata.storageOrNull
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.map
+import java.math.BigInteger
+
+class NativeAssetBalance(
+    private val chainRegistry: ChainRegistry,
+    private val assetCache: AssetCache,
+    private val accountInfoRepository: AccountInfoRepository,
+    private val remoteStorage: StorageDataSource,
+    private val lockDao: LockDao,
+    private val holdsDao: HoldsDao,
+) : AssetBalance {
+
+    override suspend fun startSyncingBalanceLocks(
+        metaAccount: MetaAccount,
+        chain: Chain,
+        chainAsset: Chain.Asset,
+        accountId: AccountId,
+        subscriptionBuilder: SharedRequestsBuilder
+    ): Flow<*> {
+        return runCatching {
+            remoteStorage.subscribe(chain.id, subscriptionBuilder) {
+                combine(
+                    metadata.balances.locks.observe(accountId),
+                    metadata.balances.freezes.observe(accountId)
+                ) { locks, freezes ->
+                    val all = locks.orEmpty() + freezes.orEmpty()
+
+                    lockDao.updateLocks(all, metaAccount.id, chain.id, chainAsset.id)
+                }
+            }.catch { error ->
+                Log.e(LOG_TAG, "Balance locks sync failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            }
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to start balance locks sync for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            emptyFlow()
+        }
+    }
+
+    override suspend fun startSyncingBalanceHolds(
+        metaAccount: MetaAccount,
+        chain: Chain,
+        chainAsset: Chain.Asset,
+        accountId: AccountId,
+        subscriptionBuilder: SharedRequestsBuilder
+    ): Flow<*> {
+        return runCatching {
+            val runtime = chainRegistry.getRuntime(chain.id)
+            val storage = runtime.metadata.balances().storageOrNull("Holds") ?: return emptyFlow<Nothing>()
+            val key = storage.storageKey(runtime, accountId)
+
+            subscriptionBuilder.subscribe(key)
+                .map { change ->
+                    val holds = bindBalanceHolds(storage.decodeValue(change.value, runtime)).orEmpty()
+                    holdsDao.updateHolds(holds, metaAccount.id, chain.id, chainAsset.id)
+                }
+                .catch { error ->
+                    Log.e(LOG_TAG, "Balance holds sync failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+                }
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to start balance holds sync for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            emptyFlow()
+        }
+    }
+
+    override fun isSelfSufficient(chainAsset: Chain.Asset): Boolean {
+        return true
+    }
+
+    override suspend fun existentialDeposit(chainAsset: Chain.Asset): BigInteger {
+        return runCatching {
+            val runtime = chainRegistry.getRuntime(chainAsset.chainId)
+            runtime.metadata.balances().numberConstant("ExistentialDeposit", runtime)
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to query existential deposit for ${chainAsset.symbol}: ${error.message}")
+            BigInteger.ZERO
+        }
+    }
+
+    override suspend fun queryAccountBalance(chain: Chain, chainAsset: Chain.Asset, accountId: AccountId): ChainAssetBalance {
+        return runCatching {
+            accountInfoRepository.getAccountInfo(chain.id, accountId).data.toChainAssetBalance(chainAsset)
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to query balance for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            ChainAssetBalance.fromFree(chainAsset, BigInteger.ZERO)
+        }
+    }
+
+    override suspend fun subscribeAccountBalanceUpdatePoint(
+        chain: Chain,
+        chainAsset: Chain.Asset,
+        accountId: AccountId,
+    ): Flow<TransferableBalanceUpdatePoint> {
+        return runCatching {
+            remoteStorage.subscribe(chain.id) {
+                metadata.system.account.observeWithRaw(accountId).map {
+                    TransferableBalanceUpdatePoint(it.at!!)
+                }
+            }.catch { error ->
+                Log.e(LOG_TAG, "Balance subscription failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            }
+        }.getOrElse { error ->
+            Log.e(LOG_TAG, "Failed to setup balance subscription for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+            emptyFlow()
+        }
+    }
+
+    override suspend fun startSyncingBalance(
+        chain: Chain,
+        chainAsset: Chain.Asset,
+        metaAccount: MetaAccount,
+        accountId: AccountId,
+        subscriptionBuilder: SharedRequestsBuilder
+    ): Flow<BalanceSyncUpdate> {
+        val runtime = chainRegistry.getRuntime(chain.id)
+
+        val key = try {
+            runtime.metadata.system().storage("Account").storageKey(runtime, accountId)
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "Failed to construct account storage key: ${e.message} in ${chain.name}")
+
+            return emptyFlow()
+        }
+
+        return subscriptionBuilder.subscribe(key)
+            .map { change ->
+                val accountInfo = bindAccountInfoOrDefault(change.value, runtime)
+                val assetChanged = assetCache.updateAsset(metaAccount.id, chain.utilityAsset, accountInfo)
+
+                if (assetChanged) {
+                    BalanceSyncUpdate.CauseFetchable(change.block)
+                } else {
+                    BalanceSyncUpdate.NoCause
+                }
+            }
+            .catch { error ->
+                Log.e(LOG_TAG, "Balance sync failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
+                emit(BalanceSyncUpdate.NoCause)
+            }
+    }
+
+    private fun bindBalanceHolds(dynamicInstance: Any?): List<BlockchainHold>? {
+        if (dynamicInstance == null) return null
+
+        return bindList(dynamicInstance) {
+            BlockchainHold(
+                id = bindHoldId(it.castToStruct()["id"]),
+                amount = bindNumber(it.castToStruct()["amount"])
+            )
+        }
+    }
+
+    private fun bindHoldId(id: Any?): BalanceHold.HoldId {
+        val module = id.castToDictEnum()
+        val reason = module.value.castToDictEnum()
+
+        return BalanceHold.HoldId(module.name, reason.name)
+    }
+
+    private suspend fun HoldsDao.updateHolds(holds: List<BlockchainHold>, metaId: Long, chainId: ChainId, chainAssetId: ChainAssetId) {
+        val balanceLocksLocal = holds.map {
+            BalanceHoldLocal(
+                metaId = metaId,
+                chainId = chainId,
+                assetId = chainAssetId,
+                id = BalanceHoldLocal.HoldIdLocal(module = it.id.module, reason = it.id.reason),
+                amount = it.amount
+            )
+        }
+        updateHolds(balanceLocksLocal, metaId, chainId, chainAssetId)
+    }
+
+    private class BlockchainHold(val id: BalanceHold.HoldId, val amount: Balance)
+}

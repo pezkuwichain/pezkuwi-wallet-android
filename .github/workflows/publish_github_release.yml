@@ -1,0 +1,88 @@
+name: Publish GitHub release
+
+on:
+  push:
+    tags:
+      - '*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
+    with:
+      branch: master
+      gradlew-command: assembleReleaseGithub
+      keystore-file-name: github_key.jks
+    secrets: inherit
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download built artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: apk
+          path: app
+
+      - name: Rename artifacts
+        run: mv app/releaseGithub/app-releaseGithub.apk app/releaseGithub/pezkuwi-wallet-android-${{ github.ref_name }}-github.apk
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: true
+          files: app/releaseGithub/pezkuwi-wallet-android-${{ github.ref_name }}-github.apk
+
+  deploy-to-vps:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download built artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: apk
+          path: deploy
+
+      - name: Prepare APK for VPS
+        run: |
+          mkdir -p ./vps-deploy
+          mv deploy/releaseGithub/app-releaseGithub.apk ./vps-deploy/pezkuwi-wallet.apk
+
+      - name: Create version.json
+        run: |
+          TAG="${{ github.ref_name }}"
+          VERSION="${TAG#v}"
+          cat > ./vps-deploy/version.json << EOF
+          {
+            "version": "$VERSION",
+            "tag": "$TAG",
+            "apk": "pezkuwi-wallet.apk",
+            "updated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+
+      - name: Deploy to VPS
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: 'vps-deploy/*'
+          target: '/var/www/wallet.pezkuwichain.io'
+          strip_components: 1
+          overwrite: true

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bridge Feature Colors -->
+    <color name="bridge_background">#121212</color>
+    <color name="bridge_card_background">#1E1E1E</color>
+    <color name="bridge_text_primary">#FFFFFF</color>
+    <color name="bridge_text_secondary">#B3B3B3</color>
+    <color name="bridge_accent">#00D395</color>
+    <color name="bridge_accent_dark">#00A676</color>
+    <color name="bridge_warning">#FFB800</color>
+    <color name="bridge_error">#FF4444</color>
+    <color name="bridge_success">#00D395</color>
+    <color name="bridge_address_background">#2A2A2A</color>
+</resources>

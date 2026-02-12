@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dapp_browser_graph"
+    app:startDestination="@id/dappBrowserFragment">
+
+    <fragment
+        android:id="@+id/dappBrowserFragment"
+        android:name="io.novafoundation.nova.feature_dapp_impl.presentation.browser.main.DAppBrowserFragment"
+        android:label="DAppBrowserFragment"
+        tools:layout="@layout/fragment_dapp_browser">
+
+        <action
+            android:id="@+id/action_open_dappSearch_from_browser"
+            app:destination="@id/dappSearchFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_DAppBrowserFragment_to_addToFavouritesFragment"
+            app:destination="@id/addToFavouritesFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/addToFavouritesFragment"
+        android:name="io.novafoundation.nova.feature_dapp_impl.presentation.addToFavourites.AddToFavouritesFragment"
+        android:label="AddToFavouritesFragment"
+        app:useAdd="true"
+        tools:layout="@layout/fragment_add_to_favourites" />
+
+    <fragment
+        android:id="@+id/dappSearchFragment"
+        android:name="io.novafoundation.nova.feature_dapp_impl.presentation.search.DappSearchFragment"
+        android:label="DappSearchFragment"
+        app:useAdd="true"
+        tools:layout="@layout/fragment_search_dapp">
+
+        <action
+            android:id="@+id/action_finish_dapp_search"
+            app:popUpTo="@id/dappBrowserFragment"
+            app:popUpToInclusive="false" />
+
+    </fragment>
+
+</navigation>

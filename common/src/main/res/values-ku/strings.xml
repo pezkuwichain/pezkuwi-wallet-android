@@ -1,0 +1,2760 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyEllipsis">
+
+    <string name="account_ledger_generic_item_subtitle">Flex, Stax, Nano</string>
+
+    <string name="ledger_device_nano_gen5">Ledger Nano Gen5</string>
+
+    <string name="multisig_gifts_not_supported_title">Diyarîkirin ji bo cîzdanên Multisig nayê piştgirî kirin</string>
+    <string name="multisig_gifts_not_supported_message">Bo create an manage gifts, ji kerema xwe switch to a different type of wallet.</string>
+
+    <string name="account_wallet_name">Cîzdan name</string>
+    <string name="common_name">Nav</string>
+    <string name="common_invalid_qr_code">Nederbasdar Koda QR</string>
+
+    <string name="account_polkadot_vault_import_start_step_2">%s you would like to add to Pezkuwi Cîzdan</string>
+    <string name="account_polkadot_vault_import_start_step_2_highlighted">Tap on Derived Key</string>
+
+    <string name="account_pair_public_key">Pair public key</string>
+    <string name="account_import_private_key">Têxe private key</string>
+
+    <string name="account_polkadot_vault_import_start_step_3_private">Tap  icon in  top-right corner û select %s</string>
+    <string name="account_polkadot_vault_import_start_step_3_private_highlighted">Derxe Taybetî Key</string>
+
+    <string name="reclaim_gift_success">Te diyariya xwe bi serkeftî paşve girt</string>
+    <string name="gifts_placeholder_step_1">Mîqdara diyariyê binivîse</string>
+
+    <string name="reclaim_gift_confirmation_title">Paş bixe %s Diyarî?</string>
+    <string name="reclaim_gift_confirmation_message">If you reclaim ev gift,  shared link dê be disabled, û tokens dê be refunded to yê te wallet.\nDo you want to continue?</string>
+
+    <string name="share_gift_reclaim">Paş bixe</string>
+    <string name="account_secrets">secrets</string>
+
+    <string name="account_chain_not_found">Hesab tune on %s</string>
+    <string name="claim_gift_no_account_alert_title">Use another wallet, create a nû one, an add a %s account to ev wallet in Mîheng.</string>
+
+    <string name="claim_gift_uncontrollable_wallet_title">You dikare’t receive a gift bi a %s wallet</string>
+    <string name="claim_gift_uncontrollable_wallet_message">Ji bo wergirtina diyariyê cîzdanek nû biafirîne an yekê heyî import bike</string>
+    <string name="account_create_wallet">Cîzdanek nû biafirîne</string>
+    <string name="cloud_backup_will_be_changed_subtitle">Cîzdanên nû bixweber li Cloud Backupê têne zêdekirin. Tu dikarî vê yekê di Mîhengan de biguherînî.</string>
+    <string name="start_create_wallet_input_hint">Cîzdana min a nû</string>
+    <string name="onboarding_create_wallet">Cîzdanek nû biafirîne</string>
+
+    <string name="common_manage_wallets">Cîzdanan birêve bibe</string>
+
+    <string name="claim_gift_success_message">You’ve successfully claimed a gift. Token dê appear in yê te balance shortly.</string>
+
+    <string name="claim_gift_already_claimed_title"> gift nikare be received</string>
+    <string name="claim_gift_already_claimed_message">Oops,  gift has already been  claimed</string>
+
+    <string name="claim_gift_default_error_title">Oops, something went wrong</string>
+    <string name="claim_gift_default_error_message">There may be a problem bi  server. Ji kerema xwe, try again later.</string>
+    <string name="claim_gift_button">Claim  gift</string>
+    <string name="claim_gift_title">You’ve got a crypto gift!</string>
+
+    <string name="gift_created_subtitle">Hate afirandin: %s</string>
+    <string name="gift_claimed_subtitle">Claimed</string>
+    <string name="gift_reclaimed_subtitle">Reclaimed</string>
+    <string name="gifts_claim_fee">Heqê torê on claim</string>
+
+    <string name="share_gift_text">Hello! You’ve got a %s gift waiting ji bo you!\n\nInstall Pezkuwi Cîzdan app, set up yê te wallet, û claim it via ev special link:\n%s</string>
+
+    <string name="share_gift_title">Diyarî Has Been Prepared.\nShare It Niha!</string>
+    <string name="share_gift_button">Diyarî parve bike link</string>
+
+    <string name="confirm_create_gift_hint">Confirming dê transfer tokens ji yê te account</string>
+    <string name="common_your_gift">Yê te Diyarî</string>
+
+    <string name="select_gift_amount_title">Bişîne gift on</string>
+
+    <string name="common_enter_other_amount">Enter another amount</string>
+
+    <string name="gift_min_balance_validation_message"> minimum gift e %s</string>
+
+    <string name="gift_enter_amount_disabled_button_state">Mîqdar binivîse</string>
+
+    <string name="gifts_assets_flow_title">Hilbijêre a token to gift</string>
+    <string name="gifts_network_flow_title">Tor hilbijêre ji bo %s gift</string>
+    <string name="assets_gifts_flow_placeholder">You don’t have tokens to gift.\nBuy an Deposit tokens to yê te account.</string>
+
+    <string name="gifts_create">Diyarî çêke</string>
+    <string name="gifts_placeholder_step_2">%s as a link û invite anyone to Pezkuwi Cîzdan</string>
+    <string name="gifts_placeholder_step_2_highlight">Parve bike  gift directly</string>
+    <string name="gifts_placeholder_step_3">%s, û you dikare return unclaimed gifts anytime ji ev device</string>
+    <string name="gifts_placeholder_step_3_highlight"> gift e available instantly</string>
+
+    <string name="gifts_header_title">Parve bike Crypto Diyarî bi Anyone, Anywhere</string>
+    <string name="gifts_header_subtitle">Bişîne gifts fast, easily, û securely in Pezkuwi Cîzdan</string>
+    <string name="gifts_list_title">Diyarî you created</string>
+    <string name="common_gift">Diyarî</string>
+
+    <string name="select_token_to_vote">Token hilbijêre to vote</string>
+    <string name="common_select_token">Token hilbijêre</string>
+
+    <string name="staking_rewards">%s rewards</string>
+
+    <string name="chain_migration_details_hint_history">Kevn transaction history remains on %s</string>
+
+    <string name="chain_migration_details_in_progress_title">Starting %1$s yê te %2$s balance, Staking û Rêveberî in on %3$s. These features might be unavailable ji bo up to 24 hours.</string>
+    <string name="staking_details_migration_alert_title">%1$s staking e live on %2$s starting %3$s</string>
+
+    <string name="common_view">Bibîne</string>
+    <string name="transaction_history_migration_source_message">Yê te previous %s transaction history e still available on %s</string>
+
+    <string name="asset_details_source_asset_alert_title">Yê te %s tokens niha on %s</string>
+    <string name="asset_details_source_asset_alert_message">Starting %1$s, yê te %2$s balance, Staking, û Rêveberî dê be on %3$s — bi improved performance û lower costs.</string>
+    <string name="asset_details_source_asset_alert_button">Go to %s</string>
+
+    <string name="chain_migration_details_hint_auto_migration">Migration happens automatically, no action needed</string>
+
+    <string name="chain_migration_details_title">Starting %1$s yê te %2$s balance, Staking û Rêveberî in on %3$s</string>
+    <string name="chain_migration_details_subtitle">What makes Malûmilk Hub awesome?</string>
+    <string name="chain_migration_details_minimal_balance">%1$sx reduction in minimal balance\n(ji %2$s to %3$s)</string>
+    <string name="chain_migration_details_lower_fee">%1$sx lower transaction fees\n(ji %2$s to %3$s)</string>
+    <string name="chain_migration_details_tokens">Bêtir tokens supported: %s, û din ecosystem tokens</string>
+    <string name="chain_migration_details_unified_access">Unified access to %s, assets, staking, û governance</string>
+    <string name="chain_migration_details_fee_in_any_tokens">Ability to pay fees in her token</string>
+
+    <string name="profile_settings_hide_balances_on_launch_title">Veke app bi hidden balance</string>
+
+    <string name="mutisigs_push_notifications_warning_enable">Enable in Mîheng</string>
+
+    <string name="mutisigs_push_notifications_warning_title">Multisig push notifications in li vir!</string>
+    <string name="mutisigs_push_notifications_warning_message">Get notified about signing requests, nû signatures, û completed transactions — so you’re always in control. Manage anytime in Mîheng.</string>
+
+    <string name="no_ms_accounts_found_dialog_title">Na multisig wallets</string>
+    <string name="no_ms_accounts_found_dialog_message">You haven’t added an selected her multisig wallets in Pezkuwi Cîzdan. Lê zêde bike û select at least one to receive multisig push notifications.</string>
+
+    <string name="account_welcome_trust_wallet_title">Trust Cîzdan</string>
+    <string name="account_welcome_trust_wallet_subtitle">Use yê te Trust Cîzdan accounts in Pezkuwi Cîzdan</string>
+
+    <string name="multisig_push_settings_initial_switcher">Yê te signature requested</string>
+    <string name="multisig_push_settings_approval_switcher">Hate îmzekirin by signatory</string>
+    <string name="multisig_push_settings_executed_switcher">Multisig transaction executed</string>
+    <string name="multisig_push_settings_rejected_switcher">Multisig transaction rejected</string>
+    <string name="multisig_operation_utility_batch_title">Batch (executes until error)</string>
+    <string name="multisig_operation_utility_batch_all_title">Batch Hemû (reverts on error)</string>
+    <string name="multisig_operation_utility_force_batch_title">Force Batch (ignores errors)</string>
+    <string name="multisig_operation_details_not_found_title">Tê îmzekirin e over</string>
+
+    <string name="multisig_operation_details_not_found_message">Danûstandin has already been executed an rejected.</string>
+
+    <string name="loading_transaction_details">Tê barkirin transaction details…</string>
+
+    <string name="multisig_transaction_message_transfer">%1$s → %2$s</string>
+
+    <string name="multisig_transaction_executed_dialog_title">Multisig Danûstandin Hate înfazkirin</string>
+    <string name="multisig_transaction_rejected_dialog_title">Multisig Danûstandin Hate redkirin</string>
+
+    <string name="multisig_transaction_rejected_dialog_message">%s on %s.\nRejected by: %s.\nNo further actions in required ji you.</string>
+    <string name="multisig_transaction_executed_dialog_message">%s on %s.\nNo further actions in required ji you.</string>
+
+    <string name="multisig_transaction_dialog_message_unknown_call">Danûstandin without initial on-chain information (call data) bû rejected</string>
+
+    <string name="alert_nova_has_selected_ms_wallet">Pezkuwi Cîzdan has automatically switched to yê te multisig wallet so you dikare view pending transactions.</string>
+
+    <string name="multisig_notification_on_behalf_of">On behalf of %s.</string>
+    <string name="multisig_notification_rejected_transaction_title">❌ Multisig transaction rejected</string>
+    <string name="multisig_notification_rejected_transaction_message">Hate redkirin by %s.</string>
+
+    <string name="multisig_notification_executed_transaction_title">✅ Multisig transaction executed</string>
+    <string name="multisig_notification_executed_transaction_message">Hate îmzekirin û executed by %s.</string>
+
+    <string name="multisig_notification_new_approval_title_additional_message">%d of %d signatures collected.</string>
+    <string name="multisig_notification_new_approval_title">Hate îmzekirin by %s</string>
+
+    <string name="multisig_notification_init_transaction_title">✍🏻 Yê te signature requested </string>
+    <string name="multisig_notification_init_transaction_message">%s on %s.</string>
+    <string name="multisig_operation_default_call_format">%s: %s</string>
+    <string name="multisig_notification_initiator_footer">Initiated by %s.</string>
+    <string name="multisig_notification_message_header">Cîzdan: %s</string>
+
+    <string name="multisigs_notification_channel_name">Multisig Danûstandin Notification Channel</string>
+    <string name="multisigs_notification_channel_id" translatable="false">multisigs_notification_channel_id</string>
+
+    <string name="push_wallets_title">Hilbijêre up to %d wallets to be notified when wallet has activity</string>
+
+    <string name="push_settings_multisig_operations">Multisig transactions</string>
+
+    <string name="invalid_call_data_format_message"> call data you provided e invalid an has  wrong format. Ji kerema xwe ensure it e correct û try again.</string>
+
+    <string name="multisig_operations_placeholder">Na transactions yet.\nSigning requests dê show up li vir</string>
+
+    <string name="proxied_card_not_supported_title">Debit Card e ne supported ji bo ev Proxied wallet</string>
+    <string name="proxied_card_not_supported_message">Bo manage yê te Debit Card, ji kerema xwe switch to a different wallet bi Polkadot network.</string>
+
+    <string name="common_call_hash">Call hash</string>
+
+    <string name="common_copy_call_data">Kopî bike call data</string>
+    <string name="common_share_call_data">Parve bike call data</string>
+
+    <string name="multisig_approve_transaction_unavailable_title">Cannot perform ev transaction</string>
+    <string name="multisig_approve_transaction_unavailable_message">Ev transaction has already been rejected an executed.</string>
+
+    <string name="multisig_transaction_created_subtitle">Din signatories dikare niha confirm  transaction.\nYou dikare track its status in  %s.</string>
+    <string name="multisig_transaction_created_subtitle_highlight">Danûstandin to sign</string>
+
+    <string name="accounts_update_proxieds_title">Delegated to you</string>
+
+    <string name="account_proxieds">Delegated to you (Proxied)</string>
+
+    <string name="multisig_signing_reject_confirmation_subtitle">Danûstandin dê be rejected. Multisig deposit dê be returned to %s.</string>
+
+    <string name="common_full_details">Full details</string>
+
+    <string name="multisig_deposit_description"> deposit stays locked on  depositor’s account until  multisig operation e executed an rejected.</string>
+
+    <string name="common_copy_hash">Kopî bike hash</string>
+    <string name="common_share_hash">Parve bike hash</string>
+
+    <string name="common_depositor">Depositor</string>
+    <string name="multisig_deposit">Multisig deposit</string>
+    <string name="common_call_data">Call data</string>
+    <string name="multisig_extrinsic_details_subtitle">Make sure  operation e correct</string>
+
+    <string name="multisig_on_behalf_of">On behalf of</string>
+    <string name="common_signatory">Îmzekar</string>
+    <string name="common_hide">Hide</string>
+    <string name="common_show">Show</string>
+    <string name="multisig_operation_details_signatories">Îmzekar (%d of %d)</string>
+
+    <string name="swap_dry_run_failed_inline_message">Simulation of swap step failed</string>
+
+    <string name="common_dry_run_failed_title">Danûstandin simulation failed</string>
+    <string name="common_dry_run_failed_message">Pezkuwi Cîzdan simulates  transaction beforehand to prevent errors. Ev simulation didn’t succeed. Dîsa biceribîne later an bi a higher amount. If  issue persists, ji kerema xwe contact Pezkuwi Cîzdan Support in Mîheng.</string>
+
+    <string name="multisig_signatory_validation_deposit_fee">%s doesn’t have enough balance to pay  network fee of %s û place multisig deposit of %s. You need to add %s bêtir to yê te balance</string>
+    <string name="multisig_signatory_validation_deposit">%s doesn’t have enough balance to place multisig deposit of %s. You need to add %s bêtir to yê te balance</string>
+    <string name="multisig_signatory_validation_fee">%s doesn’t have enough balance to pay  network fee of %s. You need to add %s bêtir to yê te balance</string>
+
+    <string name="invalid_call_data_title">Nederbasdar call data</string>
+    <string name="invalid_call_data_message">Ev call data ji bo another operation bi call hash %s</string>
+
+    <string name="multisig_operation_details_call_data_not_found">Enter call data to view details</string>
+
+    <string name="enter_call_data_title">Enter call data</string>
+
+
+    <string name="multisig_wallet_details_info_warning_other_signatories">Din signatories:</string>
+    <string name="multisig_wallet_details_info_warning_title">Threshold %d out of %d</string>
+
+    <string name="multisig_card_not_supported_title">Debit Card e ne supported ji bo Multisig</string>
+    <string name="multisig_card_not_supported_message">Bo manage yê te Debit Card, ji kerema xwe switch to a different type of wallet.</string>
+
+    <string name="multisig_sell_not_supported_title">Sell e ne supported ji bo Multisig</string>
+    <string name="multisig_sell_not_supported_message">Bo sell crypto ji bo fiat, ji kerema xwe switch to a different type of wallet.</string>
+
+
+    <string name="multisig_pending_operations">Danûstandin to sign</string>
+
+    <string name="multisig_operations_progress">Tê îmzekirin (%s of %s)</string>
+
+
+    <string name="multisig_operations_created">Hate afirandin by you</string>
+    <string name="multisig_operations_signed">Hate îmzekirin by you</string>
+
+
+    <string name="multisig_pending_operations_on_behalf_of">On behalf of:</string>
+
+    <string name="multisig_operations_unknown_calldata">Unknown operation</string>
+
+
+    <string name="multisig_callhash_exists_title">Operation already exists</string>
+    <string name="multisig_callhash_exists_message">%s has already initiated  same operation û it e currently waiting to be signed by din signatories.</string>
+
+    <string name="multisig_signatory_validation_ed">%s needs at least %s to pay ev transaction fee û stay above  minimum network balance. Current balance e: %s</string>
+
+    <string name="multisig_signing_is_not_supported_message">Multisig wallets do ne support signing arbitrary messages — only transactions</string>
+
+    <string name="multisig_signing_warning_title">Multisig transaction</string>
+    <string name="multisig_signing_warning_message"> multisig transaction dê be initiated by %s.  initiator pays  network fee û reserves a multisig deposit, which dê be unreserved once  transaction e executed.</string>
+
+    <string name="account_multisig_group_label">shared control (multisig)</string>
+
+    <string name="delegated_accounts_fragment_title">Cîzdan list has been updated</string>
+
+    <string name="delegated_accounts_fragment_explanation">Proxy û Multisig accounts auto-detected û organized ji bo you. Manage anytime in Mîheng.</string>
+
+    <string name="account_proxied">Proxied</string>
+    <string name="active_multisig_title">Shared control</string>
+
+    <string name="delegation_updates_deactivated_title">Na longer valid</string>
+
+    <string name="multisig_transaction_created_title">Multisig transaction created</string>
+    <string name="multisig_transaction_created_view_details">Bibîne details</string>
+
+    <string name="multisig_operation_details_approve">Bipejirîne</string>
+    <string name="multisig_operation_details_approve_and_execute">Bipejirîne &amp; Execute</string>
+    <string name="multisig_operation_details_reject">Red bike</string>
+
+    <string name="account_multisig">Multisig</string>
+    <string name="multisig_wallet_details_info_warning">Danûstandin ji ev wallet require approval ji multiple signatories. Yê te account e one of  signatories:</string>
+    <string name="multisig_signatory">Îmzekar:</string>
+
+
+    <string name="swap_failure_cannot_receive_insufficient_asset_out">You must have at least %s on %s to receive %s token</string>
+
+    <string name="account_migration_title">Bi xêr hatî to Pezkuwi Cîzdan!</string>
+    <string name="account_migration_subtitle">You’re almost there! 🎉\n Just tap below to complete  setup û start using yê te accounts seamlessly in both  Polkadot App û Pezkuwi Cîzdan</string>
+
+    <string name="account_migration_fallback_name" translatable="false">%s Wallet</string>
+
+    <string name="account_migration_accepted_url" translatable="false">%s://polkadot/migration-accepted?key=%s</string>
+    <string name="account_ledger_import_start_step_3_highlighted">access Bluetooth</string>
+
+    <string name="branch_io_link_host" translatable="false">pezkuwi-wallet.app.link</string>
+    <string name="branch_io_link_host_alternate" translatable="false">pezkuwi-wallet-alternate.app.link</string>
+
+    <string name="ledger_verify_addresses_message_both_buttons">Press both buttons on yê te %s to approve  addresses</string>
+    <string name="ledger_verify_addresses_message_confirm_button">Press confirm button on yê te %s to approve  addresses</string>
+
+    <string name="account_add_address">Lê zêde bike address</string>
+    <string name="account_substrate_accounts">Substrate Hesab</string>
+    <string name="account_evm_accounts">EVM Hesab</string>
+
+    <string name="ledger_select_address_update_for_evm_title">Nûve bike Ledger Generic App</string>
+    <string name="ledger_select_address_update_for_evm_message">Yê te Ledger device e using an outdated Generic app ew doesn’t support EVM addresses. Nûve bike it via Ledger Live.</string>
+
+    <string name="ledger_select_address_not_found">Hesab ne found</string>
+
+    <string name="ledger_select_address_account_label">Hesab %s</string>
+    <string name="ledger_device_nano_s">Nano S</string>
+
+    <string name="trade_provider_open_confirmation_title">Berdewam bike in browser?</string>
+    <string name="trade_provider_open_confirmation_message">Bo continue  purchase you dê be redirected ji Pezkuwi Cîzdan app to %s</string>
+
+    <string name="buy_token_not_supported_title">Ev token e ne supported by  buy feature</string>
+    <string name="buy_token_not_supported_message">None of our providers currently support  buying of ev token. Ji kerema xwe choose a different token, a different network, an check back later.</string>
+
+    <string name="sell_token_not_supported_title">Ev token e ne supported by  sell feature</string>
+    <string name="sell_token_not_supported_message">None of our providers currently support  selling of ev token. Ji kerema xwe choose a different token, a different network, an check back later.</string>
+
+    <string name="trade_token_not_supported_title">Ev token e ne supported by  buy/sell feature</string>
+    <string name="trade_token_not_supported_message">None of our providers currently support  buying an selling of ev token. Ji kerema xwe choose a different token, a different network, an check back later.</string>
+
+    <string name="buy_order_completed_message">Purchase initiated! Ji kerema xwe bisekine up to 60 minutes. You dikare track status on  email.</string>
+    <string name="sell_order_completed_message">Sale initiated! Ji kerema xwe bisekine up to 60 minutes. You dikare track status on  email.</string>
+
+    <string name="fragment_sell_token_title">Sell %s token</string>
+    <string name="sell_network_flow_title">Tor hilbijêre ji bo selling %s</string>
+
+    <string name="mercurio_provider_description">Best price bi fees up to 3.95%%</string>
+    <string name="transak_provider_buy_description">Buy crypto starting ji just $5</string>
+    <string name="banxa_provider_description">Straightforward û efficient KYC process</string>
+
+    <string name="transak_provider_sell_description">Sell crypto starting ji just $10</string>
+
+    <string name="wallet_asset_sell">Sell</string>
+
+    <string name="additional_payment_methods">+%d</string>
+
+    <string name="trade_provider_list_buy_title">Hilbijêre a provider to buy %s token</string>
+
+    <string name="trade_provider_list_sell_title">Hilbijêre a provider to sell %s token</string>
+
+    <string name="trade_provider_list_footer">Payment methods, fees û limits differ by provider.\nCompare their quotes to find  best option ji bo you.</string>
+
+    <string name="wallet_asset_sell_tokens">Sell tokens</string>
+    <string name="wallet_asset_buy_tokens">Buy tokens</string>
+
+    <string name="wallet_asset_buy_sell">Buy/Sell</string>
+
+
+    <string name="account_ledger_import_start_step_otg">%s in yê te phone settings</string>
+    <string name="account_ledger_import_start_step_otg_highlighted">Enable OTG</string>
+
+    <string name="select_ledger_grant_permissions">Enable Bluetooth &amp; Grant Permissions</string>
+
+    <string name="ledger_verify_address_message_both_buttons">Press both buttons on yê te %s to approve  address</string>
+    <string name="ledger_verify_address_message_confirm_button">Press confirm button on yê te %s to approve  address</string>
+    <string name="ledger_hold_to_sign">Hold confirm button on yê te %s to approve  transaction</string>
+
+    <string name="ledger_device_nano_x">Nano X</string>
+    <string name="ledger_device_flex">Ledger Flex</string>
+    <string name="ledger_device_stax">Ledger Stax</string>
+    <string name="ledger_device_nano_s_plus">Nano S Plus</string>
+
+    <string name="account_ledger_select_device_all_description">If using a Ledger via Bluetooth, enable Bluetooth on both devices û grant Pezkuwi Cîzdan Bluetooth û location permissions. Ji bo USB, enable OTG in yê te phone settings.</string>
+    <string name="account_ledger_select_device_usb_description">Ji kerema xwe, enable Ledger device. Unlock yê te Ledger device û open  %s app.</string>
+
+    <string name="account_ledger_import_start_guide">Ledger Connection Guide</string>
+
+    <string name="account_ledger_import_start_title">Connect Ledger</string>
+
+    <string name="start_import_ledger_connection_mode_bluetooth">Bluetooth</string>
+    <string name="start_import_ledger_connection_mode_usb">USB</string>
+
+    <string name="account_ledger_nano_x_legacy">Ledger Legacy</string>
+
+    <string name="account_ledger_generic_item_title">Ledger (Generic Polkadot app)</string>
+
+    <string name="account_parity_signer_show_mode_legacy">Legacy</string>
+    <string name="account_parity_signer_show_mode_new">Nû (Vault v7+)</string>
+
+    <string name="unified_address_title">Nû Unified Navnîşan</string>
+    <string name="unified_address_subtitle">Hin exchanges may still require  legacy format\nfor operations while they update. %s</string>
+    <string name="unified_address_format_new_badge">nû format</string>
+    <string name="unified_address_format_legacy_badge">legacy format</string>
+    <string name="unified_address_format_checkbox_warning">Do ne show ev again.\nYou dikare find legacy address in Werbigire.</string>
+
+    <string name="waiting_top_up_card_timer">Estimated %s</string>
+    <string name="waiting_initial_top_up_card_title">Yê te card e being issued!</string>
+    <string name="waiting_existing_card_top_up_card_title">Yê te card e being funded!</string>
+    <string name="waiting_top_up_card_description">It dikare take up to 5 minutes.\nThis window dê be closed automatically.</string>
+
+    <string name="fragment_waiting_top_up_time_out_error_title">Têkilî support</string>
+    <string name="fragment_waiting_top_up_time_out_error_message">Ji kerema xwe contact support@pezkuwichain.io. Include email address ew you have used ji bo issuing  card.</string>
+
+    <string name="fragment_assets_nova_card">Manage Debit Card</string>
+
+    <string name="fragment_top_up_card_title">Top up card bi %s</string>
+
+    <string name="price_charts_period_today">Îro</string>
+    <string name="price_charts_period_week">Last Week</string>
+    <string name="price_charts_period_month">Last Month</string>
+    <string name="price_charts_period_year">Last Year</string>
+    <string name="price_charts_period_all">Hemû Dem</string>
+
+    <string name="price_chart_date_format">%s at %s</string>
+    <string name="price_chart_price_change">%s (%s)</string>
+
+    <string name="price_chart_title">%s price</string>
+    <string name="price_chart_day">1D</string>
+    <string name="price_chart_week">1W</string>
+    <string name="price_chart_month">1M</string>
+    <string name="price_chart_year">1Y</string>
+    <string name="price_chart_max">Hemû</string>
+
+    <string name="app_link_host" translatable="false">app.pezkuwichain.io</string>
+
+    <string name="high_price_impact_detacted_title">High price impact detected (%s)</string>
+
+    <string name="high_price_impact_detacted_message">Executing ev swap dê result in significant slippage û financial losses. Consider reducing yê te trade size of splitting yê te trade nav multiple transactions.</string>
+
+    <string name="popular_dapps_title">Popular</string>
+
+    <string name="swap_intermediate_too_low_amount_to_stay_abow_ed_message">During swap execution intermediate receive amount e %s which e kêmtir than minimum balance of %s. Try specifying larger swap amount.</string>
+
+    <string name="common_not_enough_to_pay_fee_message">You don\'t have enough balance to pay network fee of %s. Current balance e %s</string>
+
+    <string name="common_sec">sec</string>
+
+    <string name="common_do_not_close_app">Do ne close  app!</string>
+
+    <string name="common_failed">Serneket</string>
+
+    <string name="swap_execution_operations_progress">%s of %s operations</string>
+
+    <plurals name="swap_execution_operations_completed">
+        <item quantity="one">%s operation</item>
+        <item quantity="other">%s operations</item>
+    </plurals>
+
+    <string name="swap_execution_progress_swap_label">Swapping %s to %s on %s</string>
+    <string name="swap_execution_progress_transfer_label">Transferring %s to %s</string>
+
+    <string name="swap_execution_failure">Serneket on operation #%s (%s)</string>
+    <string name="swap_execution_failure_swap_label">%s to %s swap on %s</string>
+    <string name="swap_execution_failure_transfer_label">%s transfer ji %s to %s</string>
+
+    <plurals name="common_seconds_format">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+
+    <string name="swap_execution_time">Execution time</string>
+
+    <string name="common_total_fee">Tevahî fee</string>
+
+    <string name="common_fee_with_label">Heq: %s</string>
+
+    <string name="swap_route_segment_transfer_title">Veguhestin</string>
+    <string name="swap_route_segment_swap_title">Swap</string>
+    <string name="swap_route_description"> way ew yê te token dê take through different networks to get  desired token.</string>
+    <string name="swap_route">Route</string>
+
+    <string name="common_see_all">See Hemû</string>
+    <string name="dapp_favorites">Favorites</string>
+    <string name="dapp_entry_point_title">%d DApps</string>
+
+    <string name="close_dapp_tabs_title">Bigire Hemû DApps?</string>
+    <string name="close_dapp_tabs_message">Hemû opened tabs in DApp browser dê be closed.</string>
+
+    <string name="browser_tabs_close_all">Bigire Hemû</string>
+
+    <string name="select_network_title">Tor hilbijêre</string>
+
+    <string name="assets_search_token_hint">Bigere by token</string>
+
+    <string name="receive_screen_copy_address">Kopî bike Navnîşan</string>
+    <string name="wallet_asset_receive_token_subtitle">Bişîne only %1$s token û tokens in %2$s network to ev address, an you might lose yê te funds</string>
+
+    <string name="appearance_token_assets_title">token icons</string>
+    <string name="appearance_title">Appearance</string>
+    <string name="appearance_white_icon_title">White</string>
+    <string name="appearance_colored_icon_title">Colored</string>
+
+    <string name="buy_network_flow_title">Tor hilbijêre ji bo buying %s</string>
+    <string name="receive_network_flow_title">Tor hilbijêre ji bo receiving %s</string>
+    <string name="send_network_flow_title">Tor hilbijêre ji bo sending %s</string>
+    <string name="swap_network_flow_title">Tor hilbijêre ji bo swapping %s</string>
+
+    <string name="asset_view_tokens">Token</string>
+    <string name="asset_view_networks">Tor</string>
+
+    <string name="settings_wiki">Wiki &amp; Alîkarî Center</string>
+
+    <string name="settings_email">Get support via Email</string>
+
+    <string name="swipe_gov_card_placeholder_basket_full_text">You have already voted ji bo hemû available referenda</string>
+    <string name="swipe_gov_cards_placeholder_button">Bipejirîne yê te votes</string>
+    <string name="swipe_gov_cards_basket_title">Deng bide list</string>
+    <string name="swipe_gov_cards_no_referenda_to_vote">Na referenda to vote</string>
+    <string name="swipe_gov_cards_counter">%d left</string>
+
+    <string name="common_use_max">Use max</string>
+
+    <string name="swipe_gov_insufficient_balance_dialog_title">Insufficient balance ji bo voting</string>
+    <string name="swipe_gov_insufficient_balance_dialog_message">You don\'t have enough balance to vote bi  current voting power %s (%sx). Ji kerema xwe change voting power an add bêtir funds to yê te wallet.</string>
+    <string name="swipe_gov_convirm_votes_success_message">You have successfully voted ji bo %d referenda</string>
+
+    <string name="swipe_gov_vote_setup_title">Deng bide ji bo %d referenda</string>
+    <string name="swipe_gov_basket_remove_item_confirm_title">Rake referendum %s ji vote list?</string>
+    <string name="swipe_gov_basket_remove_item_confirm_message">You always dikare vote ji bo ev referendum later </string>
+
+    <string name="swipe_gov_basket_removed_items_title">Hin of  referenda excluded ji vote list</string>
+    <string name="swipe_gov_basket_removed_items_message">Hin of  referenda in no longer available ji bo voting an you may ne have enough tokens available to vote. Peyda to vote: %s.</string>
+
+    <string name="swipe_gov_aye_format">Aye: %s</string>
+    <string name="swipe_gov_nay_format">Nay: %s</string>
+    <string name="swipe_gov_abstain_format">Abstain: %s</string>
+
+    <string name="swipe_gov_vote_title">Dengdan power</string>
+    <string name="swipe_gov_vote_subtitle">Dengdan dê be set ji bo future votes in SwipeGov</string>
+    <string name="swipe_gov_cards_full_list">Bipejirîne votes</string>
+    <string name="swipe_gov_cards_voting_list_empty">Na votes</string>
+    <string name="swipe_gov_card_data_loading_error_title">Na data retrived</string>
+    <string name="swipe_gov_card_data_loading_error_message"> data of  referendum could ne be loaded</string>
+    <string name="swipe_gov_card_requested_title">Requested:</string>
+    <string name="swipe_gov_card_placeholder_basket_empty_text">You have already voted ji bo hemû available referenda an there in no referenda to vote right niha. Come back later.</string>
+    <string name="swipe_gov_title">SwipeGov</string>
+    <string name="referenda_swipe_gov_banner_subtitle">Swipe to vote on referenda bi AI summaries. Fast &amp; easy!</string>
+    <string name="referenda_swipe_gov_banner_chip">%d referenda</string>
+
+    <string name="account_ledger_generic_import_start_step_1_highlighted">Polkadot app e installed</string>
+
+    <string name="account_ledger_generic_import_start_step_2_highlighted">Veke  Polkadot app</string>
+
+    <string name="account_ledger_generic_import_start_step_1">Make sure %s to yê te Ledger device using Ledger Live app</string>
+
+    <string name="account_ledger_generic_import_start_step_2">%s on yê te Ledger device</string>
+
+    <string name="account_ledger_import_start_step_3">Allow Pezkuwi Cîzdan to %s</string>
+
+    <string name="account_ledger_import_start_step_4">%s to add to wallet</string>
+    <string name="account_ledger_import_start_step_4_highlighted">Hesab hilbijêre</string>
+
+    <string name="account_polkadot_vault_import_start_step_3">Polkadot Vault dê provide you %s</string>
+    <string name="account_polkadot_vault_import_start_step_3_highlighted">Koda QR to scan</string>
+
+    <string name="account_polkadot_vault_import_start_step_1">%s application on yê te smartphone</string>
+    <string name="account_polkadot_vault_import_start_step_1_highlighted">Veke Polkadot Vault</string>
+
+    <string name="account_ledger_import_start_step_2">%s on yê te Ledger device</string>
+    <string name="account_ledger_import_start_step_2_highlighted">Veke  network app</string>
+
+    <string name="account_ledger_import_start_step_1">Make sure %s to yê te Ledger device using Ledger Live app</string>
+    <string name="account_ledger_import_start_step_1_highlighted">Tor app e installed</string>
+
+    <string name="account_parity_signer_import_start_step_3">Parity Signer dê provide you %s</string>
+    <string name="account_parity_signer_import_start_step_3_highlighted">Koda QR to scan</string>
+
+    <string name="account_parity_signer_import_start_step_2">%s you would like to add to Pezkuwi Cîzdan</string>
+    <string name="account_parity_signer_import_start_step_2_highlighted">Go to “Keys” tab. Hilbijêre seed, then account</string>
+
+    <string name="account_parity_signer_import_start_step_1">%s application on yê te smartphone</string>
+    <string name="account_parity_signer_import_start_step_1_highlighted">Veke Parity Signer</string>
+
+    <string name="setup_referendum_vote_conviction_info">Conviction dê be set to 0.1x when you vote Abstain</string>
+
+    <string name="referendum_abstain_voters_title">Abstain votes</string>
+    <string name="referendum_abstain_vote_invalid_conviction_title">Conviction update</string>
+    <string name="referendum_abstain_vote_invalid_conviction_subtitle">Abstain votes dikare only be done bi 0.1x conviction. Deng bide bi 0.1x conviction?</string>
+
+    <string name="dapp_url_warning_title">Hişyarî! DApp e unknown</string>
+    <string name="dapp_url_warning_subtitle">Malicious DApps dikare withdraw hemû yê te funds. Always do yê te own research before using a DApp, granting permission, an sending funds out.\n\nIf someone e urging you to visit ev DApp, it e likely a scam. When in doubt, ji kerema xwe contact Pezkuwi Cîzdan support: %s.</string>
+    <string name="dapp_url_warning_open_anyway">Veke anyway</string>
+
+    <string name="setup_staking_conflict_title">Already staking</string>
+    <string name="setup_staking_conflict_message">You nikare stake bi Direct Staking û Nomination Hewz at  same time</string>
+
+    <string name="pool_staking_conflict_title">Hewz operations in ne available</string>
+    <string name="pool_staking_conflict_message">You dikare no longer use both Direct Staking û Hewz Staking ji  same account. Bo manage yê te Hewz  Staking you first need to unstake yê te tokens ji Direct Staking.</string>
+
+    <string name="chain_network_management_auto_balance">Auto-balance nodes</string>
+    <string name="chain_network_management_enabling">Enable connection</string>
+
+    <string name="account_ledger_migration_deprecation_message"> Migration app dê be unavailable in  near future. Use it to migrate yê te accounts to  nû Ledger app to avoid losing yê te funds.</string>
+
+    <string name="account_ledger_migration_app">Polkadot Migration</string>
+    <string name="account_ledger_migration_generic">Polkadot</string>
+
+    <string name="account_ledger_legacy_warning_title">Nû Ledger app has been released</string>
+    <string name="account_ledger_legacy_warning_message">Bo sign operations û migrate yê te accounts to  nû Generic Ledger app install û open Migration app. Legacy Kevn û Migration Ledger apps dê ne be supported in  future.</string>
+
+    <string name="account_ledger_nano_x">Ledger Nano X</string>
+
+    <string name="accounts_ledger_legacy">Ledger (Legacy)</string>
+
+    <string name="common_passphrase">Passphrase</string>
+
+    <string name="cloud_backup_removing_warning_title">Cîzdan dê be removed in  Cloud Paşvekişandin</string>
+    <string name="cloud_backup_removing_warning_subtitle">Ensure you have saved Passphrase ji bo  wallet before proceeding. </string>
+
+
+    <string name="enter_backup_password_hint">Paşvekişandin password</string>
+
+    <string name="common_no_screenshot_message_v2_2_0">We in going to show yê te passphrase. Make sure no one dikare see yê te screen û do ne take screenshots — they dikare be collected by third-party malware</string>
+
+    <string name="disabled_chain_error_title">%s e disabled</string>
+    <string name="disabled_chain_error_message">You dikare ne sign transactions of disabled networks. Enable %s in settings û try again</string>
+
+    <string name="invalid_token_symbol_title">Nederbasdar Yekeya pereyî Symbol</string>
+    <string name="invalid_token_symbol_message"> entered Yekeya pereyî Symbol (%1$s) does ne match  network (%2$s). Do you want to use  correct currency symbol?</string>
+
+    <string name="manage_node_actions_title">Manage added node</string>
+    <string name="manage_node_delete_title">Jê bibe node?</string>
+    <string name="manage_node_delete_message">Girêk \"%s\" dê be deleted</string>
+
+    <string name="manage_node_action_edit">Sererast bike node</string>
+    <string name="manage_node_action_delete">Jê bibe node</string>
+
+    <string name="manage_network_delete_title">Jê bibe network?</string>
+    <string name="manage_network_delete_message">You dê ne be able to see yê te token balances on ew network on Malûmilk screen</string>
+
+    <string name="manage_network_action_edit">Sererast bike network</string>
+    <string name="manage_network_action_delete">Jê bibe network</string>
+    <string name="manage_network_actions_title">Manage added network</string>
+
+    <string name="common_delete">Jê bibe</string>
+
+    <string name="add_network_title">Enter network details</string>
+    <string name="loading_network_info">Tê barkirin network info...</string>
+
+    <string name="create_network_invalid_chain_id_title">Nederbasdar Zincîr ID</string>
+    <string name="create_network_invalid_chain_id_message"> entered Zincîr ID does ne match  network in  RPC URL.</string>
+
+    <string name="common_modify">Modify</string>
+    <string name="network_already_exist_failure_title">Ev Girêk already exists</string>
+    <string name="default_network_already_exist_failure_message"> entered RPC URL e present in Pezkuwi Cîzdan as a %s network.</string>
+    <string name="custom_network_already_exist_failure_message"> entered RPC URL e present in Pezkuwi Cîzdan as a %s custom network. Tu bawer î you want to modify it?</string>
+
+    <string name="create_network_node_name" translatable="false">%s Default Node</string>
+    <string name="create_network_block_explorer_name" translatable="false">%s Default Block Explorer</string>
+
+    <string name="common_enter_details">Enter details</string>
+    <string name="common_substrate">Substrate</string>
+    <string name="common_evm">EVM</string>
+
+    <string name="token_price_info_provider_label">Coingecko link ji bo price info (Optional) </string>
+
+    <string name="token_price_info_provider_placeholder" translatable="false">www.coingecko.com/en/coins/tether</string>
+
+    <string name="custom_network_block_explorer_title">Block explorer URL (Optional) </string>
+    <string name="custom_network_block_explorer_placeholder">https://networkscan.io</string>
+    <string name="custom_network_chain_id_title">Zincîr ID</string>
+    <string name="custom_network_chain_id_placeholder">012345</string>
+    <string name="custom_network_currency_title">Yekeya pereyî Symbol</string>
+    <string name="custom_network_currency_placeholder">TOKEN</string>
+    <string name="custom_network_name_title">Tor name</string>
+    <string name="custom_rpc_node_url_title">RPC URL</string>
+
+    <string name="pre_configured_networks_search_hint">Bigere by network name</string>
+    <string name="pre_configured_networks_progress_text">Tê barkirin networks list...</string>
+    <string name="pre_configured_networks_title">Lê zêde bike network</string>
+    <string name="pre_configured_networks_add_custom_button">Lê zêde bike network manually</string>
+
+    <string name="node_already_exist_failure_title">Ev Girêk already exists</string>
+    <string name="node_already_exist_failure_message"> URL you entered already exists as  "%s" Girêk.</string>
+
+    <string name="node_not_supported_by_network_title">Wrong network</string>
+    <string name="node_not_supported_by_network_message"> URL you entered e ne corresponding to Girêk ji bo %1$s.\nPlease enter URL of  valid %1$s node.</string>
+
+    <string name="node_not_alive_title">Girêk error</string>
+    <string name="node_not_alive_message"> Girêk URL you entered e either ne responding an contains incorrect format.  URL format should start bi "wss://".</string>
+
+    <string name="custom_node_add_title">Lê zêde bike custom node ji bo</string>
+    <string name="custom_node_edit_title">Sererast bike custom node ji bo</string>
+    <string name="custom_node_url_title">Girêk URL</string>
+    <string name="custom_node_url_hint">wss://</string>
+    <string name="custom_node_name_title">Girêk name</string>
+    <string name="custom_node_name_hint">Nav</string>
+    <string name="custom_node_disabled_button_state">Enter details</string>
+    <string name="custom_node_add_button_state">Lê zêde bike node</string>
+    <string name="custom_node_edit_button_state">Tomar bike</string>
+
+    <string name="common_connected_ms">%d ms</string>
+    <string name="add_custom_node">Lê zêde bike custom node</string>
+
+    <string name="network_management_custom_nodes">custom nodes</string>
+    <string name="network_management_default_nodes">default nodes</string>
+    <string name="added_networks_empty_placeholder">Hate lêzêdekirin custom networks\nwill appear li vir</string>
+
+    <string name="integrate_networks_banner_title">Building ji bo Pezkuwichain?</string>
+    <string name="integrate_networks_banner_description">Integrate hemû  features of  network you in building nav Pezkuwi Cîzdan, making it accessible to everyone.</string>
+    <string name="integrate_networks_banner_link">Integrate yê te network</string>
+
+    <string name="common_connecting">connecting...</string>
+    <string name="common_testnet">Testnet</string>
+    <string name="network_management_default_page_title">Default</string>
+    <string name="network_management_added_page_title">Hate lêzêdekirin</string>
+    <string name="common_add_network">Lê zêde bike network</string>
+    <string name="common_not_available">Ne available</string>
+    <string name="settings_push_notifications_only_available_with_google_services_error">Push notifications in only available ji bo devices bi Google services.</string>
+    <string name="settings_push_notifications_only_available_from_google_play_error">Push notifications in available only ji bo  Pezkuwi Cîzdan version downloaded ji Google Play.</string>
+
+    <string name="onboarding_terms_and_conditions_1_v2_2_1">By continuing, you agree to our\n%1$s û %2$s</string>
+
+    <string name="backup_settings_no_wallets_error_title">Na wallets to back up</string>
+    <string name="backup_settings_no_wallets_error_message">You haven\'t added her wallets bi a passphrase.</string>
+
+    <string name="account_export_existing">Têxe existing</string>
+    <string name="cloud_backup_will_be_changed_title">Cîzdan changes dê be updated in  Cloud Paşvekişandin</string>
+    <string name="common_check_box_auto_continue">Automatically continue in  future</string>
+
+    <string name="wallet_management_add_account_title">How to add wallet?</string>
+    <string name="wallet_management_create_account_btn">How to add wallet?</string>
+    <string name="wallet_management_import_account_btn">How to add wallet?</string>
+
+    <string name="account_export_json_password_subtitle">Ev password e required to encrypt yê te account û e used alongside ev JSON file to restore yê te wallet.</string>
+
+    <string name="export_json_download_btn">Download Vegerîne JSON</string>
+
+    <string name="common_enter_password">Şîfre binivîse</string>
+
+    <string name="common_network_polkadot">Polkadot</string>
+    <string name="common_network_ethereum">Ethereum</string>
+
+    <string name="manual_backup_secrets_subtitle">Do ne share her of ev information bi anyone - If you do you dê permanently û irretreveably lose hemû of yê te assets</string>
+
+    <string name="manual_backup_secrets_custom_key_title">Custom Key</string>
+    <string name="manual_backup_secrets_default_key_title">Default Key</string>
+
+    <string name="json_export_btn">Derxe JSON file</string>
+
+    <string name="backup_secrets_warning_disabled_button">Review &amp; Accept to Berdewam bike</string>
+
+    <string name="manual_backup_warning_title">Do ne share yê te passphrase!</string>
+    <string name="manual_backup_warning_subtitle">Ji kerema xwe read  following carefully before viewing yê te backup</string>
+    <string name="backup_secrets_warning_condition_1">Ev passphrase gives you total û permanent access to hemû connected wallets û  funds within them.\n%s</string>
+    <string name="backup_secrets_warning_condition_1_highlight">DO NOT SHARE IT.</string>
+    <string name="backup_secrets_warning_condition_2">Do ne enter yê te Passphrase nav her form an website.\n%s</string>
+    <string name="backup_secrets_warning_condition_2_highlight">FUNDS MAY BE LOST FOREVER.</string>
+    <string name="backup_secrets_warning_condition_3">Support an admins dê never request yê te Passphrase under her circumstances.\n%s</string>
+    <string name="backup_secrets_warning_condition_3_highlight">BEWARE OF IMPERSONATORS.</string>
+
+    <string name="manual_backup_select_account_default_key_title">Hesab bi default key</string>
+    <string name="manual_backup_select_account_custom_key_title">Hesab bi custom key</string>
+    <string name="manual_backup_select_account_default_key_account">Default accounts</string>
+    <string name="manual_backup_select_account_default_key_account_subtitle_more_chains">%s, +%d others</string>
+    <string name="manual_backup_select_account_header">Hilbijêre  key to back up</string>
+
+    <string name="manual_backup_select_wallet_header">Hilbijêre a wallet to back up</string>
+    <string name="cloud_backup_destructive_changes_not_applied_title">Cîzdan changes failed to update in  Cloud Paşvekişandin</string>
+    <string name="cloud_backup_destructive_changes_not_applied_subtitle">At  moment yê te backup e ne synchronized. Ji kerema xwe review  issue.</string>
+    <string name="cloud_backup_destructive_changes_not_applied_button">Review  Issue</string>
+
+    <string name="cloud_backup_destructive_changes_confirmation_title">Tu bawer î ew you want to apply these changes?</string>
+    <string name="cloud_backup_destructive_changes_confirmation_subtitle">If you have ne manually written down yê te Passphrase ji bo wallets ew dê be removed, then those wallets û hemû of their assets dê be permanently û irretrievably lost forever.</string>
+
+    <string name="cloud_backup_destructive_changes_action_title">Cloud Paşvekişandin changes found</string>
+    <string name="cloud_backup_destructive_changes_action_subtitle">At  moment yê te backup e ne synchronized. Ji kerema xwe review these updates.</string>
+    <string name="cloud_backup_destructive_changes_button">Review Updates</string>
+
+    <string name="state_new">Nû</string>
+    <string name="state_changed">Modified</string>
+    <string name="state_removed">Removed</string>
+
+    <string name="backup_diff_title">Bicîh bîne Paşvekişandin Updates?</string>
+    <string name="backup_diff_subtitle">Before proceeding bi changes, %s ji bo modified û removed wallets!</string>
+    <string name="backup_diff_subtitle_highlighted">ensure you\'ve saved Passphrases</string>
+    <string name="common_sign_in">Îmze bike In</string>
+
+    <string name="common_not_now">Ne niha</string>
+
+    <string name="deprecated_cloud_backup_password_title">Paşvekişandin password bû changed</string>
+    <string name="deprecated_cloud_backup_password_subtitle">Yê te backup password bû previously updated. Bo continue using Cloud Paşvekişandin, %s</string>
+    <string name="deprecated_cloud_backup_password_subtitle_highlight">ji kerema xwe enter  nû backup password.</string>
+
+    <string name="restore_cloud_backup_password_title">Yê te backup password bû previously updated. Bo continue using Cloud Paşvekişandin, ji kerema xwe enter  nû backup password.</string>
+
+    <string name="change_cloud_backup_password_title">Nûve bike backup password</string>
+    <string name="change_cloud_backup_password_subtitle">Ji kerema xwe enter a password ew dê be used to recover yê te wallets ji cloud backup. Ev password dikare\'t be recovered in  future, so be sure to remember it!</string>
+
+    <string name="confirm_cloud_backup_password_title">Enter current backup password</string>
+    <string name="confirm_cloud_backup_password_subtitle">Ji kerema xwe enter  password you created during  backup process</string>
+
+    <string name="deleting_backup_progress">Deleting a backup...</string>
+    <string name="cloud_backup_delete_action_title">Paşvekişandin dê be deleted ji Google Drive</string>
+    <string name="cloud_backup_delete_action_subtitle">%s û remember to always keep them offline to restore them anytime. You dikare do ev in  Paşvekişandin Mîheng.</string>
+    <string name="cloud_backup_delete_action_subtitle_highlighted">Ji kerema xwe write down hemû yê te wallet’s Passphrases before proceeding</string>
+
+    <string name="manage_cloud_backup">Manage backup</string>
+
+    <string name="backup_settings_delete_backup">Jê bibe backup</string>
+
+    <string name="common_change_password">Change password</string>
+
+    <string name="cloud_backup_settings_disabled_state_subtitle">Enable to backup wallets to yê te Google Drive</string>
+    <string name="cloud_backup_settings_last_sync">Last sync: %s at %s</string>
+    <string name="cloud_backup_settings_not_auth_button">Îmze bike In to Google Drive</string>
+    <string name="cloud_backup_settings_deprecated_password_button">Enter Paşvekişandin Şîfre</string>
+    <string name="cloud_backup_settings_corrupted_backup_button">Review Paşvekişandin Updates</string>
+    <string name="cloud_backup_settings_other_errors_button">Review Google Drive Issue</string>
+    <string name="cloud_backup_settings_backup_errors_button">Review Paşvekişandin Çewtî</string>
+
+    <string name="cloud_backup_state_syncing_title">Paşvekişandin Syncing...</string>
+    <string name="cloud_backup_state_disabled_title">Paşvekişandin Neçalak</string>
+    <string name="cloud_backup_state_unsynced_title">Paşvekişandin Unsynced</string>
+    <string name="cloud_backup_state_synced_title">Paşvekişandin Synced</string>
+    <string name="backup_settings_toolbar_title">Paşvekişandin</string>
+    <string name="backup_settings_title">Google Drive</string>
+    <string name="backup_settings_subtitle">You dikare enable Google Drive backups to store encrypted copies of hemû yê te wallets, secured by a password you set.</string>
+    <string name="backup_settings_manual_title">Manual</string>
+    <string name="backup_settings_manual_subtitle">You dikare manually back up yê te passphrase to ensure access to yê te wallet’s funds if you lose access to ev device</string>
+    <string name="backup_settings_switcher_text">Paş up to Google Drive</string>
+    <string name="backup_settings_manual_switcher_title">Paş up manually</string>
+
+    <string name="corrupted_backup_error_title">Paşvekişandin found but empty an broken</string>
+    <string name="corrupted_backup_error_subtitle">An issue has been identified bi yê te backup. You have  option to delete  current backup û create a nû one. %s before proceeding.</string>
+    <string name="corrupted_backup_error_subtitle_highlighted">Ensure you have saved Passphrases ji bo hemû wallets</string>
+
+    <string name="confirm_mnemonic_not_matching_error_message">Nederbasdar passphrase, ji kerema xwe check one bêtir time  words order</string>
+    <string name="confirm_mnemonic_disabled_button_state">Hilbijêre  words...</string>
+
+    <string name="existing_cloud_backup_found_button">Recover Cîzdan</string>
+    <string name="existing_cloud_backup_found_title">Existing Cloud Paşvekişandin found</string>
+    <string name="existing_cloud_backup_found_subtitle">%s Hemû of yê te wallets dê be safely backed up in Google Drive.</string>
+    <string name="existing_cloud_backup_found_subtitle_highlight">Do you want to recover yê te wallets?</string>
+
+    <string name="import_wallet_cloud_backup_not_found_title">Paşvekişandin Ne Found</string>
+    <string name="import_wallet_cloud_backup_not_found_subtitle">Unfortunately, Paşvekişandin bi yê te wallets has ne been found.</string>
+
+    <string name="cloud_backup_delete_backup_confirmation_title">Tu bawer î you want to delete Cloud Paşvekişandin?</string>
+    <string name="cloud_backup_delete_backup_confirmation_message">Current backup bi yê te wallets dê be permanently deleted!</string>
+
+    <string name="cloud_backup_delete_button">Jê bibe Paşvekişandin</string>
+    <string name="restore_cloud_backup_delete_backup_title">Have you lost yê te password?</string>
+    <string name="restore_cloud_backup_delete_backup_description">%s It\'s exclusively yours, securely stored, inaccessible to others. Without  backup password, restoring wallets ji Google Drive e impossible. If lost, delete  current backup to create a nû one bi a fresh password. %s</string>
+    <string name="restore_cloud_backup_delete_backup_description_highlighted_1">Unfortunately, yê te password nikare be recovered.</string>
+    <string name="restore_cloud_backup_delete_backup_description_highlighted_2">Alternatively, use Passphrase ji bo restoration.</string>
+
+    <string name="common_forgot_password">Forgot Şîfre?</string>
+    <string name="restore_cloud_backup_title">Enter backup password</string>
+    <string name="restore_cloud_backup_subtitle">Ji kerema xwe enter  password you created during  backup process</string>
+
+    <string name="common_got_it">Got it</string>
+
+    <string name="create_cloud_backup_password_alert_title">Remember Paşvekişandin Şîfre</string>
+    <string name="create_cloud_backup_password_alert_subtitle">In  future, without backup password it e ne possible to restore yê te wallets ji Cloud Paşvekişandin.\n%s</string>
+    <string name="create_cloud_backup_password_alert_subtitle_highlighted">Ev password nikare be recovered.</string>
+    <string name="create_cloud_backup_password_title">Create yê te backup password</string>
+    <string name="create_cloud_backup_password_subtitle">Ji kerema xwe enter a password to access yê te backup anytime.  password dikare’t be recovered, be sure to remember it!</string>
+    <string name="create_cloud_backup_password_input_hint">Paşvekişandin password</string>
+    <string name="create_cloud_backup_password_input_confirm_hint">Bipejirîne password</string>
+    <string name="create_cloud_backup_password_requirement_min_chars">Min. 8 characters</string>
+    <string name="create_cloud_backup_password_requirement_numbers">Numbers</string>
+    <string name="create_cloud_backup_password_requirement_letters">Letters</string>
+    <string name="create_cloud_backup_password_requirement_passwords_match">Passwords match</string>
+
+    <string name="cloud_backup_error_invalid_password_title">Şîfre e invalid</string>
+    <string name="cloud_backup_error_invalid_password_message">Ji kerema xwe, check password correctness û try again.</string>
+
+    <string name="common_connection_error_title">Connection Serneket</string>
+    <string name="common_connection_error_message">Ji kerema xwe, check yê te connection an try again later</string>
+
+    <string name="cloud_backup_error_not_found_title">Na Backups Found</string>
+    <string name="cloud_backup_error_not_found_message">Unfortunately, we have ne found a backup to restore wallets</string>
+
+    <string name="cloud_backup_error_google_service_auth_failed_title">Google Drive authentication failed</string>
+    <string name="cloud_backup_error_google_service_auth_failed_message">Ji kerema xwe ensure ew you in logged nav yê te Google account bi  correct credentials û have granted Pezkuwi Cîzdan access to Google Drive</string>
+
+    <string name="cloud_backup_error_google_service_other_title">Google Drive error</string>
+    <string name="cloud_backup_error_google_service_other_message">Unable to backup yê te wallets to Google Drive. Ji kerema xwe ensure ew you have enabled Pezkuwi Cîzdan to use yê te Google Drive û have enough available storage space û then try again.</string>
+
+    <string name="cloud_backup_error_google_service_not_enough_space_title">Ne Enough Storage</string>
+    <string name="cloud_backup_error_google_service_not_enough_space_message">You do ne have enough available Google Drive storage.</string>
+
+    <string name="cloud_backup_error_google_service_not_found_title">Google Play services ne found</string>
+    <string name="cloud_backup_error_google_service_not_found_message">Unfortunately, Google Drive e ne working without Google Play services, which in missing on yê te device. Try to get Google Play services</string>
+
+    <string name="start_create_wallet_your_wallet_is_ready">Yê te wallet e ready</string>
+    <string name="backup_title">Paşvekişandin</string>
+    <string name="start_create_wallet_set_wallet_name_explanation">Ev dê only be visible to you û you dikare edit it later.</string>
+    <string name="start_create_wallet_backup_ready_explanation">Niha lets back up yê te wallet. Ev makes sure ew yê te funds in safe û secure. Backups allow you to restore yê te wallet at her time.</string>
+    <string name="start_create_wallet_cloud_backup_btn">Berdewam bike bi Google</string>
+    <string name="start_create_wallet_manual_backup_btn">Berdewam bike bi manual backup</string>
+
+    <string name="backup_mnemonic_attention_title">Prepare to save yê te wallet!</string>
+    <string name="common_tap_to_reveal_title">Tap to reveal</string>
+    <string name="mnemonic_card_reveal_subtitle">Make sure no one dikare see yê te screen\nand do ne take screenshots</string>
+
+    <string name="mnemonic_card_title">Ji kerema xwe %s anyone</string>
+    <string name="mnemonic_card_title_highlight">do ne share bi</string>
+
+    <string name="account_backup_mnemonic_title">Write down yê te Passphrase</string>
+
+    <string name="start_create_wallet_name_your_wallet">Give yê te wallet a name</string>
+    <string name="start_create_wallet_enter_wallet_name">Enter wallet name</string>
+
+    <string name="common_cloud_backup">Cloud backup</string>
+    <string name="import_wallet_options_cloud_backup_subtitle">Recover wallets ji Google Drive</string>
+    <string name="loocking_backup_progress">Looking ji bo yê te backup...</string>
+
+    <string name="import_wallet_options_mnemonic_subtitle">Use yê te 12, 15, 18, 21 an 24-word phrase</string>
+    <string name="import_wallet_options_watch_only_title">Watch-only</string>
+
+    <string name="account_welcome_hardware_wallet_title">Hardware wallet</string>
+
+    <string name="account_welcome_hardware_wallet_subtitle">Polkadot Vault, Parity Signer an Ledger</string>
+
+    <string name="import_wallet_options_title">Choose how you would like to import yê te wallet</string>
+
+    <string name="common_something_went_wrong_title">Tiştek şaş çû</string>
+    <string name="push_welcome_timeout_error_message">Ji kerema xwe try again later by accessing notification settings ji  Mîheng tab</string>
+
+    <plurals name="multiple_wallets_selection_min_button_text">
+        <item quantity="one">Select at least %d wallet</item>
+        <item quantity="other">Select at least %d wallets</item>
+    </plurals>
+
+    <string name="common_terms_and_conditions_formatting">Şert û Conditions</string>
+    <string name="common_privacy_policy_formatting">Polîtîkaya Nepenîtiyê</string>
+
+    <string name="push_template_message">Hate wergirtin +0.6068 KSM ($20.35) ji Kusama staking</string>
+    <string name="push_template_app_name_and_time">Pezkuwi Cîzdan • niha</string>
+
+    <string name="push_settings_no_selected_wallets">You won\'t receive notifications about Cîzdan Activities (Hevseng, Staking) because you haven\'t selected her wallet</string>
+
+    <string name="deep_linking_host" translatable="false">pezkuwi</string>
+    <string name="deep_linking_scheme" translatable="false">pezkuwiwallet</string>
+
+    <string name="push_token_received_title">⬇️ Hate wergirtin %s</string>
+    <string name="push_token_received_no_account_name_title">⬇️ Hate wergirtin</string>
+    <string name="push_token_received_message">Hate wergirtin %s on %s</string>
+
+    <string name="push_token_sent_title">💸 Hate şandin %s</string>
+    <string name="push_token_sent_no_account_name_title">💸 Hate şandin</string>
+    <string name="push_token_sent_message">Hate şandin %1$s to %2$s on %3$s</string>
+
+    <string name="push_staking_reward_single_account_title">⭐️ Nû reward</string>
+    <string name="push_staking_reward_many_accounts_title">⭐️ Nû reward %s</string>
+    <string name="push_staking_reward_message">Hate wergirtin %s ji %s staking</string>
+
+    <string name="push_referendum_approved_title">✅ Referandom approved!</string>
+    <string name="push_referendum_approved_message">%1$s referendum #%2$s has ended û been approved 🎉</string>
+    <string name="push_referendum_rejected_title">❌ Referandom rejected!</string>
+    <string name="push_referendum_rejected_message">%1$s referendum #%2$s has ended û been rejected!</string>
+    <string name="push_referendum_status_changed_title">🗳️ Referandom status changed</string>
+    <string name="push_referendum_from_to_status_changed_message">%1$s Referandom #%2$s status changed ji %3$s to %4$s</string>
+    <string name="push_referendum_to_status_changed_message">%1$s Referandom #%2$s status changed to %3$s</string>
+
+    <string name="referendum_status_in_queue">In queue</string>
+
+    <string name="push_new_update_title">A nû update of Pezkuwi Cîzdan e available!</string>
+    <string name="push_new_update_message">Download Pezkuwi Cîzdan v%s to get hemû  nû features!</string>
+    <string name="push_new_referendum_title">🗳️ Nû referendum</string>
+    <string name="push_new_referendum_message">%s Referandom #%s e niha live!</string>
+
+    <plurals name="governance_select_tracks_min_tracks_error">
+        <item quantity="one">You need to select at least %d track</item>
+        <item quantity="other">You need to select at least %d tracks</item>
+    </plurals>
+
+    <string name="select_tracks_for">Hilbijêre tracks ji bo</string>
+    <string name="selected_tracks_quantity" formatted="false">%d of %d</string>
+
+    <string name="default_notification_channel_id" translatable="false">default_notification_channel_id</string>
+    <string name="transactions_notification_channel_id" translatable="false">transactions_notification_channel_id</string>
+    <string name="governance_notification_channel_id" translatable="false">default_notifications_channel_id</string>
+    <string name="staking_notification_channel_id" translatable="false">staking_notification_channel_id</string>
+    <string name="default_notification_channel_name">Default Notification Channel</string>
+    <string name="transactions_notification_channel_name">Danûstandin Notification Channel</string>
+    <string name="governance_notification_channel_name">Rêveberî Notification Channel</string>
+    <string name="staking_notification_channel_name">Staking Agahdarî Channel</string>
+
+    <string name="push_governance_settings_new_referendum">Nû Referandom</string>
+    <string name="push_governance_settings_referendum_update">Referandom Nûve bike</string>
+    <string name="push_governance_settings_delegate_votes">Delegat bike has voted</string>
+    <string name="common_clear">Paqij bike</string>
+
+    <string name="multiple_wallets_selection_max_message">You nikare select bêtir than %d wallets</string>
+
+    <string name="push_settings_staking_rewards">Staking rewards</string>
+    <string name="push_settings_others">Others</string>
+
+    <string name="push_settings_received_tokens">Hate wergirtin tokens</string>
+    <string name="push_settings_sent_tokens">Hate şandin tokens</string>
+    <string name="push_settings_balances">Hevseng</string>
+
+    <string name="push_settings_announcements">Pezkuwi announcements</string>
+
+    <string name="push_settings_enable">Enable notifications</string>
+    <string name="push_settings_wallets">Cîzdan</string>
+
+    <string name="common_retry_message">Tiştek şaş çû. Ji kerema xwe try again</string>
+    <string name="common_push_notifications">Push notifications</string>
+
+    <string name="push_welcome_title">Don’t miss a thing!</string>
+    <string name="push_welcome_message">Get notified about Cîzdan operations, Rêveberî updates, Staking activity û Ewlehî, so you’re always in  know</string>
+    <string name="push_welcome_enable_button">Enable push notifications</string>
+    <string name="push_welcome_terms_and_conditions" formatted="false">By enabling push notifications, you agree to our %s û %s</string>
+
+    <string name="wallet_send_cannot_dust_before_delivery_fee_message">Due to  cross-chain restrictions you dikare transfer ne bêtir than %s</string>
+
+    <string name="common_too_small_balance_title">Yê te balance e too small</string>
+    <string name="wallet_send_insufficient_balance_commission">You need to have at least %s to pay ev transaction fee û stay above  minimum network balance. Yê te current balance e: %s. You need to add %s to yê te balance to perform ev operation.</string>
+
+    <string name="nft_issuance_fungible_format">%s units of %s</string>
+
+    <string name="nft_fungile_price">%s ji bo %s</string>
+
+    <string name="staking_set_controller_deprecated_subtitle">Use Proxies to delegate Staking operations to another account</string>
+
+    <string name="staking_manage_proxy_requires_stash_title">Hilbijêre stash account to setup proxy</string>
+    <string name="staking_manage_proxy_requires_stash_message">Ji kerema xwe switch yê te wallet to %s to setup a proxy</string>
+
+    <string name="common_network_not_supported">%s e ne supported</string>
+
+    <string name="remove_proxy_confirmation_revoke_access_type">Revoke access type</string>
+    <string name="remove_proxy_confirmation_revoke_for">Revoke ji bo</string>
+
+    <string name="common_add_delegation">Lê zêde bike delegation</string>
+
+    <string name="staking_proxies_group_title">Delegated authorities (proxy)</string>
+    <string name="common_proxy_rewoke_access">Revoke access</string>
+
+    <string name="proxy_access_type_staking_operations">Staking operations</string>
+
+    <string name="add_proxy_confirmation_delegating_wallet">Delegating wallet</string>
+    <string name="add_proxy_confirmation_delegating_account">Delegating account</string>
+    <string name="add_proxy_confirmation_grant_access_type">Grant access type</string>
+    <string name="add_proxy_confirmation_delegate_to">Delegat bike to</string>
+
+    <string name="staking_add_proxy_confirmation_title">Lê zêde bike delegation</string>
+
+    <string name="duplicate_proxy_type_title">Delegasyon already exists</string>
+    <string name="duplicate_proxy_type_message">You in already delegating to ev account: %s</string>
+
+    <string name="invalid_proxy_address_title">Nederbasdar proxy address</string>
+    <string name="invalid_proxy_address_message">Proxy address should be a valid %s address</string>
+
+    <string name="add_proxy_deposit_description_message"> deposit stays reserved on yê te account until  proxy e removed.</string>
+
+    <string name="add_proxy_maximum_reached_error_title">Herî zêde number of proxies has been reached</string>
+    <string name="add_proxy_maximum_reached_error_message">You have reached  limit of %s added proxies in %s. Rake proxies to add nû ones.</string>
+
+    <string name="common_error_not_enough_tokens">Ne enough tokens</string>
+    <string name="staking_not_enough_balance_to_pay_proxy_deposit_message">You don’t have enough balance ji bo proxy deposit of %s. Peyda balance: %s</string>
+
+    <string name="staking_action_your_proxies">Yê te delegations</string>
+    <string name="staking_action_add_proxy">Lê zêde bike delegated authority (Proxy)</string>
+
+    <string name="set_staking_proxy_address_description">Give authority to</string>
+    <string name="common_proxy_deposit">Proxy deposit</string>
+    <string name="fragment_set_staking_proxy_title">Lê zêde bike delegation ji bo %s staking</string>
+
+    <string name="common_enter_address">Enter address…</string>
+    <string name="proxy_error_not_enough_to_pay_fee_message">Delegated account %s doesn’t have enough balance to pay  network fee of %s. Peyda balance to pay fee: %s</string>
+    <string name="staking_no_access_to_controller_account_title">Na access to controller account</string>
+    <string name="staking_no_access_to_controller_account_message">Lê zêde bike yê te controller account in device.</string>
+
+    <string name="staking_story_staking_page_1">Staking e an option to earn passive income by locking yê te tokens in  network. Staking rewards in allocated every era (6 hours on Kusama û 24 hours on Polkadot). You dikare stake as long as you wish, û ji bo unstaking yê te tokens you need to wait ji bo  unstaking period to end, making yê te tokens available to be redeemed.</string>
+
+    <string name="proxy_signing_none_permissions_message">%1$s has ne delegated %2$s</string>
+
+    <string name="error_not_enough_to_pay_fee_title">Ne enough tokens to pay  fee</string>
+
+    <string name="proxied_wallet_details_info_warning">Ev account granted access to perform transactions to  following account:</string>
+
+    <string name="proxy_signing_warning_title">Ev e Delegating (Proxied) account</string>
+    <string name="proxy_signing_warning_message">Danûstandin dê be initiated by %s as a delegated account. Heqê torê dê be paid by delegated account.</string>
+
+    <string name="proxy_signing_not_enough_permission_title">Oops! Ne enough permission</string>
+    <string name="proxy_signing_not_enough_permission_message">%1$s delegated %2$s only ji bo %3$s</string>
+
+    <string name="proxy_signing_is_not_supported_message">Proxied wallets do ne support signing arbitrary messages — only transactions</string>
+
+    <string name="proxy_wallet_type">%s proxy</string>
+    <string name="account_proxy_type_any">Her</string>
+    <string name="account_proxy_type_non_transfer">Non Veguhestin</string>
+    <string name="account_proxy_type_governance">Rêveberî</string>
+    <string name="account_proxy_type_staking">Staking</string>
+    <string name="account_proxy_type_identity_judgement">Identity Judgement</string>
+    <string name="account_proxy_type_cancel_proxy">Betal Proxy</string>
+    <string name="account_proxy_type_auction">Auction</string>
+    <string name="account_proxy_type_nomination_pools">Nomination Hewz</string>
+
+    <string name="deep_linking_chain_id_is_not_found">Zincîr e ne found</string>
+    <string name="deep_linking_governance_type_is_not_specified">Rêveberî type e ne specified</string>
+    <string name="deep_linking_governance_type_is_not_supported">Rêveberî type e ne supported</string>
+    <string name="deep_linking_url_is_invalid">Nederbasdar url</string>
+    <string name="deep_linking_domain_is_not_matched">Domain ji  link %s e ne allowed</string>
+    <string name="deep_linking_invalid_mnemonic">Gotinên veşartî e ne valid</string>
+    <string name="deep_linking_invalid_crypto_type">Crypto type e invalid</string>
+    <string name="deep_linking_invalid_derivation_path">Nederbasdar derivation path</string>
+
+    <string name="referendim_details_not_found_title">Referandom ne found</string>
+
+    <string name="operations_swap_title">Swap</string>
+
+    <string name="swap_repeat_operation">Repeat  operation</string>
+
+    <string name="wallet_filters_swaps">Swaps</string>
+
+    <string name="swap_failure_balance_not_consider_consumers">You should keep at least %s after paying %s network fee as you in holding non sufficient tokens</string>
+    <string name="swap_failure_balance_not_consider_non_sufficient_assets">You must keep at least %s to receive %s token</string>
+
+    <string name="swap_rate_description">Exchange rate between two different cryptocurrencies. It represents how much of one cryptocurrency you dikare get in exchange ji bo a certain amount of another cryptocurrency.</string>
+    <string name="swap_price_difference_description">Biha difference refers to  difference in price between two different assets. When making a swap in crypto,  price difference e usually  difference between  price of  asset you in swapping ji bo û  price of  asset you in swapping bi.</string>
+    <string name="swap_slippage_description">Swap slippage e a common occurrence in decentralized trading where  final price of a swap transaction might slightly differ ji  expected price, due to changing market conditions.</string>
+    <string name="swap_network_fee_description">A network fees charged by  blockchain to process û validate her transactions. May vary depending on network conditions an transaction speed.</string>
+
+    <string name="swap_main_settings_asset_in_not_selecting_button_state">Hilbijêre a token to pay</string>
+    <string name="swap_main_settings_asset_out_not_selecting_button_state">Hilbijêre a token to receive</string>
+    <string name="swap_main_settings_enter_amount_disabled_button_state">Mîqdar binivîse</string>
+    <string name="swap_main_settings_wrong_amount_disabled_button_state">Enter din amount</string>
+
+    <string name="swap_field_validation_not_enough_liquidity">Ne enough liquidity</string>
+    <string name="swap_field_validation_not_enough_amount_to_swap">Ne enough tokens to swap</string>
+    <string name="swap_field_validation_to_low_amount_out">You dikare’t receive kêmtir than %s</string>
+
+    <string name="common_cannot_pay_network_fee_message">You dikare use up to %s since you need to pay\n%s ji bo network fee.</string>
+
+    <string name="swap_too_low_amount_to_stay_abow_ed_title">You in trying to swap too small amount</string>
+    <string name="swap_too_low_amount_to_stay_abow_ed_message">Mîqdar of %s e kêmtir than minimum balance of %s</string>
+
+    <string name="swap_invalid_slippage_failure_title">Nederbasdar slippage</string>
+    <string name="swap_invalid_slippage_failure_message">Slippage must be specified between %s û %s</string>
+    <string name="swap_rate_was_updated_failure_title">Swap rate bû updated</string>
+    <string name="swap_rate_was_updated_failure_message">Kevn rate: %1$s ≈ %2$s.\nNew rate: %1$s ≈ %3$s</string>
+    <string name="swap_not_enought_liquidity_failure">Hewz doesn’t have enough liquidity to swap</string>
+    <string name="swap_failure_too_small_remaining_balance_title">Too small amount remains on yê te balance</string>
+    <string name="swap_failure_too_small_remaining_balance_message">You should leave at least %1$s on yê te balance. Do you want to perform full swap by adding remaining %2$s as well?</string>
+    <string name="swap_failure_too_small_remaining_balance_with_buy_ed_message">You should keep at least %1$s after paying %2$s network fee û converting %3$s to %4$s to meet %5$s minimum balance.\n\nDo you want to fully swap by adding remaining %6$s as well?</string>
+    <string name="swap_failure_insufficient_balance_message">You dikare swap up to %1$s since you need to pay %2$s ji bo network fee.</string>
+    <string name="swap_failure_insufficient_balance_with_buy_ed_message">You dikare swap up to %1$s since you need to pay %2$s ji bo network fee û also convert %3$s to %4$s to meet %5$s minimum balance.</string>
+
+    <string name="swap_failure_swap_max_button">Swap max</string>
+    <string name="swap_failure_swap_min_button">Swap min</string>
+
+    <string name="wallet_cross_chain_transfer">Cross-chain transfer</string>
+
+    <string name="common_hexadecimal_string">Hexadecimal string</string>
+
+    <string name="swap_get_token_using">Get %s using</string>
+    <string name="swap_get_token_cross_chain_description">Veguhestin %s ji another network</string>
+    <string name="swap_get_token_receive_description">Werbigire %s bi QR an yê te address</string>
+    <string name="swap_get_token_buy_description">Instantly buy %s bi a credit card</string>
+
+    <string name="common_get_token_format">Get %s</string>
+
+    <string name="swap_custom_fee_selector_description">Token ji bo paying network fee</string>
+    <string name="swap_custom_fee_selector_footer">Heqê torê e added on top of entered amount</string>
+    <string name="swap_minimum_balance_buy_in_alert">Bo pay network fee bi %s, Pezkuwi Cîzdan dê automatically swap %s ji bo %s to maintain yê te account\'s minimum %s balance.</string>
+
+    <string name="swap_slippage_disabled_button_state">Enter din value</string>
+    <string name="swap_slippage_error_not_in_available_range">Enter a value between %s û %s</string>
+    <string name="swap_slippage_warning_too_small">Danûstandin might be reverted because of low slippage tolerance.</string>
+    <string name="swap_slippage_warning_too_big">Danûstandin might be frontrun because of high slippage.</string>
+    <string name="swap_slippage">Slippage</string>
+    <string name="swap_settings_title">Swap settings</string>
+
+    <string name="common_percent" translatable="false">%</string>
+
+    <string name="assets_swap_flow_pay_title">Token to pay</string>
+    <string name="assets_swap_flow_receive_title">Token to receive</string>
+
+    <string name="swap_error_pair_not_supported">Ev pair e ne supported</string>
+    <string name="swap_price_impact">%s ≈ %s</string>
+
+    <string name="swap_field_subtitle_default">Hilbijêre a token</string>
+    <string name="swap_field_asset_from_title">Pay</string>
+    <string name="swap_field_asset_to_title">Werbigire</string>
+
+    <string name="swap_rate_title">Rate</string>
+    <string name="swap_price_difference_title">Biha difference</string>
+    <string name="swap_slippage_title">Slippage</string>
+    <string name="common_wallet">Cîzdan</string>
+
+    <string name="fragment_swap_main_settings_max_button">Max:</string>
+    <string name="fragment_swap_main_settings_pay_title">You pay</string>
+    <string name="fragment_swap_main_settings_receive_title">You receive</string>
+    <string name="fragment_swap_main_settings_details_title">Swap details</string>
+    <string name="wallet_asset_swap">Swap</string>
+    <string name="fragment_swap_main_settings_select_token">Hilbijêre a token</string>
+
+    <string name="assets_crowdloan_unlock_banner_title">Boost yê te DOT 🚀</string>
+    <string name="assets_crowdloan_unlock_banner_description">Hate wergirtin yê te DOT back ji crowdloans? Dest pê bike staking yê te DOT today to get  maximum possible rewards!</string>
+
+    <string name="assets_buy_tokens_placeholder_button">Buy tokens</string>
+
+    <string name="assets_send_flow_placeholder">You don’t have tokens to send.\nBuy an Deposit tokens to yê te account.</string>
+    <string name="common_days_and_hours_format_with_delimeter">%s û %s</string>
+    <string name="common_frequency_days_daily">daily</string>
+
+    <string name="referendum_status_deciding">Deciding</string>
+    <string name="referendum_timeline_state_deciding">Dengdan: Deciding</string>
+
+    <string name="start_staking_fragment_min_stake_condition_no_min_stake">Stake anytime. Yê te stake dê actively earn rewards %s</string>
+
+
+    <string name="pool_full_failure_title">Hewz e full</string>
+    <string name="pool_full_failure_message">You nikare join pool since it reached maximum number of members</string>
+
+    <string name="pool_inactive_failure_title">Hewz e ne open</string>
+    <string name="pool_inactive_failure_message">You nikare join pool ew e ne open. Ji kerema xwe, contact  pool owner.</string>
+
+    <string name="common_close_confirmation_message">Tu bawer î you want to close ev screen?\nYour changes dê ne be applied.</string>
+
+    <string name="common_search_placeholder_default">Bigere result dê be displayed li vir</string>
+
+    <string name="search_pool_no_pools_found_placeholder">Na pool bi entered name an pool ID were found. Make sure you entered correct data</string>
+
+    <string name="select_custom_pool_title">Hilbijêre pool</string>
+    <string name="select_custom_pool_active_pools_count">active pools: %d</string>
+    <string name="select_custom_pool_members">members</string>
+
+    <string name="setup_staking_type_staking_amount_is_less_than_min_amount_title">Yê te stake e kêmtir than  minimum to earn rewards</string>
+    <string name="setup_staking_type_direct_staking_amount_is_less_than_min_amount_message">You have specified kêmtir than  minimum stake of %s required to earn rewards bi %s. You should consider using Hewz staking to earn rewards.</string>
+    <string name="setup_staking_type_already_used_title">Staking type nikare be changed</string>
+    <string name="setup_staking_type_pool_already_used_message">You in already staking in a pool</string>
+    <string name="setup_staking_type_direct_already_used_message">You in already have Direct staking</string>
+    <string name="setup_staking_type_unsupported_staking_type_used_fallback_message">Unsupported staking type</string>
+
+    <string name="setup_staking_type_min_amount_condition">Herî kêm stake: %s</string>
+    <string name="setup_staking_type_payout_type_manual_condition">Xelat: Claim manually</string>
+    <string name="setup_staking_type_payout_type_automatically_condition">Xelat: Paid automatically</string>
+    <string name="setup_staking_type_governance_condition">Reuse tokens in Rêveberî</string>
+    <string name="setup_staking_type_advanced_options_condition">Advanced staking management</string>
+
+    <string name="staking_type_title">Staking Cure</string>
+    <string name="setup_staking_type_pool_staking">Hewz staking</string>
+    <string name="setup_staking_type_direct_staking">Direct staking</string>
+
+    <string name="staking_unstake_all">Unstake hemû</string>
+
+    <string name="choose_amount_error_too_big">Sorry, you don\'t have enough funds to spend  specified amount</string>
+
+    <string name="staking_setup_amount_too_low">You dikare\'t stake kêmtir than  minimal value (%s)</string>
+
+    <string name="staking_missing_account_message">You need to add a %s account to yê te wallet in order to start staking</string>
+    <string name="add_delegation_missing_account_message">You need to add a %s account to  wallet in order to delegate</string>
+    <string name="referendum_missing_account_message">You need to add a %s account to  wallet in order to vote</string>
+    <string name="crowdloan_missing_account_message">You need to add a %s account to  wallet in order to contribute</string>
+
+
+    <string name="staking_info">Staking info</string>
+    <string name="nomination_pools_info">Hewz staking info</string>
+
+    <string name="staking_already_staking_title">You in already have staking in %s</string>
+
+    <string name="staking_unable_to_stake_more_title">Unable to stake bêtir</string>
+    <string name="staking_unable_to_stake_more_message">You in unstaking hemû of yê te tokens û dikare\'t stake bêtir.</string>
+
+    <string name="staking_stake_max">Stake max</string>
+    <string name="staking_pool_available_validation_message">Yê te available balance e %s, you need to leave %s as minimal balance û pay network fee of %s. You dikare stake ne bêtir than %s.</string>
+    <string name="staking_staking_type">Staking type</string>
+
+    <string name="start_staking_inactive_pool_message"> pool you have selected e inactive due to no validators selected an its stake e kêmtir than  minimum.\nAre you sure you want to proceed bi  selected Hewz?</string>
+
+    <string name="start_staking_cant_stake_amount">You dikare\'t stake  specified amount</string>
+    <string name="start_staking_available_balance_gap_message">You have locked tokens on yê te balance due to %s. In order to continue you should enter kêmtir than %s an bêtir than %s. Bo stake another amount you should remove yê te %s locks.</string>
+
+    <string name="start_staking_max_nominators_reached_title">%s e currently unavailable</string>
+    <string name="start_staking_max_nominators_reached_message"> maximum number of nominators has been reached. Dîsa biceribîne later</string>
+
+    <string name="start_staking_selection_validators_subtitle">Pejirandkar: %d (max %d)</string>
+    <string name="start_staking_editing_selection_validators_subtitle">Selected: %d (max %d)</string>
+    <string name="common_recommended">Recommended</string>
+
+    <string name="common_fee_changed_title">Heqê torê e too high</string>
+    <string name="common_fee_changed_message"> estimated network fee %s e much higher than  default network fee (%s). Ev might be due to temporary network congestion. You dikare refresh to wait ji bo a lower network fee.</string>
+    <string name="common_refresh_fee">Nû bike fee</string>
+
+    <string name="send_recipient_system_account_title">Token dê be lost</string>
+    <string name="send_recipient_system_account_message">Recipient e a system account. It e ne controlled by her company an individual.\nAre you sure you still want to perform ev transfer?</string>
+
+    <string name="asset_add_evm_token_already_exist_title">Ev token already exists</string>
+    <string name="asset_add_evm_token_already_exist_modifiable_message"> entered contract address e present in Pezkuwi Cîzdan as a %s token. Tu bawer î you want to modify it?</string>
+
+    <string name="nomination_pool_claim_rewards">Claim rewards</string>
+    <string name="nomination_pools_claim_rewards_restake_subtitle">Yê te tokens dê be added back to  stake</string>
+
+    <string name="nomination_pools_pool_reached_unbondings_limit_title">Too many people in unstaking ji yê te pool</string>
+    <string name="nomination_pools_pool_reached_unbondings_limit_message">There in currently no free spots in unstaking queue ji bo yê te pool. Ji kerema xwe try again in %s</string>
+
+    <string name="staking_unbond_crossed_existential">When unstaking partially, you should leave at least %s in stake. Do you want to perform full unstake by unstaking remaining %s as well?</string>
+    <string name="staking_unbond_crossed_existential_title">Too small amount remains in stake</string>
+
+    <string name="nomination_pools_pool_destroying_error_message">Cannot perform specified operation since pool e in destroying state. It dê be closed soon.</string>
+    <string name="nomination_pools_pool_destroying_error_title">Hewz e destroying</string>
+
+    <string name="nomination_pools_pending_claim_hint_format">Yê te rewards (%s) dê also be claimed û added to yê te free balance</string>
+
+    <string name="nomination_pools_your_pool_format">Yê te pool (#%s)</string>
+    <string name="nomination_pools_your_pool">Yê te pool</string>
+
+    <string name="nomination_pools_pool">Hewz</string>
+    <string name="nomination_pools_direct">Direct</string>
+
+    <string name="start_staking_fragment_start_staking">Dest pê bike Staking</string>
+    <string name="start_staking_fragment_available_balance">Peyda balance: %1$s (%2$s)</string>
+
+    <string name="start_staking_fragment_title_APY">Earn up to %s</string>
+    <string name="start_staking_fragment_title">%1$s\non yê te %2$s tokens\nper year</string>
+
+    <string name="start_staking_fragment_min_stake_condition">Stake anytime bi as little as %1$s. Yê te stake dê actively earn rewards %2$s</string>
+    <string name="start_staking_fragment_min_stake_condition_duration">in %s</string>
+    <string name="start_staking_fragment_test_network_condition">%1$s e a %2$s bi %3$s</string>
+    <string name="start_staking_fragment_test_network_condition_test_network">test network</string>
+    <string name="start_staking_fragment_test_network_condition_no_token">no token value</string>
+
+    <string name="start_staking_fragment_unstake_condition">Unstake anytime, û redeem yê te funds %s. Na rewards in earned while unstaking</string>
+    <string name="start_staking_fragment_unstake_condition_duration">after %s</string>
+
+    <string name="start_staking_fragment_reward_frequency_condition_duration">every %s</string>
+    <string name="start_staking_fragment_reward_frequency_condition_restake_only">Xelat accrue %s û added back to  stake</string>
+    <string name="start_staking_fragment_reward_frequency_condition_payout_only">Xelat accrue %s û added to  transferable balance</string>
+    <string name="start_staking_fragment_reward_frequency_condition_automatic_and_manual">Xelat accrue %1$s. Stake over %2$s ji bo automatic rewards payout, otherwise you need to claim rewards manually</string>
+    <string name="start_staking_fragment_reward_frequency_condition_manual">Xelat accrue %s. You need to claim rewards manually</string>
+    <string name="start_staking_fragment_reward_frequency_condition_fallback">Xelat accrue %s</string>
+
+    <string name="start_staking_fragment_governance_participation_no_conditions">%s bi yê te staked tokens</string>
+    <string name="start_staking_fragment_governance_participation_no_conditions_accent">Participate in governance</string>
+
+    <string name="start_staking_fragment_governance_participation_with_min_amount">Stake over %1$s û %2$s bi yê te staked tokens</string>
+    <string name="start_staking_fragment_governance_participation_with_min_amount_accent">participate in governance</string>
+
+    <string name="start_staking_fragment_stake_monitoring_monitor_stake">Monitor yê te stake</string>
+    <string name="start_staking_fragment_stake_monitoring">Xelat û staking status vary over time. %s ji time to time</string>
+
+    <string name="start_staking_fragment_more_info">Find out bêtir information about\n%1$s staking over at  %2$s</string>
+    <string name="start_staking_fragment_more_info_clicable_part">Pezkuwi Wiki</string>
+
+    <string name="start_staking_fragment_terms_of_use">See %s</string>
+    <string name="start_staking_fragment_terms_of_use_clicable_part">Şert of Use</string>
+
+    <string name="account_parity_signer_sign_qr_code_expired_descrition">Ji bo security reasons generated operations valid ji bo only %s.\nPlease generate nû Koda QR û sign it bi %s</string>
+    <string name="account_parity_signer_import_scan_invalid_qr">Nederbasdar Koda QR, ji kerema xwe make sure you in scanning Koda QR ji %s</string>
+    <string name="account_parity_signer_sign_have_error">I have an error in %s</string>
+    <string name="account_parity_signer_sign_title">Îmze bike bi %s</string>
+    <string name="account_parity_signer_import_preview_description">Following accounts have been successfully read ji %s</string>
+    <string name="account_parity_signer_scan_from">Bişopîne  Koda QR ji  %s</string>
+    <string name="account_parity_signer_import_start_title">Cîzdan lê zêde bike ji %s</string>
+    <string name="account_details_parity_signer_alert">Ev wallet e paired bi %1$s. Pezkuwi Cîzdan dê help you to form her operations you want, û you dê be requested to sign them using %1$s</string>
+    <string name="account_details_parity_signer_not_supported">Ne supported by %s</string>
+    <string name="account_parity_signer_not_supported_subtitle">%s does ne support signing arbitrary messages — only transactions</string>
+    <string name="account_parity_signer_chain_not_supported">%s doesn’t support %s</string>
+
+    <string name="account_polkadot_vault_import_start_empty_derivation_hint">Pay attention,  derivation path name should be empty</string>
+
+    <string name="account_parity_signer">Parity Signer</string>
+    <string name="account_polkadot_vault">Polkadot Vault</string>
+
+    <string name="staking_set_controller_deprecated_title">Controller Hesab Are Being Deprecated</string>
+    <string name="staking_set_controller_deprecated_action">Nûve bike Controller to Stash</string>
+
+    <string name="assets_search_placeholder">Na networks an tokens bi entered\nname were found</string>
+
+    <string name="transfer_history_income_from">Ji: %s</string>
+    <string name="transfer_history_send_to">Bo: %s</string>
+
+    <string name="transaction_history_fiat_with_time">%s at %s</string>
+
+    <string name="referenda_list_filter_placeholder">There in no referenda bi filters applied</string>
+
+    <string name="pincode_biometric_switch_dialog_title">Use biometric to authorize</string>
+
+    <string name="pincode_biometric_error">You in ne authorized. Dîsa biceribîne, ji kerema xwe.</string>
+
+    <string name="common_settings">Mîheng</string>
+    <string name="settings_biometric_not_ready_title">Biometrics disabled in Mîheng</string>
+    <string name="settings_biometric_not_ready_message">Ji kerema xwe, make sure biometrics e enabled in Mîheng</string>
+
+    <string name="referenda_filters_header">Show</string>
+    <string name="referenda_filters_all">Hemû referenda</string>
+    <string name="referenda_filters_not_voted">Ne voted</string>
+    <string name="referenda_filters_voted">Voted</string>
+    <string name="common_filters">Filters</string>
+
+    <string name="referenda_title">Referandom</string>
+    <string name="referenda_search_toolbar_hint">Bigere by referendum title an ID</string>
+    <string name="referenda_search_placeholder">Na referenda bi entered title an ID were found</string>
+
+    <string name="pincode_biometry_dialog_subtitle">Pezkuwi Cîzdan uses biometric authentication to restrict unauthorized users ji accessing  app.</string>
+
+    <string name="staking_period_select_date">Hilbijêre date</string>
+    <string name="staking_period_start_date_picker_title">Hilbijêre start date</string>
+    <string name="staking_period_end_date_picker_title">Hilbijêre end date</string>
+
+    <string name="staking_period_all_short">Hemû</string>
+    <string name="staking_period_week_short">7D</string>
+    <string name="staking_period_month_short">30D</string>
+    <string name="staking_period_quarter_short">3M</string>
+    <string name="staking_period_half_year_short">6M</string>
+    <string name="staking_period_year_short">1Y</string>
+    <string name="staking_period_custom_short">%dD</string>
+
+    <string name="staking_your_rewards">Xelat</string>
+
+    <string name="staking_period_title">Show staking rewards ji bo</string>
+    <string name="staking_period_all_time">Hemû time</string>
+    <string name="staking_period_week">Last 7 days (7D)</string>
+    <string name="staking_period_month">Last 30 days (30D)</string>
+    <string name="staking_period_quarter">Last 3 month (3M)</string>
+    <string name="staking_period_half_year">Last 6 months (6M)</string>
+    <string name="staking_period_year">Last year (1Y)</string>
+    <string name="staking_period_custom">Custom period</string>
+
+    <string name="staking_period_start_title">Starts</string>
+    <string name="staking_period_current_date_title">End date e always today</string>
+    <string name="staking_period_end_title">Ends</string>
+
+    <string name="settings_pin_code_verification_confirmation_title">Ask authentication ji bo operation signing</string>
+    <string name="settings_pin_code_verification_confirmation_message">Each sign operation on wallets bi key pair (created in Pezkuwi Cîzdan an imported) should require PIN verification before constructing signature</string>
+
+    <string name="biometric_auth_title">Biometric auth</string>
+    <string name="profile_settings_pin_code_verification_title">Bipejirîne bi PIN</string>
+
+    <string name="send_address_hint">Navnîşan an w3n</string>
+
+    <string name="wallet_send_recipient_blocked_title">Recipient nikare accept transfer</string>
+    <string name="wallet_send_recipient_blocked_message">Recipient has been blocked by token owner û nikare currently accept incoming transfers</string>
+
+    <string name="staking_title_format">%s staking</string>
+
+    <string name="staking_dashboard_more_options">Bêtir staking options</string>
+    <string name="staking_dashboard_no_stake_header">Stake û earn rewards</string>
+    <string name="staking_dashboard_browser_stake_header">Staking via Pezkuwi DApp browser</string>
+
+    <string name="common_waiting">Waiting</string>
+    <string name="common_per_year">/ year</string>
+    <string name="common_per_year_long">per year</string>
+    <string name="staking_earnings_per_year">Estimated rewards</string>
+
+    <string name="common_expired">Expired</string>
+
+    <plurals name="common_networks_plural">
+        <item quantity="one">Network</item>
+        <item quantity="other">Networks</item>
+    </plurals>
+
+    <string name="common_required">Required</string>
+    <string name="common_optional">Optional</string>
+
+    <plurals name="wallet_connect_unsupported_networks_hidden">
+        <item quantity="one">%s unsupported network is hidden</item>
+        <item quantity="other">%s unsupported networks are hidden</item>
+    </plurals>
+
+    <string name="wallet_connect_session_approve_unsupported_chains_alert">Hin of  required networks requested by \"%s\" in ne supported in Pezkuwi Cîzdan</string>
+
+    <plurals name="wallet_connect_session_approve_missing_accounts_alert">
+        <item quantity="one">%s account is missing. Add account to the wallet in Settings</item>
+        <item quantity="other">%s accounts are missing. Add accounts to the wallet in Settings</item>
+    </plurals>
+
+    <plurals name="common_unknown_chains">
+        <item quantity="one">%s unsupported</item>
+        <item quantity="other">%s unsupported</item>
+    </plurals>
+
+    <string name="wallet_connect_v2">WalletConnect v2</string>
+
+    <string name="common_sign_request">Îmze bike Request</string>
+
+    <string name="wallet_connect_sessions_placeholder">Cîzdan Connect sessions dê appear li vir</string>
+
+    <string name="common_active">Çalak</string>
+    <string name="common_none">None</string>
+    <string name="common_networks">Tor</string>
+    <string name="common_disconnect">Disconnect</string>
+
+    <string name="wallet_connect_unknown_dapp">Unknown dApp</string>
+    <string name="wallet_connect_new_connection">Nû connection</string>
+    <string name="wallet_connect_title">WalletConnect</string>
+    <string name="common_scan_qr_code">Bişopîne  Koda QR</string>
+
+    <string name="ethereum_function">Function</string>
+    <string name="ethereum_contract">Contract</string>
+    <string name="ethereum_contract_call">Contract call</string>
+
+    <string name="web3names_integrity_check_failed_title">Integrity check failed</string>
+    <string name="web3names_integrity_check_failed_message">Pezkuwi Cîzdan detected issues bi integrity of information about %1$s addresses. Ji kerema xwe contact owner of %1$s to resolve integrity issues.</string>
+
+    <string name="web3names_unsupported_asset_title">Token %s e ne supported yet</string>
+    <string name="web3names_unsupported_asset_message">Pezkuwi Cîzdan dikare\'t resolve code ji bo token %s</string>
+    <string name="web3names_address_with_description">%s (%s)</string>
+    <string name="web3names_invalid_recepient_title">Nederbasdar recipient</string>
+    <string name="web3names_service_unavailable_title">Çewtî resolving w3n</string>
+    <string name="web3names_service_unavailable_message">%1$s w3n services in unavailable. Dîsa biceribîne later an enter  %1$s address manually</string>
+    <string name="web3names_recepient_not_found_message">%s ne found</string>
+    <string name="web3names_no_valid_recepient_found_message">Na valid address bû found ji bo %s on  %s network</string>
+    <string name="web3names_identifiers_sheet_title">%s addresses ji bo %s</string>
+
+    <string name="common_no_app_to_handle_intent">Na suitable app found on device to handle ev intent</string>
+
+    <string name="select_ledger_location_enable_request_title">Ji kerema xwe enable geo-location in device settings</string>
+    <string name="select_ledger_location_enable_request_message">Pezkuwi Cîzdan needs location to be enabled to be able to perform bluetooth scanning to find yê te Ledger device</string>
+
+    <string name="common_some_tx_failed_title">Serneket to submit hin transactions</string>
+    <string name="common_some_tx_failed_message">There bû an error while submitting hin transactions. Do you want to retry?</string>
+
+    <string name="staking_setup_amount_less_than_recommended"> recommended minimum stake to consistently receive rewards e %s.</string>
+
+    <string name="staking_alert_bond_more_title">Stake bêtir tokens</string>
+
+    <string name="staking_alert_bond_more_message">Yê te stake e kêmtir than minimum of %s.\nHaving stake kêmtir than minimum increases chances of staking to ne generate rewards</string>
+
+    <string name="staking_rebag_current_bag">Current queue slot</string>
+    <string name="staking_rebag_new_bag">Nû queue slot</string>
+
+    <string name="staking_alert_rebag_title">Staking improvements</string>
+    <string name="staking_alert_rebag_message">Having outdated position in  queue of stake assignment to a validator may suspend yê te rewards</string>
+
+    <string name="delegate_search_placeholder_empty">Navnîşan format e invalid. Make sure ew address belongs to  right network</string>
+    <string name="delegate_search_result_count">search results: %d</string>
+    <string name="delegate_search_hint">Bigere by address an name</string>
+
+    <string name="assets_balance_details_locks_democrac_v1" translatable="false">Governance v1</string>
+    <string name="assets_balance_details_locks_democrac_v2" translatable="false">OpenGov</string>
+
+    <string name="staking_reward_payouts_payout_all">Pay out hemû (%s)</string>
+    <string name="staking_pending_rewards_subtitle">You dikare pay them out yourself, when they in close to expire, but you dê pay  fee</string>
+
+
+    <string name="referendum_vote_abstain">Abstain</string>
+
+    <string name="delegation_revoke_hint_unlock">After  undelegating period has expired, you dê need to unlock yê te tokens.</string>
+
+    <string name="delegation_edit_delegation">Sererast bike delegation</string>
+    <string name="delegation_revoke_delegation">Revoke delegation</string>
+
+    <string name="select_delegation_tracks_add_title">Hilbijêre tracks to add delegation</string>
+    <string name="select_delegation_tracks_revoke_title">Hilbijêre tracks to revoke yê te delegation</string>
+    <string name="select_delegation_tracks_edit_title">Hilbijêre tracks to edit delegation</string>
+
+    <string name="common_revoke">Revoke</string>
+
+    <string name="referendum_track_root">Main agenda</string>
+    <string name="referendum_whitelisted_caller">Fellowship: whitelist</string>
+    <string name="referendum_staking_admin">Staking</string>
+    <string name="referendum_track_treasurer">Treasury: her</string>
+    <string name="referendum_track_lease_admin">Rêveberî: lease</string>
+    <string name="referendum_track_fellowship_admin">Fellowship: admin</string>
+    <string name="referendum_track_general_admin">Rêveberî: registrar</string>
+    <string name="referendum_track_auction_admin">Crowdloan</string>
+    <string name="referendum_track_referendum_canceller">Rêveberî: canceller</string>
+    <string name="referendum_track_referendum_killer">Rêveberî: killer</string>
+    <string name="referendum_track_small_tipper">Treasury: small tips</string>
+    <string name="referendum_track_big_tipper">Treasury: big tips</string>
+    <string name="referendum_track_small_spender">Treasury: small spend</string>
+    <string name="referendum_track_medium_spender">Treasury: medium spend</string>
+    <string name="referendum_track_big_spender">Treasury: big spend</string>
+
+    <string name="delegation_referendum_vote">Yê te votes: %s via %s</string>
+    <string name="delegation_referendum_details_vote">Yê te votes via %s</string>
+
+    <string name="delegation_delegate">Delegat bike</string>
+    <string name="delegation_your_delegation">Yê te delegation</string>
+
+    <string name="delegation_delegate_hint_vote">Yê te votes dê automatically vote alongside yê te delegates\' vote</string>
+    <string name="delegation_delegate_hint_unlock">Undelegating period dê start after you revoke a delegation</string>
+
+    <string name="delegation_error_self_delegate_title">Cannot delegate to yourself</string>
+    <string name="delegation_error_self_delegate_message">You nikare delegate to yourself, ji kerema xwe choose different address</string>
+
+    <string name="delegation_undelegating_period">Undelegating period</string>
+
+    <string name="delegation_multi_track_format">Across %s tracks</string>
+
+    <string name="delegation_remove_votes">Rake votes</string>
+    <string name="delegation_tracks">Tracks</string>
+
+    <string name="common_element_and_more_format">%s (+%s bêtir)</string>
+
+    <string name="delegation_all_votes">Voted ji bo hemû time</string>
+    <string name="delegation_delegate_info">Delegat bike info</string>
+
+    <string name="referendum_voted_referenda">Voted referenda</string>
+
+    <string name="referendum_other_votes">%s votes by %s</string>
+
+    <string name="delegation_your_delegations">Yê te delegations</string>
+
+    <string name="delegation_list_banner_title">Are you a Delegat bike?</string>
+    <string name="delegation_list_banner_description">Tell us bêtir about yourself so Pezkuwi Cîzdan users get to know you better</string>
+    <string name="delegation_list_describe_yourself_action">Describe yourself</string>
+
+    <string name="common_sort_by">Sort by</string>
+
+    <string name="delegation_delegate_filter_all">Hemû accounts</string>
+    <string name="delegation_delegate_filter_organizations">Organizations</string>
+    <string name="delegation_delegate_filter_individuals">Individuals</string>
+
+    <string name="delegation_delegate_type_organization">Organization</string>
+    <string name="delegation_delegate_type_individual">Individual</string>
+
+    <string name="delegation_delegations">Delegations</string>
+    <string name="delegation_delegated_votes">Delegated votes</string>
+    <string name="delegation_recent_votes_format">Voted last %s</string>
+
+    <string name="delegation_sorting_delegations">Delegations</string>
+    <string name="delegation_sorting_delegated_votes">Delegated votes</string>
+    <string name="delegation_sorting_recent_votes_format">Voted last %s</string>
+
+    <string name="select_delegation_tracks_available_tracks">Peyda tracks</string>
+    <string name="select_delegation_tracks_unavailable_tracks">Unavailable tracks</string>
+    <string name="select_delegation_tracks_description">Ji kerema xwe select  tracks in which you would like to delegate yê te voting power.</string>
+
+    <string name="delegation_tracks_all_preset">Hilbijêre hemû</string>
+    <string name="delegation_tracks_treasury_preset">Treasury</string>
+    <string name="delegation_tracks_governance_preset">Rêveberî</string>
+    <string name="delegation_tracks_fellowship_preset" translatable="false">Fellowship</string>
+
+    <string name="delegation_tracks_disabled_apply_button_text">Hilbijêre at least 1 track...</string>
+    <string name="delegation_tracks_empty_list_placeholder">Na tracks in available to delegate</string>
+
+    <string name="remove_votes_suggestion_title">Rake history of yê te votes?</string>
+    <plurals name="remove_votes_suggestion_description">
+        <item formatted="true" quantity="one">You have previously voted in referendums in %d track. In order to make this track available for delegation, you need to remove your existing votes.</item>
+        <item formatted="true" quantity="other">You have previously voted in referendums in %d tracks. In order to make these tracks available for delegation, you need to remove your existing votes.</item>
+    </plurals>
+
+    <string name="remove_votes_suggestion_button_text">Rake votes</string>
+
+    <string name="unavailable_tracks_title">Unavailable tracks</string>
+    <string name="unavailable_tracks_button_text">Rake votes in order to delegate in these tracks</string>
+
+    <string name="unavailable_tracks_voted_group">Tracks which you have existing votes in</string>
+    <string name="unavailable_tracks_delegated_group">Tracks ew you have already delegated votes to</string>
+    <string name="delegate_more_tracks" translatable="false">+%d</string>
+
+    <string name="delegations_filter">Show</string>
+
+    <string name="update_notification_item_version">Guhertin %s</string>
+
+    <string name="update_notifications_show_more">Hemûyan bibîne available updates</string>
+    <string name="update_notifications_latest">Latest</string>
+    <string name="update_notifications_severity_critical">Critical</string>
+    <string name="update_notifications_severity_major">Major</string>
+
+    <string name="update_notifications_critical_update_alert_titile">Critical update</string>
+    <string name="update_notifications_critical_update_alert_subtitile">Bo avoid her issues, û improve yê te user experience, we strongly recommend ew you install recent updates as soon as possible</string>
+
+    <string name="update_notifications_major_update_alert_titile">Major update</string>
+    <string name="update_notifications_major_update_alert_subtitile">Lots of amazing nû features in available ji bo Pezkuwi Cîzdan! Make sure to update yê te application to access them</string>
+
+    <string name="update_notification_title">Nûve bike available</string>
+    <string name="update_notification_install_btn">Install</string>
+
+    <string name="common_cannot_find_app">Sorry, you don\'t have  right app to process ev request</string>
+
+    <string name="common_enable">Enable</string>
+    <string name="settings_safe_mode_confirmation_title">Safe mode</string>
+    <string name="settings_safe_mode_confirmation_message">Screen recording û screenshots dê ne be available.  minimized app dê ne display  content</string>
+
+    <string name="profile_settings_safe_mode_title">Safe mode</string>
+
+    <string name="dapp_options_title">Page settings</string>
+    <string name="dapp_options_add_to_favorite">Lê zêde bike to Favorites</string>
+    <string name="dapp_options_remove_from_favorite">Rake ji Favorites</string>
+    <string name="dapp_options_desktop_mode">Desktop mode</string>
+
+
+    <string name="asset_add_evm_token_invalid_contract_address_message"> entered contract address e ne a %s ERC-20 contract.</string>
+
+    <string name="assets_filter_title">Filter tokens</string>
+
+    <string name="manage_assets_add_token">Lê zêde bike token</string>
+
+    <string name="asset_add_evm_token_already_exist_message"> entered contract address e present in Pezkuwi Cîzdan as a %s token.</string>
+
+    <string name="asset_add_evm_token_invalid_contract_address_title">Nederbasdar contract address</string>
+
+    <string name="asset_add_evm_token_invalid_decimals_title">Nederbasdar decimals value</string>
+    <string name="asset_add_evm_token_invalid_decimals_message">Decimals must be at least 0, û ne over 36.</string>
+
+    <string name="asset_add_evm_token_invalid_coin_gecko_link_title">Nederbasdar CoinGecko link</string>
+    <string name="asset_add_evm_token_invalid_coin_gecko_link_message">Ji kerema xwe make sure supplied url has  following form: www.coingecko.com/en/coins/tether.</string>
+
+    <string name="asset_add_token_enter_contract_address">Enter contract address</string>
+    <string name="asset_add_token_enter_symbol">Enter symbol</string>
+    <string name="asset_add_token_enter_decimals">Enter decimals</string>
+    <string name="assets_add_token">Lê zêde bike token</string>
+
+    <string name="assets_add_token_enter_info_title">Enter ERC-20 token details</string>
+
+    <string name="assets_add_token_enter_info_address_label">Contract address</string>
+    <string name="assets_add_token_enter_info_address_hint" translatable="false">0x...</string>
+
+    <string name="assets_add_token_enter_info_symbol_label">Symbol</string>
+    <string name="assets_add_token_enter_info_symbol_hint" translatable="false">USDT</string>
+
+    <string name="assets_add_token_enter_info_decimals_label">Decimals</string>
+    <string name="assets_add_token_enter_info_decimals_hint" translatable="false">18</string>
+
+    <string name="assets_add_token_select_chain_title">Tor hilbijêre to add ERC-20 token</string>
+
+    <string name="common_disabled">Neçalak</string>
+
+    <string name="assets_manage_tokens_title">Manage tokens</string>
+    <string name="assets_manage_tokens_all_networks">Hemû networks</string>
+
+    <string name="common_no_app_to_handle_import_intent">File import application ne found on device. Ji kerema xwe install it û try again</string>
+
+    <string name="referenda_list_placeholder">Referandom information dê appear li vir when they start</string>
+
+    <string name="dapp_sign_error_unsupported_chain">Unsupported chain bi genesis hash %s</string>
+
+    <string name="referendum_unlock_remains_locked_format">remains locked in %s</string>
+
+    <string name="referendum_unlock_unlockable">Unlockable</string>
+
+    <string name="referendum_vote_chip_governance_lock">Reuse governance lock: %s</string>
+    <string name="referendum_vote_chip_all_locks">Reuse hemû locks : %s</string>
+
+    <string name="common_amount_too_big">Mîqdar e too big</string>
+    <string name="refrendum_vote_not_enough_available_message">You don’t have enough available tokens to vote. Peyda to vote: %s.</string>
+
+    <string name="refrendum_vote_already_completed_title">Referandom e completed</string>
+    <string name="refrendum_vote_already_completed_message">Referandom e completed û voting has finished</string>
+
+    <string name="refrendum_vote_already_delegating_title">Already delegating votes</string>
+    <string name="refrendum_vote_already_delegating_message">You in delegating votes ji bo selected referendum’s track. Ji kerema xwe either ask yê te delegatee to vote an remove delegation to be able to vote directly.</string>
+
+    <string name="refrendum_vote_max_votes_reached_title">Herî zêde number of votes reached</string>
+    <string name="refrendum_vote_max_votes_reached_message">You have reached a maximum of %s votes ji bo track</string>
+
+    <string name="vote_revote">Revote</string>
+
+    <string name="referendum_vote_unlock_hint">After locking period don’t forget to unlock yê te tokens</string>
+
+    <string name="common_maximum_format">%s maximum</string>
+
+    <string name="referendum_vote_governance_lock">Rêveberî lock</string>
+    <string name="referendum_vote_locking_period">Locking period</string>
+
+    <string name="referendum_vote_setup_title">Deng bide ji bo %s</string>
+    <string name="referendum_vote_select_conviction_title">Multiply votes by increasing locking period</string>
+
+    <string name="referendum_timeline_state_preparing">Dengdan: Tê amade kirin</string>
+    <string name="referendum_timeline_state_waiting_deposit">Dengdan: Waiting ji bo deposit</string>
+    <string name="referendum_timeline_state_in_queue">Dengdan: In queue</string>
+    <string name="referendum_timeline_state_passing">Dengdan: Passing</string>
+    <string name="referendum_timeline_state_not_passing">Dengdan: Ne passing</string>
+
+    <string name="referendum_in_queue_position_format">Position: %s of %s</string>
+
+    <string name="referendum_timeline_state_created">Hate afirandin</string>
+    <string name="referendum_timeline_state_approved">Voted: Hate pejirandin</string>
+    <string name="referendum_timeline_state_rejected">Voted: Hate redkirin</string>
+    <string name="referendum_timeline_state_executed">Hate înfazkirin</string>
+    <string name="referendum_timeline_state_cancelled">Cancelled</string>
+    <string name="referendum_timeline_state_killed">Killed</string>
+    <string name="referendum_timeline_state_timed_out">Timed out</string>
+
+    <string name="referendum_votes_format">%s votes</string>
+
+    <string name="common_read_more">Read bêtir</string>
+
+    <string name="common_ongoing">Ongoing</string>
+    <string name="common_completed">Temam</string>
+
+    <string name="referendum_aye_format">Aye: %s</string>
+    <string name="referendum_nay_format">Nay: %s</string>
+    <string name="referendum_to_pass_format">Bo pass: %s</string>
+
+    <string name="vote_vote">Deng bide</string>
+    <string name="common_governance">Rêveberî</string>
+
+    <string name="referendum_name_unknown">Referandom %s</string>
+
+    <string name="referendum_support_threshold_format">Threshold: %s of %s</string>
+    <string name="referendum_your_vote_format">Yê te vote: %s votes</string>
+
+    <string name="referendum_status_approved">Hate pejirandin</string>
+    <string name="referendum_status_in_queue_format">In queue (%s of %s)</string>
+    <string name="referendum_status_timeout">Timed out</string>
+    <string name="referendum_status_cancelled">Cancelled</string>
+    <string name="referendum_status_passing">Passing</string>
+    <string name="referendum_status_not_passing">Ne passing</string>
+    <string name="referendum_status_rejected">Hate redkirin</string>
+    <string name="referendum_status_preparing">Tê amade kirin</string>
+    <string name="referendum_status_executed">Hate înfazkirin</string>
+    <string name="referendum_status_killed">Killed</string>
+
+    <string name="referendum_status_deciding_in">Deciding in %s</string>
+    <string name="referendum_status_waiting_deposit">Waiting ji bo deposit</string>
+    <string name="referendum_status_time_out_in">Dem out in %s</string>
+    <string name="referendum_status_time_reject_in">Red bike in %s</string>
+    <string name="referendum_status_time_approve_in">Bipejirîne in %s</string>
+    <string name="referendum_status_time_execute_in">Execute in %s</string>
+
+    <string name="referendum_vote_aye">Aye</string>
+    <string name="referendum_vote_nay">Nay</string>
+
+    <string name="referendum_details_your_vote">Yê te vote:</string>
+    <string name="referendum_details_timeline">Timeline</string>
+
+    <string name="referendum_dapp_list_title">Use Pezkuwi DApp browser</string>
+
+    <string name="voting_status">Dengdan status</string>
+    <string name="referendum_details_requested_amount">Requested amount</string>
+
+    <string name="referendum_full_details_parameters_json">Parameters JSON</string>
+    <string name="referendum_full_details_long_for_preview">Too long ji bo preview</string>
+    <string name="referendum_full_details_proposer">Proposer</string>
+    <string name="referendum_full_details_deposit">Deposit</string>
+    <string name="referendum_full_details_beneficiary">Beneficiary</string>
+    <string name="referendum_full_details_vote_threshold">Deng bide threshold</string>
+    <string name="referendum_full_details_turnout">Turnout</string>
+    <string name="referendum_full_details_electorate">Electorate</string>
+    <string name="referendum_full_details_approve_threshold">Bipejirîne curve</string>
+    <string name="referendum_full_details_support_threshold">Support curve</string>
+    <string name="referendum_positive_voters_title">Aye votes</string>
+    <string name="referendum_negative_voters_title">Nay votes</string>
+
+    <string name="referendum_description_fallback">Only  proposer dikare edit ev description û  title. If you own proposer\'s account, visit Polkassembly û fill in information about yê te proposal</string>
+
+    <string name="referendum_voter_vote">%s votes</string>
+    <string name="referendum_voter_vote_details">%s × %sx</string>
+
+    <string name="confirm_referendum_vote_title">Deng bide</string>
+    <string name="confirm_referendum_vote_track">Track</string>
+    <string name="confirm_referendum_vote_referendum">Referandom</string>
+    <string name="referendum_voters_empty_list_placeholder">List of voters dê appear li vir</string>
+
+    <string name="governance_unlock">Unlock</string>
+
+    <string name="crowdloan_contributions_liquid_source">Liquid</string>
+    <string name="crowdloan_contributions_parallel_source">Parallel</string>
+
+    <string name="assets_balance_details_locks_crowdloans">Crowdloan</string>
+
+    <string name="common_accept_terms">Accept terms...</string>
+    <string name="yield_boost_terms">Yield Boost dê automatically stake %s hemû my transferable tokens above %s</string>
+
+    <string name="yield_boost_stake_increase_time">Stake increase time</string>
+    <string name="yiled_boost_yield_boosted">Yield Boosted</string>
+
+    <string name="yield_boost_already_enabled_title">Change  Yield Boosted Collator?</string>
+    <string name="yield_boost_already_enabled_message">Yield Boost dê be turned off ji bo current collators. Nû collator: %s</string>
+
+    <string name="yield_boost_not_enough_threshold_title">Ne enough tokens to stay above threshold</string>
+    <string name="yield_boost_not_enough_threshold_message">You don’t have enough balance to pay  network fee of %s û ne drop below  threshold %s.\nAvailable balance to pay  fee: %s</string>
+
+    <string name="yield_boost_not_enough_execution_fee_title">Ne enough tokens to pay first execution fee</string>
+    <string name="yield_boost_not_enough_execution_fee_message">You don’t have enough balance to pay  network fee of %s û  yield boost execution fee of %s.\nAvailable balance to pay  fee: %s</string>
+
+    <string name="common_no_changes">Na changes</string>
+
+    <string name="staking_turing_destination_payout">without Yield Boost</string>
+    <string name="staking_turing_destination_restake">bi Yield Boost</string>
+
+    <string name="staking_turing_collator_title">Ji bo my collator</string>
+    <string name="staking_turing_restake_title">I want to stake</string>
+    <string name="staking_turing_frequency_new_title">to automatically stake %s hemû my transferable tokens above</string>
+    <string name="staking_turing_frequency_update_title">to automatically stake %s (before: %s) hemû my transferable tokens above</string>
+
+    <string name="common_frequency_days_everyday">everyday</string>
+    <plurals name="common_frequency_days">
+        <item quantity="one">everyday</item>
+        <item quantity="other">every %s days</item>
+    </plurals>
+    <string name="staking_turing_boost_threshold">Boost threshold</string>
+
+    <string name="common_on">On</string>
+    <string name="common_off">Off</string>
+    <string name="staking_turing_yield_boost">Yield Boost</string>
+
+    <string name="ledger_chain_not_supported">Ledger doesn’t support %s</string>
+
+    <string name="ledger_sign_raw_not_supported">Ledger does ne support signing arbitrary messages — only transactions</string>
+
+    <string name="assets_receive_ledger_not_supported_message">Do ne transfer %s to  Ledger-controlled account since Ledger does ne support sending of %s, so assets dê be stuck on ev account</string>
+    <string name="assets_receive_ledger_not_supported_title">Ledger does ne support ev token</string>
+
+    <string name="common_signature_invalid">Îmze e invalid</string>
+    <string name="ledger_sign_signature_invalid_message">Ji kerema xwe, make sure you have selected  right Ledger device ji bo currently approving operation</string>
+
+    <string name="ledger_sign_tx_not_supported_title">Danûstandin e ne supported</string>
+    <string name="ledger_sign_tx_not_supported_subtitle">Ledger does ne support ev transaction.</string>
+
+    <string name="ledger_sign_metadata_outdated_title">Metadata e outdated</string>
+    <string name="ledger_sign_metadata_outdated_subtitle">Ji kerema xwe, update %s app using Ledger Live app</string>
+
+    <string name="ledger_sign_transaction_validity_format">Danûstandin e valid ji bo %s</string>
+
+    <string name="ledger_review_approve_title">Review û Bipejirîne</string>
+    <string name="ledger_sign_approve_message">Press both buttons on yê te %s to approve  transaction</string>
+
+    <string name="ledger_sign_transaction_expired_message">Ji bo security reasons generated operations valid ji bo only %s. Ji kerema xwe try again û approve it bi Ledger</string>
+    <string name="ledger_sign_transaction_expired_title">Danûstandin has expired</string>
+
+    <string name="ledger_wallet_details_description">Ev wallet e paired bi Ledger. Pezkuwi Cîzdan dê help you to form her operations you want, û you dê be requested to sign them using Ledger</string>
+
+    <string name="common_ledger">Ledger</string>
+
+    <string name="ledger_import_select_address_load_more">Load bêtir accounts</string>
+    <string name="ledher_import_select_address_title">Hesab hilbijêre to add to wallet</string>
+
+    <string name="ledger_error_general_title">Ledger operation failed</string>
+    <string name="ledger_error_general_message">Operation completed bi error on device. Ji kerema xwe, try again later.</string>
+
+    <string name="ledger_error_app_cancelled_title">Operation cancelled</string>
+    <string name="ledger_error_app_cancelled_message">Operation bû cancelled by  device. Make sure you unlocked yê te Ledger.</string>
+
+    <string name="ledger_error_app_not_launched_title">%s app ne launched</string>
+    <string name="ledger_error_app_not_launched_message">Veke  %s app on yê te Ledger device</string>
+
+    <string name="account_ledger_select_device_title">Hilbijêre yê te Ledger device</string>
+    <string name="account_ledger_select_device_description">Ji kerema xwe, enable Bluetooth in yê te phone settings û Ledger device. Unlock yê te Ledger device û open  %s app.</string>
+
+    <string name="common_cancel_operation_warning">Tu bawer î you want to cancel ev operation?</string>
+    <string name="common_yes">Erê</string>
+    <string name="common_no">Na</string>
+
+    <string name="account_ledger_import_fill_disabled_hint">Lê zêde bike at least one account</string>
+    <string name="account_ledger_import_fill_title">Lê zêde bike accounts to yê te wallet</string>
+    <string name="account_ledger_import_fill_description">Make sure Tor app e installed to yê te Ledger device using Ledger Live app. Veke  network app on yê te Ledger device.</string>
+
+    <string name="account_select_hardware_wallet">Hilbijêre hardware wallet</string>
+
+    <string name="common_total">Tevahî</string>
+
+    <string name="wallet_currency_title">Yekeya pereyî</string>
+    <string name="wallet_currency_category_cryptocurrencies">Cryptocurrencies</string>
+    <string name="wallet_currency_category_fiat">Fiat currencies</string>
+    <string name="wallet_currency_category_popular_fiat">Popular fiat currencies</string>
+
+    <string name="assets_select_send_your_wallets">Yê te wallets</string>
+
+    <string name="assets_balance_details_locks_staking">Staking</string>
+    <string name="assets_balance_details_locks_vesting">Vesting</string>
+    <string name="assets_balance_details_locks_phrelect">Elections</string>
+
+    <string name="account_parity_signer_not_supported_title">Tê îmzekirin e ne supported</string>
+
+    <string name="common_invalid_qr">Koda QR e invalid</string>
+    <string name="account_parity_signer_sign_qr_invalid_message">Ji kerema xwe make sure you in scanning Koda QR ji bo currently signing operation</string>
+
+    <string name="common_try_again">Dîsa biceribîne</string>
+
+    <string name="account_parity_signer_sign_qr_code_expired">Koda QR has expired</string>
+    <string name="account_parity_signer_sign_qr_code_valid_format">Koda QR e valid ji bo %s</string>
+
+    <string name="account_parity_signer_import_preview_title">Li vir in yê te accounts</string>
+
+
+    <string name="common_permission_permissions_needed_title">Permissions needed</string>
+    <string name="common_permission_permissions_needed_message">Requested permissions in required to use ev screen.</string>
+    <string name="common_ask_again">Ask again</string>
+
+    <string name="common_permission_permissions_denied_title">Permissions denied</string>
+    <string name="common_permission_permissions_denied_message">Requested permissions in required to use ev screen. You should enable them in Mîheng.</string>
+    <string name="common_to_settings">Veke Mîheng</string>
+
+    <string name="account_parity_signer_import_start_select_top">Make sure to select top one</string>
+    <string name="account_delete_confirmation_description">Make sure you have exported yê te wallet before proceeding.</string>
+    <string name="account_delete_confirmation_title">Forget wallet?</string>
+
+    <string name="accoount_enter_chain_address_format">Enter valid %s address...</string>
+    <string name="account_chain_address_format">%s address</string>
+
+    <string name="account_details_watch_only_alert">Ev e watch-only wallet, Pezkuwi Cîzdan dikare show you balances û din information, but you nikare perform her transactions bi ev wallet</string>
+    <string name="account_add_account">Hesab lê zêde bike</string>
+
+    <string name="account_select_wallet">Hilbijêre wallet</string>
+
+    <string name="account_watch_only">watch-only</string>
+
+    <string name="account_import_wallet_title">Cîzdan têxe</string>
+    <string name="account_import_wallet_subtitle">Pezkuwi Cîzdan e compatible bi hemû apps</string>
+
+    <string name="account_add_watch_only_description">Track her wallet by its address</string>
+
+    <string name="common_ok_back">Okay, back</string>
+
+    <string name="account_watch_key_missing_title">Oops! Key e missing</string>
+    <string name="account_watch_key_missing_description">Yê te wallet e watch-only, meaning ew you nikare do her operations bi it</string>
+
+    <string name="account_add_watch_wallet">Lê zêde bike watch-only wallet</string>
+
+    <string name="account_enter_wallet_nickname">Enter wallet nickname...</string>
+    <string name="accoount_enter_substrate_address">Enter valid substrate address...</string>
+    <string name="accoount_enter_evm_address">Evm address must be valid an empty...</string>
+
+    <string name="common_substrate_address">Substrate Navnîşan</string>
+    <string name="account_watch_add_substrate_address_description">Polkadot, Kusama, Karura, KILT û 50+ networks</string>
+
+    <string name="common_evm_address">EVM address</string>
+    <string name="account_watch_add_evm_address_optional">EVM address (Optional)</string>
+    <string name="account_watch_add_evm_address_description">Moonbeam, Moonriver û din networks</string>
+
+    <string name="account_watch_add_presets">Preset wallets</string>
+    <string name="account_watch_add_subtitle">Track  activity of her wallet without injecting yê te private key to Pezkuwi Cîzdan</string>
+
+    <string name="wallet_tokens">Token</string>
+
+    <string name="assets_search_hint">Bigere by network an token</string>
+
+    <string name="crowdloan_contributions_returns_in">Returns in %s</string>
+    <string name="crowdloan_contributions_to_be_returned">Bo be returned by parachain</string>
+
+    <plurals name="common_minutes_format">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <string name="wallet_send_myself">Myself</string>
+
+    <string name="wallet_send_cannot_pay_cross_chain_fee">You don’t have enough balance to pay  Cross-chain fee of %s.\nRemaining balance after transfer: %s</string>
+
+    <string name="wallet_send_confirm_hint">Cross-chain fee e added on top of entered amount. Recipient may receive part of cross-chain fee</string>
+
+    <string name="wallet_send_to_network">Bo network</string>
+    <string name="wallet_send_from_network">Ji network</string>
+    <string name="wallet_send_cross_chain_fee">Cross-chain fee</string>
+
+    <string name="wallet_send_on_chain">On-chain</string>
+    <string name="wallet_send_cross_chain">Cross-chain</string>
+    <string name="wallet_send_recipient_network">Recipient network</string>
+    <string name="wallet_send_tokens_to">to</string>
+
+    <string name="wallet_send_tokens_on">Bişîne %s on</string>
+    <string name="wallet_send_tokens_from">Bişîne %s ji</string>
+
+    <string name="parachain_staking_cannot_stake_with_collator">Cannot stake bi ev collator</string>
+    <string name="parachain_staking_not_active_collator_message"> selected collator showed intention to stop participating in  staking.</string>
+
+    <string name="parachain_staking_collator_cannot_bond_more">Cannot add stake to ev collator</string>
+    <string name="parachain_staking_pending_revoke_message">You nikare add stake to collator ji bo which you in unstaking hemû tokens.</string>
+
+    <string name="parachain_staking_manage_collators">Manage collators</string>
+
+    <string name="parachain_staking_change_collator">Change collator</string>
+    <string name="parachain_staking_alerts_change_collator_message">One of yê te collators e ne selected in  current round</string>
+
+    <string name="parachain_staking_alerts_redeem_message">Yê te unstaking period ji bo %s has passed. Don’t forget to redeem yê te tokens</string>
+    <string name="parachain_staking_alerts_bond_more_message">One of yê te collators e ne generating rewards</string>
+
+    <string name="staking_parachain_rebond_hint">Returned tokens dê be counted ji  next round</string>
+
+    <string name="staking_parachain_no_unbond_collators_title">Na collators available ji bo unstake</string>
+    <string name="staking_parachain_no_unbond_collators_message">You have pending unstake requests ji bo hemû of yê te collators.</string>
+
+    <string name="staking_unstake_all_question">Unstake hemû?</string>
+    <string name="parachain_staking_unstake_all">Remaining staking balance dê drop under minimum network value (%s) û dê also be added to  unstaking amount</string>
+    <string name="parachain_staking_unbond_no_rewards">Yê te stake dê be kêmtir than  minimum stake (%s) ji bo ev collator.</string>
+
+    <string name="staking_parachain_unbond_already_exists_message">You in already unstaking tokens ji ev collator. You dikare only have one pending unstake per collator</string>
+    <string name="staking_parachain_unbond_already_exists_title">You nikare unstake ji ev collator</string>
+    <string name="staking_parachain_stake_more_hint">You dê get increased rewards starting ji  next round</string>
+    <string name="staking_parachain_max_delegations_title">You dikare\'t select a nû collator</string>
+    <string name="staking_parachain_max_delegations_message">You have reached  maximum number of delegations of %d collators</string>
+
+    <string name="staking_parachain_new_collator">Nû collator</string>
+    <string name="staking_parachain_collator_details_oversubscribed">Collator\'s minimum stake e higher than yê te delegation. You dê ne receive rewards ji  collator.</string>
+
+    <string name="staking_parachain_your_collaotrs_no_rewards">Hin of yê te collators in either ne elected an have a higher minimum stake than yê te staked amount. You dê ne receive a reward in ev round staking bi them.</string>
+    <string name="staking_parachain_your_collators_active">Yê te stake e assigned to next collators</string>
+    <string name="staking_parachain_your_collators_elected">Çalak collators without producing rewards</string>
+    <string name="staking_parachain_your_collators_inactive">Collators without enough stake to be elected</string>
+    <string name="staking_parachain_your_collators_waiting">Collators ew dê enact in  next round</string>
+    <string name="staking_parachain_your_collators_waiting_title">Li bendê collators (%s)</string>
+
+    <string name="staking_parachain_your_collators">Yê te collators</string>
+
+    <string name="staking_parachain_next_round_format">waiting ji bo  next round (%s)</string>
+    <string name="staking_parachain_status_inactive_message">You dê ne receive rewards ji bo ev round since none of yê te delegations e active.</string>
+
+    <string name="staking_parachain_collator_info">Collator info</string>
+    <string name="staking_parachain_delegators">Delegators</string>
+    <string name="staking_custom_validators_settings_sort_apr">Estimated rewards (%% APR)</string>
+
+    <string name="staking_parachain_collator_own_stake">Collator\'s own stake</string>
+    <string name="staking_parachain_collators_number_format">Collators: %s</string>
+    <string name="staking_min_stake">Min. stake</string>
+
+    <string name="staking_parachain_reward_frequency_hint">Token in stake produce rewards each round (%s)</string>
+    <string name="staking_setup_amount_too_low_strict">Herî kêm stake should be greater than %s</string>
+
+    <string name="common_missing_account_title">%s account e missing</string>
+
+    <string name="common_enter_amount">Mîqdar binivîse…</string>
+    <string name="staking_parachain_select_collator_hint">Hilbijêre collator…</string>
+    <string name="staking_parachain_wont_receive_rewards_title">You dê ne receive rewards</string>
+    <string name="staking_parachain_wont_receive_rewards_message">Yê te stake must be greater than  minimum stake (%s) ji bo ev collator.</string>
+    <string name="common_per_year_format">%s / year</string>
+
+    <string name="staking_parachain_collator">Collator</string>
+    <string name="staking_parachain_select_collator">Hilbijêre collator</string>
+
+    <string name="common_average">Average</string>
+    <string name="common_maximum">Herî zêde</string>
+
+    <string name="staking_reward_info_title_restake">Earnings bi restake</string>
+    <string name="staking_reward_info_title_transferrable">Earnings without restake</string>
+
+
+    <string name="staking_active_delegators">Çalak delegators</string>
+    <string name="staking_parachain_delegator_status_active_message">One an bêtir of yê te collators have been elected by  network.</string>
+
+    <string name="dapp_list_placeholder">List of DApps dê appear li vir</string>
+
+    <string name="dapp_authorized_remove_title">Rake ji Authorized?</string>
+    <string name="dapp_authorized_remove_description">“%s” DApp dê be removed ji Authorized</string>
+
+    <string name="dapp_catalog">Catalog</string>
+
+    <string name="dapp_authorized_title">Authorized DApps</string>
+    <string name="dapp_authorized_description">DApps to which you allowed access to see yê te address when you use them</string>
+
+    <string name="common_title">Title</string>
+
+    <string name="common_save">Tomar bike</string>
+    <string name="dapp_favourites_add">Lê zêde bike to favorites</string>
+
+    <string name="dapp_favourites_remove_title">Rake ji Favorites?</string>
+    <string name="dapp_favourites_remove_description">“%s” DApp dê be removed ji Favorites</string>
+
+    <string name="common_remove">Rake</string>
+    <string name="dapp_favourites">Favorites</string>
+
+    <string name="common_zero_amount_error">Mîqdar must be positive</string>
+
+    <string name="dapp_phishing_title">Phishing detected</string>
+    <string name="dapp_phishing_subtitle">Pezkuwi Cîzdan believes ew ev website could compromise  security of yê te accounts û yê te tokens</string>
+    <string name="dapp_phishing_go_back">Okay, take me back</string>
+
+    <string name="staking_start_change_validators_recommended_subtitle">Pezkuwi Cîzdan dê select  top validators based on security û profitability criteria</string>
+
+    <string name="staking_nominations_rewarded_format" formatted="false">%s rewarded</string>
+
+    <string name="common_status">Rewş</string>
+
+    <string name="staking_nominated">Nominated:</string>
+
+    <string name="staking_change_controller">Change controller</string>
+    <string name="staking_controller">Controller</string>
+    <string name="staking_stash">Stash</string>
+
+    <string name="common_find_out_more">Find out bêtir</string>
+    <string name="staking_set_controller_title">Improve staking security</string>
+    <string name="staking_set_controller_subtitle">Hilbijêre another account as a controller to delegate staking management operations to it</string>
+
+    <string name="staking_pending_rewards_title">Xelat in paid every 2–3 days by validators</string>
+
+    <string name="common_how_it_works">How it works</string>
+    <string name="staking_payout">Payout</string>
+    <string name="staking_reward_destination_payout">Transferable rewards</string>
+
+    <string name="staking_unbond_too_big">Mîqdar you want to unstake e greater than staked balance</string>
+    <string name="staking_rebond_counted_next_era_hint">Returned tokens dê be counted ji  next era</string>
+    <string name="staking_change_validators">Change validators</string>
+    <string name="staking_set_validators">Set validators</string>
+    <string name="staking_recommended_filter_identity_subtitle">bi at least one identity contact</string>
+    <string name="staking_rebond_custom">Custom amount</string>
+    <string name="staking_rebond_all">Hemû unstaking</string>
+    <string name="staking_rebond_last">Latest unstake</string>
+    <string name="staking_select_payout_account">Hilbijêre payout account</string>
+
+    <string name="staking_rewards_about">Derbarê rewards</string>
+    <string name="staking_reward_destination">Xelat destination</string>
+    <string name="staking_stake_format">Stake %s</string>
+
+    <string name="common_cannot_open_link">Cannot open ev link</string>
+
+
+    <string name="common_validation_invalid_address_title">Nederbasdar recipient</string>
+    <string name="common_validation_invalid_address_message">Recipient should be a valid %s address</string>
+
+    <string name="common_paste">Paste</string>
+
+    <string name="wallet_sender">Sender</string>
+    <string name="wallet_recipient">Recipient</string>
+    <string name="wallet_transfer_details_send_back">Bişîne to ev contact</string>
+
+    <string name="common_transaction_id">Danûstandin ID</string>
+    <string name="common_type">Cure</string>
+
+    <string name="nft_price_not_listed">Ne listed</string>
+    <string name="common_price">Biha</string>
+
+    <string name="nft_collection">Collection</string>
+    <string name="nft_owned_by">Owned by</string>
+    <string name="nft_created_by">Hate afirandin by</string>
+
+    <string name="nft_issuance_unlimited">Unlimited series</string>
+    <string name="nft_issuance_limited_format">#%s Edition of %s</string>
+    <string name="nft_your_nfts">Yê te NFTs</string>
+
+    <string name="wallet_assets_empty">Yê te assets dê appear li vir.\nMake sure  "Hide zero balances" filter e turned off</string>
+    <string name="wallet_filter_hide_zero_balance">Hide assets bi zero balances</string>
+
+    <string name="wallet_send_existential_warnining_transfer_dust">Yê te account dê be removed ji blockchain after transfer cause it makes total balance lower than minimal. Remaining balance dê be transferred to recipient as well.</string>
+    <string name="wallet_send_dead_recipient_commission_asset_title">Recipient e ne able to accept transfer</string>
+    <string name="wallet_send_dead_recipient_commission_asset_message">Yê te transfer dê fail since  destination account does ne have enough %s to accept din token transfers</string>
+
+    <string name="common_close">Bigire</string>
+
+    <string name="dapp_search_hint">Bigere by name an enter URL</string>
+    <string name="common_all">Hemû</string>
+    <string name="dapp_sign_extrinsic_details_subtitle">Make sure  operation e correct</string>
+    <string name="dapp_sign_extrinsic_failed">Serneket to sign requested operation</string>
+    <string name="common_network">Tor</string>
+    <string name="common_account_address">Hesab address</string>
+    <string name="dapp_confirm_authorize_title_format">Allow “%s” to access yê te account addresses?</string>
+    <string name="dapp_dapp">DApp</string>
+    <string name="dapp_confirm_authorize_subtitle">Bipejirîne ev request if you trust  application</string>
+    <string name="dapp_confirm_sign_extrinsic_subtitle">Bipejirîne ev request if you trust  application.\nCheck  transaction details.</string>
+    <string name="common_reject">Red bike</string>
+    <string name="common_allow">Allow</string>
+
+    <string name="about_contact_us">Têkilî Us</string>
+    <string name="about_github_v2_2_0">Github</string>
+    <string name="about_privacy">Nepenîtî policy</string>
+    <string name="about_rate_app">Me binirxînin</string>
+    <string name="about_telegram_v2_2_0">Telegram</string>
+    <string name="about_terms">Şert û conditions</string>
+    <string name="about_terms_v2_2_0">Şert &amp; Conditions</string>
+    <string name="about_title">Derbarê</string>
+    <string name="about_version">App version</string>
+    <string name="about_version_template" translatable="false">Pezkuwi Wallet v%s</string>
+    <string name="about_website_v2_2_0">Malper</string>
+    <string name="account_add_already_exists_message">Hesab already exists. Ji kerema xwe, try another one.</string>
+    <string name="account_backup_secret_caption">Ji kerema xwe make sure to write down yê te phrase correctly û legibly.</string>
+    <string name="account_confirm_mnemonic">Bipejirîne mnemonic</string>
+    <string name="account_confirm_mnemonic_title">Let’s double check it</string>
+    <string name="account_confirmation_details">Choose words in  right order</string>
+    <string name="account_create_account">Create a nû account</string>
+    <string name="account_create_details_v2_2_0">Do ne use clipboard an screenshots on yê te mobile device, try to find secure methods ji bo backup (e.g. paper)</string>
+    <string name="account_create_name_subtitle_v2_2_0">Nav dê be used only locally in ev application. You dikare edit it later</string>
+    <string name="account_create_name_title_v2_2_0">Cîzdan çêke name</string>
+    <string name="account_create_title">Paşvekişandin mnemonic</string>
+    <string name="account_creation_info">Gotinên veşartî e used to recover access to account. Write it down, we dê ne be able to recover yê te account without it!</string>
+    <string name="account_custom_secret">Hesab bi a changed secret</string>
+    <string name="account_delete_confirm">Forget</string>
+    <string name="account_derivation_path_ethereum_invalid_title">Nederbasdar Ethereum derivation path</string>
+    <string name="account_derivation_path_substrate_invalid_title">Nederbasdar Substrate derivation path</string>
+    <string name="account_error_try_another_one">Ji kerema xwe, try another one.</string>
+    <string name="account_ethereum_crypto_type">Ethereum keypair crypto type</string>
+    <string name="account_ethereum_derivation_path">Ethereum secret derivation path</string>
+    <string name="account_export">Derxe account</string>
+    <string name="account_export_action">Derxe</string>
+    <string name="account_export_json_password_title">Set a password ji bo yê te JSON file</string>
+    <string name="account_export_json_title">Tomar bike yê te secret û store it in a safe place</string>
+    <string name="account_export_seed_title">Write down yê te secret û store it in a safe place</string>
+    <string name="account_import_invalid_keystore">Nederbasdar restore json. Ji kerema xwe, make sure ew input contains valid json.</string>
+    <string name="account_import_invalid_seed">Seed e invalid. Ji kerema xwe, make sure ew yê te input contains 64 hex symbols.</string>
+    <string name="account_import_json_no_network">JSON contains no network information. Ji kerema xwe specify it below.</string>
+    <string name="account_import_json_title">Provide yê te Vegerîne JSON</string>
+    <string name="account_import_mnemonic_hint">Typically 12-word phrase (but may be 15, 18, 21 an 24)</string>
+    <string name="account_import_mnemonic_subtitle">Write words separately bi one space, no commas an din signs</string>
+    <string name="account_import_mnemonic_title">Enter  words in  right order</string>
+    <string name="account_import_password_placeholder">Şîfre</string>
+    <string name="account_import_seed_hint">0xAB</string>
+    <string name="account_import_seed_title">Enter yê te raw seed</string>
+    <string name="account_info_title">Hesab</string>
+    <string name="account_invalid_derivation_path_message_v2_2_0">Yê te derivation path contains unsupported symbols an has incorrect structure</string>
+    <string name="account_invalid_derivation_path_title">Nederbasdar derivation path</string>
+    <string name="account_json_file">JSON file</string>
+    <string name="account_mnmonic_length_variants">12, 15, 18, 21 an 24-word phrase</string>
+    <string name="account_needed_message">You don’t have account ji bo ev network, you dikare create an import account.</string>
+    <string name="account_needed_title">Hesab needed</string>
+    <string name="account_no_chain_projection">Hesab tune found</string>
+    <string name="account_private_key">Taybetî key</string>
+    <string name="account_restore_account">Already have an account</string>
+    <string name="account_seed_hex_symbols">64 hex symbols</string>
+    <string name="account_select_secret_source">Hilbijêre yê te secret type</string>
+    <string name="account_shared_secret">Hesab bi a shared secret</string>
+    <string name="account_substrate_crypto_type">Substrate keypair crypto type</string>
+    <string name="account_substrate_derivation_path">Substrate secret derivation path</string>
+    <string name="account_wallet_nickname">Cîzdan nickname</string>
+    <string name="accounts_add_chain_account">Lê zêde bike %s account</string>
+    <string name="accounts_add_wallet">Cîzdan lê zêde bike</string>
+    <string name="accounts_change_chain_account">Change %s account</string>
+    <string name="accounts_change_chain_secrets">Change account</string>
+    <string name="buy_completed">Purchase initiated! Ji kerema xwe bisekine up to 60 minutes. You dikare track status on  email.</string>
+    <string name="choose_amount_asset">Malûmilk</string>
+    <string name="choose_amount_available_balance">Peyda balance</string>
+    <string name="choose_amount_error_balance">Sorry, balance checking request failed. Ji kerema xwe, try again later.</string>
+    <string name="choose_amount_error_fee">Sorry, we couldn\'t contact transfer provider. Ji kerema xwe, try again later.</string>
+    <string name="choose_amount_fee">Veguhestin fee</string>
+    <string name="choose_amount_initial" translatable="false">0</string>
+    <string name="choose_amount_network_error">Tor ne responding</string>
+    <string name="choose_amount_to">Bo</string>
+    <string name="common_account">Hesab</string>
+    <string name="common_add">Lê zêde bike</string>
+    <string name="common_address">Navnîşan</string>
+    <string name="common_advanced">Advanced</string>
+    <string name="common_amount">Mîqdar</string>
+    <string name="common_amount_low">Mîqdar e too low</string>
+    <string name="common_applied">Applied</string>
+    <string name="common_apply">Bicîh bîne</string>
+    <string name="common_attention">Attention!</string>
+    <string name="common_available_format">Peyda: %s</string>
+    <string name="common_balance">Hevseng</string>
+    <string name="common_bonus">Bonus</string>
+    <string name="common_call">Call</string>
+    <string name="common_cancel">Betal</string>
+    <string name="common_chain">Zincîr</string>
+    <string name="common_change">Change</string>
+    <string name="common_choose_network">Choose network</string>
+    <string name="common_completed_with_count">Temam (%s)</string>
+    <string name="common_confirm">Bipejirîne</string>
+    <string name="common_confirm_title">Confirmation</string>
+    <string name="common_confirmation_title">Tu bawer î?</string>
+    <string name="common_confirmed">Hate pejirandin</string>
+    <string name="common_continue">Berdewam bike</string>
+    <string name="common_copied">Hate kopîkirin to clipboard</string>
+    <string name="common_copy_address">Navnîşan kopî bike</string>
+    <string name="common_copy_id">Kopî bike id</string>
+    <string name="common_crypto_type">Keypair crypto type</string>
+    <string name="common_date">Dîrok</string>
+    <string name="common_details">Hûrgulî</string>
+    <string name="common_done">Qediya</string>
+    <string name="common_edit">Sererast bike</string>
+    <string name="common_email_chooser_title">Hilbijêre email app</string>
+    <string name="common_error_general_title">Çewtî</string>
+    <string name="common_event">Event</string>
+    <string name="common_existential_warning_message_v2_2_0">Yê te account dê be removed ji blockchain after ev operation cause it makes total balance lower than minimal</string>
+    <string name="common_existential_warning_title">Operation dê remove account</string>
+    <string name="common_explore">Explore</string>
+    <string name="common_filter_sort_header">Sort by:</string>
+    <plurals name="common_hours_format">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <string name="common_i_understand">I understand</string>
+    <string name="common_info">Agahdarî</string>
+    <string name="common_learn_more">Bêtir hîn bibe</string>
+    <string name="common_learn_more_v2_2_0">Find out bêtir about</string>
+    <string name="common_left">%s left</string>
+    <string name="common_module">Module</string>
+    <string name="common_next">Paşîn</string>
+    <string name="common_not_enough_funds_message">Sorry, you don\'t have enough funds to pay  network fee.</string>
+    <string name="common_not_enough_funds_title">Insufficient balance</string>
+    <string name="common_ok">Baş e</string>
+    <string name="common_options_title">Hilbijêre an option</string>
+    <string name="common_proceed">Proceed</string>
+    <string name="common_reset">Ji nû ve bike</string>
+    <string name="common_retry">Dîsa biceribîne</string>
+    <string name="common_search">Bigere</string>
+    <string name="common_search_results_number">Bigere results: %d</string>
+    <string name="common_secret_derivation_path">Nepenî derivation path</string>
+    <string name="common_share">Parve bike</string>
+    <string name="common_skip">Derbas bike</string>
+    <string name="common_skip_process">Derbas bike process</string>
+    <string name="common_time_left">Dem left</string>
+    <string name="common_transaction_submitted">Danûstandin submitted</string>
+    <string name="common_undefined_error_message">Ji kerema xwe, try again bi another input. If  error appears again, ji kerema xwe, contact support.</string>
+    <string name="common_unknown">Unknown</string>
+    <string name="common_unlimited">Unlimited</string>
+    <string name="common_update">Nûve bike</string>
+    <string name="common_use">Use</string>
+    <string name="common_warning">Hişyarî</string>
+    <string name="connection_add_already_exists_error"> node has already been added previously. Ji kerema xwe, try another node.</string>
+    <string name="connection_add_invalid_error">Can\'t establish connection bi node. Ji kerema xwe, try another one.</string>
+    <string name="connection_add_unsupported_error">Unfortunately,  network e unsupported. Ji kerema xwe, try one of  following: %s.</string>
+    <string name="connection_delete_description">Bipejirîne %s deletion.</string>
+    <string name="connection_delete_title">Jê bibe network?</string>
+    <string name="connection_error_message_v2_2_0">Ji kerema xwe, check yê te connection an try again later</string>
+    <string name="connection_management_custom_title">Custom</string>
+    <string name="connection_management_default_title">Default</string>
+    <string name="connection_management_title">Tor</string>
+    <string name="connections_add_connection">Lê zêde bike connection</string>
+    <string name="contacts_scan">Bişopîne Koda QR</string>
+    <string name="crodloan_private_crowdloan_message">Taybetî crowdloans in ne yet supported.</string>
+    <string name="crodloan_private_crowdloan_title">Taybetî crowdloan</string>
+    <string name="crowdloan_about">Derbarê crowdloans</string>
+    <string name="crowdloan_acala_direct">Direct</string>
+    <string name="crowdloan_acala_learn_types">Bêtir hîn bibe about different contributions to Acala</string>
+    <string name="crowdloan_acala_liquid">Liquid</string>
+    <string name="crowdloan_active_section_format">Çalak (%s)</string>
+    <string name="crowdloan_agree_with_policy">Agree to Şert û Conditions</string>
+    <string name="crowdloan_app_bonus_format">Pezkuwi Cîzdan bonus (%s)</string>
+    <string name="crowdloan_astar_wrong_referral">Astar referral code should be a valid Polkadot address</string>
+    <string name="crowdloan_cap_reached_amount_message">Cannot contribute chosen amount since resulting raised amount dê exceed crowdloan cap. Herî zêde allowed contribution e %s.</string>
+    <string name="crowdloan_cap_reached_raised_message">Cannot contribute to selected crowdloan  since its cap e already reached.</string>
+    <string name="crowdloan_cap_reached_title">Crowdloan cap exceeded</string>
+    <string name="crowdloan_contribute_title">Contribute to crowdloan</string>
+    <string name="crowdloan_contribution">Contribution</string>
+    <string name="crowdloan_contribution_format">You contributed: %s</string>
+    <string name="crowdloan_contributions_placeholder">Yê te contributions\n dê appear li vir</string>
+    <string name="crowdloan_contributions_with_source" formatted="false">%s (via %s)</string>
+    <string name="crowdloan_crowdloan">Crowdloan</string>
+    <string name="crowdloan_empty_bonus_title">Get a special bonus</string>
+    <string name="crowdloan_empty_message_v2_2_0">Crowdloan dê be displayed li vir</string>
+    <string name="crowdloan_ended_message">Cannot contribute to selected crowdloan since it e already ended.</string>
+    <string name="crowdloan_ended_title">Crowdloan e ended</string>
+    <string name="crowdloan_enter_referral">Enter yê te referral code</string>
+    <string name="crowdloan_info">Crowdloan info</string>
+    <string name="crowdloan_learn">Learn %s\'s crowdloan</string>
+    <string name="crowdloan_learn_v2_2_0">%s\'s crowdloan website</string>
+    <string name="crowdloan_leasing_period">Leasing period</string>
+    <string name="crowdloan_main_description_v2_2_0">Choose parachains to contribute yê te %s. You\'ll get back yê te contributed tokens, û if parachain wins a slot, you\'ll receive rewards after  end of  auction</string>
+    <string name="crowdloan_missing_bonus_action">Bicîh bîne bonus</string>
+    <string name="crowdloan_missing_bonus_message">If you don\'t have referral code, you dikare apply Pezkuwi referral code to receive bonus ji bo yê te contribution</string>
+    <string name="crowdloan_missing_bonus_title">You have ne applied bonus</string>
+    <string name="crowdloan_moonbeam_encryption_not_supported_message">Moonbeam crowdloan supports only SR25519 an ED25519 crypto type accounts. Ji kerema xwe consider using another account ji bo contribution</string>
+    <string name="crowdloan_moonbeam_encryption_not_supported_title">Cannot contribute bi ev account</string>
+    <string name="crowdloan_moonbeam_missing_account_message">You should add Moonbeam account to  wallet in order to participate in Moonbeam crowdloan</string>
+    <string name="crowdloan_moonbeam_missing_account_title">Moonbeam account e missing</string>
+    <string name="crowdloan_moonbeam_region_restriction_message">Ev crowdloan isn\'t available in yê te location.</string>
+    <string name="crowdloan_moonbeam_region_restriction_title">Yê te region e ne supported</string>
+    <string name="crowdloan_moonbeam_reward_destination">%s reward destination</string>
+    <string name="crowdloan_moonbeam_terms_submit">Bişîne agreement</string>
+    <string name="crowdloan_moonbeam_terms_subtitle">You need to submit agreement bi Şert &amp; Conditions on  blockchain to proceed. Ev e required to be done only once ji bo hemû following Moonbeam contributions</string>
+    <string name="crowdloan_privacy_policy">I have read û agree to Şert û Conditions</string>
+    <string name="crowdloan_raised">Raised</string>
+    <string name="crowdloan_referral_code">Referral code</string>
+    <string name="crowdloan_referral_code_invalid">Referral code e invalid. Ji kerema xwe, try another one</string>
+    <string name="crowdloan_terms_conditions_named">%s\'s Şert û Conditions</string>
+    <string name="crowdloan_too_small_contribution_message"> minimum allowed amount to contribute e %s.</string>
+    <string name="crowdloan_too_small_contribution_title">Contribution amount e too small</string>
+    <string name="crowdloan_unlock_hint">Yê te %s tokens dê be returned after  leasing period.</string>
+    <string name="crowdloan_your_contributions">Yê te contributions</string>
+    <string name="crownloans_raised_format" formatted="false">Raised: %s of %s</string>
+    <string name="dapp_dapps">DApps</string>
+    <string name="ecdsa_selection_subtitle">(BTC/ETH compatible)</string>
+    <string name="ecdsa_selection_title">ECDSA</string>
+    <string name="ed25519_selection_subtitle">ed25519 (alternative)</string>
+    <string name="ed25519_selection_title">Edwards</string>
+    <string name="export_json_password_confirm">Bipejirîne password</string>
+    <string name="export_json_password_match_error">Passwords do ne match</string>
+    <string name="export_json_password_new">Set password</string>
+    <string name="export_mnemonic_with_derivation" formatted="false">Tor: %s\nMnemonic: %s\nDerivation path: %s</string>
+    <string name="export_mnemonic_without_derivation" formatted="false">Tor: %s\nMnemonic: %s</string>
+    <string name="fee_not_yet_loaded_message">Ji kerema xwe bisekine until fee e calculated</string>
+    <string name="fee_not_yet_loaded_title">Heq calculation e in progress</string>
+    <string name="history_v1.9.0">History</string>
+    <string name="identity_email_title">Email</string>
+    <string name="identity_legal_name_title">Legal name</string>
+    <string name="identity_riot_name_title">Element name</string>
+    <string name="identity_title">Identity</string>
+    <string name="identity_web_title">Web</string>
+    <string name="import_json_chains_dont_match">Supplied JSON file bû created ji bo different network.</string>
+    <string name="import_json_invalid_format_message">Ji kerema xwe, make sure ew yê te input contains valid json.</string>
+    <string name="import_json_invalid_format_title">Vegerîne JSON e invalid</string>
+    <string name="import_json_invalid_password">Ji kerema xwe, check password correctness û try again.</string>
+    <string name="import_json_invalid_password_title">Keystore decryption failed</string>
+    <string name="import_json_paste">Paste json</string>
+    <string name="import_json_unsupported_crypto_title">Unsupported encryption type</string>
+    <string name="import_json_unsupported_ethereum_crypto_message">Cannot import account bi Substrate secret nav  network bi Ethereum encryption</string>
+    <string name="import_json_unsupported_substrate_crypto_message">Cannot import account bi Ethereum secret nav  network bi Substrate encryption</string>
+    <string name="import_mnemonic_invalid_title">Yê te mnemonic e invalid</string>
+    <string name="import_seed_invalid_message">Ji kerema xwe, make sure ew yê te input contains 64 hex symbols.</string>
+    <string name="import_seed_invalid_title">Seed e invalid</string>
+    <string name="invoice_scan_error_no_info">QR dikare\'t be decoded</string>
+    <string name="invoice_scan_qr_code_title">Koda QR</string>
+    <string name="invoice_scan_upload">Upload ji gallery</string>
+    <string name="language_title">Ziman</string>
+    <string name="make_payout_transaction_sent">Payout transaction sent</string>
+    <string name="mnemonic_error_try_another_one">Ji kerema xwe, try another one.</string>
+    <string name="mnemonic_error_try_another_one_v2_2_0">Nederbasdar mnemonic passphrase, ji kerema xwe check one bêtir time  words order</string>
+    <string name="network_fee">Heqê torê</string>
+    <string name="network_info_address">Girêk address</string>
+    <string name="network_info_title">Girêk Agahdarî</string>
+    <string name="network_status_connecting">Tê girêdan…</string>
+    <string name="onboarding_create_account">Create account</string>
+    <string name="onboarding_privacy_policy">Polîtîkaya Nepenîtiyê</string>
+    <string name="onboarding_restore_account">Têxe account</string>
+    <string name="onboarding_restore_wallet">Already have a wallet</string>
+    <string name="onboarding_terms_and_conditions_2">Şert û Conditions</string>
+    <string name="pincode_biometry_dialog_title">Biometry</string>
+    <string name="pincode_changed_message">Pin code has been successfully changed</string>
+    <string name="pincode_confirm_your_pin_code">Bipejirîne yê te pin code</string>
+    <string name="pincode_create_top_title">Create pin code</string>
+    <string name="pincode_enter_pin_code_v2_2_0">Enter PIN code</string>
+    <string name="pincode_title_create">Set yê te pin code</string>
+    <string name="profile_accounts_title">Hesab</string>
+    <string name="profile_accounts_title_2_0">Cîzdan</string>
+    <string name="profile_language_title">Ziman</string>
+    <string name="profile_pincode_change_title">Change pin code</string>
+    <string name="profile_settings_title">Mîheng</string>
+    <string name="recover_json_hint">Paste json an upload file…</string>
+    <string name="recover_json_upload">Upload file</string>
+    <string name="recovery_json">Vegerîne JSON</string>
+    <string name="recovery_passphrase">Gotinên veşartî passphrase</string>
+    <string name="recovery_raw_seed">Raw seed</string>
+    <string name="recovery_source_type">Çavkanî type</string>
+    <string name="runtime_update_failure_description">Serneket to update information about blockchain runtime. Hin functionality may ne work.</string>
+    <string name="runtime_update_failure_title">Runtime update failure</string>
+    <string name="search_contacts">Contacts</string>
+    <string name="search_header_my_accounts">my accounts</string>
+    <string name="search_recipient_hint">Hesab address an account name</string>
+    <string name="search_recipient_welcome_v2_2_0">Bigere results dê be displayed li vir</string>
+    <string name="search_result_header">Bigere results</string>
+    <string name="settings_community">Community</string>
+    <string name="settings_general">General</string>
+    <string name="settings_preferences">Preferences</string>
+    <string name="settings_security">Ewlehî</string>
+    <string name="settings_support">Support &amp; Feedback</string>
+    <string name="settings_twitter">Twitter</string>
+    <string name="settings_youtube">Youtube</string>
+    <string name="sr25519_selection_subtitle">sr25519 (recommended)</string>
+    <string name="sr25519_selection_title">Schnorrkel</string>
+    <string name="staking_account_is_used_as_controller">Selected account e already in use as controller</string>
+    <string name="staking_add_controller">Lê zêde bike controller account %s to  application to perform ev action.</string>
+    <string name="staking_alert_change_validators">Change yê te validators.</string>
+    <string name="staking_alert_no_alerts_now">Everything e fine niha. Alerts dê appear li vir.</string>
+    <string name="staking_alert_redeem_title">Redeem unstaked tokens</string>
+    <string name="staking_alert_start_next_era_message">Ji kerema xwe bisekine ji bo  next era to start.</string>
+    <string name="staking_alert_title">Alerts</string>
+    <string name="staking_already_controller_title">Already controller</string>
+    <string name="staking_apr" translatable="false">%s APR</string>
+    <string name="staking_apy" translatable="false">%s APY</string>
+    <string name="staking_balance_title">Staking balance</string>
+    <string name="staking_balance_title_v2_2_0">Hevseng</string>
+    <string name="staking_bond_more_v1_9_0">Stake bêtir</string>
+    <string name="staking_bonded_inactive">You in neither nominating nor validating</string>
+    <string name="staking_confirm_nominations" formatted="false">%s of %s</string>
+    <string name="staking_confirm_selected_validators">Selected validators</string>
+    <string name="staking_controller_account">Controller account</string>
+    <string name="staking_controller_account_zero_balance">We found ew ev account has no free tokens, in you sure ew you want to change  controller?</string>
+    <string name="staking_controller_can_hint">Controller dikare unstake, redeem, return to stake, change rewards destination û validators.</string>
+    <string name="staking_controller_can_hint_v2_2_0">Controller e used to: unstake, redeem, return to stake, change validators û set rewards destination</string>
+    <string name="staking_controller_change_success">Controller e changed</string>
+    <string name="staking_custom_blocked_warning">Ev validator e blocked û nikare be selected at  moment. Ji kerema xwe, try again in  next era.</string>
+    <string name="staking_custom_clear_button_title">Paqij bike filters</string>
+    <string name="staking_custom_deselect_button_title">Deselect hemû</string>
+    <string name="staking_custom_fill_button_title">Fill rest bi recommended</string>
+    <string name="staking_custom_header_validators_title" formatted="false">Pejirandkar: %d of %d</string>
+    <string name="staking_custom_proceed_button_disabled_title">Hilbijêre validators (max %d)</string>
+    <string name="staking_custom_proceed_button_enabled_title" formatted="false">Show selected: %d (max %d)</string>
+    <string name="staking_custom_validators_list_title">Hilbijêre validators</string>
+    <string name="staking_custom_validators_settings_sort_apy">Estimated rewards (%% APY)</string>
+    <string name="staking_custom_validators_update_list">Nûve bike yê te list</string>
+    <string name="staking_era_index_no_prefix" translatable="false">#%d</string>
+    <string name="staking_era_title">era #%s</string>
+    <string name="staking_estimate_earning_title_v1.9.0">Estimated earnings</string>
+    <string name="staking_estimate_earning_title_v2_2_0">Estimated %s earnings</string>
+    <string name="staking_filter_title_own_stake">Pejirandkar\'s own stake</string>
+    <string name="staking_filter_title_own_stake_token">Pejirandkar\'s own stake (%s)</string>
+    <string name="staking_hint_no_rewards">Token in unstaking period generate no rewards.</string>
+    <string name="staking_hint_no_rewards_v2_2_0">During unstaking period tokens produce no rewards</string>
+    <string name="staking_hint_redeem">After unstaking period you dê need to redeem yê te tokens.</string>
+    <string name="staking_hint_redeem_v2_2_0">After unstaking period don\'t forget to redeem yê te tokens</string>
+    <string name="staking_hint_reward_bond_more">Yê te rewards dê be increased starting ji  next era.</string>
+    <string name="staking_hint_reward_bond_more_v2_2_0">You dê get increased rewards starting ji next era</string>
+    <string name="staking_hint_rewards_format">Staked tokens generate rewards each era (%s).</string>
+    <string name="staking_hint_rewards_format_v2_2_0">Token in stake produce rewards each era (%s)</string>
+    <string name="staking_hint_unbond_kills_stash">Pezkuwi Cîzdan dê change rewards destination\nto yê te account to avoid remaining stake.</string>
+    <string name="staking_hint_unstake_format">If you want to unstake tokens, you dê have to wait ji bo  unstaking period (%s).</string>
+    <string name="staking_hint_unstake_format_v2_2_0">Bo unstake tokens you dê have to wait ji bo  unstaking period (%s)</string>
+    <string name="staking_main_active_nominators_title">Çalak nominators</string>
+    <plurals name="staking_main_lockup_period_value">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <string name="staking_main_minimum_stake_title">Herî kêm stake</string>
+    <string name="staking_main_network_title">%s network</string>
+    <string name="staking_main_stake_balance_staked">Staked</string>
+    <string name="staking_manage_title">Manage</string>
+    <string name="staking_max_format" formatted="false">%s (max %s)</string>
+    <string name="staking_max_nominators_reached_message">Herî zêde number of nominators has been reached</string>
+    <string name="staking_max_nominators_reached_title">Cannot start staking</string>
+    <string name="staking_month_period_title">Monthly</string>
+    <string name="staking_nominator_status_alert_active_message">One of yê te validators have been elected by network.</string>
+    <string name="staking_nominator_status_alert_active_title">Çalak status</string>
+    <string name="staking_nominator_status_alert_inactive_title">Neçalak status</string>
+    <string name="staking_nominator_status_alert_low_stake">Yê te staked amount e kêmtir than  minimum stake to get a reward.</string>
+    <string name="staking_nominator_status_alert_no_validators">None of yê te validators have been elected by network.</string>
+    <string name="staking_nominator_status_alert_waiting_message">Yê te staking dê start in  next era.</string>
+    <string name="staking_nominator_status_inactive">Neçalak</string>
+    <string name="staking_nominator_status_waiting">Waiting ji bo  next Era</string>
+    <string name="staking_nominator_status_waiting_format">waiting ji bo  next era (%s)</string>
+    <string name="staking_payout_expired">Payout expired</string>
+    <plurals name="staking_payouts_days_left">
+        <item quantity="one">%d day left</item>
+        <item quantity="other">%d days left</item>
+    </plurals>
+    <string name="staking_rebond">Return to stake</string>
+    <string name="staking_rebond_insufficient_bondings">Mîqdar you want to return to stake e greater than unstaking balance</string>
+    <string name="staking_recommended_feature_1">Most profitable</string>
+    <string name="staking_recommended_feature_2">Ne oversubscribed</string>
+    <string name="staking_recommended_feature_3">Having onchain identity</string>
+    <string name="staking_recommended_feature_4">Ne slashed</string>
+    <string name="staking_recommended_feature_5">Limit of 2 validators per identity</string>
+    <string name="staking_recommended_section_title">Recommended validators</string>
+    <string name="staking_recommended_title">Pejirandkar</string>
+    <string name="staking_recommended_validators_apy">Estimated reward (APY)</string>
+    <string name="staking_redeem">Redeem</string>
+    <string name="staking_redeemable_format">Redeemable: %s</string>
+    <string name="staking_reward">Xelat</string>
+    <string name="staking_reward_details_era">Era</string>
+    <string name="staking_reward_details_title">Xelat details</string>
+    <string name="staking_reward_details_validator">Pejirandkar</string>
+
+    <string name="staking_reward_payouts_empty_rewards">Perfect! Hemû rewards in paid.</string>
+    <string name="staking_reward_payouts_empty_rewards_v2_2_0">Awesome! You have no unpaid rewards</string>
+    <string name="staking_reward_payouts_title">Li bendê rewards</string>
+    <string name="staking_reward_payouts_title_v2_2_0">Unpaid rewards</string>
+    <string name="staking_rewards_apy">Xelat (APY)</string>
+    <string name="staking_rewards_destination_title_v2_0_0">Xelat destination</string>
+    <string name="staking_select_custom">Hilbijêre by yourself</string>
+    <string name="staking_select_recommended">Hilbijêre recommended</string>
+    <string name="staking_selected_validators_count_v1.9.1" formatted="false">selected %d (max %d)</string>
+    <string name="staking_selected_validators_mask">Pejirandkar (%d)</string>
+    <string name="staking_set_validators_message">Pejirandkar in ne selected</string>
+    <string name="staking_set_validators_title">Hilbijêre validators to start staking</string>
+    <string name="staking_setup_restake">Restake</string>
+    <string name="staking_setup_restake_v2_2_0">Restake rewards</string>
+    <string name="staking_setup_reward_destination_section_title">How to use yê te rewards?</string>
+    <string name="staking_setup_reward_destination_section_title_v2_2_0">Hilbijêre yê te rewards type</string>
+    <string name="staking_setup_reward_payout_account">Payout account</string>
+    <string name="staking_slash">Slash</string>
+
+    <string name="staking_staking_period">Staking period</string>
+    <string name="staking_start_change_validators_custom_subtitle">You should trust yê te nominations to act competently û honest, basing yê te decision purely on their current profitability could lead to reduced profits an even loss of funds.</string>
+    <string name="staking_start_change_validators_custom_subtitle_v2_2_0">Choose yê te validators carefully, as they should act proficiently û honest. Basing yê te decision purely on  profitability could lead to reduced rewards an even loss of stake</string>
+    <string name="staking_start_change_validators_custom_title">Stake bi yê te validators</string>
+
+    <string name="staking_start_change_validators_recommended_title">Stake bi recommended validators</string>
+    <string name="staking_start_title">Dest pê bike staking</string>
+    <string name="staking_stash_can_hint">Stash dikare bond bêtir û set  controller.</string>
+    <string name="staking_stash_can_hint_v2_2_0">Stash e used to: stake bêtir û set  controller</string>
+    <string name="staking_stash_missing_message">Stash account %s e unavailable to update staking setup.</string>
+    <string name="staking_story_nominator_page_1">Nominator earns passive income by locking his tokens ji bo securing  network. Bo achieve ew,  nominator should select a number of validators to support.  nominator should be careful when selecting validators. If selected validator won’t behave properly, slashing penalties would be applied to both of them, based on  severity of  incident.</string>
+    <string name="staking_story_nominator_page_2">Pezkuwi Cîzdan provides a support ji bo nominators by helping them to select validators.  mobile app fetches data ji  blockchain û composes a list of validators, which have: most profits, identity bi contact info, ne slashed û available to receive nominations. Pezkuwi Cîzdan also cares about decentralization, so if one person an a company runs several validator nodes, only up to 2 nodes ji them dê be shown in  recommended list.</string>
+    <string name="staking_story_nominator_title">Who e a nominator?</string>
+    <string name="staking_story_reward_page_1">Xelat ji bo staking in available to payout at  end of each era (6 hours in Kusama û 24 hours in Polkadot). Tor stores pending rewards during 84 eras û in most cases validators in paying out  rewards ji bo everyone. However, validators might forget an something might happen bi them, so nominators dikare payout their rewards by themselves.</string>
+    <string name="staking_story_reward_page_2">Although rewards in usually distributed by validators, Pezkuwi Cîzdan helps by alerting if there in her unpaid rewards ew in close to expiring. You dê receive alerts about ev û din activities on  staking screen.</string>
+    <string name="staking_story_reward_title">Tê wergirtin rewards</string>
+    <string name="staking_story_staking_page_2">Staking e an important part of network security û reliability. Anyone dikare run validator nodes, but only those who have enough tokens staked dê be elected by  network to participate in composing nû blocks û receive  rewards. Pejirandkar often do ne have enough tokens by themselves, so nominators in helping them by locking their tokens ji bo them to achieve  required amount of stake.</string>
+    <string name="staking_story_staking_title">What e staking?</string>
+    <string name="staking_story_validator_page_1"> validator runs a blockchain node 24/7 û e required to have enough stake locked (both owned û provided by nominators) to be elected by  network. Pejirandkar should maintain their nodes\' performance û reliability to be rewarded. Being a validator e almost a full-time job, there in companies ew in focused to be validators on  blockchain networks.</string>
+    <string name="staking_story_validator_page_2">Everyone dikare be a validator û run a blockchain node, but ew requires a certain level of technical skills û responsibility. Polkadot û Kusama networks have a program, named Thousand Pejirandkar Programme, to provide support ji bo beginners. Moreover,  network itself dê always reward bêtir validators, who have kêmtir stake (but enough to be elected) to improve decentralization.</string>
+    <string name="staking_story_validator_title">Who e a validator?</string>
+    <string name="staking_switch_account_to_stash">Switch yê te account to stash to set  controller.</string>
+    <string name="staking_title">Staking</string>
+    <string name="staking_total_rewards_v1.9.0">Rewarded</string>
+    <string name="staking_total_staked">Tevahî staked</string>
+    <string name="staking_unbond_v1_9_0">Unstake</string>
+    <string name="staking_unbonding_empty_list_v1_9_0">Unstaking transactions dê appear li vir</string>
+    <string name="staking_unbonding_empty_list_v2_2_0">Unstaking transactions dê be displayed li vir</string>
+    <string name="staking_unbonding_format">Unstaking: %s</string>
+    <string name="staking_unbonding_hint">Yê te tokens dê be available to redeem after  unstaking period.</string>
+    <string name="staking_unbonding_limit_reached_message">You have reached  unstaking requests limit (%d active requests).</string>
+    <string name="staking_unbonding_limit_reached_title">Unstaking requests limit reached</string>
+    <string name="staking_unbonding_period_v1_9_0">Unstaking period</string>
+    <string name="staking_validator_apy_percent">Estimated reward (%% APY)</string>
+    <string name="staking_validator_estimated_reward">Estimated reward</string>
+    <string name="staking_validator_info_title">Pejirandkar info</string>
+    <string name="staking_validator_my_oversubscribed_message">Oversubscribed. You dê ne receive rewards ji  validator in ev era.</string>
+    <string name="staking_validator_nominators">Nominators</string>
+    <string name="staking_validator_other_oversubscribed_message">Oversubscribed. Only  top staked nominators in paid rewards.</string>
+    <string name="staking_validator_own_stake">Own</string>
+    <string name="staking_validator_search_empty_title">Na search results.\nBe sure you typed full account address</string>
+    <string name="staking_validator_slashed_desc">Pejirandkar e slashed ji bo misbehaves (e.g. goes offline, attacks  network, an runs modified software) in  network.</string>
+    <string name="staking_validator_total_stake">Tevahî stake</string>
+    <string name="staking_validator_total_stake_token">Tevahî stake (%s)</string>
+    <string name="staking_warning_tiny_payout"> reward e kêmtir than  network fee.</string>
+    <string name="staking_year_period_title">Yearly</string>
+    <string name="staking_your_allocated_description">Yê te stake e allocated to  following validators.</string>
+    <string name="staking_your_allocated_description_v2_2_0">Yê te stake e assigned to next validators</string>
+    <string name="staking_your_elected_format">Elected (%s)</string>
+    <string name="staking_your_inactive_description">Pejirandkar who were ne elected in ev era.</string>
+    <string name="staking_your_inactive_description_v2_2_0">Pejirandkar without enough stake to be elected</string>
+    <string name="staking_your_not_allocated_description">Others, who in active without yê te stake allocation.</string>
+    <string name="staking_your_not_allocated_description_v2_2_0">Çalak validators without yê te stake assignment</string>
+    <string name="staking_your_not_elected_format">Ne elected (%s)</string>
+    <string name="staking_your_oversubscribed_message">Yê te tokens in allocated to  oversubscribed validators. You dê ne receive rewards in ev era.</string>
+    <string name="staking_your_stake">Yê te stake</string>
+    <string name="staking_your_validators">Yê te validators</string>
+    <string name="staking_your_validators_changing_title">Yê te validators dê change in  next era.</string>
+    <string name="tabbar_staking_title">Staking</string>
+    <string name="tabbar_wallet_title">Cîzdan</string>
+    <string name="today">Îro</string>
+    <string name="transaction_details_copy_hash">Kopî bike hash</string>
+    <string name="transaction_details_extrinsic_fee">Heq</string>
+    <string name="transaction_details_from">Ji</string>
+    <string name="transaction_details_hash_title">Extrinsic Hash</string>
+    <string name="transaction_details_title">Danûstandin details</string>
+    <string name="transaction_details_view_explorer">Bibîne in %s</string>
+    <string name="transaction_details_view_polkascan">Bibîne in Polkascan</string>
+    <string name="transaction_details_view_subscan">Bibîne in Subscan</string>
+    <string name="transaction_status_completed">Temam</string>
+    <string name="transaction_status_failed">Serneket</string>
+    <string name="transaction_status_pending">Li bendê</string>
+    <string name="transfer_title">Veguhestin</string>
+    <string name="transfers_empty">Incoming û outgoing\ntransfers dê appear li vir</string>
+    <string name="transfers_empty_v2_2_0">Yê te operations dê be displayed li vir</string>
+    <string name="username_setup_choose_title">Nav</string>
+    <string name="username_setup_choose_title_v2_2_0">Cîzdan name</string>
+    <string name="username_setup_hint">Ev name dê be displayed only ji bo you û stored locally on yê te mobile device.</string>
+    <string name="validator_not_elected_description">Ev account e ne elected by network to participate in  current era</string>
+    <string name="wallet_asset_buy">Buy</string>
+    <string name="wallet_asset_buy_with">Buy bi</string>
+    <string name="wallet_asset_receive">Werbigire</string>
+    <string name="wallet_asset_receive_token">Werbigire %s</string>
+    <string name="wallet_asset_send">Bişîne</string>
+    <string name="wallet_assets">Malûmilk</string>
+    <string name="wallet_assets_total_title">Malûmilk value</string>
+    <string name="wallet_balance_available">Peyda</string>
+    <string name="wallet_balance_bonded">Staked</string>
+    <string name="wallet_balance_details_title">Hevseng details</string>
+    <string name="wallet_balance_details_total">Hevsengiya tevahî</string>
+    <string name="wallet_balance_details_total_after">Tevahî after transfer</string>
+    <string name="wallet_balance_frozen">Frozen</string>
+    <string name="wallet_balance_locked">Locked</string>
+    <string name="wallet_balance_redeemable">Redeemable</string>
+    <string name="wallet_balance_reserved">Reserved</string>
+    <string name="wallet_balance_transferable">Transferable</string>
+    <string name="wallet_balance_unbonding_v1_9_0">Unstaking</string>
+    <string name="wallet_chain_management_title">Cîzdan</string>
+    <string name="wallet_extrinsic_details_title">Extrinsic details</string>
+    <string name="wallet_filters_extrinsics">Din transactions</string>
+    <string name="wallet_filters_header">Show</string>
+    <string name="wallet_filters_rewards_and_slashes">Xelat û Slashes</string>
+    <string name="wallet_filters_title">Filters</string>
+    <string name="wallet_filters_transfers">Veguhestin</string>
+    <string name="wallet_manage_assets_title">Manage assets</string>
+    <string name="wallet_nickname_create_caption_v2_2_0">Nav examples: Main account, My validator, Dotsama crowdloans, etc.</string>
+    <string name="wallet_receive_description">Parve bike ev QR to sender</string>
+    <string name="wallet_receive_description_v2_2_0">Let sender scan ev Koda QR</string>
+    <string name="wallet_receive_share_message" formatted="false">My %s address to receive %s:</string>
+    <string name="wallet_receive_share_qr">Parve bike Koda QR</string>
+    <string name="wallet_search_empty_title">Make sure ew  address e\nfrom  right network</string>
+    <string name="wallet_search_empty_title_v2_2_0">Navnîşan format e invalid.\nMake sure ew address\nbelongs to  right network</string>
+    <string name="wallet_send_balance_minimal">Minimal balance</string>
+    <string name="wallet_send_confirm_transfer">Bipejirîne transfer</string>
+    <string name="wallet_send_dead_recipient_message">Yê te transfer dê fail since  final amount on  destination account dê be kêmtir than  minimal balance. Ji kerema xwe, try to increase  amount.</string>
+    <string name="wallet_send_existential_warning_message">Yê te transfer dê remove account ji blockstore since it dê make total balance lower than minimal balance.</string>
+    <string name="wallet_send_existential_warning_message_v2_2_0">Yê te account dê be removed ji blockchain after transfer cause it makes total balance lower than minimal</string>
+    <string name="wallet_send_existential_warning_title">Veguhestin dê remove account</string>
+    <string name="wallet_send_phishing_warning_text">Following address: %s e known to be used in phishing activities, thus we in ne recommending sending tokens to ew address. Would you like to proceed anyway?</string>
+    <string name="wallet_send_phishing_warning_title">Scam alert</string>
+    <string name="wallet_transfer_details_title">Veguhestin details</string>
+    <string name="yesterday">Duh</string>
+
+    <!-- Bridge Screen -->
+    <string name="wallet_asset_bridge">Pira DOT ↔ HEZ</string>
+    <string name="bridge_title">Pira DOT ↔ HEZ</string>
+    <string name="bridge_you_send">Tu dişînî</string>
+    <string name="bridge_you_receive">Tu distînî (texmîn)</string>
+    <string name="bridge_exchange_rate">Rêjeya guherandinê</string>
+    <string name="bridge_fee">Xerca pir</string>
+    <string name="bridge_minimum">Hindiktirîn</string>
+    <string name="bridge_rate_format">1 DOT = %s HEZ</string>
+    <string name="bridge_rate_format_reverse">1 HEZ = %s DOT</string>
+    <string name="bridge_swap_button">Biguherîne</string>
+    <string name="bridge_hez_to_dot_note">Guherandina HEZ→DOT dema ku têra DOT heye tê kirin.</string>
+    <string name="bridge_insufficient_balance">Têra balance tune</string>
+    <string name="bridge_below_minimum">Mîqdar ji hindiktirîn kêmtir e</string>
+    <string name="bridge_enter_amount">Mîqdar binivîse</string>
+    <string name="bridge_hez_to_dot_warning">Guherandina HEZ→DOT li gorî rewşa DOT sînordar dibe.</string>
+    <string name="bridge_hez_to_dot_blocked">Guherandina HEZ→DOT niha tune. Dema DOT têr bibe dîsa biceribîne.</string>
+</resources>

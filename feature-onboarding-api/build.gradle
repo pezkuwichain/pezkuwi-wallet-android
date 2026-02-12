@@ -1,0 +1,8 @@
+
+android {
+    namespace 'io.novafoundation.nova.feature_onboarding_api'
+}
+
+dependencies {
+    implementation project(':feature-account-api')
+}

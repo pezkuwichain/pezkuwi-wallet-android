@@ -1,0 +1,303 @@
+buildscript {
+    ext {
+        // App version
+        versionName = '1.0.0'
+        versionCode = 1
+
+        applicationId = "io.pezkuwichain.wallet"
+        releaseApplicationSuffix = "market"
+
+        // SDK and tools
+        compileSdkVersion = 36
+        minSdkVersion = 24
+        targetSdkVersion = 36
+
+        kotlinVersion = '2.1.0'
+
+        ktlintPinterestVersion = '0.47.0'
+
+        recyclerVersion = "1.2.1"
+        supportVersion = '1.1.0'
+        cardViewVersion = '1.0.0'
+        constraintVersion = '2.1.4'
+
+        coroutinesVersion = '1.8.1'
+
+        biometricVersion = '1.0.1'
+
+        progressButtonsVersion = '2.1.0'
+
+        daggerVersion = '2.52'
+        javaxInjectVersion = '1'
+
+        architectureComponentVersion = '2.7.0'
+
+        multibaseVersion = '1.1.1'
+
+        retrofitVersion = '2.9.0'
+        okhttpVersion = '4.12.0'
+        gsonVersion = '2.10.1'
+
+        zXingVersion = '3.5.0'
+
+        navControllerVersion = '2.7.7'
+
+        junitVersion = '4.13.2'
+        mockitoVersion = '5.12.0'
+        robolectricVersion = '4.1'
+        allureVersion = '2.4.0'
+
+        bouncyCastleVersion = '1.77'
+
+        web3jVersion = '4.9.5'
+
+        substrateSdkVersion = '2.11.0'
+
+        gifVersion = '1.2.19'
+
+        zXingVersion = '3.4.0'
+        zXingEmbeddedVersion = '3.5.0@aar'
+
+        biometricDep = "androidx.biometric:biometric:$biometricVersion"
+
+        firebaseAppDistrVersion = '2.1.1'
+        playPublisherVersion = '2.5.0'
+
+        wsVersion = "2.10"
+
+        permissionsVersion = '1.1.2'
+
+        insetterVersion = "0.5.0"
+
+        shimmerVersion = '0.5.0'
+
+        coilVersion = '1.2.1'
+
+        flexBoxVersion = "3.0.0"
+
+        bleVersion = '2.5.1'
+
+        roomVersion = '2.6.1'
+
+        markwonVersion = '4.6.2'
+
+        firebaseBomVersion = '32.7.1'
+
+        walletConnectCoreVersion = "1.27.2"
+        walletConnectWalletVersion = "1.20.2"
+
+        playServicesAuthVersion = "20.0.0"
+        googleApiClientVersion = "1.32.1"
+        googleDriveVersion = "v3-rev20210919-1.32.1"
+
+        cardStackVersion = "2.3.4"
+
+        withoutTransitiveAndroidX = {
+            exclude group: "androidx.appcompat", module: "appcompat"
+            exclude group: "androidx.fragment", module: "fragment-ktx"
+        }
+
+        coilDep = "io.coil-kt:coil:$coilVersion"
+        coilSvg = "io.coil-kt:coil-svg:$coilVersion"
+
+        kotlinDep = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+        insetterDep = "dev.chrisbanes.insetter:insetter-widgets:$insetterVersion"
+
+        playServicesAuthDep = "com.google.android.gms:play-services-auth:$playServicesAuthVersion"
+        googleApiClientDep = "com.google.api-client:google-api-client-android:$googleApiClientVersion"
+        googleDriveDep = "com.google.apis:google-api-services-drive:$googleDriveVersion"
+
+        androidDep = "androidx.appcompat:appcompat:$supportVersion"
+        cardViewDep = "androidx.cardview:cardview:$cardViewVersion"
+        recyclerViewDep = "androidx.recyclerview:recyclerview:$recyclerVersion"
+        constraintDep = "androidx.constraintlayout:constraintlayout:$constraintVersion"
+        materialDep = "com.google.android.material:material:$supportVersion"
+
+        flexBoxDep = "com.google.android.flexbox:flexbox:$flexBoxVersion"
+
+        daggerDep = "com.google.dagger:dagger:$daggerVersion"
+        daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+
+        lifecycleDep = "androidx.lifecycle:lifecycle-extensions:$architectureComponentVersion"
+        lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:$architectureComponentVersion"
+        lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-android:$architectureComponentVersion"
+
+        coroutinesDep = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+        coroutinesAndroidDep = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+        coroutinesTestDep = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+        coroutinesFutureDep = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutinesVersion"
+        coroutinesRxDep = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$coroutinesVersion"
+
+
+        web3jDep = "org.web3j:core:$web3jVersion"
+
+        // viewModelScope
+        viewModelKtxDep = "androidx.lifecycle:lifecycle-viewmodel-ktx:$architectureComponentVersion"
+
+        // liveData builder
+        liveDataKtxDep = "androidx.lifecycle:lifecycle-livedata-ktx:$architectureComponentVersion"
+
+        // lifecycle scopes
+        lifeCycleKtxDep = "androidx.lifecycle:lifecycle-runtime-ktx:$architectureComponentVersion"
+
+        permissionsDep = "com.github.florent37:RuntimePermission:$permissionsVersion"
+
+        roomDep = "androidx.room:room-runtime:$roomVersion"
+        roomKtxDep = "androidx.room:room-ktx:$roomVersion"
+        roomCompiler = "androidx.room:room-compiler:$roomVersion"
+
+        navigationFragmentDep = "androidx.navigation:navigation-fragment-ktx:$navControllerVersion"
+        navigationUiDep = "androidx.navigation:navigation-ui-ktx:$navControllerVersion"
+
+        bouncyCastleDep = "org.bouncycastle:bcprov-jdk18on:$bouncyCastleVersion"
+
+        retrofitDep = "com.squareup.retrofit2:retrofit:$retrofitVersion"
+        interceptorVersion = "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+        gsonConvertedDep = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+        scalarsConverterDep = "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
+
+        gsonDep = "com.google.code.gson:gson:$gsonVersion"
+
+        zXingCoreDep = "com.google.zxing:core:$zXingVersion"
+        zXingEmbeddedDep = "com.journeyapps:zxing-android-embedded:$zXingEmbeddedVersion"
+
+        substrateSdkDep = "io.github.nova-wallet.substrate-sdk-android:core:$substrateSdkVersion"
+        substrateSdkSerializationDep = "io.github.nova-wallet.substrate-sdk-android:kotlinx-serialization-scale:$substrateSdkVersion"
+
+        gifDep = "pl.droidsonroids.gif:android-gif-drawable:$gifVersion"
+
+        wsDep = "com.neovisionaries:nv-websocket-client:$wsVersion"
+
+        shimmerDep = "com.facebook.shimmer:shimmer:$shimmerVersion"
+
+        jUnitDep = "junit:junit:$junitVersion"
+        mockitoDep = "org.mockito:mockito-core:$mockitoVersion"
+        robolectricDep = "org.robolectric:robolectric:$robolectricVersion"
+        archCoreTestDep = "androidx.arch.core:core-testing:$architectureComponentVersion"
+
+        progressButtonDep = "com.github.razir.progressbutton:progressbutton:$progressButtonsVersion"
+
+        bleDep = "no.nordicsemi.android:ble:$bleVersion"
+        bleKotlinDep = "no.nordicsemi.android:ble-ktx:$bleVersion"
+
+        androidTestRunnerDep = 'androidx.test:runner:1.4.0'
+        androidTestRulesDep = 'androidx.test:rules:1.4.0'
+        androidJunitDep = 'androidx.test.ext:junit:1.1.3'
+
+        allureKotlinModel = "io.qameta.allure:allure-kotlin-model:$allureVersion"
+        allureKotlinCommons = "io.qameta.allure:allure-kotlin-commons:$allureVersion"
+        allureKotlinJunit4 = "io.qameta.allure:allure-kotlin-junit4:$allureVersion"
+        allureKotlinAndroid = "io.qameta.allure:allure-kotlin-android:$allureVersion"
+
+        roomTestsDep = "androidx.room:room-testing:$architectureComponentVersion"
+
+        markwonDep = "io.noties.markwon:core:$markwonVersion"
+        markwonImage = "io.noties.markwon:image-coil:$markwonVersion"
+        markwonTables = "io.noties.markwon:ext-tables:$markwonVersion"
+        markwonLinkify = "io.noties.markwon:linkify:$markwonVersion"
+        markwonStrikethrough = "io.noties.markwon:ext-strikethrough:$markwonVersion"
+        markwonHtml = "io.noties.markwon:html:$markwonVersion"
+
+        multibaseDep = "com.github.multiformats:java-multibase:$multibaseVersion"
+
+        walletConnectCoreDep = "com.walletconnect:android-core:$walletConnectCoreVersion"
+        walletConnectWalletDep = "com.walletconnect:web3wallet:$walletConnectWalletVersion"
+
+        canonizationJsonDep = "io.github.erdtman:java-json-canonicalization:1.1"
+
+        firebaseBomDep = "com.google.firebase:firebase-bom:$firebaseBomVersion"
+        firestoreDep = "com.google.firebase:firebase-firestore"
+        firebaseCloudMessagingDep = "com.google.firebase:firebase-messaging"
+        firebaseAppCheck = "com.google.firebase:firebase-appcheck-playintegrity"
+
+        kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
+        cardStackView = "com.github.yuyakaido:cardstackview:$cardStackVersion"
+
+        chartsDep = "com.github.PhilJay:MPAndroidChart:v3.1.0"
+
+        swipeRefershLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
+
+        branchIo = "io.branch.sdk.android:library:5.18.0"
+
+        playServiceIdentifier = "com.google.android.gms:play-services-ads-identifier:18.2.0"
+
+        androidxWebKit = "androidx.webkit:webkit:1.14.0"
+
+        playIntegrity = "com.google.android.play:integrity:1.4.0"
+
+        lottie = "com.airbnb.android:lottie:6.6.6"
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.7.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.google.gms:google-services:4.3.14'
+        classpath 'org.mozilla.rust-android-gradle:plugin:0.9.6'
+        classpath "com.google.firebase:firebase-appdistribution-gradle:$firebaseAppDistrVersion"
+        classpath "com.github.triplet.gradle:play-publisher:$playPublisherVersion"
+        classpath "com.google.devtools.ksp:symbol-processing-gradle-plugin:2.1.0-1.0.29"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven { url "https://jitpack.io" }
+        maven { url "https://nexus.iroha.tech/repository/maven-soramitsu/" }
+        mavenLocal()
+        flatDir { dirs "$rootDir/common/libs" }
+    }
+}
+
+configurations {
+    ktlint
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
+dependencies {
+    ktlint("com.pinterest:ktlint:$ktlintPinterestVersion") {
+        attributes {
+            attribute(Bundling.BUNDLING_ATTRIBUTE, getObjects().named(Bundling, Bundling.EXTERNAL))
+        }
+    }
+}
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "--reporter=plain"
+    args "--android"
+    args "--reporter=checkstyle,output=${project.buildDir}/reports/checkstyle/ktlint.xml"
+    args "$project.rootDir/**/src/main/**/*.kt"
+}
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
+    args "-F", "$project.rootDir/**/src/main/**/*.kt"
+    args "--android"
+    jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
+}
+
+task runTest(type: GradleBuild) {
+    tasks = ['clean', 'ktlint', 'testDebugUnitTest']
+}
+
+apply from: "allmodules.gradle"

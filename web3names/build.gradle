@@ -1,0 +1,40 @@
+
+android {
+    namespace 'io.novafoundation.nova.web3names'
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(":common")
+    implementation project(":core-db")
+    implementation project(":runtime")
+    implementation project(":core-api")
+    implementation project(":caip")
+
+    implementation kotlinDep
+
+    implementation coroutinesDep
+
+    implementation retrofitDep
+
+    implementation daggerDep
+    ksp daggerCompiler
+
+    implementation multibaseDep
+
+    implementation canonizationJsonDep
+
+    testImplementation project(':test-shared')
+
+    androidTestImplementation androidTestRunnerDep
+    androidTestImplementation androidTestRulesDep
+    androidTestImplementation androidJunitDep
+}

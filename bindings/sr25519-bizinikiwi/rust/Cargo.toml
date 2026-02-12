@@ -1,0 +1,20 @@
+[package]
+authors = ['PezkuwiChain']
+edition = '2021'
+license = 'Apache 2.0'
+name = "sr25519-bizinikiwi-java"
+version = "0.1.0"
+
+[dependencies]
+schnorrkel = "0.11.4"
+jni = { version = "0.21", default-features = false }
+zeroize = "1.7"
+
+[profile.release]
+strip = true
+lto = true
+opt-level = "s"
+
+[lib]
+name = "sr25519_bizinikiwi_java"
+crate_type = ["cdylib"]

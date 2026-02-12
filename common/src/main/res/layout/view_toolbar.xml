@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbarContainer"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:minHeight="56dp">
+
+    <ImageView
+        android:id="@+id/backImg"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="@color/actions_color" />
+
+    <TextView
+        android:id="@+id/titleTv"
+        style="@style/TextAppearance.NovaFoundation.SemiBold.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:padding="@dimen/x1"
+        android:textColor="@color/text_primary"
+        tools:text="Title" />
+
+    <FrameLayout
+        android:id="@+id/rightActionContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical">
+
+        <ImageView
+            android:id="@+id/rightImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="9dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_info_24"
+            android:visibility="gone"
+            app:tint="@color/icon_primary_state_colors" />
+
+        <TextView
+            android:id="@+id/rightText"
+            style="@style/TextAppearance.NovaFoundation.Regular.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/x2"
+            android:paddingEnd="@dimen/x2"
+            android:textColor="@color/text_action_colors"
+            android:visibility="gone"
+            tools:text="Action" />
+
+    </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/toolbarProgress"
+        style="@style/Widget.Nova.ProgressBar.Indeterminate"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="16dp"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/toolbarCustomActions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:orientation="horizontal" />
+
+    <View
+        android:id="@+id/toolbarDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="@color/divider" />
+</FrameLayout>

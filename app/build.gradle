@@ -1,0 +1,336 @@
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'com.google.firebase.appdistribution'
+apply plugin: "com.github.triplet.play"
+apply from: "../scripts/versions.gradle"
+apply from: "../scripts/secrets.gradle"
+
+android {
+    defaultConfig {
+        applicationId rootProject.applicationId
+        versionCode computeVersionCode()
+        versionName computeVersionName()
+
+        // Branch.io key from local.properties or environment variable
+        manifestPlaceholders = [
+            BRANCH_KEY: readRawSecretOrNull('BRANCH_KEY') ?: "key_test_placeholder"
+        ]
+    }
+    signingConfigs {
+        dev {
+            storeFile file('develop_key.jks')
+            storePassword readRawSecretOrNull('CI_KEYSTORE_PASS')
+            keyAlias readRawSecretOrNull('CI_KEYSTORE_KEY_ALIAS')
+            keyPassword readRawSecretOrNull('CI_KEYSTORE_KEY_PASS')
+        }
+        market {
+            storeFile file('market_key.jks')
+            storePassword readRawSecretOrNull('CI_MARKET_KEYSTORE_PASS')
+            keyAlias readRawSecretOrNull('CI_MARKET_KEYSTORE_KEY_ALIAS')
+            keyPassword readRawSecretOrNull('CI_MARKET_KEYSTORE_KEY_PASS')
+        }
+        github {
+            storeFile file('github_key.jks')
+            storePassword readRawSecretOrNull('CI_GITHUB_KEYSTORE_PASS')
+            keyAlias readRawSecretOrNull('CI_GITHUB_KEYSTORE_KEY_ALIAS')
+            keyPassword readRawSecretOrNull('CI_GITHUB_KEYSTORE_KEY_PASS')
+        }
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
+
+            buildConfigField "String", "BuildType", "\"debug\""
+        }
+        debugLocal {
+            initWith buildTypes.debug
+            matchingFallbacks = ['debug']
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "BuildType", "\"release\""
+        }
+        releaseTest {
+            initWith buildTypes.release
+            matchingFallbacks = ['release']
+            signingConfig signingConfigs.debug
+
+            versionNameSuffix '-releaseTest'
+            applicationIdSuffix '.releaseTest'
+
+            buildConfigField "String", "BuildType", "\"releaseTest\""
+        }
+        releaseMarket {
+            initWith buildTypes.release
+            matchingFallbacks = ['release']
+            signingConfig signingConfigs.market
+
+            versionNameSuffix "-${releaseApplicationSuffix}"
+            applicationIdSuffix ".${releaseApplicationSuffix}"
+
+            buildConfigField "String", "BuildType", "\"releaseMarket\""
+        }
+        releaseGithub {
+            initWith buildTypes.release
+            matchingFallbacks = ['release']
+            signingConfig signingConfigs.github
+
+            buildConfigField "String", "BuildType", "\"releaseGithub\""
+        }
+        develop {
+            signingConfig signingConfigs.dev
+            matchingFallbacks = ['debug']
+            versionNameSuffix '-develop'
+            applicationIdSuffix '.dev'
+            //Init firebase
+            def localReleaseNotes = releaseNotes()
+            def localFirebaseGroup = firebaseGroup()
+            firebaseAppDistribution {
+                releaseNotes = localReleaseNotes
+                groups = localFirebaseGroup
+            }
+
+            buildConfigField "String", "BuildType", "\"develop\""
+        }
+        instrumentialTest {
+            initWith buildTypes.debug
+            matchingFallbacks = ['debug']
+            defaultConfig.testInstrumentationRunner "io.qameta.allure.android.runners.AllureAndroidJUnitRunner"
+
+            buildConfigField "String", "BuildType", "\"instrumentalTest\""
+        }
+    }
+
+    sourceSets {
+        releaseGithub {
+            res.srcDirs = ['src/release/res']
+        }
+        releaseMarket {
+            res.srcDirs = ['src/release/res']
+        }
+        releaseTest {
+            res.srcDirs = ['src/release/res']
+        }
+    }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
+    applicationVariants.all { variant ->
+        String name = variant.buildType.name
+        if (name != "release" && name.startsWith("release")) {
+            createBindReleaseFileTask(variant.buildType.name)
+        }
+    }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/versions/9/previous-compilation-data.bin")
+        resources.excludes.add("META-INF/DEPENDENCIES")
+        resources.excludes.add("META-INF/NOTICE.md")
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+    namespace 'io.novafoundation.nova.app'
+}
+
+void createBindReleaseFileTask(String destination) {
+    String taskName = "bind${destination.capitalize()}GithubGoogleServicesToRelease"
+
+    Task task = task(taskName, type: Copy) {
+        description = "Switches to RELEASE google-services.json for ${destination}"
+        from "src/release"
+        include "google-services.json"
+        into "src/${destination}"
+    }
+
+    afterEvaluate {
+        def capitalizedDestination = destination.capitalize()
+        def dependentTasks = [
+                "process${capitalizedDestination}GoogleServices".toString(),
+                "merge${capitalizedDestination}JniLibFolders".toString(),
+                "merge${capitalizedDestination}StartupProfile".toString(),
+                "merge${capitalizedDestination}Shaders".toString(),
+                "merge${capitalizedDestination}ArtProfile".toString()
+        ]
+
+        dependentTasks.forEach {
+            tasks.getByName(it).dependsOn(task)
+        }
+    }
+}
+
+play {
+    serviceAccountCredentials = file(System.env.CI_PLAY_KEY ?: "../key/fake.json")
+    track = "beta"
+    releaseStatus = "completed"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':core-db')
+    implementation project(':common')
+    implementation project(':feature-splash')
+
+    implementation project(':feature-onboarding-api')
+    implementation project(':feature-onboarding-impl')
+
+    implementation project(':feature-ledger-api')
+    implementation project(':feature-ledger-core')
+    implementation project(':feature-ledger-impl')
+
+    implementation project(':feature-account-api')
+    implementation project(':feature-account-impl')
+
+    implementation project(':feature-account-migration')
+
+    implementation project(':feature-wallet-api')
+    implementation project(':feature-wallet-impl')
+
+    implementation project(':runtime')
+    implementation project(':web3names')
+
+    implementation project(':feature-staking-api')
+    implementation project(':feature-staking-impl')
+
+    implementation project(':feature-crowdloan-api')
+    implementation project(':feature-crowdloan-impl')
+
+    implementation project(':feature-dapp-api')
+    implementation project(':feature-dapp-impl')
+
+    implementation project(':feature-nft-api')
+    implementation project(':feature-nft-impl')
+
+    implementation project(':feature-currency-api')
+    implementation project(':feature-currency-impl')
+
+    implementation project(':feature-governance-api')
+    implementation project(':feature-governance-impl')
+
+    implementation project(':feature-assets')
+
+    implementation project(':feature-vote')
+
+    implementation project(':feature-versions-api')
+    implementation project(':feature-versions-impl')
+
+    implementation project(':caip')
+
+    implementation project(':feature-external-sign-api')
+    implementation project(':feature-external-sign-impl')
+
+    implementation project(':feature-wallet-connect-api')
+    implementation project(':feature-wallet-connect-impl')
+
+    implementation project(':feature-proxy-api')
+    implementation project(':feature-proxy-impl')
+
+    implementation project(':feature-settings-api')
+    implementation project(':feature-settings-impl')
+
+    implementation project(":feature-swap-core")
+    implementation project(':feature-swap-api')
+    implementation project(':feature-swap-impl')
+
+    implementation project(":feature-buy-api")
+    implementation project(":feature-buy-impl")
+
+    implementation project(':feature-push-notifications')
+    implementation project(':feature-deep-linking')
+
+    implementation project(':feature-cloud-backup-api')
+    implementation project(':feature-cloud-backup-impl')
+
+    implementation project(':feature-banners-api')
+    implementation project(':feature-banners-impl')
+
+    implementation project(':feature-ahm-api')
+    implementation project(':feature-ahm-impl')
+
+    implementation project(':feature-gift-api')
+    implementation project(':feature-gift-impl')
+
+    implementation project(':bindings:metadata_shortener')
+    implementation project(':bindings:sr25519-bizinikiwi')
+
+    implementation project(":feature-xcm:impl")
+
+    implementation project(":feature-multisig:operations")
+
+    implementation project(':test-shared')
+
+    implementation kotlinDep
+
+    implementation biometricDep
+
+
+    implementation androidDep
+    implementation constraintDep
+
+    implementation zXingEmbeddedDep
+
+    implementation navigationFragmentDep
+    implementation navigationUiDep
+
+    implementation roomDep
+
+    implementation substrateSdkDep
+
+    implementation daggerDep
+    ksp daggerCompiler
+
+    implementation lifecycleDep
+    ksp lifecycleCompiler
+
+    implementation lifeCycleKtxDep
+
+    implementation retrofitDep
+    implementation gsonConvertedDep
+
+    implementation gifDep
+
+    compileOnly wsDep
+
+    implementation coroutinesDep
+
+    testImplementation project(':test-shared')
+
+    implementation insetterDep
+
+    implementation liveDataKtxDep
+
+    implementation platform(firebaseBomDep)
+    implementation firestoreDep
+    implementation firebaseCloudMessagingDep
+    implementation firebaseAppCheck
+
+    implementation walletConnectCoreDep, withoutTransitiveAndroidX
+    implementation walletConnectWalletDep, withoutTransitiveAndroidX
+
+    kspAndroidTest daggerCompiler
+
+    androidTestImplementation androidTestRunnerDep
+    androidTestImplementation androidTestRulesDep
+    androidTestImplementation androidJunitDep
+
+    androidTestImplementation allureKotlinModel
+    androidTestImplementation allureKotlinCommons
+    androidTestImplementation allureKotlinJunit4
+    androidTestImplementation allureKotlinAndroid
+}
+
+task printVersion {
+    doLast {
+        println "versionName:${computeVersionName()}"
+    }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dapp_search_graph"
+    app:startDestination="@id/dappSearchFragment">
+
+    <fragment
+        android:id="@+id/dappSearchFragment"
+        android:name="io.novafoundation.nova.feature_dapp_impl.presentation.search.DappSearchFragment"
+        android:label="DappSearchFragment"
+        tools:layout="@layout/fragment_search_dapp" />
+
+</navigation>

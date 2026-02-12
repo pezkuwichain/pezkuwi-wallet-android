@@ -1,0 +1,22 @@
+apply plugin: 'kotlin-parcelize'
+
+android {
+    namespace 'io.novafoundation.nova.feature_bridge_api'
+}
+
+dependencies {
+    implementation coroutinesDep
+    implementation project(':runtime')
+    implementation project(":feature-account-api")
+    implementation project(":feature-wallet-api")
+    implementation project(":common")
+
+    implementation daggerDep
+    ksp daggerCompiler
+
+    implementation substrateSdkDep
+
+    api project(':core-api')
+
+    testImplementation project(':test-shared')
+}

@@ -1,0 +1,32 @@
+apply plugin: 'kotlin-parcelize'
+
+android {
+
+    defaultConfig {
+
+
+    }
+
+    namespace 'io.novafoundation.nova.feature_governance_api'
+}
+
+dependencies {
+    implementation coroutinesDep
+    implementation project(':runtime')
+    implementation project(":common")
+    implementation project(':feature-deep-linking')
+
+    api project(":feature-wallet-api")
+    api project(":feature-account-api")
+    api project(":feature-dapp-api")
+
+    implementation markwonDep
+
+    implementation daggerDep
+
+    implementation substrateSdkDep
+
+    implementation androidDep
+
+    api project(':core-api')
+}

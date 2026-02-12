@@ -1,0 +1,43 @@
+name: Bump app version
+
+on:
+  push:
+    branches:
+      ['master']
+
+permissions:
+  contents: write
+
+jobs:
+  update-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Version in build.gradle
+        run: |
+          versionName=$(grep "versionName" build.gradle | grep -o "'.*'")
+          versionName=${versionName//\'/}
+          echo Version in gradle file: $versionName
+          echo "GRADLE_APP_VERSION=$versionName" >> "$GITHUB_ENV"
+
+      - name: Check if tag exists
+        id: version
+        run: |
+          if git rev-parse "v${{ env.GRADLE_APP_VERSION }}" >/dev/null 2>&1; then
+            echo "Tag already exists"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Tag does not exist"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: rickstaa/action-create-tag@v1
+        if: steps.version.outputs.changed == 'true'
+        with:
+          tag: 'v${{ env.GRADLE_APP_VERSION }}'
+          message: Release v${{ env.GRADLE_APP_VERSION }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

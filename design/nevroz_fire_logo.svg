@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Nevroz Fire Gradient - Kurdish Colors -->
+    <linearGradient id="fireGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#1B5E20;stop-opacity:1" /> <!-- Green base -->
+      <stop offset="30%" style="stop-color:#FF6F00;stop-opacity:1" /> <!-- Orange -->
+      <stop offset="60%" style="stop-color:#FFD600;stop-opacity:1" /> <!-- Yellow/Gold -->
+      <stop offset="100%" style="stop-color:#D32F2F;stop-opacity:1" /> <!-- Red tip -->
+    </linearGradient>
+
+    <!-- Inner flame gradient -->
+    <linearGradient id="innerFlame" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFD600;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF8F00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF5722;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Sun rays for Kurdistan motif -->
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFD600;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#FFD600;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background circle (optional, for contrast) -->
+  <circle cx="256" cy="256" r="240" fill="#1a1a2e" opacity="0.9"/>
+
+  <!-- Sun glow behind fire (Kurdistan sun reference) -->
+  <circle cx="256" cy="280" r="180" fill="url(#sunGlow)" filter="url(#glow)"/>
+
+  <!-- Main Nevroz Fire - Outer flame -->
+  <path d="M256 60
+           C280 120 340 160 360 220
+           C380 280 360 340 340 380
+           C320 420 280 460 256 470
+           C232 460 192 420 172 380
+           C152 340 132 280 152 220
+           C172 160 232 120 256 60Z"
+        fill="url(#fireGradient)"
+        filter="url(#glow)">
+    <animate attributeName="d"
+             dur="2s"
+             repeatCount="indefinite"
+             values="M256 60 C280 120 340 160 360 220 C380 280 360 340 340 380 C320 420 280 460 256 470 C232 460 192 420 172 380 C152 340 132 280 152 220 C172 160 232 120 256 60Z;
+                     M256 55 C285 115 345 155 365 215 C385 275 365 335 345 375 C325 415 285 455 256 465 C227 455 187 415 167 375 C147 335 127 275 147 215 C167 155 227 115 256 55Z;
+                     M256 60 C280 120 340 160 360 220 C380 280 360 340 340 380 C320 420 280 460 256 470 C232 460 192 420 172 380 C152 340 132 280 152 220 C172 160 232 120 256 60Z"/>
+  </path>
+
+  <!-- Inner flame (yellow/orange core) -->
+  <path d="M256 140
+           C270 180 310 210 320 260
+           C330 310 320 350 300 380
+           C280 410 268 430 256 440
+           C244 430 232 410 212 380
+           C192 350 182 310 192 260
+           C202 210 242 180 256 140Z"
+        fill="url(#innerFlame)"
+        opacity="0.95">
+    <animate attributeName="d"
+             dur="1.5s"
+             repeatCount="indefinite"
+             values="M256 140 C270 180 310 210 320 260 C330 310 320 350 300 380 C280 410 268 430 256 440 C244 430 232 410 212 380 C192 350 182 310 192 260 C202 210 242 180 256 140Z;
+                     M256 135 C275 175 315 205 325 255 C335 305 325 345 305 375 C285 405 273 425 256 435 C239 425 227 405 207 375 C187 345 177 305 187 255 C197 205 237 175 256 135Z;
+                     M256 140 C270 180 310 210 320 260 C330 310 320 350 300 380 C280 410 268 430 256 440 C244 430 232 410 212 380 C192 350 182 310 192 260 C202 210 242 180 256 140Z"/>
+  </path>
+
+  <!-- Brightest core -->
+  <ellipse cx="256" cy="320" rx="50" ry="80" fill="#FFFDE7" opacity="0.8">
+    <animate attributeName="ry" dur="1s" repeatCount="indefinite" values="80;85;80"/>
+    <animate attributeName="rx" dur="1s" repeatCount="indefinite" values="50;55;50"/>
+  </ellipse>
+
+  <!-- Small flame sparks (Kurdish green accents) -->
+  <circle cx="200" cy="180" r="8" fill="#4CAF50" opacity="0.8">
+    <animate attributeName="cy" dur="1.5s" repeatCount="indefinite" values="180;160;180"/>
+    <animate attributeName="opacity" dur="1.5s" repeatCount="indefinite" values="0.8;0.3;0.8"/>
+  </circle>
+  <circle cx="312" cy="200" r="6" fill="#4CAF50" opacity="0.7">
+    <animate attributeName="cy" dur="1.2s" repeatCount="indefinite" values="200;175;200"/>
+    <animate attributeName="opacity" dur="1.2s" repeatCount="indefinite" values="0.7;0.2;0.7"/>
+  </circle>
+  <circle cx="230" cy="150" r="5" fill="#81C784" opacity="0.6">
+    <animate attributeName="cy" dur="1.8s" repeatCount="indefinite" values="150;130;150"/>
+  </circle>
+  <circle cx="280" cy="165" r="7" fill="#66BB6A" opacity="0.7">
+    <animate attributeName="cy" dur="1.4s" repeatCount="indefinite" values="165;145;165"/>
+  </circle>
+</svg>

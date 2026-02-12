@@ -1,0 +1,58 @@
+apply plugin: 'kotlin-parcelize'
+apply from: '../scripts/secrets.gradle'
+
+android {
+    namespace 'io.novafoundation.nova.feature_cloud_backup_impl'
+
+    defaultConfig {
+
+
+
+        buildConfigField "String", "GOOGLE_OAUTH_ID", readStringSecret("DEBUG_GOOGLE_OAUTH_ID")
+    }
+
+    buildTypes {
+        release {
+            buildConfigField "String", "GOOGLE_OAUTH_ID", readStringSecret("RELEASE_GOOGLE_OAUTH_ID")
+        }
+    }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/DEPENDENCIES")
+    }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/NOTICE.md")
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation coroutinesDep
+    implementation project(':runtime')
+    implementation project(":common")
+
+    api project(":feature-cloud-backup-api")
+
+    
+    implementation androidDep
+
+    implementation daggerDep
+    ksp daggerCompiler
+
+    
+    implementation androidDep
+
+    api project(':core-api')
+    api project(':core-db')
+
+    implementation playServicesAuthDep
+    implementation googleApiClientDep
+    implementation googleDriveDep
+
+    testImplementation project(':test-shared')
+    testImplementation project(":feature-cloud-backup-test")
+}

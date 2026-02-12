@@ -1,0 +1,77 @@
+package io.novafoundation.nova.feature_ledger_impl.presentation.account.connect.legacy.fillWallet
+
+import android.os.Bundle
+import androidx.core.os.bundleOf
+import coil.ImageLoader
+import io.novafoundation.nova.common.base.BaseFragment
+import io.novafoundation.nova.common.di.FeatureUtils
+import io.novafoundation.nova.common.view.dialog.warningDialog
+import io.novafoundation.nova.common.view.setState
+import io.novafoundation.nova.feature_ledger_api.di.LedgerFeatureApi
+import io.novafoundation.nova.feature_ledger_impl.R
+import io.novafoundation.nova.feature_ledger_impl.databinding.FragmentImportLedgerFillWalletBinding
+import io.novafoundation.nova.feature_ledger_impl.di.LedgerFeatureComponent
+import io.novafoundation.nova.feature_ledger_impl.presentation.account.connect.legacy.fillWallet.model.FillableChainAccountModel
+
+import javax.inject.Inject
+
+class FillWalletImportLedgerFragment :
+    BaseFragment<FillWalletImportLedgerViewModel, FragmentImportLedgerFillWalletBinding>(),
+    FillWalletImportLedgerAdapter.Handler {
+
+    override fun createBinding() = FragmentImportLedgerFillWalletBinding.inflate(layoutInflater)
+
+    companion object {
+
+        private const val PAYLOAD_KEY = "SelectLedgerGenericImportFragment.PAYLOAD_KEY"
+
+        fun getBundle(payload: FillWalletImportLedgerLegacyPayload): Bundle = bundleOf(PAYLOAD_KEY to payload)
+    }
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
+
+    private val adapter by lazy(LazyThreadSafetyMode.NONE) {
+        FillWalletImportLedgerAdapter(this, imageLoader)
+    }
+
+    override fun initViews() {
+        binder.fillWalletImportLedgerToolbar.setHomeButtonListener {
+            viewModel.backClicked()
+        }
+        onBackPressed { viewModel.backClicked() }
+
+        binder.fillWalletImportLedgerAccounts.setHasFixedSize(true)
+        binder.fillWalletImportLedgerAccounts.adapter = adapter
+
+        binder.fillWalletImportLedgerContinue.setOnClickListener { viewModel.continueClicked() }
+    }
+
+    override fun inject() {
+        FeatureUtils.getFeature<LedgerFeatureComponent>(requireContext(), LedgerFeatureApi::class.java)
+            .fillWalletImportLedgerComponentFactory()
+            .create(this, argument(PAYLOAD_KEY))
+            .inject(this)
+    }
+
+    override fun onItemClicked(item: FillableChainAccountModel) {
+        viewModel.itemClicked(item)
+    }
+
+    override fun subscribe(viewModel: FillWalletImportLedgerViewModel) {
+        viewModel.continueState.observe(binder.fillWalletImportLedgerContinue::setState)
+        viewModel.fillableChainAccountModels.observe(adapter::submitList)
+
+        viewModel.confirmExit.awaitableActionLiveData.observeEvent {
+            warningDialog(
+                context = requireContext(),
+                onPositiveClick = { it.onSuccess(true) },
+                onNegativeClick = { it.onSuccess(false) },
+                negativeTextRes = R.string.common_no,
+                positiveTextRes = R.string.common_yes,
+            ) {
+                setTitle(R.string.common_cancel_operation_warning)
+            }
+        }
+    }
+}

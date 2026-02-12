@@ -1,0 +1,14 @@
+name: Pull request
+
+on:
+  pull_request:
+
+
+jobs:
+  test:
+    uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
+    with:
+      branch: ${{github.head_ref}}
+      gradlew-command: assembleDevelop
+      build-debug-tests: false # TODO: Enable this, when debug build will be fixed for tests
+    secrets: inherit

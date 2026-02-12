@@ -1,0 +1,43 @@
+
+android {
+    namespace 'io.novafoundation.nova.caip'
+
+    defaultConfig {
+
+        
+        buildConfigField "String", "SLIP_44_COINS_BASE_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/assets/slip44.json\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(":common")
+    implementation project(":core-db")
+    implementation project(":runtime")
+    implementation project(":core-api")
+
+    implementation kotlinDep
+
+    implementation coroutinesDep
+
+    implementation retrofitDep
+
+    implementation daggerDep
+    ksp daggerCompiler
+
+    implementation multibaseDep
+
+    testImplementation project(':test-shared')
+
+    androidTestImplementation androidTestRunnerDep
+    androidTestImplementation androidTestRulesDep
+    androidTestImplementation androidJunitDep
+}
