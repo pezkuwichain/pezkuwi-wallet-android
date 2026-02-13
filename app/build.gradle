@@ -70,9 +70,6 @@ android {
             matchingFallbacks = ['release']
             signingConfig signingConfigs.market
 
-            versionNameSuffix "-${releaseApplicationSuffix}"
-            applicationIdSuffix ".${releaseApplicationSuffix}"
-
             buildConfigField "String", "BuildType", "\"releaseMarket\""
         }
         releaseGithub {

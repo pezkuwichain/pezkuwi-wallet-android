@@ -2,7 +2,7 @@
   {
     "chainId": "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75",
     "name": "Pezkuwi",
-    "icon": "HEZ.png",
+    "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/main/icons/tokens/colored/HEZ.svg",
     "addressPrefix": 42,
     "options": [
       "crowdloans",
@@ -32,8 +32,24 @@
       }
     ],
     "externalApi": {
-      "history": [],
-      "staking": []
+      "staking": [
+        {
+          "type": "subquery",
+          "url": "https://subquery.pezkuwichain.io"
+        }
+      ],
+      "staking-rewards": [
+        {
+          "type": "subquery",
+          "url": "https://subquery.pezkuwichain.io"
+        }
+      ],
+      "history": [
+        {
+          "type": "subquery",
+          "url": "https://subquery.pezkuwichain.io"
+        }
+      ]
     },
     "assets": [
       {
@@ -44,7 +60,7 @@
         "priceId": "hezkurd",
         "staking": null,
         "type": "native",
-        "icon": "HEZ.png",
+        "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/main/icons/tokens/colored/HEZ.svg",
         "buyProviders": {},
         "sellProviders": {},
         "typeExtras": null
@@ -55,55 +71,24 @@
       "defaultBlockTimeMillis": 6000,
       "feeViaRuntimeCall": true,
       "disabledCheckMetadataHash": true,
-      "stakingMaxElectingVoters": 22500
-    }
-  },
-  {
-    "chainId": "96eb58af1bb7288115b5e4ff1590422533e749293f231974536dc6672417d06f",
-    "name": "Zagros Testnet",
-    "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/main/icons/chains/Pezkuwi.png",
-    "addressPrefix": 42,
-    "options": [
-      "testnet"
-    ],
-    "nodes": [
-      {
-        "url": "wss://zagros-rpc.pezkuwichain.io",
-        "name": "Zagros Node"
-      }
-    ],
-    "assets": [
-      {
-        "assetId": 0,
-        "symbol": "HEZ",
-        "precision": 12,
-        "name": "HEZkurd",
-        "priceId": "hezkurd",
-        "staking": [
-          "relaychain"
-        ],
-        "type": "native",
-        "icon": "HEZ.png"
-      }
-    ],
-    "additional": {
-      "themeColor": "#009639",
-      "feeViaRuntimeCall": true,
-      "disabledCheckMetadataHash": true
+      "stakingMaxElectingVoters": 22500,
+      "identityChain": "58269e9c184f721e0309332d90cafc410df1519a5dc27a5fd9b3bf5fd2d129f8",
+      "stakingWiki": "https://wiki.pezkuwichain.io/staking"
     }
   },
   {
     "chainId": "00d0e1d0581c3cd5c5768652d52f4520184018b44f56a2ae1e0dc9d65c00c948",
     "parentId": "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75",
     "name": "Pezkuwi Asset Hub",
-    "icon": "PEZ.png",
+    "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/main/icons/tokens/colored/PEZ.svg",
     "addressPrefix": 42,
     "options": [
       "swap-hub",
       "assethub-fees",
       "proxy",
       "multisig",
-      "fullSyncByDefault"
+      "fullSyncByDefault",
+      "pushSupport"
     ],
     "nodeSelectionStrategy": "roundRobin",
     "nodes": [
@@ -120,7 +105,26 @@
         "event": "https://explorer.pezkuwichain.io/asset-hub/event/{value}"
       }
     ],
-    "externalApi": {},
+    "externalApi": {
+      "staking-rewards": [
+        {
+          "type": "subquery",
+          "url": "https://subquery.pezkuwichain.io"
+        }
+      ],
+      "staking": [
+        {
+          "type": "subquery",
+          "url": "https://subquery.pezkuwichain.io"
+        }
+      ],
+      "history": [
+        {
+          "type": "subquery",
+          "url": "https://subquery.pezkuwichain.io"
+        }
+      ]
+    },
     "assets": [
       {
         "assetId": 0,
@@ -133,7 +137,7 @@
           "nomination-pools"
         ],
         "type": "native",
-        "icon": "HEZ.png",
+        "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/main/icons/tokens/colored/HEZ.svg",
         "buyProviders": {},
         "sellProviders": {},
         "typeExtras": null
@@ -146,7 +150,7 @@
         "priceId": "pezkuwi",
         "staking": null,
         "type": "statemine",
-        "icon": "PEZ.png",
+        "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/main/icons/tokens/colored/PEZ.svg",
         "buyProviders": {},
         "sellProviders": {},
         "typeExtras": {
@@ -161,7 +165,7 @@
         "priceId": "tether",
         "staking": null,
         "type": "statemine",
-        "icon": "wUSDT.png",
+        "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/main/icons/tokens/colored/wUSDT.svg",
         "buyProviders": {},
         "sellProviders": {},
         "typeExtras": {
@@ -221,7 +225,10 @@
       "disabledCheckMetadataHash": true,
       "relaychainAsNative": true,
       "stakingMaxElectingVoters": 22500,
-      "timelineChain": "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75"
+      "identityChain": "58269e9c184f721e0309332d90cafc410df1519a5dc27a5fd9b3bf5fd2d129f8",
+      "timelineChain": "bb4a61ab0c4b8c12f5eab71d0c86c482e03a275ecdafee678dea712474d33d75",
+      "defaultBlockTime": 6000,
+      "stakingWiki": "https://wiki.pezkuwichain.io/staking"
     }
   },
   {
@@ -260,7 +267,7 @@
         "priceId": "hezkurd",
         "staking": null,
         "type": "native",
-        "icon": "HEZ.png",
+        "icon": "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/main/icons/tokens/colored/HEZ.svg",
         "buyProviders": {},
         "sellProviders": {},
         "typeExtras": null
@@ -9271,5 +9278,34 @@
       "noSubstrateRuntime",
       "testnet"
     ]
+  },
+  {
+    "chainId": "4b5f95eefedf0d0fb514339edc24d2d411310520f687b4146145bcedb99885b9",
+    "parentId": "91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+    "name": "Acurast",
+    "assets": [
+      {
+        "assetId": 0,
+        "symbol": "ACU",
+        "precision": 12,
+        "priceId": "acurast",
+        "icon": "cACU.svg"
+      }
+    ],
+    "nodes": [
+      {
+        "url": "wss://public-archive.mainnet.acurast.com",
+        "name": "Acurast node"
+      }
+    ],
+    "explorers": [
+      {
+        "name": "Acurast Monitoring Bot",
+        "extrinsic": "https://acurastbot.com/explorer/extrinsics/{hash}",
+        "account": "https://acurastbot.com/explorer/address/{address}"
+      }
+    ],
+    "icon": "https://raw.githubusercontent.com/novasamatech/nova-utils/master/icons/chains/gradient/Acurast.svg",
+    "addressPrefix": 42
   }
 ]

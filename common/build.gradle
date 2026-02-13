@@ -5,8 +5,8 @@ android {
     defaultConfig {
 
         buildConfigField "String", "WEBSITE_URL", "\"https://pezkuwichain.io\""
-        buildConfigField "String", "PRIVACY_URL", "\"https://pezkuwichain.io/privacy\""
-        buildConfigField "String", "TERMS_URL", "\"https://pezkuwichain.io/terms\""
+        buildConfigField "String", "PRIVACY_URL", "\"https://pezkuwichain.io/privacy.html\""
+        buildConfigField "String", "TERMS_URL", "\"https://pezkuwichain.io/terms.html\""
         buildConfigField "String", "GITHUB_URL", "\"https://github.com/pezkuwichain\""
         buildConfigField "String", "TELEGRAM_URL", "\"https://t.me/pezkuwichain\""
         buildConfigField "String", "TWITTER_URL", "\"https://twitter.com/pezkuwichain\""
