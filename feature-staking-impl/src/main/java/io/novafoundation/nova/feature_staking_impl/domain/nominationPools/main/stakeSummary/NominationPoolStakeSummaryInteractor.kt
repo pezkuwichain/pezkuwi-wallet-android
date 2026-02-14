@@ -47,13 +47,16 @@ class RealNominationPoolStakeSummaryInteractor(
         stakingOption: StakingOption,
         sharedComputationScope: CoroutineScope,
     ): Flow<StakeSummary<PoolMemberStatus>> = flowOfAll {
-        val chainId = stakingOption.assetWithChain.chain.id
+        val chain = stakingOption.assetWithChain.chain
+        val chainId = chain.id
+        // Staking exposures live on the relay chain, not on parachains like Asset Hub
+        val exposureChainId = chain.parentId ?: chainId
         val poolStash = poolAccountDerivation.bondedAccountOf(poolMember.poolId, chainId)
 
         combineTransform(
             nominationPoolSharedComputation.participatingBondedPoolStateFlow(poolStash, poolMember.poolId, chainId, sharedComputationScope),
             nominationPoolSharedComputation.participatingPoolNominationsFlow(poolStash, poolMember.poolId, chainId, sharedComputationScope),
-            stakingSharedComputation.electedExposuresWithActiveEraFlow(chainId, sharedComputationScope)
+            stakingSharedComputation.electedExposuresWithActiveEraFlow(exposureChainId, sharedComputationScope)
         ) { bondedPoolState, poolNominations, (eraStakers, activeEra) ->
             val activeStaked = bondedPoolState.amountOf(poolMember.points)
 

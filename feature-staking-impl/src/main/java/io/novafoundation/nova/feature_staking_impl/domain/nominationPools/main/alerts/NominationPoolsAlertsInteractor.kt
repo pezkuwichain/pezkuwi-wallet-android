@@ -49,11 +49,13 @@ class RealNominationPoolsAlertsInteractor(
         return flowOfAll {
             val poolId = poolMember.poolId
             val poolStash = poolAccountDerivation.bondedAccountOf(poolId, chain.id)
+            // Staking exposures live on the relay chain, not on parachains like Asset Hub
+            val exposureChainId = chain.parentId ?: chain.id
 
             combine(
                 nominationPoolsSharedComputation.participatingPoolNominationsFlow(poolStash, poolId, chain.id, shareComputationScope),
                 nominationPoolsSharedComputation.unbondingPoolsFlow(poolId, chain.id, shareComputationScope),
-                stakingSharedComputation.electedExposuresWithActiveEraFlow(chain.id, shareComputationScope),
+                stakingSharedComputation.electedExposuresWithActiveEraFlow(exposureChainId, shareComputationScope),
             ) { poolNominations, unbondingPools, (eraStakers, activeEra) ->
                 val alertsContext = AlertsResolutionContext(
                     eraStakers = eraStakers,

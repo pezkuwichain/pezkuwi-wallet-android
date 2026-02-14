@@ -8,7 +8,7 @@ android {
         buildConfigField "String", "PRIVACY_URL", "\"https://pezkuwichain.io/privacy.html\""
         buildConfigField "String", "TERMS_URL", "\"https://pezkuwichain.io/terms.html\""
         buildConfigField "String", "GITHUB_URL", "\"https://github.com/pezkuwichain\""
-        buildConfigField "String", "TELEGRAM_URL", "\"https://t.me/pezkuwichain\""
+        buildConfigField "String", "TELEGRAM_URL", "\"https://t.me/pezkuwichainBot\""
         buildConfigField "String", "TWITTER_URL", "\"https://twitter.com/pezkuwichain\""
         buildConfigField "String", "RATE_URL", "\"market://details?id=${rootProject.applicationId}.${releaseApplicationSuffix}\""
         buildConfigField "String", "EMAIL", "\"support@pezkuwichain.io\""
