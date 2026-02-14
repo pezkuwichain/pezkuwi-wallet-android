@@ -184,8 +184,8 @@ class RuntimeModule {
     @Provides
     @ApplicationScope
     fun provideTotalIssuanceRepository(
-        @Named(LOCAL_STORAGE_SOURCE) localStorageSource: StorageDataSource,
-    ): TotalIssuanceRepository = RealTotalIssuanceRepository(localStorageSource)
+        @Named(REMOTE_STORAGE_SOURCE) remoteStorageSource: StorageDataSource,
+    ): TotalIssuanceRepository = RealTotalIssuanceRepository(remoteStorageSource)
 
     @Provides
     @ApplicationScope

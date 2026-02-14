@@ -13,7 +13,6 @@ import io.novafoundation.nova.feature_staking_impl.data.repository.VaraRepositor
 import io.novafoundation.nova.feature_staking_impl.data.stakingType
 import io.novafoundation.nova.feature_staking_impl.data.unwrapNominationPools
 import io.novafoundation.nova.feature_staking_impl.domain.common.StakingSharedComputation
-import io.novafoundation.nova.feature_staking_impl.domain.common.electedExposuresInActiveEra
 import io.novafoundation.nova.feature_staking_impl.domain.common.eraTimeCalculator
 import io.novafoundation.nova.feature_staking_impl.domain.error.accountIdNotFound
 import io.novafoundation.nova.runtime.ext.Geneses
@@ -47,7 +46,14 @@ class RewardCalculatorFactory(
         validatorsPrefs: AccountIdMap<ValidatorPrefs?>,
         scope: CoroutineScope
     ): RewardCalculator = withContext(Dispatchers.Default) {
-        val totalIssuance = totalIssuanceRepository.getTotalIssuance(stakingOption.assetWithChain.chain.id)
+        // For parachains (e.g. Asset Hub), staking lives on the parent relay chain.
+        // TotalIssuance must come from there, not from the parachain.
+        val stakingChainId = stakingOption.assetWithChain.chain.parentId ?: stakingOption.assetWithChain.chain.id
+        val totalIssuance = totalIssuanceRepository.getTotalIssuance(stakingChainId)
+
+        Log.d("PEZ_STAKING", "create(4-param) exposures=${exposures.size} validatorsPrefs=${validatorsPrefs.size}")
+        Log.d("PEZ_STAKING", "exposureKeys=${exposures.keys.take(3).map { it.take(16) }}")
+        Log.d("PEZ_STAKING", "prefKeys=${validatorsPrefs.keys.take(3).map { it.take(16) }}")
 
         val validators = exposures.keys.mapNotNull { accountIdHex ->
             val exposure = exposures[accountIdHex] ?: accountIdNotFound(accountIdHex)
@@ -60,14 +66,27 @@ class RewardCalculatorFactory(
             )
         }
 
-        stakingOption.createRewardCalculator(validators, totalIssuance, scope)
+        Log.d("PEZ_STAKING", "totalIssuance=$totalIssuance validators=${validators.size} stakingChainId=${stakingChainId.take(12)}")
+
+        stakingOption.createRewardCalculator(validators, totalIssuance, stakingChainId, scope)
     }
 
     suspend fun create(stakingOption: StakingOption, scope: CoroutineScope): RewardCalculator = withContext(Dispatchers.Default) {
-        val chainId = stakingOption.assetWithChain.chain.id
+        val chain = stakingOption.assetWithChain.chain
+        val chainId = chain.id
+        // For parachains with a parent relay chain, staking exposures live on the relay chain
+        val exposureChainId = chain.parentId ?: chainId
 
-        val exposures = shareStakingSharedComputation.get().electedExposuresInActiveEra(chainId, scope)
-        val validatorsPrefs = stakingRepository.getValidatorPrefs(chainId, exposures.keys)
+        Log.d("PEZ_STAKING", "RewardCalculatorFactory.create() chainId=${chainId.take(12)} exposureChainId=${exposureChainId.take(12)} stakingType=${stakingOption.additional.stakingType}")
+
+        val activeEra = stakingRepository.getActiveEraIndex(exposureChainId)
+        Log.d("PEZ_STAKING", "ActiveEra: $activeEra for ${exposureChainId.take(12)}")
+
+        val exposures = stakingRepository.getElectedValidatorsExposure(exposureChainId, activeEra)
+        Log.d("PEZ_STAKING", "Exposures: ${exposures.size}")
+
+        val validatorsPrefs = stakingRepository.getValidatorPrefs(exposureChainId, exposures.keys)
+        Log.d("PEZ_STAKING", "ValidatorPrefs: ${validatorsPrefs.size}")
 
         create(stakingOption, exposures, validatorsPrefs, scope)
     }
@@ -75,6 +94,7 @@ class RewardCalculatorFactory(
     private suspend fun StakingOption.createRewardCalculator(
         validators: List<RewardCalculationTarget>,
         totalIssuance: BigInteger,
+        stakingChainId: ChainId,
         scope: CoroutineScope
     ): RewardCalculator {
         return when (unwrapNominationPools().stakingType) {
@@ -82,8 +102,9 @@ class RewardCalculatorFactory(
                 val custom = customRelayChainCalculator(validators, totalIssuance, scope)
                 if (custom != null) return custom
 
-                val activePublicParachains = parasRepository.activePublicParachains(assetWithChain.chain.id)
-                val inflationConfig = InflationConfig.create(chain.id, activePublicParachains)
+                // Query parachains from the relay chain, not from Asset Hub
+                val activePublicParachains = parasRepository.activePublicParachains(stakingChainId)
+                val inflationConfig = InflationConfig.create(stakingChainId, activePublicParachains)
 
                 RewardCurveInflationRewardCalculator(validators, totalIssuance, inflationConfig)
             }

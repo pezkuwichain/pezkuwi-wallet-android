@@ -26,6 +26,7 @@ import io.novafoundation.nova.feature_staking_impl.data.nominationPools.reposito
 import io.novafoundation.nova.feature_staking_impl.data.nominationPools.repository.RealNominationPoolMembersRepository
 import io.novafoundation.nova.feature_staking_impl.data.nominationPools.repository.RealNominationPoolStateRepository
 import io.novafoundation.nova.feature_staking_impl.data.nominationPools.repository.RealNominationPoolUnbondRepository
+import io.novafoundation.nova.feature_staking_api.domain.api.StakingRepository
 import io.novafoundation.nova.feature_staking_impl.data.repository.StakingConstantsRepository
 import io.novafoundation.nova.feature_staking_impl.data.repository.StakingRewardsRepository
 import io.novafoundation.nova.feature_staking_impl.domain.StakingInteractor
@@ -186,10 +187,12 @@ class NominationPoolModule {
     fun provideNominationPoolRewardCalculatorFactory(
         stakingSharedComputation: StakingSharedComputation,
         nominationPoolSharedComputation: NominationPoolSharedComputation,
+        stakingRepository: StakingRepository,
     ): NominationPoolRewardCalculatorFactory {
         return NominationPoolRewardCalculatorFactory(
             sharedStakingSharedComputation = stakingSharedComputation,
-            nominationPoolSharedComputation = nominationPoolSharedComputation
+            nominationPoolSharedComputation = nominationPoolSharedComputation,
+            stakingRepository = stakingRepository
         )
     }
 
