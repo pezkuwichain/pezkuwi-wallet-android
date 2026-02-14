@@ -77,7 +77,12 @@ class RewardCalculatorFactory(
         // For parachains with a parent relay chain, staking exposures live on the relay chain
         val exposureChainId = chain.parentId ?: chainId
 
-        Log.d("PEZ_STAKING", "RewardCalculatorFactory.create() chainId=${chainId.take(12)} exposureChainId=${exposureChainId.take(12)} stakingType=${stakingOption.additional.stakingType}")
+        Log.d(
+            "PEZ_STAKING",
+            "RewardCalculatorFactory.create() chainId=${chainId.take(12)}" +
+                " exposureChainId=${exposureChainId.take(12)}" +
+                " stakingType=${stakingOption.additional.stakingType}"
+        )
 
         val activeEra = stakingRepository.getActiveEraIndex(exposureChainId)
         Log.d("PEZ_STAKING", "ActiveEra: $activeEra for ${exposureChainId.take(12)}")
