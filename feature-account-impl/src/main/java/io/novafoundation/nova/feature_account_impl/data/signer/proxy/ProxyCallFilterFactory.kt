@@ -42,6 +42,7 @@ class ProxyCallFilterFactory {
                 WhiteListFilter(Modules.SLOTS),
                 WhiteListFilter(Modules.AUCTIONS),
                 WhiteListFilter(Modules.VOTER_LIST),
+                WhiteListFilter(Modules.VOTER_BAGS_LIST),
                 WhiteListFilter(Modules.NOMINATION_POOLS),
                 WhiteListFilter(Modules.FAST_UNSTAKE)
             )
@@ -62,6 +63,7 @@ class ProxyCallFilterFactory {
                 WhiteListFilter(Modules.UTILITY),
                 WhiteListFilter(Modules.FAST_UNSTAKE),
                 WhiteListFilter(Modules.VOTER_LIST),
+                WhiteListFilter(Modules.VOTER_BAGS_LIST),
                 WhiteListFilter(Modules.NOMINATION_POOLS)
             )
 

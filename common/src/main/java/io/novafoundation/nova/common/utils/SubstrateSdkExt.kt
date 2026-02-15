@@ -257,7 +257,7 @@ fun Module.constantOrNull(name: String) = constants[name]
 
 fun RuntimeMetadata.staking() = module(Modules.STAKING)
 
-fun RuntimeMetadata.voterListOrNull() = firstExistingModuleOrNull(Modules.VOTER_LIST, Modules.BAG_LIST)
+fun RuntimeMetadata.voterListOrNull() = firstExistingModuleOrNull(Modules.VOTER_LIST, Modules.BAG_LIST, Modules.VOTER_BAGS_LIST)
 fun RuntimeMetadata.voterListName(): String = requireNotNull(voterListOrNull()).name
 
 fun RuntimeMetadata.system() = module(Modules.SYSTEM)
@@ -632,6 +632,7 @@ object Modules {
 
     const val VOTER_LIST = "VoterList"
     const val BAG_LIST = "BagsList"
+    const val VOTER_BAGS_LIST = "VoterBagsList"
 
     const val ELECTION_PROVIDER_MULTI_PHASE = "ElectionProviderMultiPhase"
 

@@ -51,10 +51,6 @@ class RewardCalculatorFactory(
         val stakingChainId = stakingOption.assetWithChain.chain.parentId ?: stakingOption.assetWithChain.chain.id
         val totalIssuance = totalIssuanceRepository.getTotalIssuance(stakingChainId)
 
-        Log.d("PEZ_STAKING", "create(4-param) exposures=${exposures.size} validatorsPrefs=${validatorsPrefs.size}")
-        Log.d("PEZ_STAKING", "exposureKeys=${exposures.keys.take(3).map { it.take(16) }}")
-        Log.d("PEZ_STAKING", "prefKeys=${validatorsPrefs.keys.take(3).map { it.take(16) }}")
-
         val validators = exposures.keys.mapNotNull { accountIdHex ->
             val exposure = exposures[accountIdHex] ?: accountIdNotFound(accountIdHex)
             val validatorPrefs = validatorsPrefs[accountIdHex] ?: return@mapNotNull null
@@ -66,8 +62,6 @@ class RewardCalculatorFactory(
             )
         }
 
-        Log.d("PEZ_STAKING", "totalIssuance=$totalIssuance validators=${validators.size} stakingChainId=${stakingChainId.take(12)}")
-
         stakingOption.createRewardCalculator(validators, totalIssuance, stakingChainId, scope)
     }
 
@@ -77,21 +71,11 @@ class RewardCalculatorFactory(
         // For parachains with a parent relay chain, staking exposures live on the relay chain
         val exposureChainId = chain.parentId ?: chainId
 
-        Log.d(
-            "PEZ_STAKING",
-            "RewardCalculatorFactory.create() chainId=${chainId.take(12)}" +
-                " exposureChainId=${exposureChainId.take(12)}" +
-                " stakingType=${stakingOption.additional.stakingType}"
-        )
-
         val activeEra = stakingRepository.getActiveEraIndex(exposureChainId)
-        Log.d("PEZ_STAKING", "ActiveEra: $activeEra for ${exposureChainId.take(12)}")
 
         val exposures = stakingRepository.getElectedValidatorsExposure(exposureChainId, activeEra)
-        Log.d("PEZ_STAKING", "Exposures: ${exposures.size}")
 
         val validatorsPrefs = stakingRepository.getValidatorPrefs(exposureChainId, exposures.keys)
-        Log.d("PEZ_STAKING", "ValidatorPrefs: ${validatorsPrefs.size}")
 
         create(stakingOption, exposures, validatorsPrefs, scope)
     }
