@@ -2,6 +2,7 @@ package io.novafoundation.nova.feature_staking_impl.data.dashboard.network.stats
 
 import io.novafoundation.nova.common.data.config.GlobalConfigDataSource
 import io.novafoundation.nova.common.data.network.subquery.SubQueryNodes
+import io.novafoundation.nova.common.domain.config.GlobalConfig
 import io.novafoundation.nova.common.utils.asPerbill
 import io.novafoundation.nova.common.utils.atLeastZero
 import io.novafoundation.nova.common.utils.orZero
@@ -20,6 +21,8 @@ import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Ba
 import io.novafoundation.nova.runtime.ext.UTILITY_ASSET_ID
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 
 interface StakingStatsDataSource {
@@ -37,29 +40,61 @@ class RealStakingStatsDataSource(
         stakingChains: List<Chain>
     ): MultiChainStakingStats = withContext(Dispatchers.IO) {
         retryUntilDone {
-            val request = StakingStatsRequest(stakingAccounts, stakingChains)
             val globalConfig = globalConfigDataSource.getGlobalConfig()
-            val response = api.fetchStakingStats(request, globalConfig.multiStakingApiUrl).data
+            val chainsByEndpoint = splitChainsByEndpoint(stakingChains, globalConfig)
 
-            val earnings = response.stakingApies.associatedById()
-            val rewards = response.rewards?.associatedById() ?: emptyMap()
-            val slashes = response.slashes?.associatedById() ?: emptyMap()
-            val activeStakers = response.activeStakers?.groupedById() ?: emptyMap()
-
-            request.stakingKeysMapping.mapValues { (originalStakingOptionId, stakingKeys) ->
-                val totalReward = rewards.getPlanks(originalStakingOptionId) - slashes.getPlanks(originalStakingOptionId)
-
-                val stakingStatusAddress = stakingKeys.stakingStatusAddress
-                val stakingOptionActiveStakers = activeStakers[stakingKeys.stakingStatusOptionId].orEmpty()
-                val isStakingActive = stakingStatusAddress != null && stakingStatusAddress in stakingOptionActiveStakers
-
-                ChainStakingStats(
-                    estimatedEarnings = earnings[originalStakingOptionId]?.maxAPY.orZero().asPerbill().toPercent(),
-                    accountPresentInActiveStakers = isStakingActive,
-                    rewards = totalReward.atLeastZero()
-                )
-            }
+            coroutineScope {
+                chainsByEndpoint.map { (url, chains) ->
+                    async { fetchStatsFromEndpoint(stakingAccounts, chains, url) }
+                }.map { it.await() }
+            }.fold(emptyMap()) { acc, map -> acc + map }
         }
+    }
+
+    private suspend fun fetchStatsFromEndpoint(
+        stakingAccounts: StakingAccounts,
+        chains: List<Chain>,
+        url: String
+    ): MultiChainStakingStats {
+        if (chains.isEmpty()) return emptyMap()
+
+        val request = StakingStatsRequest(stakingAccounts, chains)
+        val response = api.fetchStakingStats(request, url).data
+
+        val earnings = response.stakingApies.associatedById()
+        val rewards = response.rewards?.associatedById() ?: emptyMap()
+        val slashes = response.slashes?.associatedById() ?: emptyMap()
+        val activeStakers = response.activeStakers?.groupedById() ?: emptyMap()
+
+        return request.stakingKeysMapping.mapValues { (originalStakingOptionId, stakingKeys) ->
+            val totalReward = rewards.getPlanks(originalStakingOptionId) - slashes.getPlanks(originalStakingOptionId)
+
+            val stakingStatusAddress = stakingKeys.stakingStatusAddress
+            val stakingOptionActiveStakers = activeStakers[stakingKeys.stakingStatusOptionId].orEmpty()
+            val isStakingActive = stakingStatusAddress != null && stakingStatusAddress in stakingOptionActiveStakers
+
+            ChainStakingStats(
+                estimatedEarnings = earnings[originalStakingOptionId]?.maxAPY.orZero().asPerbill().toPercent(),
+                accountPresentInActiveStakers = isStakingActive,
+                rewards = totalReward.atLeastZero()
+            )
+        }
+    }
+
+    private fun splitChainsByEndpoint(
+        chains: List<Chain>,
+        globalConfig: GlobalConfig
+    ): Map<String, List<Chain>> {
+        val overrideUrlByChainId = globalConfig.stakingApiOverrides.flatMap { (url, chainIds) ->
+            chainIds.map { chainId -> chainId to url }
+        }.toMap()
+
+        val result = mutableMapOf<String, MutableList<Chain>>()
+        for (chain in chains) {
+            val url = overrideUrlByChainId[chain.id] ?: globalConfig.multiStakingApiUrl
+            result.getOrPut(url) { mutableListOf() }.add(chain)
+        }
+        return result
     }
 
     private fun Map<StakingOptionId, AccumulatedReward>.getPlanks(key: StakingOptionId): Balance {
