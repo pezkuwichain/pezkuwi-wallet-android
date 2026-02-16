@@ -33,20 +33,16 @@ class NominationPoolRewardCalculatorFactory(
         // For parachains, staking exposures live on the parent relay chain
         val exposureChainId = chain.parentId ?: chainId
 
-        android.util.Log.d("PEZ_STAKING", "NomPoolRewardCalcFactory.create() chainId=${chainId.take(12)} exposureChainId=${exposureChainId.take(12)}")
-
         val delegateOption = stakingOption.unwrapNominationPools()
 
         val delegate = sharedStakingSharedComputation.rewardCalculator(delegateOption, sharedComputationScope)
         val allPoolAccounts = nominationPoolSharedComputation.allBondedPoolAccounts(chainId, sharedComputationScope)
-        android.util.Log.d("PEZ_STAKING", "Pool accounts: ${allPoolAccounts.size}")
 
         val poolCommissions = nominationPoolSharedComputation.allBondedPools(chainId, sharedComputationScope)
             .mapValues { (_, pool) -> pool.commission?.current?.perbill }
 
         val activeEra = stakingRepository.getActiveEraIndex(exposureChainId)
         val exposures = stakingRepository.getElectedValidatorsExposure(exposureChainId, activeEra)
-        android.util.Log.d("PEZ_STAKING", "NomPool exposures: ${exposures.size} (era=$activeEra)")
 
         return RealNominationPoolRewardCalculator(
             directStakingDelegate = delegate,

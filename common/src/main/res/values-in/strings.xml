@@ -2030,4 +2030,11 @@
     <string name="bridge_enter_amount">Masukkan jumlah</string>
     <string name="bridge_hez_to_dot_warning">Penukaran HEZ→DOT mungkin terbatas tergantung pada likuiditas.</string>
     <string name="bridge_hez_to_dot_blocked">Penukaran HEZ→DOT sementara tidak tersedia. Coba lagi saat likuiditas DOT mencukupi.</string>
+
+    <string name="pezkuwi_dashboard_title">Pezkuwi</string>
+    <string name="pezkuwi_dashboard_trust_score">Skor Kepercayaan</string>
+    <string name="pezkuwi_dashboard_referral">Referral</string>
+    <string name="pezkuwi_dashboard_staking">Staking</string>
+    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
+    <string name="pezkuwi_dashboard_basvuru">Ajukan &amp; Tindakan</string>
 </resources>

@@ -48,7 +48,7 @@ android {
 
         buildConfigField "long", "CLOUD_PROJECT_NUMBER", "171267697857L"
 
-        buildConfigField "String", "GLOBAL_CONFIG_URL", "\"https://wallet.pezkuwichain.io/config/global_config_dev.json\""
+        buildConfigField "String", "GLOBAL_CONFIG_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/staking/global_config_dev.json\""
     }
 
     buildTypes {
@@ -61,7 +61,7 @@ android {
 
             buildConfigField "long", "CLOUD_PROJECT_NUMBER", "802342409053L"
 
-            buildConfigField "String", "GLOBAL_CONFIG_URL", "\"https://wallet.pezkuwichain.io/config/global_config.json\""
+            buildConfigField "String", "GLOBAL_CONFIG_URL", "\"https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/staking/global_config.json\""
         }
 
         releaseGithub {

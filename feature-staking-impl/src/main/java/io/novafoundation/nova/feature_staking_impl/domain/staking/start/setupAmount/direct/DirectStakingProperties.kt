@@ -29,6 +29,7 @@ import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Ba
 import io.novafoundation.nova.feature_wallet_api.domain.model.Asset
 import io.novafoundation.nova.feature_wallet_api.domain.validation.sufficientBalance
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 
 class DirectStakingPropertiesFactory(
@@ -101,7 +102,10 @@ private class DirectStakingProperties(
     private val stakingChainId = stakingOption.chain.parentId ?: stakingOption.chain.id
 
     override suspend fun minStake(): Balance {
-        return stakingSharedComputation.minStake(stakingChainId, scope)
+        Log.d("PEZ_STAKE", "DirectStaking.minStake() called, stakingChainId=$stakingChainId")
+        val result = stakingSharedComputation.minStake(stakingChainId, scope)
+        Log.d("PEZ_STAKE", "DirectStaking.minStake() returned: $result")
+        return result
     }
 
     private fun StartMultiStakingValidationSystemBuilder.noConflictingStaking() {

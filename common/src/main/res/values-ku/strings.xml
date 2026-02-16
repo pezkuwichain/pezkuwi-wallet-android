@@ -2757,4 +2757,11 @@
     <string name="bridge_enter_amount">Mîqdar binivîse</string>
     <string name="bridge_hez_to_dot_warning">Guherandina HEZ→DOT li gorî rewşa DOT sînordar dibe.</string>
     <string name="bridge_hez_to_dot_blocked">Guherandina HEZ→DOT niha tune. Dema DOT têr bibe dîsa biceribîne.</string>
+
+    <string name="pezkuwi_dashboard_title">Pezkuwi</string>
+    <string name="pezkuwi_dashboard_trust_score">Pûana Pêbaweriyê</string>
+    <string name="pezkuwi_dashboard_referral">Referral</string>
+    <string name="pezkuwi_dashboard_staking">Staking</string>
+    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
+    <string name="pezkuwi_dashboard_basvuru">Serlêdan û Karên</string>
 </resources>

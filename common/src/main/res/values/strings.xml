@@ -2759,4 +2759,11 @@
     <string name="yesterday">Yesterday</string>
     <string name="branch_io_link_host" translatable="false">pezkuwi-wallet.app.link</string>
     <string name="branch_io_link_host_alternate" translatable="false">pezkuwi-wallet-alternate.app.link</string>
+
+    <string name="pezkuwi_dashboard_title">Pezkuwi</string>
+    <string name="pezkuwi_dashboard_trust_score">Trust Score</string>
+    <string name="pezkuwi_dashboard_referral">Referral</string>
+    <string name="pezkuwi_dashboard_staking">Staking</string>
+    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
+    <string name="pezkuwi_dashboard_basvuru">Apply &amp; Actions</string>
 </resources>

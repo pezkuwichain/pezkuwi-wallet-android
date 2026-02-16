@@ -2044,4 +2044,11 @@
     <string name="bridge_enter_amount">Ingresa la cantidad</string>
     <string name="bridge_hez_to_dot_warning">Los intercambios HEZ→DOT pueden tener disponibilidad limitada según la liquidez.</string>
     <string name="bridge_hez_to_dot_blocked">Los intercambios HEZ→DOT no están disponibles temporalmente. Inténtalo de nuevo cuando haya suficiente liquidez de DOT.</string>
+
+    <string name="pezkuwi_dashboard_title">Pezkuwi</string>
+    <string name="pezkuwi_dashboard_trust_score">Puntuación de confianza</string>
+    <string name="pezkuwi_dashboard_referral">Referido</string>
+    <string name="pezkuwi_dashboard_staking">Staking</string>
+    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
+    <string name="pezkuwi_dashboard_basvuru">Solicitar y Acciones</string>
 </resources>

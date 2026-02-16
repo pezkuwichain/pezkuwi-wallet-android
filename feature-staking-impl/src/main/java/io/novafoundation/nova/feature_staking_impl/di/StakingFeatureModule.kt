@@ -225,8 +225,9 @@ class StakingFeatureModule {
     @FeatureScope
     fun provideBagListRepository(
         @Named(LOCAL_STORAGE_SOURCE) localStorageSource: StorageDataSource,
+        @Named(REMOTE_STORAGE_SOURCE) remoteStorageSource: StorageDataSource,
         chainRegistry: ChainRegistry
-    ): BagListRepository = LocalBagListRepository(localStorageSource, chainRegistry)
+    ): BagListRepository = LocalBagListRepository(localStorageSource, remoteStorageSource, chainRegistry)
 
     @Provides
     @FeatureScope

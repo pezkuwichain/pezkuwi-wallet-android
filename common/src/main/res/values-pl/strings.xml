@@ -2072,4 +2072,11 @@
     <string name="bridge_enter_amount">Wprowadź kwotę</string>
     <string name="bridge_hez_to_dot_warning">Wymiany HEZ→DOT mogą mieć ograniczoną dostępność w zależności od płynności.</string>
     <string name="bridge_hez_to_dot_blocked">Wymiany HEZ→DOT są tymczasowo niedostępne. Spróbuj ponownie, gdy płynność DOT będzie wystarczająca.</string>
+
+    <string name="pezkuwi_dashboard_title">Pezkuwi</string>
+    <string name="pezkuwi_dashboard_trust_score">Wynik zaufania</string>
+    <string name="pezkuwi_dashboard_referral">Polecenie</string>
+    <string name="pezkuwi_dashboard_staking">Staking</string>
+    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
+    <string name="pezkuwi_dashboard_basvuru">Wniosek i Akcje</string>
 </resources>

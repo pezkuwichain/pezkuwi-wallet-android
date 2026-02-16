@@ -2044,4 +2044,11 @@
     <string name="bridge_enter_amount">Írd be az összeget</string>
     <string name="bridge_hez_to_dot_warning">A HEZ→DOT cserék korlátozott elérhetőségűek lehetnek a likviditástól függően.</string>
     <string name="bridge_hez_to_dot_blocked">A HEZ→DOT cserék ideiglenesen nem elérhetők. Próbáld újra, amikor elegendő DOT likviditás áll rendelkezésre.</string>
+
+    <string name="pezkuwi_dashboard_title">Pezkuwi</string>
+    <string name="pezkuwi_dashboard_trust_score">Bizalmi pontszám</string>
+    <string name="pezkuwi_dashboard_referral">Ajánlás</string>
+    <string name="pezkuwi_dashboard_staking">Staking</string>
+    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
+    <string name="pezkuwi_dashboard_basvuru">Jelentkezés és Műveletek</string>
 </resources>

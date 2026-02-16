@@ -2030,4 +2030,11 @@
     <string name="bridge_enter_amount">金額を入力</string>
     <string name="bridge_hez_to_dot_warning">HEZ→DOT交換は流動性により制限される場合があります。</string>
     <string name="bridge_hez_to_dot_blocked">HEZ→DOT交換は一時的に利用できません。DOTの流動性が十分になったら再試行してください。</string>
+
+    <string name="pezkuwi_dashboard_title">Pezkuwi</string>
+    <string name="pezkuwi_dashboard_trust_score">信頼スコア</string>
+    <string name="pezkuwi_dashboard_referral">紹介</string>
+    <string name="pezkuwi_dashboard_staking">ステーキング</string>
+    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
+    <string name="pezkuwi_dashboard_basvuru">申請とアクション</string>
 </resources>

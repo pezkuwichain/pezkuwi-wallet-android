@@ -38,6 +38,7 @@ suspend fun BagListRepository.bagListLocatorOrThrow(chainId: ChainId): BagListLo
 
 class LocalBagListRepository(
     private val localStorage: StorageDataSource,
+    private val remoteStorage: StorageDataSource,
     private val chainRegistry: ChainRegistry
 ) : BagListRepository {
 
@@ -51,7 +52,7 @@ class LocalBagListRepository(
 
     override suspend fun bagListSize(chainId: ChainId): BigInteger? {
         return runCatching {
-            localStorage.query(chainId) {
+            remoteStorage.query(chainId) {
                 runtime.metadata.voterListOrNull()?.storage("CounterForListNodes")?.query(binding = ::bindNumber)
             }
         }.getOrNull()

@@ -26,7 +26,8 @@ class RealStartMultiStakingInteractor(
 
     override suspend fun calculateFee(selection: StartMultiStakingSelection): Fee {
         return withContext(Dispatchers.IO) {
-            extrinsicService.estimateFee(selection.stakingOption.chain, TransactionOrigin.SelectedWallet) {
+            val chain = selection.stakingOption.chain
+            extrinsicService.estimateFee(chain, TransactionOrigin.SelectedWallet) {
                 startStaking(selection)
             }
         }
@@ -34,7 +35,8 @@ class RealStartMultiStakingInteractor(
 
     override suspend fun startStaking(selection: StartMultiStakingSelection): Result<ExtrinsicExecutionResult> {
         return withContext(Dispatchers.IO) {
-            extrinsicService.submitExtrinsicAndAwaitExecution(selection.stakingOption.chain, TransactionOrigin.SelectedWallet) {
+            val chain = selection.stakingOption.chain
+            extrinsicService.submitExtrinsicAndAwaitExecution(chain, TransactionOrigin.SelectedWallet) {
                 startStaking(selection)
             }.requireOk()
         }

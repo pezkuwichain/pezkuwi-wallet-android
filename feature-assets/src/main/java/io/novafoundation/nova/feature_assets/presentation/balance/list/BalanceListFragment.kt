@@ -7,6 +7,7 @@ import coil.ImageLoader
 import io.novafoundation.nova.common.base.BaseFragment
 import io.novafoundation.nova.common.di.FeatureUtils
 import io.novafoundation.nova.common.list.EditablePlaceholderAdapter
+import io.novafoundation.nova.common.mixin.impl.observeBrowserEvents
 import io.novafoundation.nova.common.utils.insets.applyStatusBarInsets
 import io.novafoundation.nova.common.utils.hideKeyboard
 import io.novafoundation.nova.common.utils.recyclerView.expandable.ExpandableAnimationSettings
@@ -31,6 +32,8 @@ import io.novafoundation.nova.feature_assets.presentation.balance.list.view.Asse
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.AssetsHeaderHolder
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.ManageAssetsAdapter
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.ManageAssetsHolder
+import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PezkuwiDashboardAdapter
+import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PezkuwiDashboardHolder
 import io.novafoundation.nova.feature_banners_api.presentation.BannerHolder
 import io.novafoundation.nova.feature_banners_api.presentation.PromotionBannerAdapter
 import io.novafoundation.nova.feature_banners_api.presentation.bindWithAdapter
@@ -41,7 +44,8 @@ class BalanceListFragment :
     BaseFragment<BalanceListViewModel, FragmentBalanceListBinding>(),
     BalanceListAdapter.ItemAssetHandler,
     AssetsHeaderAdapter.Handler,
-    ManageAssetsAdapter.Handler {
+    ManageAssetsAdapter.Handler,
+    PezkuwiDashboardAdapter.Handler {
 
     override fun createBinding() = FragmentBalanceListBinding.inflate(layoutInflater)
 
@@ -52,6 +56,10 @@ class BalanceListFragment :
 
     private val headerAdapter by lazy(LazyThreadSafetyMode.NONE) {
         AssetsHeaderAdapter(this)
+    }
+
+    private val pezkuwiDashboardAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        PezkuwiDashboardAdapter(this)
     }
 
     private val bannerAdapter: PromotionBannerAdapter by lazy(LazyThreadSafetyMode.NONE) {
@@ -74,7 +82,7 @@ class BalanceListFragment :
     }
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
-        ConcatAdapter(headerAdapter, bannerAdapter, manageAssetsAdapter, emptyAssetsPlaceholder, assetsAdapter)
+        ConcatAdapter(headerAdapter, pezkuwiDashboardAdapter, bannerAdapter, manageAssetsAdapter, emptyAssetsPlaceholder, assetsAdapter)
     }
 
     override fun applyInsets(rootView: View) {
@@ -111,6 +119,16 @@ class BalanceListFragment :
 
     override fun subscribe(viewModel: BalanceListViewModel) {
         setupBuySellSelectorMixin(viewModel.buySellSelectorMixin)
+        observeBrowserEvents(viewModel)
+
+        viewModel.pezkuwiDashboardFlow.observe { model ->
+            if (model != null) {
+                pezkuwiDashboardAdapter.setModel(model)
+                pezkuwiDashboardAdapter.show(true)
+            } else {
+                pezkuwiDashboardAdapter.show(false)
+            }
+        }
 
         viewModel.bannersMixin.bindWithAdapter(bannerAdapter) {
             binder.balanceListAssets.invalidateItemDecorations()
@@ -234,8 +252,15 @@ class BalanceListFragment :
         viewModel.giftClicked()
     }
 
+    override fun onBasvuruClicked() {
+        viewModel.basvuruClicked()
+    }
+
     private fun setupRecyclerViewSpacing() {
         binder.balanceListAssets.addSpaceItemDecoration {
+            add(SpaceBetween(AssetsHeaderHolder, PezkuwiDashboardHolder, spaceDp = 8))
+            add(SpaceBetween(PezkuwiDashboardHolder, BannerHolder, spaceDp = 4))
+            add(SpaceBetween(PezkuwiDashboardHolder, ManageAssetsHolder, spaceDp = 24))
             add(SpaceBetween(AssetsHeaderHolder, BannerHolder, spaceDp = 4))
             add(SpaceBetween(BannerHolder, ManageAssetsHolder, spaceDp = 4))
             add(SpaceBetween(AssetsHeaderHolder, ManageAssetsHolder, spaceDp = 24))

@@ -6,6 +6,7 @@ import io.novafoundation.nova.common.utils.flowOfAll
 import io.novafoundation.nova.common.utils.inBackground
 import io.novafoundation.nova.common.utils.invokeOnCompletion
 import io.novafoundation.nova.common.utils.singleReplaySharedFlow
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -13,6 +14,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -72,18 +74,25 @@ internal class RealComputationalCache : ComputationalCache, CoroutineScope by Co
         cachedAction: AwaitableConstructor<T>
     ): T {
         val awaitable = mutex.withLock {
-            if (key in memory) {
+            val existing = memory[key]
+            if (existing != null && existing.aggregateScope.isActive) {
                 Log.d(LOG_TAG, "Key $key requested - already present")
 
-                val entry = memory.getValue(key)
+                existing.dependents += scope
 
-                entry.dependents += scope
-
-                entry.awaitable
+                existing.awaitable
             } else {
-                Log.d(LOG_TAG, "Key $key requested - creating new operation")
+                if (existing != null) {
+                    Log.d(LOG_TAG, "Key $key requested - stale (aggregateScope cancelled), recreating")
+                    memory.remove(key)
+                } else {
+                    Log.d(LOG_TAG, "Key $key requested - creating new operation")
+                }
 
-                val aggregateScope = CoroutineScope(Dispatchers.Default)
+                val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+                    Log.e(LOG_TAG, "Key $key - upstream error in aggregateScope", throwable)
+                }
+                val aggregateScope = CoroutineScope(Dispatchers.Default + exceptionHandler)
                 val awaitable = cachedAction(aggregateScope)
 
                 memory[key] = Entry(dependents = mutableSetOf(scope), aggregateScope, awaitable)

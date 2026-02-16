@@ -15,10 +15,16 @@ import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.feature_account_api.data.multisig.MultisigPendingOperationsService
 import io.novafoundation.nova.feature_account_api.domain.interfaces.AccountRepository
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
+import io.novafoundation.nova.feature_assets.data.repository.PezkuwiDashboardRepository
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.assets.ExternalBalancesInteractor
 import io.novafoundation.nova.feature_assets.domain.assets.list.AssetsListInteractor
 import io.novafoundation.nova.feature_assets.domain.breakdown.BalanceBreakdownInteractor
+import io.novafoundation.nova.feature_assets.domain.dashboard.PezkuwiDashboardInteractor
+import io.novafoundation.nova.runtime.di.REMOTE_STORAGE_SOURCE
+import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
+import io.novafoundation.nova.runtime.storage.source.StorageDataSource
+import javax.inject.Named
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.balance.common.AssetListMixinFactory
 import io.novafoundation.nova.feature_assets.presentation.balance.common.ExpandableAssetsMixinFactory
@@ -80,6 +86,23 @@ class BalanceListModule {
     }
 
     @Provides
+    @ScreenScope
+    fun providePezkuwiDashboardRepository(
+        @Named(REMOTE_STORAGE_SOURCE) remoteStorageDataSource: StorageDataSource
+    ): PezkuwiDashboardRepository {
+        return PezkuwiDashboardRepository(remoteStorageDataSource)
+    }
+
+    @Provides
+    @ScreenScope
+    fun providePezkuwiDashboardInteractor(
+        repository: PezkuwiDashboardRepository,
+        chainRegistry: ChainRegistry
+    ): PezkuwiDashboardInteractor {
+        return PezkuwiDashboardInteractor(repository, chainRegistry)
+    }
+
+    @Provides
     @IntoMap
     @ViewModelKey(BalanceListViewModel::class)
     fun provideViewModel(
@@ -103,6 +126,7 @@ class BalanceListModule {
         maskingModeUseCase: MaskingModeUseCase,
         fiatFormatter: FiatFormatter,
         giftsRestrictionCheckMixin: GiftsRestrictionCheckMixin,
+        pezkuwiDashboardInteractor: PezkuwiDashboardInteractor,
     ): ViewModel {
         return BalanceListViewModel(
             promotionBannersMixinFactory = promotionBannersMixinFactory,
@@ -124,7 +148,8 @@ class BalanceListModule {
             novaCardRestrictionCheckMixin = novaCardRestrictionCheckMixin,
             maskingModeUseCase = maskingModeUseCase,
             fiatFormatter = fiatFormatter,
-            giftsRestrictionCheckMixin = giftsRestrictionCheckMixin
+            giftsRestrictionCheckMixin = giftsRestrictionCheckMixin,
+            pezkuwiDashboardInteractor = pezkuwiDashboardInteractor
         )
     }
 

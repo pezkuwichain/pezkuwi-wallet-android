@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="pezkuwi_dashboard_title">Pezkuwi</string>
+    <string name="pezkuwi_dashboard_trust_score">Güven Puanı</string>
+    <string name="pezkuwi_dashboard_referral">Referans</string>
+    <string name="pezkuwi_dashboard_staking">Staking</string>
+    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
+    <string name="pezkuwi_dashboard_basvuru">Başvuru ve İşlemler</string>
+</resources>

@@ -2030,4 +2030,11 @@
     <string name="bridge_enter_amount">Nhập số tiền</string>
     <string name="bridge_hez_to_dot_warning">Giao dịch HEZ→DOT có thể bị hạn chế tùy thuộc vào thanh khoản.</string>
     <string name="bridge_hez_to_dot_blocked">Giao dịch HEZ→DOT tạm thời không khả dụng. Vui lòng thử lại khi thanh khoản DOT đủ.</string>
+
+    <string name="pezkuwi_dashboard_title">Pezkuwi</string>
+    <string name="pezkuwi_dashboard_trust_score">Điểm tin cậy</string>
+    <string name="pezkuwi_dashboard_referral">Giới thiệu</string>
+    <string name="pezkuwi_dashboard_staking">Staking</string>
+    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
+    <string name="pezkuwi_dashboard_basvuru">Đăng ký &amp; Hành động</string>
 </resources>

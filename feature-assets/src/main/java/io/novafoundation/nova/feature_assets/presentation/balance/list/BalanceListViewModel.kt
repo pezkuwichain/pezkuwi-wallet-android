@@ -14,6 +14,7 @@ import io.novafoundation.nova.common.presentation.LoadingState
 import io.novafoundation.nova.common.presentation.masking.MaskableModel
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.common.utils.Event
+import io.novafoundation.nova.common.mixin.api.Browserable
 import io.novafoundation.nova.common.utils.formatting.format
 import io.novafoundation.nova.common.utils.formatting.formatAsPercentage
 import io.novafoundation.nova.common.utils.inBackground
@@ -25,6 +26,8 @@ import io.novafoundation.nova.feature_account_api.domain.model.MetaAccount
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.assets.list.AssetsListInteractor
+import io.novafoundation.nova.feature_assets.domain.dashboard.PezkuwiDashboardInteractor
+import io.novafoundation.nova.feature_assets.presentation.balance.list.model.PezkuwiDashboardModel
 import io.novafoundation.nova.feature_assets.domain.assets.list.NftPreviews
 import io.novafoundation.nova.feature_assets.domain.breakdown.BalanceBreakdown
 import io.novafoundation.nova.feature_assets.domain.breakdown.BalanceBreakdownInteractor
@@ -97,8 +100,9 @@ class BalanceListViewModel(
     private val multisigPendingOperationsService: MultisigPendingOperationsService,
     private val novaCardRestrictionCheckMixin: NovaCardRestrictionCheckMixin,
     private val maskingModeUseCase: MaskingModeUseCase,
-    private val giftsRestrictionCheckMixin: GiftsRestrictionCheckMixin
-) : BaseViewModel() {
+    private val giftsRestrictionCheckMixin: GiftsRestrictionCheckMixin,
+    private val pezkuwiDashboardInteractor: PezkuwiDashboardInteractor
+) : BaseViewModel(), Browserable.Presentation by Browserable() {
 
     private val maskableAmountFormatterFlow = maskableValueFormatterProvider.provideFormatter()
         .shareInBackground()
@@ -216,6 +220,22 @@ class BalanceListViewModel(
     val pendingOperationsCountModel = multisigPendingOperationsService.pendingOperationsCountFlow()
         .withSafeLoading()
         .combine(maskableAmountFormatterFlow, ::formatPendingOperationsCount)
+        .shareInBackground()
+
+    val pezkuwiDashboardFlow = selectedMetaAccount
+        .mapLatest { metaAccount ->
+            pezkuwiDashboardInteractor.getDashboard(metaAccount)
+                .map { data ->
+                    PezkuwiDashboardModel(
+                        roles = data.roles,
+                        trustScore = data.trustScore.toString(),
+                        referralPoints = data.totalReferrals.toString(),
+                        stakingPoints = data.stakedAmount.toString(),
+                        perwerdePoints = data.perwerdePoints.toString()
+                    )
+                }
+                .getOrNull()
+        }
         .shareInBackground()
 
     init {
@@ -379,6 +399,10 @@ class BalanceListViewModel(
         giftsRestrictionCheckMixin.checkRestrictionAndDo {
             router.openGifts()
         }
+    }
+
+    fun basvuruClicked() {
+        showBrowser("https://t.me/pezkuwichainBot")
     }
 
     fun novaCardClicked() = launchUnit {
