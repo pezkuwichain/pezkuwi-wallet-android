@@ -2033,8 +2033,5 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Điểm tin cậy</string>
-    <string name="pezkuwi_dashboard_referral">Giới thiệu</string>
-    <string name="pezkuwi_dashboard_staking">Staking</string>
-    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
     <string name="pezkuwi_dashboard_basvuru">Đăng ký &amp; Hành động</string>
 </resources>

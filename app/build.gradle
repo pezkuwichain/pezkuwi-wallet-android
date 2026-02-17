@@ -168,7 +168,7 @@ void createBindReleaseFileTask(String destination) {
 
 play {
     serviceAccountCredentials = file(System.env.CI_PLAY_KEY ?: "../key/fake.json")
-    track = "beta"
+    track = "production"
     releaseStatus = "completed"
 }
 

@@ -228,10 +228,7 @@ class BalanceListViewModel(
                 .map { data ->
                     PezkuwiDashboardModel(
                         roles = data.roles,
-                        trustScore = data.trustScore.toString(),
-                        referralPoints = data.totalReferrals.toString(),
-                        stakingPoints = data.stakedAmount.toString(),
-                        perwerdePoints = data.perwerdePoints.toString()
+                        trustScore = data.trustScore.toString()
                     )
                 }
                 .getOrNull()

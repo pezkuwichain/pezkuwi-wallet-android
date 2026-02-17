@@ -2033,8 +2033,5 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">신뢰 점수</string>
-    <string name="pezkuwi_dashboard_referral">추천</string>
-    <string name="pezkuwi_dashboard_staking">스테이킹</string>
-    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
     <string name="pezkuwi_dashboard_basvuru">신청 및 작업</string>
 </resources>

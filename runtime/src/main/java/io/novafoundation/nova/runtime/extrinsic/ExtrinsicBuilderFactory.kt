@@ -1,6 +1,5 @@
 package io.novafoundation.nova.runtime.extrinsic
 
-import android.util.Log
 import io.novafoundation.nova.common.utils.orZero
 import io.novafoundation.nova.runtime.ext.requireGenesisHash
 import io.novafoundation.nova.runtime.extrinsic.extensions.PezkuwiCheckMortality
@@ -19,8 +18,6 @@ import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtensi
 import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtension.extensions.CheckSpecVersion
 import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtension.extensions.CheckTxVersion
 import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtension.extensions.checkMetadataHash.CheckMetadataHash
-
-private const val TAG = "ExtrinsicBuilderFactory"
 
 class ExtrinsicBuilderFactory(
     private val chainRegistry: ChainRegistry,
@@ -45,19 +42,10 @@ class ExtrinsicBuilderFactory(
     ): Sequence<ExtrinsicBuilder> {
         val runtime = chainRegistry.getRuntime(chain.id)
 
-        // Log metadata extensions
-        val metadataExtensions = runtime.metadata.extrinsic.signedExtensions.map { it.id }
-        Log.d(TAG, "Chain: ${chain.name}, Metadata extensions: $metadataExtensions")
-
         val mortality = mortalityConstructor.constructMortality(chain.id)
         val metadataProof = metadataShortenerService.generateMetadataProof(chain.id)
 
-        // Log custom extensions
-        val customExtensions = CustomTransactionExtensions.defaultValues(runtime).map { it.name }
-        Log.d(TAG, "Custom extensions to add: $customExtensions")
-
         val isPezkuwi = isPezkuwiChain(runtime)
-        Log.d(TAG, "isPezkuwiChain: $isPezkuwi")
 
         return generateSequence {
             ExtrinsicBuilder(
@@ -67,7 +55,6 @@ class ExtrinsicBuilderFactory(
             ).apply {
                 // Use custom CheckMortality for Pezkuwi chains to avoid type lookup issues
                 if (isPezkuwi) {
-                    Log.d(TAG, "Using PezkuwiCheckMortality for ${chain.name}")
                     setTransactionExtension(PezkuwiCheckMortality(mortality.era, mortality.blockHash.fromHex()))
                 } else {
                     setTransactionExtension(CheckMortality(mortality.era, mortality.blockHash.fromHex()))
@@ -79,8 +66,6 @@ class ExtrinsicBuilderFactory(
                 setTransactionExtension(CheckTxVersion(metadataProof.usedVersion.transactionVersion))
 
                 CustomTransactionExtensions.defaultValues(runtime).forEach(::setTransactionExtension)
-
-                Log.d(TAG, "All extensions set for ${chain.name}")
             }
         }
     }

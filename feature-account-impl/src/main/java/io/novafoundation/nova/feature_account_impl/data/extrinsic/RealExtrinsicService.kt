@@ -350,39 +350,7 @@ class RealExtrinsicService(
         }
 
         // Build extrinsic
-        val extrinsic = try {
-            Log.d("RealExtrinsicService", "Building extrinsic for chain ${chain.name} (${chain.id})")
-            extrinsicBuilder.buildExtrinsic()
-        } catch (e: Exception) {
-            Log.e("RealExtrinsicService", "Failed to build extrinsic for chain ${chain.name}", e)
-            Log.e("RealExtrinsicService", "SigningMode: $signingMode, Chain: ${chain.id}")
-            Log.e("RealExtrinsicService", "Exception class: ${e::class.java.name}")
-            Log.e("RealExtrinsicService", "Message: ${e.message}")
-            Log.e("RealExtrinsicService", "Cause: ${e.cause?.message}")
-            Log.e("RealExtrinsicService", "Full stack trace:", e)
-
-            // Get runtime diagnostics
-            try {
-                val runtime = chainRegistry.getRuntime(chain.id)
-                val typeRegistry = runtime.typeRegistry
-                val hasExtrinsicSignature = typeRegistry["ExtrinsicSignature"] != null
-                val hasMultiSignature = typeRegistry["MultiSignature"] != null
-                val hasMultiAddress = typeRegistry["MultiAddress"] != null
-                val hasAddress = typeRegistry["Address"] != null
-                Log.e(
-                    "RealExtrinsicService",
-                    "Types: ExtrinsicSig=$hasExtrinsicSignature, MultiSig=$hasMultiSignature, " +
-                        "MultiAddress=$hasMultiAddress, Address=$hasAddress"
-                )
-
-                // Check extrinsic extensions
-                val signedExtensions = runtime.metadata.extrinsic.signedExtensions.map { it.id }
-                Log.e("RealExtrinsicService", "Signed extensions: $signedExtensions")
-            } catch (diagEx: Exception) {
-                Log.e("RealExtrinsicService", "Failed to get diagnostics: ${diagEx.message}")
-            }
-            throw e
-        }
+        val extrinsic = extrinsicBuilder.buildExtrinsic()
 
         val signingHierarchy = signer.getSigningHierarchy()
 

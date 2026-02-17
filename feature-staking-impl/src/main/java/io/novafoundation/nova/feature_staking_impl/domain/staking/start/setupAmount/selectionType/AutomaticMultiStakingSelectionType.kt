@@ -13,7 +13,6 @@ import io.novafoundation.nova.feature_staking_impl.domain.staking.start.setupAmo
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Balance
 import io.novafoundation.nova.feature_wallet_api.data.repository.BalanceLocksRepository
 import io.novafoundation.nova.feature_wallet_api.domain.model.Asset
-import android.util.Log
 import kotlin.coroutines.cancellation.CancellationException
 
 class AutomaticMultiStakingSelectionType(
@@ -46,14 +45,8 @@ class AutomaticMultiStakingSelectionType(
     }
 
     override suspend fun updateSelectionFor(stake: Balance) {
-        Log.d("PEZ_STAKE", "updateSelectionFor: stake=$stake")
         val stakingProperties = typePropertiesFor(stake)
-        Log.d("PEZ_STAKE", "updateSelectionFor: got properties type=${stakingProperties.stakingType}")
-        val candidates = stakingProperties.recommendation.recommendedSelection(stake) ?: run {
-            Log.d("PEZ_STAKE", "updateSelectionFor: recommendedSelection returned null, returning")
-            return
-        }
-        Log.d("PEZ_STAKE", "updateSelectionFor: got recommended selection")
+        val candidates = stakingProperties.recommendation.recommendedSelection(stake) ?: return
 
         val recommendableSelection = RecommendableMultiStakingSelection(
             source = SelectionTypeSource.Automatic,
@@ -62,25 +55,18 @@ class AutomaticMultiStakingSelectionType(
         )
 
         selectionStore.updateSelection(recommendableSelection)
-        Log.d("PEZ_STAKE", "updateSelectionFor: selection updated successfully")
     }
 
     private suspend fun typePropertiesFor(stake: Balance): SingleStakingProperties {
-        Log.d("PEZ_STAKE", "typePropertiesFor: trying ${candidates.size} candidates")
-        for ((index, candidate) in candidates.withIndex()) {
-            Log.d("PEZ_STAKE", "typePropertiesFor: checking candidate $index type=${candidate.stakingType}")
+        for (candidate in candidates) {
             try {
                 val minStake = candidate.minStake()
-                Log.d("PEZ_STAKE", "typePropertiesFor: candidate $index minStake=$minStake, stake=$stake, allows=${minStake <= stake}")
                 if (minStake <= stake) return candidate
             } catch (e: CancellationException) {
-                Log.d("PEZ_STAKE", "typePropertiesFor: candidate $index cancelled, rethrowing")
                 throw e
-            } catch (e: Exception) {
-                Log.e("PEZ_STAKE", "typePropertiesFor: candidate $index minStake() threw", e)
+            } catch (_: Exception) {
             }
         }
-        Log.d("PEZ_STAKE", "typePropertiesFor: no candidate allows, finding minimum")
         return candidates.findWithMinimumStake()
     }
 

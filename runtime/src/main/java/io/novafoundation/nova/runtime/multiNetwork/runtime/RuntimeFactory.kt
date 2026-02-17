@@ -1,6 +1,5 @@
 package io.novafoundation.nova.runtime.multiNetwork.runtime
 
-import android.util.Log
 import com.google.gson.Gson
 import io.novafoundation.nova.common.utils.md5
 import io.novafoundation.nova.common.utils.newLimitedThreadPoolExecutor
@@ -79,8 +78,6 @@ class RuntimeFactory(
 
         val metadataReader = RuntimeMetadataReader.read(runtimeMetadataRaw)
 
-        Log.d("RuntimeFactory", "Constructing metadata of version ${metadataReader.metadataVersion} for chain $chainId")
-
         val schema = metadataReader.metadataPostV14.schema
 
         val typePreset = if (metadataReader.metadataVersion < 14) {
@@ -93,13 +90,9 @@ class RuntimeFactory(
             )
         }
 
-        Log.d("RuntimeFactory", "DEBUG: TypesUsage for chain $chainId = $typesUsage")
-
         val (types, baseHash, ownHash) = when (typesUsage) {
             TypesUsage.BASE -> {
-                Log.d("RuntimeFactory", "DEBUG: Loading BASE types for $chainId")
                 val (types, baseHash) = constructBaseTypes(typePreset)
-                Log.d("RuntimeFactory", "DEBUG: BASE types loaded, hash=$baseHash, typeCount=${types.size}")
 
                 Triple(types, baseHash, null)
             }
@@ -169,7 +162,6 @@ class RuntimeFactory(
         val typePreset = try {
             parseNetworkVersioning(ownTypesTree, withoutVersioning, runtimeVersion)
         } catch (e: IllegalArgumentException) {
-            Log.w("RuntimeFactory", "No versioning info in chain types for $chainId, using base definitions")
             withoutVersioning
         }
 
@@ -178,12 +170,7 @@ class RuntimeFactory(
 
     private suspend fun constructBaseTypes(initialPreset: TypePreset): Pair<TypePreset, String> {
         val baseTypesRaw = runCatching { runtimeFilesCache.getBaseTypes() }
-            .getOrElse {
-                Log.e("RuntimeFactory", "DEBUG: BaseTypes NOT in cache!")
-                throw BaseTypesNotInCacheException
-            }
-
-        Log.d("RuntimeFactory", "BaseTypes loaded, len=${baseTypesRaw.length}")
+            .getOrElse { throw BaseTypesNotInCacheException }
 
         val typePreset = parseBaseDefinitions(fromJson(baseTypesRaw), initialPreset)
 

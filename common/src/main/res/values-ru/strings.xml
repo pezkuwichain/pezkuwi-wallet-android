@@ -2075,8 +2075,5 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Рейтинг доверия</string>
-    <string name="pezkuwi_dashboard_referral">Реферал</string>
-    <string name="pezkuwi_dashboard_staking">Стейкинг</string>
-    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
     <string name="pezkuwi_dashboard_basvuru">Заявка и Действия</string>
 </resources>

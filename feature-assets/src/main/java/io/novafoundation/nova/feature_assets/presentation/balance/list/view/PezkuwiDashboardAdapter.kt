@@ -58,9 +58,6 @@ class PezkuwiDashboardHolder(
     fun bind(model: PezkuwiDashboardModel) {
         bindRoles(model.roles)
         binder.pezkuwiDashboardTrustValue.text = model.trustScore
-        binder.pezkuwiDashboardReferralValue.text = model.referralPoints
-        binder.pezkuwiDashboardStakingValue.text = model.stakingPoints
-        binder.pezkuwiDashboardPerwerdeValue.text = model.perwerdePoints
     }
 
     private fun bindRoles(roles: List<String>) {

@@ -2047,8 +2047,5 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Bizalmi pontszám</string>
-    <string name="pezkuwi_dashboard_referral">Ajánlás</string>
-    <string name="pezkuwi_dashboard_staking">Staking</string>
-    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
     <string name="pezkuwi_dashboard_basvuru">Jelentkezés és Műveletek</string>
 </resources>

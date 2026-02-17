@@ -2760,8 +2760,5 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Pûana Pêbaweriyê</string>
-    <string name="pezkuwi_dashboard_referral">Referral</string>
-    <string name="pezkuwi_dashboard_staking">Staking</string>
-    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
     <string name="pezkuwi_dashboard_basvuru">Serlêdan û Karên</string>
 </resources>

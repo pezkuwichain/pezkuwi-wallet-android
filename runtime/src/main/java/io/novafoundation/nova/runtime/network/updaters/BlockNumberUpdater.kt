@@ -1,6 +1,5 @@
 package io.novafoundation.nova.runtime.network.updaters
 
-import android.util.Log
 import io.novafoundation.nova.common.utils.Modules
 import io.novafoundation.nova.common.utils.system
 import io.novafoundation.nova.core.storage.StorageCache
@@ -37,7 +36,6 @@ class BlockNumberUpdater(
 
         return storageSubscriptionBuilder.subscribe(storageKey)
             .onEach {
-                Log.d("BlockNumberUpdater", "Block number updated: ${it.value}")
                 storageCache.insert(it, scopeValue.id)
             }
             .noSideAffects()

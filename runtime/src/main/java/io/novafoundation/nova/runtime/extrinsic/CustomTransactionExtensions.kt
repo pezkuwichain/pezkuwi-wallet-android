@@ -1,6 +1,5 @@
 package io.novafoundation.nova.runtime.extrinsic
 
-import android.util.Log
 import io.novafoundation.nova.runtime.extrinsic.extensions.AuthorizeCall
 import io.novafoundation.nova.runtime.extrinsic.extensions.ChargeAssetTxPayment
 import io.novafoundation.nova.runtime.extrinsic.extensions.CheckAppId
@@ -10,8 +9,6 @@ import io.novafoundation.nova.runtime.extrinsic.extensions.WeightReclaim
 import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
 import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
 import io.novasama.substrate_sdk_android.runtime.extrinsic.v5.transactionExtension.TransactionExtension
-
-private const val TAG = "CustomTxExtensions"
 
 object CustomTransactionExtensions {
 
@@ -34,8 +31,6 @@ object CustomTransactionExtensions {
         val extensions = mutableListOf<TransactionExtension>()
         val signedExtIds = runtime.metadata.extrinsic.signedExtensions.map { it.id }
 
-        Log.d(TAG, "Metadata signed extensions: $signedExtIds")
-
         // Add extensions based on what the metadata requires
         if ("AuthorizeCall" in signedExtIds) {
             extensions.add(AuthorizeCall())
@@ -57,7 +52,6 @@ object CustomTransactionExtensions {
             extensions.add(CheckAppId())
         }
 
-        Log.d(TAG, "Extensions to add: ${extensions.map { it.name }}")
         return extensions
     }
 }

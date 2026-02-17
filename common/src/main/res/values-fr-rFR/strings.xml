@@ -2047,8 +2047,5 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Score de confiance</string>
-    <string name="pezkuwi_dashboard_referral">Parrainage</string>
-    <string name="pezkuwi_dashboard_staking">Staking</string>
-    <string name="pezkuwi_dashboard_perwerde">Perwerde</string>
     <string name="pezkuwi_dashboard_basvuru">Demande et Actions</string>
 </resources>
