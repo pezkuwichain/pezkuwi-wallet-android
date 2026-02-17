@@ -13,6 +13,7 @@ import io.novafoundation.nova.common.utils.metadata
 import io.novafoundation.nova.common.utils.numberConstant
 import io.novafoundation.nova.common.utils.numberConstantOrNull
 import io.novafoundation.nova.common.utils.staking
+import io.novafoundation.nova.core.storage.StorageCache
 import io.novafoundation.nova.core_db.dao.AccountStakingDao
 import io.novafoundation.nova.core_db.model.AccountStakingLocal
 import io.novafoundation.nova.feature_account_api.data.model.AccountIdMap
@@ -49,6 +50,7 @@ import io.novafoundation.nova.feature_staking_impl.data.network.blockhain.bindin
 import io.novafoundation.nova.feature_staking_impl.data.network.blockhain.bindings.bindSlashDeferDuration
 import io.novafoundation.nova.feature_staking_impl.data.network.blockhain.bindings.bindSlashingSpans
 import io.novafoundation.nova.feature_staking_impl.data.network.blockhain.bindings.bindValidatorPrefs
+import io.novafoundation.nova.feature_staking_impl.data.network.blockhain.updaters.ValidatorExposureUpdater
 import io.novafoundation.nova.feature_staking_impl.data.network.blockhain.updaters.activeEraStorageKey
 import io.novafoundation.nova.feature_wallet_api.domain.interfaces.WalletConstants
 import io.novafoundation.nova.runtime.call.MultiChainRuntimeCallsApi
@@ -86,6 +88,7 @@ class StakingRepositoryImpl(
     private val localStorage: StorageDataSource,
     private val walletConstants: WalletConstants,
     private val chainRegistry: ChainRegistry,
+    private val storageCache: StorageCache,
     private val multiChainRuntimeCallsApi: MultiChainRuntimeCallsApi,
 ) : StakingRepository {
 
@@ -124,7 +127,7 @@ class StakingRepositoryImpl(
         return runtime.metadata.staking().numberConstant("SessionsPerEra", runtime) // How many sessions per era
     }
 
-    override suspend fun getActiveEraIndex(chainId: ChainId): EraIndex = remoteStorage.query(chainId) {
+    override suspend fun getActiveEraIndex(chainId: ChainId): EraIndex = localStorage.query(chainId) {
         metadata.staking.activeEra.queryNonNull()
     }
 
@@ -161,7 +164,7 @@ class StakingRepositoryImpl(
         }
     }
 
-    private suspend fun fetchPagedEraStakers(chainId: ChainId, eraIndex: EraIndex): AccountIdMap<Exposure> = remoteStorage.query(chainId) {
+    private suspend fun fetchPagedEraStakers(chainId: ChainId, eraIndex: EraIndex): AccountIdMap<Exposure> = localStorage.query(chainId) {
         val eraStakersOverview = metadata.staking().storage("ErasStakersOverview").entries(
             eraIndex,
             keyExtractor = { (_: BigInteger, accountId: ByteArray) -> accountId.toHexString() },
@@ -204,7 +207,7 @@ class StakingRepositoryImpl(
         }
     }
 
-    private suspend fun fetchLegacyEraStakers(chainId: ChainId, eraIndex: EraIndex): AccountIdMap<Exposure> = remoteStorage.query(chainId) {
+    private suspend fun fetchLegacyEraStakers(chainId: ChainId, eraIndex: EraIndex): AccountIdMap<Exposure> = localStorage.query(chainId) {
         runtime.metadata.staking().storage("ErasStakers").entries(
             eraIndex,
             keyExtractor = { (_: BigInteger, accountId: ByteArray) -> accountId.toHexString() },
@@ -346,7 +349,7 @@ class StakingRepositoryImpl(
         val runtime = runtimeFor(chainId)
 
         return runtime.metadata.staking().storageOrNull(storageName)?.let { storageEntry ->
-            remoteStorage.query(
+            localStorage.query(
                 keyBuilder = { storageEntry.storageKey() },
                 binding = { scale, _ -> scale?.let { binder(scale, runtime, storageEntry.returnType()) } },
                 chainId = chainId
@@ -402,8 +405,9 @@ class StakingRepositoryImpl(
     }
 
     private suspend fun isPagedExposuresUsed(chainId: ChainId): Boolean {
-        val runtime = runtimeFor(chainId)
-        return runtime.metadata.staking().storageOrNull("ErasStakersOverview") != null
+        val isPagedExposuresValue = storageCache.getEntry(ValidatorExposureUpdater.STORAGE_KEY_PAGED_EXPOSURES, chainId)
+
+        return ValidatorExposureUpdater.decodeIsPagedExposuresValue(isPagedExposuresValue.content)
     }
 
     private fun observeAccountValidatorPrefs(chainId: ChainId, stashId: AccountId): Flow<ValidatorPrefs?> {

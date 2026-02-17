@@ -2015,6 +2015,7 @@
 
     <!-- Bridge Screen -->
     <string name="wallet_asset_bridge">Cầu nối DOT ↔ HEZ</string>
+    <string name="wallet_asset_bridge_usdt">Cầu nối USDT(DOT) ↔ USDT(HEZ)</string>
     <string name="bridge_title">Cầu nối DOT ↔ HEZ</string>
     <string name="bridge_you_send">Bạn gửi</string>
     <string name="bridge_you_receive">Bạn nhận (ước tính)</string>
@@ -2034,4 +2035,5 @@
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Điểm tin cậy</string>
     <string name="pezkuwi_dashboard_basvuru">Đăng ký &amp; Hành động</string>
+    <string name="pezkuwi_dashboard_info">Sử dụng Telegram MiniApp của chúng tôi cho dịch vụ công dân Kurdistan kỹ thuật số.\n\nĐể nhận phần thưởng PEZ, bạn phải sở hữu vé Welatî và đã stake ít nhất 10 HEZ.\n\nNgười không phải công dân chỉ có thể hưởng lợi từ phần thưởng HEZ.</string>
 </resources>

@@ -26,7 +26,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transformLatest
 
@@ -62,12 +61,7 @@ class StakingSharedComputation(
         val key = "ACTIVE_ERA:$chainId"
 
         return computationalCache.useSharedFlow(key, scope) {
-            flow {
-                val era = stakingRepository.getActiveEraIndex(chainId)
-                emit(era)
-
-                emitAll(stakingRepository.observeActiveEraIndex(chainId))
-            }
+            stakingRepository.observeActiveEraIndex(chainId)
         }
     }
 
@@ -76,8 +70,7 @@ class StakingSharedComputation(
 
         return computationalCache.useSharedFlow(key, scope) {
             activeEraFlow(chainId, scope).map { eraIndex ->
-                val exposures = stakingRepository.getElectedValidatorsExposure(chainId, eraIndex)
-                exposures to eraIndex
+                stakingRepository.getElectedValidatorsExposure(chainId, eraIndex) to eraIndex
             }
         }
     }
@@ -86,14 +79,14 @@ class StakingSharedComputation(
         val key = "MIN_STAKE:$chainId"
 
         return computationalCache.useSharedFlow(key, scope) {
-            electedExposuresWithActiveEraFlow(chainId, scope).map { (exposures, activeEraIndex) ->
-                val minBond = stakingRepository.minimumNominatorBond(chainId)
-                val bagListLocator = bagListRepository.bagListLocatorOrNull(chainId)
-                val totalIssuance = totalIssuanceRepository.getTotalIssuance(chainId)
-                val bagListScoreConverter = BagListScoreConverter.U128(totalIssuance)
-                val maxElectingVoters = bagListRepository.maxElectingVotes(chainId)
-                val bagListSize = bagListRepository.bagListSize(chainId)
+            val minBond = stakingRepository.minimumNominatorBond(chainId)
+            val bagListLocator = bagListRepository.bagListLocatorOrNull(chainId)
+            val totalIssuance = totalIssuanceRepository.getTotalIssuance(chainId)
+            val bagListScoreConverter = BagListScoreConverter.U128(totalIssuance)
+            val maxElectingVoters = bagListRepository.maxElectingVotes(chainId)
+            val bagListSize = bagListRepository.bagListSize(chainId)
 
+            electedExposuresWithActiveEraFlow(chainId, scope).map { (exposures, activeEraIndex) ->
                 val minStake = minimumStake(
                     exposures = exposures.values,
                     minimumNominatorBond = minBond,

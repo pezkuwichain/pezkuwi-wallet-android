@@ -98,10 +98,8 @@ private class DirectStakingProperties(
         enoughAvailableToStake()
     }
 
-    private val stakingChainId = stakingOption.chain.parentId ?: stakingOption.chain.id
-
     override suspend fun minStake(): Balance {
-        return stakingSharedComputation.minStake(stakingChainId, scope)
+        return stakingSharedComputation.minStake(stakingOption.chain.id, scope)
     }
 
     private fun StartMultiStakingValidationSystemBuilder.noConflictingStaking() {
@@ -127,7 +125,7 @@ private class DirectStakingProperties(
     private fun StartMultiStakingValidationSystemBuilder.maximumNominatorsReached() {
         maximumNominatorsReached(
             stakingRepository = stakingRepository,
-            chainId = { stakingChainId },
+            chainId = { stakingOption.chain.id },
             errorProducer = { StartMultiStakingValidationFailure.MaxNominatorsReached(stakingType) }
         )
     }

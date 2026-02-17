@@ -38,24 +38,19 @@ suspend fun BagListRepository.bagListLocatorOrThrow(chainId: ChainId): BagListLo
 
 class LocalBagListRepository(
     private val localStorage: StorageDataSource,
-    private val remoteStorage: StorageDataSource,
     private val chainRegistry: ChainRegistry
 ) : BagListRepository {
 
     override suspend fun bagThresholds(chainId: ChainId): List<BagListNode.Score>? {
-        return runCatching {
-            chainRegistry.withRuntime(chainId) {
-                runtime.metadata.voterListOrNull()?.constant("BagThresholds")?.getAs(collectionOf(::score))
-            }
-        }.getOrNull()
+        return chainRegistry.withRuntime(chainId) {
+            runtime.metadata.voterListOrNull()?.constant("BagThresholds")?.getAs(collectionOf(::score))
+        }
     }
 
     override suspend fun bagListSize(chainId: ChainId): BigInteger? {
-        return runCatching {
-            remoteStorage.query(chainId) {
-                runtime.metadata.voterListOrNull()?.storage("CounterForListNodes")?.query(binding = ::bindNumber)
-            }
-        }.getOrNull()
+        return localStorage.query(chainId) {
+            runtime.metadata.voterListOrNull()?.storage("CounterForListNodes")?.query(binding = ::bindNumber)
+        }
     }
 
     override suspend fun maxElectingVotes(chainId: ChainId): BigInteger? {

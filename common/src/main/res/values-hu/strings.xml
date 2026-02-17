@@ -2029,6 +2029,7 @@
 
     <!-- Bridge Screen -->
     <string name="wallet_asset_bridge">DOT ↔ HEZ híd</string>
+    <string name="wallet_asset_bridge_usdt">USDT(DOT) ↔ USDT(HEZ) híd</string>
     <string name="bridge_title">DOT ↔ HEZ híd</string>
     <string name="bridge_you_send">Küldöd</string>
     <string name="bridge_you_receive">Kapod (becsült)</string>

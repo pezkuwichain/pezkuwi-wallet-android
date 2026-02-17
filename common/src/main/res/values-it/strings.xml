@@ -2029,6 +2029,7 @@
 
     <!-- Bridge Screen -->
     <string name="wallet_asset_bridge">Ponte DOT ↔ HEZ</string>
+    <string name="wallet_asset_bridge_usdt">Ponte USDT(DOT) ↔ USDT(HEZ)</string>
     <string name="bridge_title">Ponte DOT ↔ HEZ</string>
     <string name="bridge_you_send">Invii</string>
     <string name="bridge_you_receive">Ricevi (stimato)</string>

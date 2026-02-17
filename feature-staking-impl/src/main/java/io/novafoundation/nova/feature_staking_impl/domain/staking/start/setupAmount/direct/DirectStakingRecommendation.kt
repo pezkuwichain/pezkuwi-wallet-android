@@ -29,8 +29,7 @@ class DirectStakingRecommendation(
 
     override suspend fun recommendedSelection(stake: Balance): StartMultiStakingSelection {
         val provider = recommendationSettingsProvider.await()
-        val stakingChainId = stakingOption.chain.parentId ?: stakingOption.chain.id
-        val maximumValidatorsPerNominator = stakingConstantsRepository.maxValidatorsPerNominator(stakingChainId, stake)
+        val maximumValidatorsPerNominator = stakingConstantsRepository.maxValidatorsPerNominator(stakingOption.chain.id, stake)
         val recommendationSettings = provider.recommendedSettings(maximumValidatorsPerNominator)
         val recommendator = recommendator.await()
 

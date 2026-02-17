@@ -13,7 +13,6 @@ import io.novafoundation.nova.feature_staking_impl.domain.staking.start.setupAmo
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Balance
 import io.novafoundation.nova.feature_wallet_api.data.repository.BalanceLocksRepository
 import io.novafoundation.nova.feature_wallet_api.domain.model.Asset
-import kotlin.coroutines.cancellation.CancellationException
 
 class AutomaticMultiStakingSelectionType(
     private val candidates: List<SingleStakingProperties>,
@@ -58,16 +57,7 @@ class AutomaticMultiStakingSelectionType(
     }
 
     private suspend fun typePropertiesFor(stake: Balance): SingleStakingProperties {
-        for (candidate in candidates) {
-            try {
-                val minStake = candidate.minStake()
-                if (minStake <= stake) return candidate
-            } catch (e: CancellationException) {
-                throw e
-            } catch (_: Exception) {
-            }
-        }
-        return candidates.findWithMinimumStake()
+        return candidates.firstAllowingToStake(stake) ?: candidates.findWithMinimumStake()
     }
 
     private suspend fun List<SingleStakingProperties>.firstAllowingToStake(stake: Balance): SingleStakingProperties? {

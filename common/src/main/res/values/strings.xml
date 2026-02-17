@@ -351,6 +351,7 @@
     <string name="wallet_asset_sell_tokens">Sell tokens</string>
     <string name="wallet_asset_buy_tokens">Buy tokens</string>
     <string name="wallet_asset_bridge">Bridge DOT ↔ HEZ</string>
+    <string name="wallet_asset_bridge_usdt">Bridge USDT(DOT) ↔ USDT(HEZ)</string>
 
     <!-- Bridge Screen -->
     <string name="bridge_title">DOT ↔ HEZ Bridge</string>
@@ -368,6 +369,7 @@
     <string name="bridge_enter_amount">Enter amount</string>
     <string name="bridge_hez_to_dot_warning">HEZ→DOT swaps may have limited availability based on current liquidity.</string>
     <string name="bridge_hez_to_dot_blocked">HEZ→DOT swaps are temporarily unavailable. Please try again when DOT liquidity is sufficient.</string>
+    <string name="bridge_wusdt_to_usdt_blocked">USDT(Pez)→USDT(Pol) swaps are temporarily unavailable. Waiting for 1:1 liquidity to be established.</string>
 
     <string name="wallet_asset_buy_sell">Buy/Sell</string>
 
@@ -2763,4 +2765,5 @@
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Trust Score</string>
     <string name="pezkuwi_dashboard_basvuru">Apply &amp; Actions</string>
+    <string name="pezkuwi_dashboard_info">Use our Telegram MiniApp for Digital Kurdistan citizenship services.\n\nTo earn PEZ rewards, you must hold a Welatî ticket and stake at least 10 HEZ.\n\nNon-citizens can only benefit from HEZ rewards.</string>
 </resources>

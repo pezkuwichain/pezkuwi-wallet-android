@@ -11,6 +11,7 @@ import io.novafoundation.nova.common.data.network.rpc.BulkRetriever
 import io.novafoundation.nova.common.di.scope.FeatureScope
 import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
+import io.novafoundation.nova.core.storage.StorageCache
 import io.novafoundation.nova.core_db.dao.AccountStakingDao
 import io.novafoundation.nova.core_db.dao.ExternalBalanceDao
 import io.novafoundation.nova.core_db.dao.StakingRewardPeriodDao
@@ -189,6 +190,7 @@ class StakingFeatureModule {
         @Named(REMOTE_STORAGE_SOURCE) remoteStorageSource: StorageDataSource,
         walletConstants: WalletConstants,
         chainRegistry: ChainRegistry,
+        storageCache: StorageCache,
         multiChainRuntimeCallsApi: MultiChainRuntimeCallsApi
     ): StakingRepository = StakingRepositoryImpl(
         accountStakingDao = accountStakingDao,
@@ -196,6 +198,7 @@ class StakingFeatureModule {
         localStorage = localStorageSource,
         walletConstants = walletConstants,
         chainRegistry = chainRegistry,
+        storageCache = storageCache,
         multiChainRuntimeCallsApi = multiChainRuntimeCallsApi
     )
 
@@ -225,9 +228,8 @@ class StakingFeatureModule {
     @FeatureScope
     fun provideBagListRepository(
         @Named(LOCAL_STORAGE_SOURCE) localStorageSource: StorageDataSource,
-        @Named(REMOTE_STORAGE_SOURCE) remoteStorageSource: StorageDataSource,
         chainRegistry: ChainRegistry
-    ): BagListRepository = LocalBagListRepository(localStorageSource, remoteStorageSource, chainRegistry)
+    ): BagListRepository = LocalBagListRepository(localStorageSource, chainRegistry)
 
     @Provides
     @FeatureScope

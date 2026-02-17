@@ -18,13 +18,22 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
     override fun initViews() {
         binder.bridgeToolbar.setHomeButtonListener { viewModel.backClicked() }
 
-        // Direction toggle
-        binder.bridgeDirectionDotToHez.setOnClickListener {
-            viewModel.setDirection(BridgeDirection.DOT_TO_HEZ)
+        // Pair selector
+        binder.bridgePairDotHez.setOnClickListener {
+            viewModel.setPair(BridgePair.DOT_HEZ)
         }
 
-        binder.bridgeDirectionHezToDot.setOnClickListener {
-            viewModel.setDirection(BridgeDirection.HEZ_TO_DOT)
+        binder.bridgePairUsdt.setOnClickListener {
+            viewModel.setPair(BridgePair.USDT)
+        }
+
+        // Direction toggle
+        binder.bridgeDirectionLeft.setOnClickListener {
+            viewModel.setDirectionLeft()
+        }
+
+        binder.bridgeDirectionRight.setOnClickListener {
+            viewModel.setDirectionRight()
         }
 
         // Amount input
@@ -54,6 +63,10 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
     }
 
     override fun subscribe(viewModel: BridgeViewModel) {
+        viewModel.pair.observe { pair ->
+            updatePairUI(pair)
+        }
+
         viewModel.direction.observe { direction ->
             updateDirectionUI(direction)
         }
@@ -74,11 +87,11 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
             binder.bridgeSwapButton.setState(state)
         }
 
-        viewModel.showHezToDotWarning.observe { show ->
+        viewModel.showWarning.observe { show ->
             binder.bridgeHezToDotWarning.visibility = if (show) View.VISIBLE else View.GONE
         }
 
-        viewModel.hezToDotBlocked.observe { blocked ->
+        viewModel.warningBlocked.observe { blocked ->
             if (blocked) {
                 binder.bridgeHezToDotWarning.setBackgroundColor(resources.getColor(R.color.error_block_background, null))
             } else {
@@ -86,40 +99,82 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
             }
         }
 
-        viewModel.blockReason.observe { reason ->
-            if (reason.isNotEmpty()) {
-                binder.bridgeHezToDotWarning.text = reason
-            } else {
-                binder.bridgeHezToDotWarning.text = getString(R.string.bridge_hez_to_dot_warning)
+        viewModel.warningText.observe { text ->
+            if (text.isNotEmpty()) {
+                binder.bridgeHezToDotWarning.text = text
+            }
+        }
+    }
+
+    private fun updatePairUI(pair: BridgePair) {
+        when (pair) {
+            BridgePair.DOT_HEZ -> {
+                binder.bridgePairDotHez.setBackgroundResource(R.drawable.bg_button_primary)
+                binder.bridgePairDotHez.setTextColor(resources.getColor(R.color.text_primary, null))
+                binder.bridgePairUsdt.background = null
+                binder.bridgePairUsdt.setTextColor(resources.getColor(R.color.text_secondary, null))
+            }
+            BridgePair.USDT -> {
+                binder.bridgePairUsdt.setBackgroundResource(R.drawable.bg_button_primary)
+                binder.bridgePairUsdt.setTextColor(resources.getColor(R.color.text_primary, null))
+                binder.bridgePairDotHez.background = null
+                binder.bridgePairDotHez.setTextColor(resources.getColor(R.color.text_secondary, null))
             }
         }
     }
 
     private fun updateDirectionUI(direction: BridgeDirection) {
+        val isLeft = direction == BridgeDirection.DOT_TO_HEZ || direction == BridgeDirection.USDT_TO_WUSDT
+
+        if (isLeft) {
+            binder.bridgeDirectionLeft.setBackgroundResource(R.drawable.bg_button_primary)
+            binder.bridgeDirectionLeft.setTextColor(resources.getColor(R.color.text_primary, null))
+            binder.bridgeDirectionRight.background = null
+            binder.bridgeDirectionRight.setTextColor(resources.getColor(R.color.text_secondary, null))
+        } else {
+            binder.bridgeDirectionRight.setBackgroundResource(R.drawable.bg_button_primary)
+            binder.bridgeDirectionRight.setTextColor(resources.getColor(R.color.text_primary, null))
+            binder.bridgeDirectionLeft.background = null
+            binder.bridgeDirectionLeft.setTextColor(resources.getColor(R.color.text_secondary, null))
+        }
+
         when (direction) {
             BridgeDirection.DOT_TO_HEZ -> {
-                binder.bridgeDirectionDotToHez.setBackgroundResource(R.drawable.bg_button_primary)
-                binder.bridgeDirectionDotToHez.setTextColor(resources.getColor(R.color.text_primary, null))
-                binder.bridgeDirectionHezToDot.background = null
-                binder.bridgeDirectionHezToDot.setTextColor(resources.getColor(R.color.text_secondary, null))
-
+                binder.bridgeDirectionLeft.text = "DOT → HEZ"
+                binder.bridgeDirectionRight.text = "HEZ → DOT"
                 binder.bridgeFromToken.text = "DOT"
                 binder.bridgeToToken.text = "HEZ"
             }
             BridgeDirection.HEZ_TO_DOT -> {
-                binder.bridgeDirectionHezToDot.setBackgroundResource(R.drawable.bg_button_primary)
-                binder.bridgeDirectionHezToDot.setTextColor(resources.getColor(R.color.text_primary, null))
-                binder.bridgeDirectionDotToHez.background = null
-                binder.bridgeDirectionDotToHez.setTextColor(resources.getColor(R.color.text_secondary, null))
-
+                binder.bridgeDirectionLeft.text = "DOT → HEZ"
+                binder.bridgeDirectionRight.text = "HEZ → DOT"
                 binder.bridgeFromToken.text = "HEZ"
                 binder.bridgeToToken.text = "DOT"
+            }
+            BridgeDirection.USDT_TO_WUSDT -> {
+                binder.bridgeDirectionLeft.text = "USDT(Pol) → USDT(Pez)"
+                binder.bridgeDirectionRight.text = "USDT(Pez) → USDT(Pol)"
+                binder.bridgeFromToken.text = "USDT"
+                binder.bridgeToToken.text = "USDT"
+            }
+            BridgeDirection.WUSDT_TO_USDT -> {
+                binder.bridgeDirectionLeft.text = "USDT(Pol) → USDT(Pez)"
+                binder.bridgeDirectionRight.text = "USDT(Pez) → USDT(Pol)"
+                binder.bridgeFromToken.text = "USDT"
+                binder.bridgeToToken.text = "USDT"
             }
         }
     }
 }
 
+enum class BridgePair {
+    DOT_HEZ,
+    USDT
+}
+
 enum class BridgeDirection {
     DOT_TO_HEZ,
-    HEZ_TO_DOT
+    HEZ_TO_DOT,
+    USDT_TO_WUSDT,
+    WUSDT_TO_USDT
 }

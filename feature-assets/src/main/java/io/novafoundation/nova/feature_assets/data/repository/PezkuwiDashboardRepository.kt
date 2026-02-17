@@ -22,7 +22,7 @@ class PezkuwiDashboardRepository(
         val trustScore = queryTrustScore(chainId, accountId)
 
         return PezkuwiDashboardData(
-            roles = roles,
+            roles = roles.ifEmpty { listOf("Non-Citizen") },
             trustScore = trustScore
         )
     }

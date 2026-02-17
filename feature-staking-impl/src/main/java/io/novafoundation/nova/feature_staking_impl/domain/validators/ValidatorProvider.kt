@@ -45,22 +45,20 @@ class ValidatorProvider(
     ): List<Validator> {
         val chain = stakingOption.assetWithChain.chain
         val chainId = chain.id
-        // For parachains (e.g. Asset Hub), staking validators live on the parent relay chain
-        val stakingChainId = chain.parentId ?: chainId
 
         val novaValidatorIds = validatorsPreferencesSource.getRecommendedValidatorIds(chainId)
-        val electedValidatorExposures = stakingSharedComputation.electedExposuresInActiveEra(stakingChainId, scope)
+        val electedValidatorExposures = stakingSharedComputation.electedExposuresInActiveEra(chainId, scope)
 
         val requestedValidatorIds = sources.allValidatorIds(chainId, electedValidatorExposures, novaValidatorIds)
         // we always need validator prefs for elected validators to construct reward calculator
         val validatorIdsToQueryPrefs = electedValidatorExposures.keys + requestedValidatorIds
 
-        val validatorPrefs = stakingRepository.getValidatorPrefs(stakingChainId, validatorIdsToQueryPrefs)
+        val validatorPrefs = stakingRepository.getValidatorPrefs(chainId, validatorIdsToQueryPrefs)
         val identities = identityRepository.getIdentitiesFromIdsHex(chainId, requestedValidatorIds)
-        val slashes = stakingRepository.getSlashes(stakingChainId, requestedValidatorIds)
+        val slashes = stakingRepository.getSlashes(chain.id, requestedValidatorIds)
 
         val rewardCalculator = rewardCalculatorFactory.create(stakingOption, electedValidatorExposures, validatorPrefs, scope)
-        val maxNominators = stakingConstantsRepository.maxRewardedNominatorPerValidator(stakingChainId)
+        val maxNominators = stakingConstantsRepository.maxRewardedNominatorPerValidator(chainId)
 
         return requestedValidatorIds.map { accountIdHex ->
             val accountId = AccountIdKey.fromHex(accountIdHex).getOrThrow()

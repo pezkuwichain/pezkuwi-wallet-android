@@ -11,12 +11,12 @@ import io.novafoundation.nova.common.utils.reversed
 import io.novafoundation.nova.feature_account_api.data.model.AccountIdKeyMap
 import io.novafoundation.nova.feature_account_api.data.model.AccountIdMap
 import io.novafoundation.nova.feature_staking_api.domain.model.Exposure
-import io.novafoundation.nova.feature_staking_api.domain.api.StakingRepository
 import io.novafoundation.nova.feature_staking_impl.data.StakingOption
 import io.novafoundation.nova.feature_staking_impl.data.chain
 import io.novafoundation.nova.feature_staking_api.domain.nominationPool.model.PoolId
 import io.novafoundation.nova.feature_staking_impl.data.unwrapNominationPools
 import io.novafoundation.nova.feature_staking_impl.domain.common.StakingSharedComputation
+import io.novafoundation.nova.feature_staking_impl.domain.common.electedExposuresInActiveEra
 import io.novafoundation.nova.feature_staking_impl.domain.nominationPools.common.NominationPoolSharedComputation
 import io.novafoundation.nova.feature_staking_impl.domain.rewards.RewardCalculator
 import kotlinx.coroutines.CoroutineScope
@@ -24,29 +24,21 @@ import kotlinx.coroutines.CoroutineScope
 class NominationPoolRewardCalculatorFactory(
     private val sharedStakingSharedComputation: StakingSharedComputation,
     private val nominationPoolSharedComputation: NominationPoolSharedComputation,
-    private val stakingRepository: StakingRepository,
 ) {
 
     suspend fun create(stakingOption: StakingOption, sharedComputationScope: CoroutineScope): NominationPoolRewardCalculator {
-        val chain = stakingOption.chain
-        val chainId = chain.id
-        // For parachains, staking exposures live on the parent relay chain
-        val exposureChainId = chain.parentId ?: chainId
+        val chainId = stakingOption.chain.id
 
         val delegateOption = stakingOption.unwrapNominationPools()
 
         val delegate = sharedStakingSharedComputation.rewardCalculator(delegateOption, sharedComputationScope)
         val allPoolAccounts = nominationPoolSharedComputation.allBondedPoolAccounts(chainId, sharedComputationScope)
-
         val poolCommissions = nominationPoolSharedComputation.allBondedPools(chainId, sharedComputationScope)
             .mapValues { (_, pool) -> pool.commission?.current?.perbill }
 
-        val activeEra = stakingRepository.getActiveEraIndex(exposureChainId)
-        val exposures = stakingRepository.getElectedValidatorsExposure(exposureChainId, activeEra)
-
         return RealNominationPoolRewardCalculator(
             directStakingDelegate = delegate,
-            exposures = exposures,
+            exposures = sharedStakingSharedComputation.electedExposuresInActiveEra(stakingOption.assetWithChain.chain.id, sharedComputationScope),
             commissions = poolCommissions,
             poolStashesById = allPoolAccounts
         )

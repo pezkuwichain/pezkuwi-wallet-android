@@ -52,9 +52,6 @@ class RealNominationPoolsUserRewardsInteractor(
 
     private fun pendingRewardsFlow(accountId: AccountId, chainId: ChainId): Flow<Balance> {
         return flowOf { repository.getPendingRewards(accountId, chainId) }
-            .catch {
-                Log.e("NominationPoolsUserRewardsInteractor", "Failed to fetch pending rewards", it)
-                emit(Balance.ZERO)
-            }
+            .catch { Log.e("NominationPoolsUserRewardsInteractor", "Failed to fetch pending rewards", it) }
     }
 }

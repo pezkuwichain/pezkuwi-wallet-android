@@ -2742,6 +2742,7 @@
 
     <!-- Bridge Screen -->
     <string name="wallet_asset_bridge">Pira DOT ↔ HEZ</string>
+    <string name="wallet_asset_bridge_usdt">Pira USDT(DOT) ↔ USDT(HEZ)</string>
     <string name="bridge_title">Pira DOT ↔ HEZ</string>
     <string name="bridge_you_send">Tu dişînî</string>
     <string name="bridge_you_receive">Tu distînî (texmîn)</string>
@@ -2761,4 +2762,5 @@
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Pûana Pêbaweriyê</string>
     <string name="pezkuwi_dashboard_basvuru">Serlêdan û Karên</string>
+    <string name="pezkuwi_dashboard_info">Ji bo karên hemwelatîbûna Kurdistana Dîjîtal MiniApp\'a me ya Telegram bikar bînin.\n\nJi bo qezenckirina xelatên PEZ, divê hûn xwediyê bilêta Welatî bin û herî kêm 10 HEZ stake kiribe bin.\n\nKesên ne-hemwelatî tenê dikarin ji xelatên HEZ sûd werbigirin.</string>
 </resources>

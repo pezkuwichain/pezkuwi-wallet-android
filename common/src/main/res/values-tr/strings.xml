@@ -3,4 +3,5 @@
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Güven Puanı</string>
     <string name="pezkuwi_dashboard_basvuru">Başvuru ve İşlemler</string>
+    <string name="pezkuwi_dashboard_info">Dijital Kurdistan vatandaşlık işlemleri için Telegram MiniApp\'imizi kullanın.\n\nPEZ ödülleri kazanmak için Welatî tikesi sahibi olmanız ve en az 10 HEZ stake etmiş olmanız gereklidir.\n\nVatandaş olmayanlar yalnızca HEZ ödüllerinden yararlanabilir.</string>
 </resources>

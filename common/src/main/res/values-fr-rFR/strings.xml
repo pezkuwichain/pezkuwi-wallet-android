@@ -2029,6 +2029,7 @@
 
     <!-- Bridge Screen -->
     <string name="wallet_asset_bridge">Pont DOT ↔ HEZ</string>
+    <string name="wallet_asset_bridge_usdt">Pont USDT(DOT) ↔ USDT(HEZ)</string>
     <string name="bridge_title">Pont DOT ↔ HEZ</string>
     <string name="bridge_you_send">Vous envoyez</string>
     <string name="bridge_you_receive">Vous recevez (estimé)</string>
@@ -2048,4 +2049,5 @@
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Score de confiance</string>
     <string name="pezkuwi_dashboard_basvuru">Demande et Actions</string>
+    <string name="pezkuwi_dashboard_info">Utilisez notre Telegram MiniApp pour les services de citoyenneté du Kurdistan numérique.\n\nPour gagner des récompenses PEZ, vous devez détenir un ticket Welatî et avoir staké au moins 10 HEZ.\n\nLes non-citoyens ne peuvent bénéficier que des récompenses HEZ.</string>
 </resources>

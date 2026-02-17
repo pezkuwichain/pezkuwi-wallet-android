@@ -25,6 +25,41 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Pair Selector -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_primary_list_item"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/bridgePairDotHez"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_primary"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="DOT / HEZ"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/bridgePairUsdt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="USDT"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
             <!-- Direction Toggle -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,7 +70,7 @@
                 android:padding="4dp">
 
                 <TextView
-                    android:id="@+id/bridgeDirectionDotToHez"
+                    android:id="@+id/bridgeDirectionLeft"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -48,7 +83,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/bridgeDirectionHezToDot"
+                    android:id="@+id/bridgeDirectionRight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

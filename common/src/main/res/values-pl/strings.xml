@@ -2057,6 +2057,7 @@
 
     <!-- Bridge Screen -->
     <string name="wallet_asset_bridge">Most DOT ↔ HEZ</string>
+    <string name="wallet_asset_bridge_usdt">Most USDT(DOT) ↔ USDT(HEZ)</string>
     <string name="bridge_title">Most DOT ↔ HEZ</string>
     <string name="bridge_you_send">Wysyłasz</string>
     <string name="bridge_you_receive">Otrzymasz (szacunkowo)</string>

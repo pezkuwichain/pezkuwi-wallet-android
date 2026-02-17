@@ -28,33 +28,29 @@ class BridgeViewModel(
 ) : BaseViewModel() {
 
     companion object {
-        // Bridge wallet account ID (derived from seed, same on all chains)
-        // Address: 5C5CW7xDmiXtCgfUCbKFF4ViJuCJJQpDZqWQ1mSTjehGzE3p (generic format)
         private const val BRIDGE_ADDRESS_GENERIC = "5C5CW7xDmiXtCgfUCbKFF4ViJuCJJQpDZqWQ1mSTjehGzE3p"
 
-        // Chain IDs
         val POLKADOT_ASSET_HUB_ID = ChainGeneses.POLKADOT_ASSET_HUB
         val PEZKUWI_ASSET_HUB_ID = ChainGeneses.PEZKUWI_ASSET_HUB
 
-        // Utility asset ID (native token)
         const val UTILITY_ASSET_ID = 0
 
-        // Fallback rate: 1 DOT = 3 HEZ (only if CoinGecko unavailable)
+        // USDT asset IDs in chain config
+        const val POLKADOT_USDT_ASSET_ID = 1    // assetId in chains.json for Polkadot AH
+        const val PEZKUWI_USDT_ASSET_ID = 1000  // assetId in chains.json for Pezkuwi AH
+
         const val FALLBACK_RATE = 3.0
-
-        // Fee: 0.1%
         const val FEE_PERCENT = 0.001
-
-        // Minimums
         const val MIN_DOT = 0.1
         const val MIN_HEZ = 0.3
+        const val MIN_USDT = 1.0
 
-        // CoinGecko API
         const val COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price?ids=polkadot,hezkurd&vs_currencies=usd"
-
-        // Bridge Status API
         const val BRIDGE_STATUS_API = "http://217.77.6.126:3030/status"
     }
+
+    private val _pair = MutableLiveData(BridgePair.DOT_HEZ)
+    val pair: LiveData<BridgePair> = _pair
 
     private val _direction = MutableLiveData(BridgeDirection.DOT_TO_HEZ)
     val direction: LiveData<BridgeDirection> = _direction
@@ -71,122 +67,64 @@ class BridgeViewModel(
     private val _buttonState = MutableLiveData<ButtonState>()
     val buttonState: LiveData<ButtonState> = _buttonState
 
-    private val _showHezToDotWarning = MutableLiveData(false)
-    val showHezToDotWarning: LiveData<Boolean> = _showHezToDotWarning
+    private val _showWarning = MutableLiveData(false)
+    val showWarning: LiveData<Boolean> = _showWarning
 
-    private val _hezToDotBlocked = MutableLiveData(false)
-    val hezToDotBlocked: LiveData<Boolean> = _hezToDotBlocked
+    private val _warningBlocked = MutableLiveData(false)
+    val warningBlocked: LiveData<Boolean> = _warningBlocked
 
-    private val _blockReason = MutableLiveData<String>()
-    val blockReason: LiveData<String> = _blockReason
-
-    private val _rateSource = MutableLiveData<String>()
-    val rateSource: LiveData<String> = _rateSource
+    private val _warningText = MutableLiveData<String>()
+    val warningText: LiveData<String> = _warningText
 
     private var currentAmount: Double = 0.0
     private var dotToHezRate: Double = FALLBACK_RATE
-    private var isUsingFallback: Boolean = true
     private var isHezToDotActive: Boolean = false
+    private var isWusdtToUsdtActive: Boolean = false
 
     init {
         fetchExchangeRate()
         fetchBridgeStatus()
     }
 
-    private fun fetchExchangeRate() {
-        launch {
-            try {
-                val (rate, source) = withContext(Dispatchers.IO) {
-                    fetchRateFromCoinGecko()
-                }
-                dotToHezRate = rate
-                isUsingFallback = source == "fallback"
-                _rateSource.postValue(source)
-                updateUI()
-                calculateOutput()
-            } catch (e: Exception) {
-                // Use fallback
-                dotToHezRate = FALLBACK_RATE
-                isUsingFallback = true
-                _rateSource.postValue("fallback")
-                updateUI()
+    fun setPair(newPair: BridgePair) {
+        if (_pair.value != newPair) {
+            _pair.value = newPair
+            // Reset direction to left (forward) when switching pair
+            _direction.value = when (newPair) {
+                BridgePair.DOT_HEZ -> BridgeDirection.DOT_TO_HEZ
+                BridgePair.USDT -> BridgeDirection.USDT_TO_WUSDT
             }
-        }
-    }
-
-    private fun fetchRateFromCoinGecko(): Pair<Double, String> {
-        return try {
-            val response = URL(COINGECKO_API).readText()
-            val json = JSONObject(response)
-
-            val dotPrice = json.optJSONObject("polkadot")?.optDouble("usd", 0.0) ?: 0.0
-            val hezPrice = json.optJSONObject("hezkurd")?.optDouble("usd", 0.0) ?: 0.0
-
-            when {
-                dotPrice > 0 && hezPrice > 0 -> {
-                    // Both prices available - calculate real rate
-                    val rate = dotPrice / hezPrice
-                    Pair(rate, "coingecko")
-                }
-                dotPrice > 0 -> {
-                    // Only DOT price - use fallback for HEZ (1 DOT = 3 HEZ means HEZ = DOT/3)
-                    Pair(FALLBACK_RATE, "coingecko+fallback")
-                }
-                else -> {
-                    // No prices - use pure fallback
-                    Pair(FALLBACK_RATE, "fallback")
-                }
-            }
-        } catch (e: Exception) {
-            Pair(FALLBACK_RATE, "fallback")
-        }
-    }
-
-    private fun fetchBridgeStatus() {
-        launch {
-            try {
-                val active = withContext(Dispatchers.IO) {
-                    fetchHezToDotStatus()
-                }
-                isHezToDotActive = active
-                updateHezToDotState()
-            } catch (e: Exception) {
-                // If API unavailable, assume not active for safety
-                isHezToDotActive = false
-                updateHezToDotState()
-            }
-        }
-    }
-
-    private fun fetchHezToDotStatus(): Boolean {
-        return try {
-            val response = URL(BRIDGE_STATUS_API).readText()
-            val json = JSONObject(response)
-            json.optBoolean("hezToDotActive", false)
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    private fun updateHezToDotState() {
-        val dir = _direction.value ?: return
-        if (dir == BridgeDirection.HEZ_TO_DOT && !isHezToDotActive) {
-            _hezToDotBlocked.postValue(true)
-            _blockReason.postValue(resourceManager.getString(R.string.bridge_hez_to_dot_blocked))
-        } else {
-            _hezToDotBlocked.postValue(false)
-            _blockReason.postValue("")
-        }
-        updateButtonState()
-    }
-
-    fun setDirection(newDirection: BridgeDirection) {
-        if (_direction.value != newDirection) {
-            _direction.value = newDirection
-            _showHezToDotWarning.value = newDirection == BridgeDirection.HEZ_TO_DOT
-            updateHezToDotState()
             updateUI()
             calculateOutput()
+            updateWarningState()
+        }
+    }
+
+    fun setDirectionLeft() {
+        val newDir = when (_pair.value) {
+            BridgePair.DOT_HEZ -> BridgeDirection.DOT_TO_HEZ
+            BridgePair.USDT -> BridgeDirection.USDT_TO_WUSDT
+            null -> BridgeDirection.DOT_TO_HEZ
+        }
+        if (_direction.value != newDir) {
+            _direction.value = newDir
+            updateUI()
+            calculateOutput()
+            updateWarningState()
+        }
+    }
+
+    fun setDirectionRight() {
+        val newDir = when (_pair.value) {
+            BridgePair.DOT_HEZ -> BridgeDirection.HEZ_TO_DOT
+            BridgePair.USDT -> BridgeDirection.WUSDT_TO_USDT
+            null -> BridgeDirection.HEZ_TO_DOT
+        }
+        if (_direction.value != newDir) {
+            _direction.value = newDir
+            updateUI()
+            calculateOutput()
+            updateWarningState()
         }
     }
 
@@ -201,26 +139,27 @@ class BridgeViewModel(
         if (currentAmount <= 0) return
 
         launch {
-            // Determine which chain and asset to send from based on direction
             val chainId = when (dir) {
-                BridgeDirection.DOT_TO_HEZ -> POLKADOT_ASSET_HUB_ID // Send DOT from Polkadot Asset Hub
-                BridgeDirection.HEZ_TO_DOT -> PEZKUWI_ASSET_HUB_ID // Send HEZ from Pezkuwi Asset Hub
+                BridgeDirection.DOT_TO_HEZ -> POLKADOT_ASSET_HUB_ID
+                BridgeDirection.HEZ_TO_DOT -> PEZKUWI_ASSET_HUB_ID
+                BridgeDirection.USDT_TO_WUSDT -> POLKADOT_ASSET_HUB_ID
+                BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_ASSET_HUB_ID
             }
 
-            // Get the chain to convert address to correct format
-            val chain = chainRegistry.getChain(chainId)
+            val assetId = when (dir) {
+                BridgeDirection.DOT_TO_HEZ -> UTILITY_ASSET_ID
+                BridgeDirection.HEZ_TO_DOT -> UTILITY_ASSET_ID
+                BridgeDirection.USDT_TO_WUSDT -> POLKADOT_USDT_ASSET_ID
+                BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_USDT_ASSET_ID
+            }
 
-            // Convert generic address to chain-specific format
+            val chain = chainRegistry.getChain(chainId)
             val accountId = BRIDGE_ADDRESS_GENERIC.toAccountId()
             val bridgeAddress = chain.addressOf(accountId)
 
-            // Create asset payload (utility asset = native token)
-            val assetPayload = AssetPayload(chainId, UTILITY_ASSET_ID)
-
-            // Create send payload specifying the origin asset
+            val assetPayload = AssetPayload(chainId, assetId)
             val sendPayload = SendPayload.SpecifiedOrigin(assetPayload)
 
-            // Open send screen with pre-filled bridge address AND amount
             router.openSend(sendPayload, bridgeAddress, currentAmount)
         }
     }
@@ -229,15 +168,108 @@ class BridgeViewModel(
         router.back()
     }
 
+    private fun fetchExchangeRate() {
+        launch {
+            try {
+                val (rate, _) = withContext(Dispatchers.IO) {
+                    fetchRateFromCoinGecko()
+                }
+                dotToHezRate = rate
+                updateUI()
+                calculateOutput()
+            } catch (e: Exception) {
+                dotToHezRate = FALLBACK_RATE
+                updateUI()
+            }
+        }
+    }
+
+    private fun fetchRateFromCoinGecko(): Pair<Double, String> {
+        return try {
+            val response = URL(COINGECKO_API).readText()
+            val json = JSONObject(response)
+            val dotPrice = json.optJSONObject("polkadot")?.optDouble("usd", 0.0) ?: 0.0
+            val hezPrice = json.optJSONObject("hezkurd")?.optDouble("usd", 0.0) ?: 0.0
+            when {
+                dotPrice > 0 && hezPrice > 0 -> Pair(dotPrice / hezPrice, "coingecko")
+                else -> Pair(FALLBACK_RATE, "fallback")
+            }
+        } catch (e: Exception) {
+            Pair(FALLBACK_RATE, "fallback")
+        }
+    }
+
+    private fun fetchBridgeStatus() {
+        launch {
+            try {
+                val (hezToDot, wusdtToUsdt) = withContext(Dispatchers.IO) {
+                    fetchStatusFromApi()
+                }
+                isHezToDotActive = hezToDot
+                isWusdtToUsdtActive = wusdtToUsdt
+                updateWarningState()
+            } catch (e: Exception) {
+                isHezToDotActive = false
+                isWusdtToUsdtActive = false
+                updateWarningState()
+            }
+        }
+    }
+
+    private fun fetchStatusFromApi(): Pair<Boolean, Boolean> {
+        return try {
+            val response = URL(BRIDGE_STATUS_API).readText()
+            val json = JSONObject(response)
+            val hezToDot = json.optBoolean("hezToDotActive", false)
+            val wusdtToUsdt = json.optBoolean("wusdtToUsdtActive", false)
+            Pair(hezToDot, wusdtToUsdt)
+        } catch (e: Exception) {
+            Pair(false, false)
+        }
+    }
+
+    private fun updateWarningState() {
+        val dir = _direction.value ?: return
+
+        when (dir) {
+            BridgeDirection.HEZ_TO_DOT -> {
+                _showWarning.postValue(true)
+                if (!isHezToDotActive) {
+                    _warningBlocked.postValue(true)
+                    _warningText.postValue(resourceManager.getString(R.string.bridge_hez_to_dot_blocked))
+                } else {
+                    _warningBlocked.postValue(false)
+                    _warningText.postValue(resourceManager.getString(R.string.bridge_hez_to_dot_warning))
+                }
+            }
+            BridgeDirection.WUSDT_TO_USDT -> {
+                _showWarning.postValue(true)
+                if (!isWusdtToUsdtActive) {
+                    _warningBlocked.postValue(true)
+                    _warningText.postValue(resourceManager.getString(R.string.bridge_wusdt_to_usdt_blocked))
+                } else {
+                    _warningBlocked.postValue(false)
+                    _warningText.postValue("")
+                    _showWarning.postValue(false)
+                }
+            }
+            else -> {
+                _showWarning.postValue(false)
+            }
+        }
+        updateButtonState()
+    }
+
     private fun calculateOutput() {
         val dir = _direction.value ?: return
 
         val grossOutput = when (dir) {
             BridgeDirection.DOT_TO_HEZ -> currentAmount * dotToHezRate
             BridgeDirection.HEZ_TO_DOT -> currentAmount / dotToHezRate
+            BridgeDirection.USDT_TO_WUSDT -> currentAmount  // 1:1
+            BridgeDirection.WUSDT_TO_USDT -> currentAmount  // 1:1
         }
 
-        // Apply fee
         val netOutput = grossOutput * (1 - FEE_PERCENT)
 
         _outputAmount.value = if (netOutput > 0) {
@@ -250,17 +282,20 @@ class BridgeViewModel(
     private fun updateUI() {
         val dir = _direction.value ?: return
 
-        val rateFormatted = BigDecimal(dotToHezRate).setScale(4, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()
-        val reverseRateFormatted = BigDecimal(1.0 / dotToHezRate).setScale(6, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()
-
         when (dir) {
             BridgeDirection.DOT_TO_HEZ -> {
+                val rateFormatted = BigDecimal(dotToHezRate).setScale(4, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()
                 _exchangeRateText.value = "1 DOT = $rateFormatted HEZ"
                 _minimumText.value = "$MIN_DOT DOT"
             }
             BridgeDirection.HEZ_TO_DOT -> {
-                _exchangeRateText.value = "1 HEZ = $reverseRateFormatted DOT"
+                val reverseRate = BigDecimal(1.0 / dotToHezRate).setScale(6, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()
+                _exchangeRateText.value = "1 HEZ = $reverseRate DOT"
                 _minimumText.value = "$MIN_HEZ HEZ"
+            }
+            BridgeDirection.USDT_TO_WUSDT, BridgeDirection.WUSDT_TO_USDT -> {
+                _exchangeRateText.value = "1:1 (fee 0.1%)"
+                _minimumText.value = "$MIN_USDT USDT"
             }
         }
 
@@ -272,12 +307,14 @@ class BridgeViewModel(
         val minimum = when (dir) {
             BridgeDirection.DOT_TO_HEZ -> MIN_DOT
             BridgeDirection.HEZ_TO_DOT -> MIN_HEZ
+            BridgeDirection.USDT_TO_WUSDT, BridgeDirection.WUSDT_TO_USDT -> MIN_USDT
         }
 
         _buttonState.value = when {
             currentAmount <= 0 -> ButtonState.DISABLED
             currentAmount < minimum -> ButtonState.DISABLED
             dir == BridgeDirection.HEZ_TO_DOT && !isHezToDotActive -> ButtonState.DISABLED
+            dir == BridgeDirection.WUSDT_TO_USDT && !isWusdtToUsdtActive -> ButtonState.DISABLED
             else -> ButtonState.NORMAL
         }
     }

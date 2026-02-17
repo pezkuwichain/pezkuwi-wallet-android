@@ -2015,6 +2015,7 @@
 
     <!-- Bridge Screen -->
     <string name="wallet_asset_bridge">DOT ↔ HEZ ブリッジ</string>
+    <string name="wallet_asset_bridge_usdt">USDT(DOT) ↔ USDT(HEZ) ブリッジ</string>
     <string name="bridge_title">DOT ↔ HEZ ブリッジ</string>
     <string name="bridge_you_send">送金額</string>
     <string name="bridge_you_receive">受取額（概算）</string>
@@ -2034,4 +2035,5 @@
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">信頼スコア</string>
     <string name="pezkuwi_dashboard_basvuru">申請とアクション</string>
+    <string name="pezkuwi_dashboard_info">デジタルクルディスタンの市民サービスにはTelegram MiniAppをご利用ください。\n\nPEZ報酬を獲得するには、Welatîチケットを保有し、最低10 HEZをステーキングする必要があります。\n\n非市民はHEZ報酬のみを受け取ることができます。</string>
 </resources>
