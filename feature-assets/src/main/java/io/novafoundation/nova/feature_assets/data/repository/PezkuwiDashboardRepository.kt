@@ -20,7 +20,7 @@ class PezkuwiDashboardRepository(
 ) {
 
     companion object {
-        private const val WELATI_COUNTER_URL = "https://telegram.pezkuwi.app/kurds"
+        private const val WELATI_COUNTER_URL = "https://telegram.pezkiwi.app/kurds"
     }
 
     suspend fun getDashboard(accountId: AccountId): PezkuwiDashboardData {
