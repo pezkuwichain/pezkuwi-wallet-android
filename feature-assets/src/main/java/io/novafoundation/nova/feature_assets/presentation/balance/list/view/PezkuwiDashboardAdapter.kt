@@ -58,6 +58,7 @@ class PezkuwiDashboardHolder(
     fun bind(model: PezkuwiDashboardModel) {
         bindRoles(model.roles)
         binder.pezkuwiDashboardTrustValue.text = model.trustScore
+        binder.pezkuwiDashboardWelatiCount.text = model.welatiCount
     }
 
     private fun bindRoles(roles: List<String>) {

@@ -9,22 +9,39 @@ import io.novafoundation.nova.runtime.storage.source.StorageDataSource
 import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.metadata.moduleOrNull
 import io.novasama.substrate_sdk_android.runtime.metadata.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.math.BigInteger
+import java.net.URL
 
 class PezkuwiDashboardRepository(
     private val remoteStorageDataSource: StorageDataSource
 ) {
+
+    companion object {
+        private const val WELATI_COUNTER_URL = "https://subquery.pezkuwichain.io/kurds"
+    }
 
     suspend fun getDashboard(accountId: AccountId): PezkuwiDashboardData {
         val chainId = ChainGeneses.PEZKUWI_PEOPLE
 
         val roles = queryRoles(chainId, accountId)
         val trustScore = queryTrustScore(chainId, accountId)
+        val welatiCount = fetchWelatiCount()
 
         return PezkuwiDashboardData(
             roles = roles.ifEmpty { listOf("Non-Citizen") },
-            trustScore = trustScore
+            trustScore = trustScore,
+            welatiCount = welatiCount
         )
+    }
+
+    private suspend fun fetchWelatiCount(): Int = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = URL(WELATI_COUNTER_URL).readText()
+            JSONObject(response).getInt("count")
+        }.getOrDefault(0)
     }
 
     private suspend fun queryRoles(chainId: String, accountId: AccountId): List<String> = runCatching {

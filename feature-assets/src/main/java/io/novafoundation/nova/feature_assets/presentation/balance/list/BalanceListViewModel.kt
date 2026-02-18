@@ -64,6 +64,7 @@ import io.novafoundation.nova.feature_wallet_api.presentation.model.FractionPart
 import io.novafoundation.nova.feature_wallet_connect_api.domain.sessions.WalletConnectSessionsUseCase
 import io.novafoundation.nova.feature_wallet_connect_api.presentation.mapNumberOfActiveSessionsToUi
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
+import java.text.NumberFormat
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
@@ -228,7 +229,8 @@ class BalanceListViewModel(
                 .map { data ->
                     PezkuwiDashboardModel(
                         roles = data.roles,
-                        trustScore = data.trustScore.toString()
+                        trustScore = data.trustScore.toString(),
+                        welatiCount = NumberFormat.getIntegerInstance().format(data.welatiCount)
                     )
                 }
                 .getOrNull()

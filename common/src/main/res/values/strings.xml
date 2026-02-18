@@ -2766,4 +2766,5 @@
     <string name="pezkuwi_dashboard_trust_score">Trust Score</string>
     <string name="pezkuwi_dashboard_basvuru">Apply &amp; Actions</string>
     <string name="pezkuwi_dashboard_info">Use our Telegram MiniApp for Digital Kurdistan citizenship services.\n\nTo earn PEZ rewards, you must hold a Welatî ticket and stake at least 10 HEZ.\n\nNon-citizens can only benefit from HEZ rewards.</string>
+    <string name="pezkuwi_dashboard_kurds_title">Hejmara Kurd Le Cihane</string>
 </resources>

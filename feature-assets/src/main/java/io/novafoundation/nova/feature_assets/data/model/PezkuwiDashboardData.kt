@@ -4,5 +4,6 @@ import java.math.BigInteger
 
 data class PezkuwiDashboardData(
     val roles: List<String>,
-    val trustScore: BigInteger
+    val trustScore: BigInteger,
+    val welatiCount: Int
 )
