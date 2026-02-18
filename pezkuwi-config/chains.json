@@ -49,6 +49,12 @@
           "type": "subquery",
           "url": "https://subquery.pezkuwichain.io"
         }
+      ],
+      "governance-delegations": [
+        {
+          "type": "subquery",
+          "url": "https://subquery.pezkuwichain.io/governance"
+        }
       ]
     },
     "assets": [
