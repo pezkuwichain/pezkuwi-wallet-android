@@ -1,0 +1,120 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    # CodeQL requires GitHub Advanced Security (free for public repos only)
+    continue-on-error: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: java-kotlin
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
+          restore-keys: gradle-${{ runner.os }}-
+
+      - name: Build for CodeQL
+        run: ./gradlew assembleDebug -x test -x lint
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: critical
+          deny-licenses: GPL-3.0, AGPL-3.0
+
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: TruffleHog Secret Scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          extra_args: --only-verified
+
+  hardcoded-secrets:
+    name: Hardcoded Secret Detection
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Scan for hardcoded secrets
+        run: |
+          FOUND=0
+
+          echo "Checking for seed phrases / mnemonics..."
+          if grep -rn --include="*.kt" --include="*.java" --include="*.xml" -iE "(mnemonic|seed_phrase)\s*=\s*\"[a-z]+" . | grep -v /build/ | grep -v /test/ | grep -v "R.string" | grep -v "getString"; then
+            echo "::error::Possible seed phrase found in source"
+            FOUND=1
+          fi
+
+          echo "Checking for private keys..."
+          if grep -rn --include="*.kt" --include="*.java" -E "0x[a-fA-F0-9]{64}" . | grep -v /build/ | grep -v /test/ | grep -v "chainId\|genesisHash\|chainGenesis"; then
+            echo "::error::Possible private key found in source"
+            FOUND=1
+          fi
+
+          echo "Checking for API keys in source..."
+          if grep -rn --include="*.kt" --include="*.java" -iE "(api_key|apikey|secret_key|password)\s*=\s*\"[^\"]{16,}" . | grep -v /build/ | grep -v /test/ | grep -v BuildConfig | grep -v "process"; then
+            echo "::error::Possible API key or password found in source"
+            FOUND=1
+          fi
+
+          if [ "$FOUND" -eq 0 ]; then
+            echo "No hardcoded secrets found."
+          else
+            exit 1
+          fi
