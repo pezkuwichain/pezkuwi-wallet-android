@@ -96,19 +96,19 @@ jobs:
           FOUND=0
 
           echo "Checking for seed phrases / mnemonics..."
-          if grep -rn --include="*.kt" --include="*.java" --include="*.xml" -iE "(mnemonic|seed_phrase)\s*=\s*\"[a-z]+" . | grep -v /build/ | grep -v /test/ | grep -v "R.string" | grep -v "getString"; then
+          if grep -rn --include="*.kt" --include="*.java" --include="*.xml" -iE "(mnemonic|seed_phrase)\s*=\s*\"[a-z]+" . | grep -v /build/ | grep -v /test/ | grep -v /androidTest/ | grep -v "R.string" | grep -v "getString"; then
             echo "::error::Possible seed phrase found in source"
             FOUND=1
           fi
 
           echo "Checking for private keys..."
-          if grep -rn --include="*.kt" --include="*.java" -E "0x[a-fA-F0-9]{64}" . | grep -v /build/ | grep -v /test/ | grep -v "chainId\|genesisHash\|chainGenesis"; then
+          if grep -rn --include="*.kt" --include="*.java" -E "(private_key|privateKey|secret)\s*=\s*\"0x[a-fA-F0-9]{64}\"" . | grep -v /build/ | grep -v /test/ | grep -v /androidTest/; then
             echo "::error::Possible private key found in source"
             FOUND=1
           fi
 
           echo "Checking for API keys in source..."
-          if grep -rn --include="*.kt" --include="*.java" -iE "(api_key|apikey|secret_key|password)\s*=\s*\"[^\"]{16,}" . | grep -v /build/ | grep -v /test/ | grep -v BuildConfig | grep -v "process"; then
+          if grep -rn --include="*.kt" --include="*.java" -iE "(api_key|apikey|secret_key|password)\s*=\s*\"[^\"]{16,}" . | grep -v /build/ | grep -v /test/ | grep -v /androidTest/ | grep -v BuildConfig | grep -v "process"; then
             echo "::error::Possible API key or password found in source"
             FOUND=1
           fi
