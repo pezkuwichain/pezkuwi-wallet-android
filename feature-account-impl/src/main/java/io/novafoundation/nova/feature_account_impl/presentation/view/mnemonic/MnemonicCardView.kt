@@ -25,6 +25,8 @@ class MnemonicCardView @JvmOverloads constructor(
     private val adapter = BackupMnemonicAdapter(this)
 
     private var wordClickedListener: BackupMnemonicAdapter.ItemHandler? = null
+    private var onCopyClickListener: ((String) -> Unit)? = null
+    private var currentWords: List<String> = emptyList()
 
     private val binder = ViewMnemonicCardViewBinding.inflate(inflater(), this)
 
@@ -37,6 +39,12 @@ class MnemonicCardView @JvmOverloads constructor(
 
         binder.mnemonicCardPhrase.setItemPadding(4.dp)
         binder.mnemonicCardPhrase.adapter = adapter
+
+        binder.mnemonicCardCopy.setOnClickListener {
+            if (currentWords.isNotEmpty()) {
+                onCopyClickListener?.invoke(currentWords.joinToString(" "))
+            }
+        }
 
         binder.mnemonicCardTitle.text = SpannableFormatter.format(
             context.getString(R.string.mnemonic_card_title),
@@ -52,10 +60,12 @@ class MnemonicCardView @JvmOverloads constructor(
     }
 
     fun setWords(words: List<MnemonicWord>) {
+        currentWords = words.map { it.content }
         adapter.submitList(words)
     }
 
     fun setWordsString(list: List<String>) {
+        currentWords = list
         val words = list.mapIndexed { index, item ->
             MnemonicWord(
                 id = index,
@@ -64,7 +74,11 @@ class MnemonicCardView @JvmOverloads constructor(
                 removed = false
             )
         }
-        setWords(words)
+        adapter.submitList(words)
+    }
+
+    fun setOnCopyClickListener(listener: ((String) -> Unit)?) {
+        onCopyClickListener = listener
     }
 
     fun setWordClickedListener(listener: BackupMnemonicAdapter.ItemHandler?) {

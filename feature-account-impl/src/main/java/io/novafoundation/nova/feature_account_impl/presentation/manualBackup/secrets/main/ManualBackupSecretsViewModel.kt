@@ -1,6 +1,7 @@
 package io.novafoundation.nova.feature_account_impl.presentation.manualBackup.secrets.main
 
 import io.novafoundation.nova.common.base.BaseViewModel
+import io.novafoundation.nova.common.resources.ClipboardManager
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.common.utils.flowOf
 import io.novafoundation.nova.feature_account_api.domain.interfaces.AccountInteractor
@@ -23,7 +24,8 @@ class ManualBackupSecretsViewModel(
     private val accountInteractor: AccountInteractor,
     private val commonExportSecretsInteractor: CommonExportSecretsInteractor,
     private val secretsAdapterItemFactory: ManualBackupSecretsAdapterItemFactory,
-    private val walletUiUseCase: WalletUiUseCase
+    private val walletUiUseCase: WalletUiUseCase,
+    private val clipboardManager: ClipboardManager
 ) : BaseViewModel() {
 
     val walletModel = walletUiUseCase.walletUiFlowFor(payload.metaId, payload.getChainIdOrNull(), showAddressIcon = true)
@@ -45,6 +47,11 @@ class ManualBackupSecretsViewModel(
 
     fun exportJsonClicked() {
         router.exportJsonAction(payload.toExportPayload())
+    }
+
+    fun copyMnemonic(mnemonicString: String) {
+        clipboardManager.addToClipboard(mnemonicString)
+        showToast(resourceManager.getString(R.string.common_copied))
     }
 
     fun backClicked() {

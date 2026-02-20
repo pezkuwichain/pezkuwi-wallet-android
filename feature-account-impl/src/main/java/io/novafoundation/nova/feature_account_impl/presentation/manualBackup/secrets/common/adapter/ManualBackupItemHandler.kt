@@ -8,4 +8,6 @@ interface ManualBackupItemHandler {
     fun onExportJsonClick(item: ManualBackupJsonRvItem)
 
     fun onTapToRevealClicked(item: ManualBackupSecretsVisibilityRvItem)
+
+    fun onMnemonicCopyClicked(mnemonicString: String)
 }

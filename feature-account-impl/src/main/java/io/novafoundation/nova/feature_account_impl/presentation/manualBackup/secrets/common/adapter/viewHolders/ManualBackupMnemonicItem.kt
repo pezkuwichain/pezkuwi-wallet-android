@@ -25,5 +25,6 @@ class ManualBackupMnemonicViewHolder(private val binder: ItemManualBackupMnemoni
         binder.manualBackupSecretsMnemonic.setWordsString(item.mnemonic)
         binder.manualBackupSecretsMnemonic.showContent(item.isShown)
         binder.manualBackupSecretsMnemonic.onContentShownListener { itemHandler.onTapToRevealClicked(item) }
+        binder.manualBackupSecretsMnemonic.setOnCopyClickListener { itemHandler.onMnemonicCopyClicked(it) }
     }
 }

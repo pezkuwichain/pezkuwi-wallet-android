@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import io.novafoundation.nova.common.di.viewmodel.ViewModelKey
 import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
+import io.novafoundation.nova.common.resources.ClipboardManager
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.feature_account_impl.presentation.AccountRouter
 import io.novafoundation.nova.feature_account_impl.presentation.manualBackup.secrets.advanced.ManualBackupAdvancedSecretsViewModel
@@ -24,13 +25,15 @@ class ManualBackupAdvancedSecretsModule {
         resourceManager: ResourceManager,
         router: AccountRouter,
         payload: ManualBackupCommonPayload,
-        secretsAdapterItemFactory: ManualBackupSecretsAdapterItemFactory
+        secretsAdapterItemFactory: ManualBackupSecretsAdapterItemFactory,
+        clipboardManager: ClipboardManager
     ): ViewModel {
         return ManualBackupAdvancedSecretsViewModel(
             resourceManager,
             router,
             payload,
-            secretsAdapterItemFactory
+            secretsAdapterItemFactory,
+            clipboardManager
         )
     }
 

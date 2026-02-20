@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import io.novafoundation.nova.common.di.viewmodel.ViewModelKey
 import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
+import io.novafoundation.nova.common.resources.ClipboardManager
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.feature_account_api.domain.interfaces.AccountInteractor
 import io.novafoundation.nova.feature_account_api.presenatation.account.wallet.WalletUiUseCase
@@ -30,7 +31,8 @@ class ManualBackupSecretsModule {
         accountInteractor: AccountInteractor,
         commonExportSecretsInteractor: CommonExportSecretsInteractor,
         secretsAdapterItemFactory: ManualBackupSecretsAdapterItemFactory,
-        walletUiUseCase: WalletUiUseCase
+        walletUiUseCase: WalletUiUseCase,
+        clipboardManager: ClipboardManager
     ): ViewModel {
         return ManualBackupSecretsViewModel(
             resourceManager,
@@ -39,7 +41,8 @@ class ManualBackupSecretsModule {
             accountInteractor,
             commonExportSecretsInteractor,
             secretsAdapterItemFactory,
-            walletUiUseCase
+            walletUiUseCase,
+            clipboardManager
         )
     }
 

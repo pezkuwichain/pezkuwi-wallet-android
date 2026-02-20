@@ -61,4 +61,8 @@ class ManualBackupAdvancedSecretsFragment :
     override fun onTapToRevealClicked(item: ManualBackupSecretsVisibilityRvItem) {
         viewModel.onTapToRevealClicked(item)
     }
+
+    override fun onMnemonicCopyClicked(mnemonicString: String) {
+        viewModel.copyMnemonic(mnemonicString)
+    }
 }
