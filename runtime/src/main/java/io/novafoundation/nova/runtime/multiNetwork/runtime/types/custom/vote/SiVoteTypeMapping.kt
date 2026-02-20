@@ -7,6 +7,8 @@ fun SiVoteTypeMapping(): ReplaceTypesSiTypeMapping {
 
     return ReplaceTypesSiTypeMapping(
         "pallet_democracy.vote.Vote" to voteType,
-        "pallet_conviction_voting.vote.Vote" to voteType
+        "pallet_conviction_voting.vote.Vote" to voteType,
+        "pezpallet_democracy.vote.Vote" to voteType,
+        "pezpallet_conviction_voting.vote.Vote" to voteType
     )
 }

@@ -12,6 +12,7 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
 import io.novafoundation.nova.runtime.state.SelectableSingleAssetSharedState
 
 private const val GOVERNANCE_SHARED_STATE = "GOVERNANCE_SHARED_STATE"
+private const val PEZKUWI_RELAY_CHAIN_ID = "1aa94987791a5544e9667ec249d2cef1b8fdd6083c85b93fc37892d54a1156ca"
 
 class GovernanceSharedState(
     chainRegistry: ChainRegistry,
@@ -27,7 +28,8 @@ class GovernanceSharedState(
             emptyList()
         }
     },
-    preferencesKey = GOVERNANCE_SHARED_STATE
+    preferencesKey = GOVERNANCE_SHARED_STATE,
+    preferredChainId = PEZKUWI_RELAY_CHAIN_ID
 ),
     MutableGovernanceState {
 

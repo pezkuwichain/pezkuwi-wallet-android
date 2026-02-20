@@ -32,13 +32,17 @@ abstract class SelectableSingleAssetSharedState<A : SelectableAssetAdditionalDat
     private val preferencesKey: String,
     private val chainRegistry: ChainRegistry,
     private val supportedOptions: SupportedOptionsResolver<A>,
-    private val preferences: Preferences
+    private val preferences: Preferences,
+    private val preferredChainId: ChainId? = null
 ) : SelectedAssetOptionSharedState<A> {
 
     override val selectedOption: Flow<SupportedAssetOption<A>> = preferences.stringFlow(
         field = preferencesKey,
         initialValueProducer = {
-            val option = availableToSelect().first()
+            val options = availableToSelect()
+            val option = preferredChainId?.let { preferred ->
+                options.firstOrNull { it.assetWithChain.chain.id == preferred }
+            } ?: options.first()
             val chainAsset = option.assetWithChain.asset
             val additional = option.additional
 
@@ -74,6 +78,12 @@ abstract class SelectableSingleAssetSharedState<A : SelectableAssetAdditionalDat
         preferences.putString(preferencesKey, encode(chainId, chainAssetId, optionIdentifier))
     }
 
+    private suspend fun preferredOrFirst(options: List<SupportedAssetOption<A>>): SupportedAssetOption<A> {
+        return preferredChainId?.let { preferred ->
+            options.firstOrNull { it.assetWithChain.chain.id == preferred }
+        } ?: options.first()
+    }
+
     private suspend fun getChainWithAssetOrFallback(chainId: ChainId, chainAssetId: Int, additionalIdentifier: String?): SupportedAssetOption<A> {
         val optionalChainAndAsset = chainRegistry.enabledChainWithAssetOrNull(chainId, chainAssetId)
         val supportedOptions = optionalChainAndAsset?.let {
@@ -82,10 +92,10 @@ abstract class SelectableSingleAssetSharedState<A : SelectableAssetAdditionalDat
 
         return when {
             // previously used chain asset was removed -> fallback to default
-            optionalChainAndAsset == null -> availableToSelect().first()
+            optionalChainAndAsset == null -> preferredOrFirst(availableToSelect())
 
             // previously supported option is no longer supported -> fallback to default
-            supportedOptions.isEmpty() -> availableToSelect().first()
+            supportedOptions.isEmpty() -> preferredOrFirst(availableToSelect())
 
             // there is no particular additional option specified -> select first one
             additionalIdentifier == null -> SupportedAssetOption(optionalChainAndAsset, additional = supportedOptions.first())
