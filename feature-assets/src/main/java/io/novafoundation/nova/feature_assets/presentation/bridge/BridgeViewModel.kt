@@ -36,8 +36,8 @@ class BridgeViewModel(
         const val UTILITY_ASSET_ID = 0
 
         // USDT asset IDs in chain config
-        const val POLKADOT_USDT_ASSET_ID = 1    // assetId in chains.json for Polkadot AH
-        const val PEZKUWI_USDT_ASSET_ID = 1000  // assetId in chains.json for Pezkuwi AH
+        const val POLKADOT_USDT_ASSET_ID = 1 // assetId in chains.json for Polkadot AH
+        const val PEZKUWI_USDT_ASSET_ID = 1000 // assetId in chains.json for Pezkuwi AH
 
         const val FALLBACK_RATE = 3.0
         const val FEE_PERCENT = 0.001
@@ -266,8 +266,8 @@ class BridgeViewModel(
         val grossOutput = when (dir) {
             BridgeDirection.DOT_TO_HEZ -> currentAmount * dotToHezRate
             BridgeDirection.HEZ_TO_DOT -> currentAmount / dotToHezRate
-            BridgeDirection.USDT_TO_WUSDT -> currentAmount  // 1:1
-            BridgeDirection.WUSDT_TO_USDT -> currentAmount  // 1:1
+            BridgeDirection.USDT_TO_WUSDT -> currentAmount // 1:1
+            BridgeDirection.WUSDT_TO_USDT -> currentAmount // 1:1
         }
 
         val netOutput = grossOutput * (1 - FEE_PERCENT)
