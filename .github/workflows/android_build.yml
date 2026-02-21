@@ -161,6 +161,16 @@ jobs:
             filename: google-services.json
             destination-path: ./app/src/release/
 
+      - name: 📂 Copy PROD Google Services to releaseMarket
+        run: |
+            mkdir -p ./app/src/releaseMarket
+            cp ./app/src/release/google-services.json ./app/src/releaseMarket/google-services.json
+
+      - name: 📂 Copy PROD Google Services to releaseGithub
+        run: |
+            mkdir -p ./app/src/releaseGithub
+            cp ./app/src/release/google-services.json ./app/src/releaseGithub/google-services.json
+
       - name: 🔧 Install dependencies
         uses: ./.github/workflows/install/
 
