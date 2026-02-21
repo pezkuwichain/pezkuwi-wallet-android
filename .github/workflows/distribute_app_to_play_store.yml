@@ -44,7 +44,7 @@ jobs:
       - name: Market publication
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }} # The contents of your service-account.json
+          serviceAccountJsonPlainText: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           packageName: io.pezkuwichain.wallet
           releaseFiles: app/releaseMarket/pezkuwi-wallet-android-${{ github.event.inputs.app_version }}.apk
           track: production # One of production, beta, alpha, internalsharing, internal, or a custom track name (case sensitive)
