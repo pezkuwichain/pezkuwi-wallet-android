@@ -32,18 +32,6 @@
       }
     ],
     "externalApi": {
-      "staking": [
-        {
-          "type": "subquery",
-          "url": "https://subquery.pezkuwichain.io"
-        }
-      ],
-      "staking-rewards": [
-        {
-          "type": "subquery",
-          "url": "https://subquery.pezkuwichain.io"
-        }
-      ],
       "history": [
         {
           "type": "subquery",
