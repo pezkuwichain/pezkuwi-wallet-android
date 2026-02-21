@@ -45,7 +45,7 @@ jobs:
         uses: ./.github/workflows/upload-to-firebase
         with:
           appId: ${{ github.event.inputs.build_variant == 'releaseMarket' && secrets.ANDROID_RELEASE_FIREBASE_APP_ID || secrets.ANDROID_DEVELOP_FIREBASE_APP_ID }}
-          firebase-token: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          firebase-token: ${{ github.event.inputs.build_variant == 'releaseMarket' && secrets.RELEASE_FIREBASE_CREDENTIAL || secrets.CREDENTIAL_FILE_CONTENT }}
           releaseNotes: "v1.0.0 - ${{ github.event.inputs.build_variant }} build from ${{ github.event.inputs.branch }}"
           test-groups: ${{ github.event.inputs.firebase_group }}
           upload-file: ${{ github.event.inputs.build_variant == 'releaseMarket' && 'app/releaseMarket/app-releaseMarket.apk' || 'app/develop/app-develop.apk' }}
