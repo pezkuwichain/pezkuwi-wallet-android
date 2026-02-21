@@ -344,7 +344,7 @@
 
     <string name="transak_provider_sell_description">Sell crypto starting ji just $10</string>
 
-    <string name="wallet_asset_sell">Sell</string>
+    <string name="wallet_asset_sell">Bifiroşe</string>
 
     <string name="additional_payment_methods">+%d</string>
 
@@ -354,10 +354,10 @@
 
     <string name="trade_provider_list_footer">Payment methods, fees û limits differ by provider.\nCompare their quotes to find  best option ji bo you.</string>
 
-    <string name="wallet_asset_sell_tokens">Sell tokens</string>
-    <string name="wallet_asset_buy_tokens">Buy tokens</string>
+    <string name="wallet_asset_sell_tokens">Token bifiroşe</string>
+    <string name="wallet_asset_buy_tokens">Token bikire</string>
 
-    <string name="wallet_asset_buy_sell">Buy/Sell</string>
+    <string name="wallet_asset_buy_sell">Bikire/Bifiroşe</string>
 
 
     <string name="account_ledger_import_start_step_otg">%s in yê te phone settings</string>
@@ -1191,7 +1191,7 @@
     <string name="fragment_swap_main_settings_pay_title">You pay</string>
     <string name="fragment_swap_main_settings_receive_title">You receive</string>
     <string name="fragment_swap_main_settings_details_title">Swap details</string>
-    <string name="wallet_asset_swap">Swap</string>
+    <string name="wallet_asset_swap">Biguherîne</string>
     <string name="fragment_swap_main_settings_select_token">Hilbijêre a token</string>
 
     <string name="assets_crowdloan_unlock_banner_title">Boost yê te DOT 🚀</string>
@@ -2696,8 +2696,8 @@
     <string name="username_setup_choose_title_v2_2_0">Cîzdan name</string>
     <string name="username_setup_hint">Ev name dê be displayed only ji bo you û stored locally on yê te mobile device.</string>
     <string name="validator_not_elected_description">Ev account e ne elected by network to participate in  current era</string>
-    <string name="wallet_asset_buy">Buy</string>
-    <string name="wallet_asset_buy_with">Buy bi</string>
+    <string name="wallet_asset_buy">Bikire</string>
+    <string name="wallet_asset_buy_with">Bi %s bikire</string>
     <string name="wallet_asset_receive">Werbigire</string>
     <string name="wallet_asset_receive_token">Werbigire %s</string>
     <string name="wallet_asset_send">Bişîne</string>

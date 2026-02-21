@@ -4,4 +4,30 @@
     <string name="pezkuwi_dashboard_trust_score">Güven Puanı</string>
     <string name="pezkuwi_dashboard_basvuru">Başvuru ve İşlemler</string>
     <string name="pezkuwi_dashboard_info">Dijital Kurdistan vatandaşlık işlemleri için Telegram MiniApp\'imizi kullanın.\n\nPEZ ödülleri kazanmak için Welatî tikesi sahibi olmanız ve en az 10 HEZ stake etmiş olmanız gereklidir.\n\nVatandaş olmayanlar yalnızca HEZ ödüllerinden yararlanabilir.</string>
+
+    <!-- Action buttons -->
+    <string name="wallet_asset_send">Gönder</string>
+    <string name="wallet_asset_receive">Al</string>
+    <string name="wallet_asset_receive_token">%s Al</string>
+    <string name="wallet_asset_buy">Satın Al</string>
+    <string name="wallet_asset_buy_with">%s ile Satın Al</string>
+    <string name="wallet_asset_buy_sell">Al/Sat</string>
+    <string name="wallet_asset_buy_tokens">Token satın al</string>
+    <string name="wallet_asset_sell">Sat</string>
+    <string name="wallet_asset_sell_tokens">Token sat</string>
+    <string name="wallet_asset_swap">Takas</string>
+    <string name="wallet_asset_bridge">Köprü DOT ↔ HEZ</string>
+    <string name="common_gift">Hediye</string>
+
+    <!-- Bridge Screen -->
+    <string name="bridge_title">Köprü DOT ↔ HEZ</string>
+    <string name="bridge_you_send">Gönderiyorsun</string>
+    <string name="bridge_you_receive">Alıyorsun (tahmini)</string>
+    <string name="bridge_exchange_rate">Döviz kuru</string>
+    <string name="bridge_fee">Köprü ücreti</string>
+    <string name="bridge_minimum">Minimum</string>
+    <string name="bridge_swap_button">Dönüştür</string>
+    <string name="bridge_hez_to_dot_warning">HEZ → DOT yönü manuel işlenir, 24 saate kadar sürebilir.</string>
+    <string name="bridge_hez_to_dot_blocked">HEZ → DOT yönü şu anda devre dışı.</string>
+    <string name="bridge_wusdt_to_usdt_blocked">USDT(Pez) → USDT(Pol) yönü şu anda devre dışı.</string>
 </resources>
