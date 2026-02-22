@@ -34,6 +34,7 @@ jobs:
   codeql:
     name: CodeQL Analysis
     runs-on: ubuntu-latest
+    continue-on-error: true  # CodeQL OOM on large Android projects with 7GB runner limit
 
     steps:
       - name: Checkout
