@@ -10,6 +10,24 @@ concurrency:
   group: code-quality-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  ACALA_PROD_AUTH_TOKEN: ${{ secrets.ACALA_PROD_AUTH_TOKEN }}
+  ACALA_TEST_AUTH_TOKEN: ${{ secrets.ACALA_TEST_AUTH_TOKEN }}
+  MOONBEAM_PROD_AUTH_TOKEN: ${{ secrets.MOONBEAM_PROD_AUTH_TOKEN }}
+  MOONBEAM_TEST_AUTH_TOKEN: ${{ secrets.MOONBEAM_TEST_AUTH_TOKEN }}
+  MOONPAY_PRODUCTION_SECRET: ${{ secrets.MOONPAY_PRODUCTION_SECRET }}
+  MOONPAY_TEST_SECRET: ${{ secrets.MOONPAY_TEST_SECRET }}
+  MERCURYO_PRODUCTION_SECRET: ${{ secrets.MERCURYO_PRODUCTION_SECRET }}
+  MERCURYO_TEST_SECRET: ${{ secrets.MERCURYO_TEST_SECRET }}
+  EHTERSCAN_API_KEY_MOONBEAM: ${{ secrets.EHTERSCAN_API_KEY_MOONBEAM }}
+  EHTERSCAN_API_KEY_MOONRIVER: ${{ secrets.EHTERSCAN_API_KEY_MOONRIVER }}
+  EHTERSCAN_API_KEY_ETHEREUM: ${{ secrets.EHTERSCAN_API_KEY_ETHEREUM }}
+  INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
+  DWELLIR_API_KEY: ${{ secrets.DWELLIR_API_KEY }}
+  WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
+  DEBUG_GOOGLE_OAUTH_ID: ${{ secrets.DEBUG_GOOGLE_OAUTH_ID }}
+  RELEASE_GOOGLE_OAUTH_ID: ${{ secrets.RELEASE_GOOGLE_OAUTH_ID }}
+
 jobs:
   ktlint:
     name: Kotlin Lint
@@ -36,7 +54,6 @@ jobs:
 
       - name: Run ktlint
         run: ./gradlew ktlint
-        continue-on-error: true
 
       - name: Upload ktlint report
         if: always()
