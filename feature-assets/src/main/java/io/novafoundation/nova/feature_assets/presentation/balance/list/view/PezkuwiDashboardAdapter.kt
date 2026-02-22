@@ -2,6 +2,7 @@ package io.novafoundation.nova.feature_assets.presentation.balance.list.view
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
@@ -12,6 +13,7 @@ import io.novafoundation.nova.common.utils.recyclerView.WithViewType
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.databinding.ItemPezkuwiDashboardBinding
 import io.novafoundation.nova.feature_assets.presentation.balance.list.model.PezkuwiDashboardModel
+import io.novafoundation.nova.feature_assets.presentation.citizenship.CitizenshipStatus
 
 class PezkuwiDashboardAdapter(
     private val handler: Handler
@@ -19,6 +21,8 @@ class PezkuwiDashboardAdapter(
 
     interface Handler {
         fun onBasvuruClicked()
+        fun onSignClicked()
+        fun onShareReferralClicked()
     }
 
     private var model: PezkuwiDashboardModel? = null
@@ -53,12 +57,40 @@ class PezkuwiDashboardHolder(
 
     init {
         binder.pezkuwiDashboardBasvuruButton.setOnClickListener { handler.onBasvuruClicked() }
+        binder.pezkuwiDashboardSignButton.setOnClickListener { handler.onSignClicked() }
+        binder.pezkuwiDashboardShareButton.setOnClickListener { handler.onShareReferralClicked() }
     }
 
     fun bind(model: PezkuwiDashboardModel) {
         bindRoles(model.roles)
         binder.pezkuwiDashboardTrustValue.text = model.trustScore
         binder.pezkuwiDashboardWelatiCount.text = model.welatiCount
+        bindButtons(model.citizenshipStatus)
+    }
+
+    private fun bindButtons(status: CitizenshipStatus) {
+        if (status == CitizenshipStatus.APPROVED) {
+            // Citizen: "Onayla" (approve referrals) + Share
+            binder.pezkuwiDashboardBasvuruButton.visibility = View.VISIBLE
+            binder.pezkuwiDashboardBasvuruButton.setText(R.string.citizenship_approve_button)
+            binder.pezkuwiDashboardSignButton.visibility = View.GONE
+            binder.pezkuwiDashboardShareButton.visibility = View.VISIBLE
+            binder.pezkuwiDashboardShareButton.isEnabled = true
+            binder.pezkuwiDashboardShareButton.alpha = 1f
+        } else {
+            // Not yet citizen: show all 3
+            binder.pezkuwiDashboardBasvuruButton.visibility = View.VISIBLE
+            binder.pezkuwiDashboardBasvuruButton.setText(R.string.pezkuwi_dashboard_basvuru)
+            binder.pezkuwiDashboardSignButton.visibility = View.VISIBLE
+            binder.pezkuwiDashboardShareButton.visibility = View.VISIBLE
+
+            val signEnabled = status == CitizenshipStatus.REFERRER_APPROVED
+            binder.pezkuwiDashboardSignButton.isEnabled = signEnabled
+            binder.pezkuwiDashboardSignButton.alpha = if (signEnabled) 1f else 0.4f
+
+            binder.pezkuwiDashboardShareButton.isEnabled = false
+            binder.pezkuwiDashboardShareButton.alpha = 0.4f
+        }
     }
 
     private fun bindRoles(roles: List<String>) {

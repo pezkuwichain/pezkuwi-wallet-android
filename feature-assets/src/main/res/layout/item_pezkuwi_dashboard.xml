@@ -96,25 +96,38 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Info text -->
-        <TextView
-            android:id="@+id/pezkuwiDashboardInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/pezkuwi_dashboard_info"
-            android:textColor="#CFD8DC"
-            android:textSize="11sp"
-            android:lineSpacingExtra="2dp" />
-
-        <!-- Action button -->
+        <!-- Action buttons: Kesk (green), Sor (red), Zer (yellow) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pezkuwiDashboardBasvuruButton"
-            style="@style/Widget.Nova.MaterialButton.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/pezkuwi_dashboard_basvuru"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:backgroundTint="#4CAF50"
+            app:cornerRadius="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pezkuwiDashboardSignButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/citizenship_sign"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:backgroundTint="#E53935"
+            app:cornerRadius="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pezkuwiDashboardShareButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/citizenship_share_button"
+            android:textAllCaps="false"
+            android:textColor="#212121"
+            app:backgroundTint="#FDD835"
+            app:cornerRadius="8dp" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

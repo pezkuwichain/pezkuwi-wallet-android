@@ -30,4 +30,32 @@
     <string name="bridge_hez_to_dot_warning">HEZ → DOT yönü manuel işlenir, 24 saate kadar sürebilir.</string>
     <string name="bridge_hez_to_dot_blocked">HEZ → DOT yönü şu anda devre dışı.</string>
     <string name="bridge_wusdt_to_usdt_blocked">USDT(Pez) → USDT(Pol) yönü şu anda devre dışı.</string>
+
+    <!-- Citizenship Application -->
+    <string name="citizenship_title">Vatandaşlık Başvurusu</string>
+    <string name="citizenship_name">Ad Soyad</string>
+    <string name="citizenship_father_name">Baba Adı</string>
+    <string name="citizenship_grandfather_name">Dede Adı</string>
+    <string name="citizenship_mother_name">Anne Adı</string>
+    <string name="citizenship_tribe">Aşiret</string>
+    <string name="citizenship_region">Bölge</string>
+    <string name="citizenship_apply">Başvur</string>
+    <string name="citizenship_pending">Başvurunuz onay bekliyor</string>
+    <string name="citizenship_sign">İmzala</string>
+    <string name="citizenship_approved">Zaten vatandaşsınız</string>
+    <string name="citizenship_insufficient_balance">People Chain\'de yetersiz bakiye. En az 1.1 HEZ gerekli.</string>
+    <string name="citizenship_success">Başvuru başarıyla gönderildi</string>
+    <string name="citizenship_share_referral">Dijital Kurdistan vatandaşlığı için arkadaşını davet et!\n\nReferans adresim:\n%s</string>
+    <string name="citizenship_share_button">Referans Linkini Paylaş</string>
+    <string name="citizenship_referrer_hint">Referans Adresi (opsiyonel)</string>
+    <string name="citizenship_sign_description">Referansınız başvurunuzu onayladı. Vatandaşlığı tamamlamak için imzalayın.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Diaspora</string>
+    <string name="citizenship_approve_address_hint">Başvuranın adresi</string>
+    <string name="citizenship_approve_button">Referral Onayla</string>
+    <string name="citizenship_approve_success">Referral başarıyla onaylandı</string>
 </resources>

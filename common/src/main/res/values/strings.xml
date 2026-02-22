@@ -2767,4 +2767,32 @@
     <string name="pezkuwi_dashboard_basvuru">Apply &amp; Actions</string>
     <string name="pezkuwi_dashboard_info">Use our Telegram MiniApp for Digital Kurdistan citizenship services.\n\nTo earn PEZ rewards, you must hold a Welatî ticket and stake at least 10 HEZ.\n\nNon-citizens can only benefit from HEZ rewards.</string>
     <string name="pezkuwi_dashboard_kurds_title">Hejmara Kurd Le Cihane</string>
+
+    <!-- Citizenship Application -->
+    <string name="citizenship_title">Citizenship Application</string>
+    <string name="citizenship_name">Full Name</string>
+    <string name="citizenship_father_name">Father\'s Name</string>
+    <string name="citizenship_grandfather_name">Grandfather\'s Name</string>
+    <string name="citizenship_mother_name">Mother\'s Name</string>
+    <string name="citizenship_tribe">Tribe</string>
+    <string name="citizenship_region">Region</string>
+    <string name="citizenship_apply">Apply</string>
+    <string name="citizenship_pending">Your application is pending approval</string>
+    <string name="citizenship_sign">Sign</string>
+    <string name="citizenship_approved">You are already a citizen</string>
+    <string name="citizenship_insufficient_balance">Insufficient balance on People Chain. At least 1.1 HEZ required.</string>
+    <string name="citizenship_success">Application submitted successfully</string>
+    <string name="citizenship_share_referral">Refer a friend for Digital Kurdistan citizenship!\n\nMy referrer address:\n%s</string>
+    <string name="citizenship_share_button">Share Referral Link</string>
+    <string name="citizenship_referrer_hint">Referrer Address (optional)</string>
+    <string name="citizenship_sign_description">Your referrer has approved your application. Sign to complete citizenship.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Diaspora</string>
+    <string name="citizenship_approve_address_hint">Applicant\'s address</string>
+    <string name="citizenship_approve_button">Approve Referral</string>
+    <string name="citizenship_approve_success">Referral approved successfully</string>
 </resources>

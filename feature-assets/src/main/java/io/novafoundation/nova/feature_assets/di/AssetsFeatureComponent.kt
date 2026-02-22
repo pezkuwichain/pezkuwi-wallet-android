@@ -35,6 +35,7 @@ import io.novafoundation.nova.feature_assets.presentation.tokens.manage.chain.di
 import io.novafoundation.nova.feature_assets.presentation.tokens.manage.di.ManageTokensComponent
 import io.novafoundation.nova.feature_assets.presentation.topup.TopUpAddressCommunicator
 import io.novafoundation.nova.feature_assets.presentation.bridge.di.BridgeComponent
+import io.novafoundation.nova.feature_assets.presentation.citizenship.di.CitizenshipComponent
 import io.novafoundation.nova.feature_assets.presentation.trade.sell.flow.asset.di.AssetSellFlowComponent
 import io.novafoundation.nova.feature_assets.presentation.trade.sell.flow.network.di.NetworkSellFlowComponent
 import io.novafoundation.nova.feature_assets.presentation.trade.provider.di.TradeProviderListComponent
@@ -137,6 +138,8 @@ interface AssetsFeatureComponent : AssetsFeatureApi {
     fun novaCardComponentFactory(): NovaCardComponent.Factory
 
     fun waitingNovaCardTopUpComponentFactory(): WaitingNovaCardTopUpComponent.Factory
+
+    fun citizenshipComponentFactory(): CitizenshipComponent.Factory
 
     fun inject(view: GoToNftsView)
 

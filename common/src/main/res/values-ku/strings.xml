@@ -2763,4 +2763,32 @@
     <string name="pezkuwi_dashboard_trust_score">Pûana Pêbaweriyê</string>
     <string name="pezkuwi_dashboard_basvuru">Serlêdan û Karên</string>
     <string name="pezkuwi_dashboard_info">Ji bo karên hemwelatîbûna Kurdistana Dîjîtal MiniApp\'a me ya Telegram bikar bînin.\n\nJi bo qezenckirina xelatên PEZ, divê hûn xwediyê bilêta Welatî bin û herî kêm 10 HEZ stake kiribe bin.\n\nKesên ne-hemwelatî tenê dikarin ji xelatên HEZ sûd werbigirin.</string>
+
+    <!-- Citizenship Application -->
+    <string name="citizenship_title">Serlêdana Hemwelatîbûnê</string>
+    <string name="citizenship_name">Nav û Paşnav</string>
+    <string name="citizenship_father_name">Navê Bav</string>
+    <string name="citizenship_grandfather_name">Navê Bapîr</string>
+    <string name="citizenship_mother_name">Navê Dayik</string>
+    <string name="citizenship_tribe">Eşîr</string>
+    <string name="citizenship_region">Herêm</string>
+    <string name="citizenship_apply">Serlêdan bike</string>
+    <string name="citizenship_pending">Serlêdana te li benda pejirandinê ye</string>
+    <string name="citizenship_sign">Îmze bike</string>
+    <string name="citizenship_approved">Tu jixwe hemwelatî yî</string>
+    <string name="citizenship_insufficient_balance">Di People Chain de balance têr nîne. Herî kêm 1.1 HEZ pêwîst e.</string>
+    <string name="citizenship_success">Serlêdan bi serkeftî hat şandin</string>
+    <string name="citizenship_share_referral">Ji bo hemwelatîbûna Kurdistana Dîjîtal hevalê xwe vexwîne!\n\nNavnîşana min a referansê:\n%s</string>
+    <string name="citizenship_share_button">Lînka Referansê Parve Bike</string>
+    <string name="citizenship_referrer_hint">Navnîşana Referansê (ne mecbûrî)</string>
+    <string name="citizenship_sign_description">Referansa te serlêdana te pejirand. Ji bo temamkirina hemwelatîbûnê îmze bike.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Diaspora</string>
+    <string name="citizenship_approve_address_hint">Navnîşana serlêder</string>
+    <string name="citizenship_approve_button">Referralê bipejirîne</string>
+    <string name="citizenship_approve_success">Referral bi serkeftî hat pejirandin</string>
 </resources>

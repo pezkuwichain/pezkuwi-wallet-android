@@ -32,8 +32,10 @@ import io.novafoundation.nova.feature_assets.presentation.balance.list.view.Asse
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.AssetsHeaderHolder
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.ManageAssetsAdapter
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.ManageAssetsHolder
+import android.content.Intent
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PezkuwiDashboardAdapter
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PezkuwiDashboardHolder
+import io.novafoundation.nova.feature_assets.presentation.citizenship.CitizenshipBottomSheet
 import io.novafoundation.nova.feature_banners_api.presentation.BannerHolder
 import io.novafoundation.nova.feature_banners_api.presentation.PromotionBannerAdapter
 import io.novafoundation.nova.feature_banners_api.presentation.bindWithAdapter
@@ -175,6 +177,18 @@ class BalanceListFragment :
         viewModel.pendingOperationsCountModel.observe(headerAdapter::setPendingOperationsCountModel)
         viewModel.filtersIndicatorIcon.observe(headerAdapter::setFilterIconRes)
         viewModel.assetViewModeModelFlow.observe { manageAssetsAdapter.setAssetViewModeModel(it) }
+
+        viewModel.openCitizenshipEvent.observeEvent {
+            CitizenshipBottomSheet().show(childFragmentManager, "citizenship")
+        }
+
+        viewModel.shareReferralEvent.observeEvent { shareText ->
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareText)
+            }
+            startActivity(Intent.createChooser(intent, null))
+        }
     }
 
     override fun assetClicked(asset: Chain.Asset) {
@@ -254,6 +268,14 @@ class BalanceListFragment :
 
     override fun onBasvuruClicked() {
         viewModel.basvuruClicked()
+    }
+
+    override fun onSignClicked() {
+        viewModel.basvuruClicked()
+    }
+
+    override fun onShareReferralClicked() {
+        viewModel.shareReferralClicked()
     }
 
     private fun setupRecyclerViewSpacing() {

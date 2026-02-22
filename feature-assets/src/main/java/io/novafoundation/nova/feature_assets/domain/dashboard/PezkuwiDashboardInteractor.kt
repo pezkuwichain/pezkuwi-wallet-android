@@ -5,6 +5,7 @@ import io.novafoundation.nova.feature_assets.data.model.PezkuwiDashboardData
 import io.novafoundation.nova.feature_assets.data.repository.PezkuwiDashboardRepository
 import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
+import java.math.BigInteger
 
 class PezkuwiDashboardInteractor(
     private val repository: PezkuwiDashboardRepository,
@@ -17,5 +18,14 @@ class PezkuwiDashboardInteractor(
             ?: error("No account for People chain")
 
         repository.getDashboard(accountId)
+    }
+
+    suspend fun hasSufficientBalance(metaAccount: MetaAccount, minPlanck: BigInteger): Boolean {
+        return runCatching {
+            val peopleChain = chainRegistry.getChain(ChainGeneses.PEZKUWI_PEOPLE)
+            val accountId = metaAccount.accountIdIn(peopleChain) ?: return false
+            val balance = repository.queryFreeBalance(ChainGeneses.PEZKUWI_PEOPLE, accountId)
+            balance >= minPlanck
+        }.getOrDefault(false)
     }
 }

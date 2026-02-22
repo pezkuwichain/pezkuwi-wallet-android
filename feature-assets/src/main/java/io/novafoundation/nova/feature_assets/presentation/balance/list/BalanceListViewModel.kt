@@ -23,6 +23,7 @@ import io.novafoundation.nova.common.utils.withSafeLoading
 import io.novafoundation.nova.feature_account_api.data.multisig.MultisigPendingOperationsService
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
 import io.novafoundation.nova.feature_account_api.domain.model.MetaAccount
+import io.novafoundation.nova.feature_account_api.domain.model.defaultSubstrateAddress
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.assets.list.AssetsListInteractor
@@ -64,6 +65,7 @@ import io.novafoundation.nova.feature_wallet_api.presentation.model.FractionPart
 import io.novafoundation.nova.feature_wallet_connect_api.domain.sessions.WalletConnectSessionsUseCase
 import io.novafoundation.nova.feature_wallet_connect_api.presentation.mapNumberOfActiveSessionsToUi
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
+import java.math.BigInteger
 import java.text.NumberFormat
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.combine
@@ -113,6 +115,12 @@ class BalanceListViewModel(
 
     private val _showBalanceBreakdownEvent = MutableLiveData<Event<TotalBalanceBreakdownModel>>()
     val showBalanceBreakdownEvent: LiveData<Event<TotalBalanceBreakdownModel>> = _showBalanceBreakdownEvent
+
+    private val _openCitizenshipEvent = MutableLiveData<Event<Unit>>()
+    val openCitizenshipEvent: LiveData<Event<Unit>> = _openCitizenshipEvent
+
+    private val _shareReferralEvent = MutableLiveData<Event<String>>()
+    val shareReferralEvent: LiveData<Event<String>> = _shareReferralEvent
 
     val bannersMixin = promotionBannersMixinFactory.create(bannerSourceFactory.assetsSource(), viewModelScope)
 
@@ -230,7 +238,8 @@ class BalanceListViewModel(
                     PezkuwiDashboardModel(
                         roles = data.roles,
                         trustScore = data.trustScore.toString(),
-                        welatiCount = NumberFormat.getIntegerInstance().format(data.welatiCount)
+                        welatiCount = NumberFormat.getIntegerInstance().format(data.welatiCount),
+                        citizenshipStatus = data.citizenshipStatus
                     )
                 }
                 .getOrNull()
@@ -400,8 +409,15 @@ class BalanceListViewModel(
         }
     }
 
-    fun basvuruClicked() {
-        showBrowser("https://t.me/pezkuwichainBot")
+    fun basvuruClicked() = launchUnit {
+        _openCitizenshipEvent.postValue(Event(Unit))
+    }
+
+    fun shareReferralClicked() = launchUnit {
+        val metaAccount = selectedAccountUseCase.getSelectedMetaAccount()
+        val address = metaAccount.defaultSubstrateAddress ?: return@launchUnit
+        val shareText = resourceManager.getString(R.string.citizenship_share_referral, address)
+        _shareReferralEvent.postValue(Event(shareText))
     }
 
     fun novaCardClicked() = launchUnit {
