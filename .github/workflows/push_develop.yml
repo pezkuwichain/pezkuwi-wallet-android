@@ -1,4 +1,4 @@
-name: Build test and deploy debug apk
+name: Build and deploy release apk
 
 on:
   push:
@@ -10,7 +10,8 @@ jobs:
     uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
     with:
       branch: main
-      gradlew-command: assembleDebug
+      gradlew-command: assembleReleaseMarket
+      keystore-file-name: market_key.jks
     secrets: inherit
 
   upload-to-firebase:
@@ -28,11 +29,11 @@ jobs:
       - name: 🗳 Upload to Firebase
         uses: ./.github/workflows/upload-to-firebase
         with:
-          appId: ${{ secrets.ANDROID_DEBUG_FIREBASE_APP_ID }}
-          firebase-token: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          appId: ${{ secrets.ANDROID_RELEASE_FIREBASE_APP_ID }}
+          firebase-token: ${{ secrets.RELEASE_FIREBASE_CREDENTIAL }}
           releaseNotes: ${{ github.event.head_commit.message }}
           test-groups: dev-team
-          upload-file: app/debug/app-debug.apk
+          upload-file: app/releaseMarket/app-releaseMarket.apk
 
   upload-to-s3:
     runs-on: ubuntu-latest
@@ -59,7 +60,7 @@ jobs:
           s3_access_key: ${{ secrets.SCW_ACCESS_KEY }}
           s3_secret_key: ${{ secrets.SCW_SECRET_KEY }}
           s3_bucket: ${{ env.S3_BUCKET }}
-          upload_file: app/debug/app-debug.apk
+          upload_file: app/releaseMarket/app-releaseMarket.apk
 
       - name: Show S3 URL
         run: |
