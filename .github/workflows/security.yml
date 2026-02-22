@@ -42,6 +42,13 @@ jobs:
       - name: Install dependencies
         uses: ./.github/workflows/install/
 
+      - name: Set up DEV Google Services
+        uses: davidSchuppa/base64Secret-toFile-action@v3
+        with:
+          secret: ${{ secrets.CI_DEVELOP_GOOGLE_SERVICES }}
+          filename: google-services.json
+          destination-path: ./app/
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
