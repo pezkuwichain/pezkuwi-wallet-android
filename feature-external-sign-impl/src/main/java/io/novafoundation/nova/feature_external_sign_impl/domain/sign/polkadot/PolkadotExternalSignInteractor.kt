@@ -39,6 +39,8 @@ import io.novafoundation.nova.runtime.ext.anyAddressToAccountId
 import io.novafoundation.nova.runtime.ext.utilityAsset
 import io.novafoundation.nova.runtime.extrinsic.CustomTransactionExtensions
 import io.novafoundation.nova.runtime.extrinsic.extensions.ChargeAssetTxPayment.Companion.chargeAssetTxPayment
+import io.novafoundation.nova.runtime.extrinsic.extensions.PezkuwiCheckImmortal
+import io.novafoundation.nova.runtime.extrinsic.extensions.PezkuwiCheckMortality
 import io.novafoundation.nova.runtime.extrinsic.metadata.MetadataShortenerService
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
@@ -48,6 +50,7 @@ import io.novasama.substrate_sdk_android.extensions.fromHex
 import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
 import io.novasama.substrate_sdk_android.runtime.definitions.types.fromHex
+import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.Era
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.EraType
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
 import io.novasama.substrate_sdk_android.runtime.extrinsic.BatchMode
@@ -221,9 +224,19 @@ class PolkadotExternalSignInteractor(
 
         val signingContext = signingContextFactory.default(chain)
 
+        val isPezkuwi = isPezkuwiChain(runtime)
+
         val extrinsic = with(parsedExtrinsic) {
             ExtrinsicBuilder(runtime, ExtrinsicVersion.V4, BatchMode.BATCH_ALL).apply {
-                setTransactionExtension(CheckMortality(era, blockHash))
+                // Use custom CheckMortality for Pezkuwi chains to avoid DictEnum type lookup issues
+                if (isPezkuwi) {
+                    when (era) {
+                        is Era.Mortal -> setTransactionExtension(PezkuwiCheckMortality(era, blockHash))
+                        is Era.Immortal -> setTransactionExtension(PezkuwiCheckImmortal(genesisHash))
+                    }
+                } else {
+                    setTransactionExtension(CheckMortality(era, blockHash))
+                }
                 setTransactionExtension(CheckGenesis(genesisHash))
                 setTransactionExtension(ChargeTransactionPayment(tip))
                 setTransactionExtension(CheckMetadataHash(actualMetadataHash.checkMetadataHash))
@@ -349,6 +362,11 @@ class PolkadotExternalSignInteractor(
 
     private fun PolkadotSignPayload.Json.tryDecodeAssetId(runtime: RuntimeSnapshot): Any? {
         return assetId?.let(runtime::decodeCustomTxPaymentId)
+    }
+
+    private fun isPezkuwiChain(runtime: RuntimeSnapshot): Boolean {
+        val signedExtIds = runtime.metadata.extrinsic.signedExtensions.map { it.id }
+        return signedExtIds.any { it == "AuthorizeCall" }
     }
 }
 

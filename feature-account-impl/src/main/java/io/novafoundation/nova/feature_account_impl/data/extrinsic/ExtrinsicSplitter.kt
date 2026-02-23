@@ -10,6 +10,7 @@ import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicSplitt
 import io.novafoundation.nova.feature_account_api.data.extrinsic.SplitCalls
 import io.novafoundation.nova.runtime.ext.requireGenesisHash
 import io.novafoundation.nova.runtime.extrinsic.CustomTransactionExtensions
+import io.novafoundation.nova.runtime.extrinsic.extensions.PezkuwiCheckImmortal
 import io.novafoundation.nova.runtime.extrinsic.multi.CallBuilder
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
@@ -141,12 +142,19 @@ internal class RealExtrinsicSplitter @Inject constructor(
     ): SendableExtrinsic {
         val genesisHash = chain.requireGenesisHash().fromHex()
 
+        val isPezkuwi = runtime.metadata.extrinsic.signedExtensions.any { it.id == "AuthorizeCall" }
+
         return ExtrinsicBuilder(
             runtime = runtime,
             extrinsicVersion = ExtrinsicVersion.V4,
             batchMode = BatchMode.BATCH,
         ).apply {
-            setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
+            // Use custom CheckMortality for Pezkuwi chains to avoid DictEnum type lookup issues
+            if (isPezkuwi) {
+                setTransactionExtension(PezkuwiCheckImmortal(genesisHash))
+            } else {
+                setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
+            }
             setTransactionExtension(CheckGenesis(chain.requireGenesisHash().fromHex()))
             setTransactionExtension(ChargeTransactionPayment(BigInteger.ZERO))
             setTransactionExtension(CheckMetadataHash(CheckMetadataHashMode.Disabled))
