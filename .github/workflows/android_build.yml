@@ -212,3 +212,20 @@ jobs:
         with:
           name: ${{ inputs.upload-name }}
           path: app/build/outputs/apk/
+          if-no-files-found: ignore
+
+      - name: ➡️ Upload bundle artifacts
+        if: ${{ !startsWith(inputs.gradlew-command, 'false') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.upload-name }}-bundle
+          path: app/build/outputs/bundle/
+          if-no-files-found: ignore
+
+      - name: ➡️ Upload mapping file
+        if: ${{ !startsWith(inputs.gradlew-command, 'false') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.upload-name }}-mapping
+          path: app/build/outputs/mapping/
+          if-no-files-found: ignore

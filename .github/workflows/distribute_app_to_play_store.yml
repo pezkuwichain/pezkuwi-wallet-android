@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       app_version:
-        description: 'Version of application'
+        description: 'Version of application (e.g. v1.0.0)'
         required: true
-        default: v*.*.*
+        default: v1.0.0
       branch:
         description: 'From which branch the application will be built'
         required: true
@@ -17,7 +17,7 @@ jobs:
     uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
     with:
       branch: ${{ github.event.inputs.branch }}
-      gradlew-command: assembleReleaseMarket
+      gradlew-command: bundleReleaseMarket
       keystore-file-name: market_key.jks
     secrets: inherit
 
@@ -32,25 +32,30 @@ jobs:
         with:
           envFilePath: .github/workflows/variables/android.env
 
-      - name: Download built artifact
+      - name: Download bundle artifact
         uses: actions/download-artifact@v4
         with:
-          name: apk
-          path: app
+          name: apk-bundle
+          path: app/bundle
+
+      - name: Download mapping artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-mapping
+          path: app/mapping
+        continue-on-error: true
 
       - name: Rename artifacts
-        run: mv app/releaseMarket/app-releaseMarket.apk app/releaseMarket/pezkuwi-wallet-android-${{ github.event.inputs.app_version }}.apk
+        run: mv app/bundle/releaseMarket/app-releaseMarket.aab app/bundle/releaseMarket/pezkuwi-wallet-android-${{ github.event.inputs.app_version }}.aab
 
       - name: Market publication
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           packageName: io.pezkuwichain.wallet
-          releaseFiles: app/releaseMarket/pezkuwi-wallet-android-${{ github.event.inputs.app_version }}.apk
-          track: production # One of production, beta, alpha, internalsharing, internal, or a custom track name (case sensitive)
-          status: draft # One of "completed", "inProgress", "halted", "draft"
+          releaseFiles: app/bundle/releaseMarket/pezkuwi-wallet-android-${{ github.event.inputs.app_version }}.aab
+          track: production
+          status: draft
           inAppUpdatePriority: 2
-          userFraction: 1.0 # Percentage of users who should get the staged version of the app. Defaults to 1.0
-          whatsNewDirectory: distribution/whatsnew # The directory of localized "whats new" files to upload as the release notes. The files contained in the whatsNewDirectory MUST use the pattern whatsnew-<LOCALE> where LOCALE is using the BCP 47 format
-          mappingFile: app/build/outputs/mapping/release/mapping.txt # The mapping.txt file used to de-obfuscate your stack traces from crash reports
-          debugSymbols: app/intermediates/merged_native_libs/release/out/lib
+          whatsNewDirectory: distribution/whatsnew
+          mappingFile: app/mapping/releaseMarket/mapping.txt
