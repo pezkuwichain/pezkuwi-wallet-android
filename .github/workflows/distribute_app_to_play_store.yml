@@ -62,4 +62,3 @@ jobs:
           inAppUpdatePriority: 2
           whatsNewDirectory: distribution/whatsnew
           mappingFile: app/mapping/releaseMarket/mapping.txt
-          debugSymbols: app/native-debug-symbols/releaseMarket/native-debug-symbols.zip
