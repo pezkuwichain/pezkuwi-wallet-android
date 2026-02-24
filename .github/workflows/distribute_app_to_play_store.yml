@@ -50,7 +50,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           packageName: io.pezkuwichain.wallet
           releaseFiles: app/bundle/releaseMarket/pezkuwi-wallet-android-${{ github.event.inputs.app_version }}.aab
-          track: production
+          track: alpha
           status: draft
           inAppUpdatePriority: 2
           whatsNewDirectory: distribution/whatsnew
