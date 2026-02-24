@@ -51,6 +51,13 @@ jobs:
       - name: Rename artifacts
         run: mv app/bundle/releaseMarket/app-releaseMarket.aab app/bundle/releaseMarket/pezkuwi-wallet-android-${{ github.event.inputs.app_version }}.aab
 
+      - name: Check for native debug symbols
+        id: check-symbols
+        run: |
+          if [ -f "app/native-debug-symbols/releaseMarket/native-debug-symbols.zip" ]; then
+            echo "path=app/native-debug-symbols/releaseMarket/native-debug-symbols.zip" >> $GITHUB_OUTPUT
+          fi
+
       - name: Market publication
         uses: r0adkll/upload-google-play@v1
         with:
@@ -62,3 +69,4 @@ jobs:
           inAppUpdatePriority: 2
           whatsNewDirectory: distribution/whatsnew
           mappingFile: app/mapping/releaseMarket/mapping.txt
+          debugSymbols: ${{ steps.check-symbols.outputs.path }}

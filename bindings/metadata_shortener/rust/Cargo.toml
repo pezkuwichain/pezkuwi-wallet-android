@@ -14,7 +14,7 @@ frame-metadata = { version = "16.0.0", features = [ "current" ] }
 codec = { package = "parity-scale-codec", version = "3.6.9", features = [ "derive" ] }
 
 [profile.release]
-strip = true
+strip = "debuginfo"
 lto = true
 opt-level = "s"
 
