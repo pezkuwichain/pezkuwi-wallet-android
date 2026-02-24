@@ -207,7 +207,6 @@ class RuntimeFactory(
             "pezsp_runtime.multiaddress.MultiAddress" to "MultiAddress",
             "pezsp_runtime.MultiSignature" to "ExtrinsicSignature",
             "pezsp_runtime.MultiSignature" to "MultiSignature",
-            "pezsp_runtime.generic.era.Era" to "Era",
             // Fee-related types
             "pezframe_support.dispatch.DispatchInfo" to "DispatchInfo",
             "pezpallet_transaction_payment.types.RuntimeDispatchInfo" to "RuntimeDispatchInfo",

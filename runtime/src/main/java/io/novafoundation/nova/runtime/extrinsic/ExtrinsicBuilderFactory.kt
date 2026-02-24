@@ -2,13 +2,11 @@ package io.novafoundation.nova.runtime.extrinsic
 
 import io.novafoundation.nova.common.utils.orZero
 import io.novafoundation.nova.runtime.ext.requireGenesisHash
-import io.novafoundation.nova.runtime.extrinsic.extensions.PezkuwiCheckMortality
 import io.novafoundation.nova.runtime.extrinsic.metadata.MetadataShortenerService
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novafoundation.nova.runtime.multiNetwork.getRuntime
 import io.novasama.substrate_sdk_android.extensions.fromHex
-import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
 import io.novasama.substrate_sdk_android.runtime.extrinsic.BatchMode
 import io.novasama.substrate_sdk_android.runtime.extrinsic.ExtrinsicVersion
 import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
@@ -45,20 +43,13 @@ class ExtrinsicBuilderFactory(
         val mortality = mortalityConstructor.constructMortality(chain.id)
         val metadataProof = metadataShortenerService.generateMetadataProof(chain.id)
 
-        val isPezkuwi = isPezkuwiChain(runtime)
-
         return generateSequence {
             ExtrinsicBuilder(
                 runtime = runtime,
                 extrinsicVersion = ExtrinsicVersion.V4,
                 batchMode = options.batchMode,
             ).apply {
-                // Use custom CheckMortality for Pezkuwi chains to avoid type lookup issues
-                if (isPezkuwi) {
-                    setTransactionExtension(PezkuwiCheckMortality(mortality.era, mortality.blockHash.fromHex()))
-                } else {
-                    setTransactionExtension(CheckMortality(mortality.era, mortality.blockHash.fromHex()))
-                }
+                setTransactionExtension(CheckMortality(mortality.era, mortality.blockHash.fromHex()))
                 setTransactionExtension(CheckGenesis(chain.requireGenesisHash().fromHex()))
                 setTransactionExtension(ChargeTransactionPayment(chain.additional?.defaultTip.orZero()))
                 setTransactionExtension(CheckMetadataHash(metadataProof.checkMetadataHash))
@@ -68,10 +59,5 @@ class ExtrinsicBuilderFactory(
                 CustomTransactionExtensions.defaultValues(runtime).forEach(::setTransactionExtension)
             }
         }
-    }
-
-    private fun isPezkuwiChain(runtime: RuntimeSnapshot): Boolean {
-        val signedExtIds = runtime.metadata.extrinsic.signedExtensions.map { it.id }
-        return signedExtIds.any { it == "AuthorizeCall" }
     }
 }

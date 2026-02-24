@@ -2,6 +2,7 @@ package io.novafoundation.nova.feature_wallet_connect_impl.presentation.sessions
 
 import android.util.Log
 import com.walletconnect.web3.wallet.client.Wallet
+import io.novafoundation.nova.feature_wallet_connect_impl.BuildConfig
 import com.walletconnect.web3.wallet.client.Web3Wallet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
@@ -26,51 +27,51 @@ fun Web3Wallet.sessionEventsFlow(scope: CoroutineScope): Flow<WalletConnectSessi
         setWalletDelegate(object : Web3Wallet.WalletDelegate {
 
             override fun onAuthRequest(authRequest: Wallet.Model.AuthRequest, verifyContext: Wallet.Model.VerifyContext) {
-                Log.d("WalletConnect", "Auth request: $authRequest")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "Auth request: $authRequest")
             }
 
             override fun onConnectionStateChange(state: Wallet.Model.ConnectionState) {
-                Log.d("WalletConnect", "on connection state change: $state")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "on connection state change: $state")
             }
 
             override fun onError(error: Wallet.Model.Error) {
-                Log.e("WalletConnect", "Wallet Connect error", error.throwable)
+                if (BuildConfig.DEBUG) Log.e("WalletConnect", "Wallet Connect error", error.throwable)
             }
 
             override fun onProposalExpired(proposal: Wallet.Model.ExpiredProposal) {
-                Log.d("WalletConnect", "Proposal expired: $proposal")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "Proposal expired: $proposal")
             }
 
             override fun onRequestExpired(request: Wallet.Model.ExpiredRequest) {
-                Log.d("WalletConnect", "Request expired: $request")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "Request expired: $request")
             }
 
             override fun onSessionDelete(sessionDelete: Wallet.Model.SessionDelete) {
-                Log.d("WalletConnect", "on session delete: $sessionDelete")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "on session delete: $sessionDelete")
                 channel.trySend(WalletConnectSessionsEvent.SessionDeleted(sessionDelete))
             }
 
             override fun onSessionExtend(session: Wallet.Model.Session) {
-                Log.d("WalletConnect", "On session extend: $session")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "On session extend: $session")
             }
 
             override fun onSessionProposal(sessionProposal: Wallet.Model.SessionProposal, verifyContext: Wallet.Model.VerifyContext) {
-                Log.d("WalletConnect", "on session proposal: $sessionProposal")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "on session proposal: $sessionProposal")
                 channel.trySend(WalletConnectSessionsEvent.SessionProposal(sessionProposal))
             }
 
             override fun onSessionRequest(sessionRequest: Wallet.Model.SessionRequest, verifyContext: Wallet.Model.VerifyContext) {
-                Log.d("WalletConnect", "on session request: $sessionRequest")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "on session request: $sessionRequest")
                 channel.trySend(WalletConnectSessionsEvent.SessionRequest(sessionRequest))
             }
 
             override fun onSessionSettleResponse(settleSessionResponse: Wallet.Model.SettledSessionResponse) {
-                Log.d("WalletConnect", "on session settled: $settleSessionResponse")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "on session settled: $settleSessionResponse")
                 channel.trySend(WalletConnectSessionsEvent.SessionSettlement(settleSessionResponse))
             }
 
             override fun onSessionUpdateResponse(sessionUpdateResponse: Wallet.Model.SessionUpdateResponse) {
-                Log.d("WalletConnect", "on session update: $sessionUpdateResponse")
+                if (BuildConfig.DEBUG) Log.d("WalletConnect", "on session update: $sessionUpdateResponse")
             }
         })
 

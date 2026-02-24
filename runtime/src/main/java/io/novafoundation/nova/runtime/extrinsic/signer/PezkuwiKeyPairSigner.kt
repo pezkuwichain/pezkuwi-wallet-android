@@ -1,6 +1,7 @@
 package io.novafoundation.nova.runtime.extrinsic.signer
 
 import android.util.Log
+import io.novafoundation.nova.runtime.BuildConfig
 import io.novafoundation.nova.sr25519.BizinikiwSr25519
 import io.novasama.substrate_sdk_android.encrypt.SignatureWrapper
 import io.novasama.substrate_sdk_android.runtime.AccountId
@@ -30,23 +31,20 @@ class PezkuwiKeyPairSigner private constructor(
         fun fromSeed(seed: ByteArray): PezkuwiKeyPairSigner {
             require(seed.size == 32) { "Seed must be 32 bytes, got ${seed.size}" }
 
-            Log.d("PezkuwiSigner", "Creating signer from seed")
+            if (BuildConfig.DEBUG) Log.d("PezkuwiSigner", "Creating signer from seed")
 
             // Expand seed to 96-byte keypair
             val expandedKeypair = BizinikiwSr25519.keypairFromSeed(seed)
-            Log.d("PezkuwiSigner", "Expanded keypair size: ${expandedKeypair.size}")
+            if (BuildConfig.DEBUG) Log.d("PezkuwiSigner", "Expanded keypair size: ${expandedKeypair.size}")
 
             // Extract 64-byte secret key and 32-byte public key
             val secretKey = BizinikiwSr25519.secretKeyFromKeypair(expandedKeypair)
             val publicKey = BizinikiwSr25519.publicKeyFromKeypair(expandedKeypair)
 
-            Log.d("PezkuwiSigner", "Secret key size: ${secretKey.size}")
-            Log.d("PezkuwiSigner", "Public key: ${publicKey.toHex()}")
+            if (BuildConfig.DEBUG) Log.d("PezkuwiSigner", "Secret key size: ${secretKey.size}")
 
             return PezkuwiKeyPairSigner(secretKey, publicKey)
         }
-
-        private fun ByteArray.toHex(): String = joinToString("") { "%02x".format(it) }
     }
 
     override suspend fun signInheritedImplication(
@@ -55,9 +53,10 @@ class PezkuwiKeyPairSigner private constructor(
     ): SignatureWrapper {
         val payload = inheritedImplication.signingPayload()
 
-        Log.d("PezkuwiSigner", "=== SIGNING WITH BIZINIKIWI ===")
-        Log.d("PezkuwiSigner", "Payload size: ${payload.size}")
-        Log.d("PezkuwiSigner", "Payload: ${payload.toHex()}")
+        if (BuildConfig.DEBUG) {
+            Log.d("PezkuwiSigner", "=== SIGNING WITH BIZINIKIWI ===")
+            Log.d("PezkuwiSigner", "Payload size: ${payload.size}")
+        }
 
         // Use BizinikiwSr25519 native library with "bizinikiwi" signing context
         val signature = BizinikiwSr25519.sign(
@@ -66,16 +65,12 @@ class PezkuwiKeyPairSigner private constructor(
             message = payload
         )
 
-        Log.d("PezkuwiSigner", "Signature: ${signature.toHex()}")
-
         // Verify locally
         val verified = BizinikiwSr25519.verify(signature, payload, publicKey)
-        Log.d("PezkuwiSigner", "Local verification: $verified")
+        if (BuildConfig.DEBUG) Log.d("PezkuwiSigner", "Local verification: $verified")
 
         return SignatureWrapper.Sr25519(signature)
     }
-
-    private fun ByteArray.toHex(): String = joinToString("") { "%02x".format(it) }
 
     suspend fun signRaw(payload: SignerPayloadRaw): SignedRaw {
         // Use BizinikiwSr25519 native library with "bizinikiwi" signing context

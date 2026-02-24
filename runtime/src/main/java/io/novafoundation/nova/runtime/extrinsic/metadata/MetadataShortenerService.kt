@@ -2,6 +2,7 @@ package io.novafoundation.nova.runtime.extrinsic.metadata
 
 import android.util.Log
 import io.novafoundation.nova.common.utils.hasSignedExtension
+import io.novafoundation.nova.runtime.BuildConfig
 import io.novafoundation.nova.metadata_shortener.MetadataShortener
 import io.novafoundation.nova.runtime.ext.shouldDisableMetadataHashCheck
 import io.novafoundation.nova.runtime.ext.utilityAsset
@@ -173,15 +174,22 @@ internal class RealMetadataShortenerService(
         val atLeastMinimumVersion = runtimeMetadata.metadataVersion >= MINIMUM_METADATA_VERSION_TO_CALCULATE_HASH
         val hasSignedExtension = runtimeMetadata.extrinsic.hasSignedExtension(DefaultSignedExtensions.CHECK_METADATA_HASH)
 
-        Log.d(
-            "MetadataShortenerService",
-            "Chain: ${chain.name}, disabledByConfig=$disabledByConfig, canBeEnabled=$canBeEnabled, " +
-                "atLeastMinimumVersion=$atLeastMinimumVersion, hasSignedExtension=$hasSignedExtension"
-        )
-        Log.d("MetadataShortenerService", "chain.additional: ${chain.additional}, disabledCheckMetadataHash=${chain.additional?.disabledCheckMetadataHash}")
+        if (BuildConfig.DEBUG) {
+            Log.d(
+                "MetadataShortenerService",
+                "Chain: ${chain.name}, disabledByConfig=$disabledByConfig, canBeEnabled=$canBeEnabled, " +
+                    "atLeastMinimumVersion=$atLeastMinimumVersion, hasSignedExtension=$hasSignedExtension"
+            )
+            Log.d("MetadataShortenerService", "chain.additional: ${chain.additional}, disabledCheckMetadataHash=${chain.additional?.disabledCheckMetadataHash}")
+        }
 
         val result = canBeEnabled && atLeastMinimumVersion && hasSignedExtension
-        Log.d("MetadataShortenerService", "shouldCalculateMetadataHash result: $result (will use ${if (result) "ENABLED" else "DISABLED"} mode)")
+        if (BuildConfig.DEBUG) {
+            Log.d(
+                "MetadataShortenerService",
+                "shouldCalculateMetadataHash result: $result (will use ${if (result) "ENABLED" else "DISABLED"} mode)"
+            )
+        }
         return result
     }
 }
