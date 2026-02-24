@@ -69,6 +69,7 @@ android {
             initWith buildTypes.release
             matchingFallbacks = ['release']
             signingConfig signingConfigs.market
+            ndk { debugSymbolLevel 'FULL' }
 
             buildConfigField "String", "BuildType", "\"releaseMarket\""
         }
