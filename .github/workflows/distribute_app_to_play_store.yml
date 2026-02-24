@@ -41,6 +41,13 @@ jobs:
           path: app/mapping
         continue-on-error: true
 
+      - name: Download native debug symbols
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-native-debug-symbols
+          path: app/native-debug-symbols
+        continue-on-error: true
+
       - name: Rename artifacts
         run: mv app/bundle/releaseMarket/app-releaseMarket.aab app/bundle/releaseMarket/pezkuwi-wallet-android-${{ github.event.inputs.app_version }}.aab
 
@@ -55,3 +62,4 @@ jobs:
           inAppUpdatePriority: 2
           whatsNewDirectory: distribution/whatsnew
           mappingFile: app/mapping/releaseMarket/mapping.txt
+          debugSymbols: app/native-debug-symbols/releaseMarket/native-debug-symbols.zip

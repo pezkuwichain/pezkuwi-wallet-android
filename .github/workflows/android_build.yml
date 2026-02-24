@@ -229,3 +229,11 @@ jobs:
           name: ${{ inputs.upload-name }}-mapping
           path: app/build/outputs/mapping/
           if-no-files-found: ignore
+
+      - name: ➡️ Upload native debug symbols
+        if: ${{ !startsWith(inputs.gradlew-command, 'false') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.upload-name }}-native-debug-symbols
+          path: app/build/outputs/native-debug-symbols/
+          if-no-files-found: ignore
