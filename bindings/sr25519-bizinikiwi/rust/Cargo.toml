@@ -11,7 +11,7 @@ jni = { version = "0.21", default-features = false }
 zeroize = "1.7"
 
 [profile.release]
-strip = "debuginfo"
+strip = false
 lto = true
 opt-level = "s"
 
