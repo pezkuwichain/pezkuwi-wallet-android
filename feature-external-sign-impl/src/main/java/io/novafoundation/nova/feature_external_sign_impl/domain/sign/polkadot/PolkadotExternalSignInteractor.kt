@@ -316,14 +316,19 @@ class PolkadotExternalSignInteractor(
     }
 
     private suspend fun PolkadotSignPayload.accountId(): AccountId {
-        return when (this) {
-            is PolkadotSignPayload.Json -> {
-                val chain = chainOrNull()
+        return runCatching {
+            when (this) {
+                is PolkadotSignPayload.Json -> {
+                    val chain = chainOrNull()
 
-                chain?.accountIdOf(address) ?: address.anyAddressToAccountId()
+                    chain?.accountIdOf(address) ?: address.anyAddressToAccountId()
+                }
+
+                is PolkadotSignPayload.Raw -> address.anyAddressToAccountId()
             }
-
-            is PolkadotSignPayload.Raw -> address.anyAddressToAccountId()
+        }.getOrElse {
+            // Fallback for addresses that fail both SS58 and Ethereum decode
+            address.toByteArray(Charsets.UTF_8).copyOf(32)
         }
     }
 
