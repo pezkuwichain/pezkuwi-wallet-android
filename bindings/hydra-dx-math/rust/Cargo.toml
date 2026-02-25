@@ -16,6 +16,7 @@ jni = { version = "0.17.0", default-features = false }
 
 [profile.release]
 strip = false
+debug = 2
 lto = true
 opt-level = "s"
 

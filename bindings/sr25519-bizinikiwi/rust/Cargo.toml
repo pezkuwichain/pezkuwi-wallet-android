@@ -12,6 +12,7 @@ zeroize = "1.7"
 
 [profile.release]
 strip = false
+debug = 2
 lto = true
 opt-level = "s"
 
