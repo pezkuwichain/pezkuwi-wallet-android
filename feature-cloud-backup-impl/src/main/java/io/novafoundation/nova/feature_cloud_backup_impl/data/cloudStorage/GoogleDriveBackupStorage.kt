@@ -28,6 +28,7 @@ import io.novafoundation.nova.common.utils.mapErrorNotInstance
 import io.novafoundation.nova.common.utils.systemCall.SystemCall
 import io.novafoundation.nova.common.utils.systemCall.SystemCallExecutor
 import io.novafoundation.nova.feature_cloud_backup_api.domain.model.errors.FetchBackupError
+import android.util.Log
 import io.novafoundation.nova.feature_cloud_backup_impl.BuildConfig
 import io.novafoundation.nova.feature_cloud_backup_impl.data.ReadyForStorageBackup
 import kotlinx.coroutines.Dispatchers
@@ -70,8 +71,18 @@ internal class GoogleDriveBackupStorage(
     }
 
     override suspend fun authenticateUser(): Result<Unit> = withContext(Dispatchers.IO) {
+        Log.d(
+            "GoogleDriveBackup",
+            "authenticateUser: oauthClientId=${oauthClientId.take(20)}..."
+        )
         val systemCall = GoogleSignInSystemCall(contextManager, oauthClientId, driveScope())
-        systemCallExecutor.executeSystemCall(systemCall)
+        val result = systemCallExecutor.executeSystemCall(systemCall)
+        Log.d(
+            "GoogleDriveBackup",
+            "authenticateUser result: success=${result.isSuccess}" +
+                "${result.exceptionOrNull()?.let { ", error=${it::class.simpleName}: ${it.message}" } ?: ""}"
+        )
+        result
     }
 
     override suspend fun checkBackupExists(): Result<Boolean> = withContext(Dispatchers.IO) {
@@ -110,6 +121,11 @@ internal class GoogleDriveBackupStorage(
     private suspend fun <T> runCatchingRecoveringAuthErrors(action: suspend () -> T): Result<T> {
         return runCatching { action() }
             .recoverCatching {
+                Log.e(
+                    "GoogleDriveBackup",
+                    "Drive operation failed: ${it::class.simpleName}: ${it.message}",
+                    it
+                )
                 when (it) {
                     is UserRecoverableAuthException -> it.askForConsent()
                     is UserRecoverableAuthIOException -> it.cause?.askForConsent()
@@ -249,10 +265,18 @@ private class GoogleSignInSystemCall(
         val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(intent)
 
         return try {
-            task.getResult(ApiException::class.java)
-
+            val account = task.getResult(ApiException::class.java)
+            Log.d(
+                "GoogleDriveBackup",
+                "Sign-in success: email=${account?.email}, idToken=${account?.idToken?.take(20) ?: "null"}"
+            )
             Result.success(Unit)
         } catch (e: ApiException) {
+            Log.e(
+                "GoogleDriveBackup",
+                "Sign-in failed: statusCode=${e.statusCode}, message=${e.message}",
+                e
+            )
             Result.failure(e)
         }
     }
