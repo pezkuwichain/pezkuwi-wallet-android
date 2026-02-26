@@ -225,9 +225,13 @@ class RealStakingDashboardInteractor(
         noPriceStakingDashboard: NoPriceStakingDashboard,
         assets: Map<FullChainAssetId, Asset>,
     ): ExtendedLoadingState<StakingDashboard> {
-        Log.d("StakingDashboard", "addPricesToDashboard: hasStake=${noPriceStakingDashboard.hasStake.size}, " +
-            "noStake=${noPriceStakingDashboard.noStake.size}, notYetResolved=${noPriceStakingDashboard.notYetResolved.size}, " +
-            "assets=${assets.size}")
+        Log.d(
+            "StakingDashboard",
+            "addPricesToDashboard: hasStake=${noPriceStakingDashboard.hasStake.size}, " +
+                "noStake=${noPriceStakingDashboard.noStake.size}, " +
+                "notYetResolved=${noPriceStakingDashboard.notYetResolved.size}, " +
+                "assets=${assets.size}"
+        )
 
         val hasStakeOptions = noPriceStakingDashboard.hasStake.mapNotNull { addPriceToHasStakeItem(it, assets) }
         val noStakeOptions = noPriceStakingDashboard.noStake.mapNotNull { addAssetInfoToNoStakeItem(it, assets) }
@@ -259,7 +263,10 @@ class RealStakingDashboardInteractor(
     ): AggregatedStakingDashboardOption<HasStake>? {
         val asset = assets[item.chainAsset.fullId]
         if (asset == null) {
-            Log.w("StakingDashboard", "Missing asset for hasStake: chain=${item.chain.name}, asset=${item.chainAsset.symbol} (${item.chainAsset.fullId})")
+            Log.w(
+                "StakingDashboard",
+                "Missing asset for hasStake: chain=${item.chain.name}, asset=${item.chainAsset.symbol}"
+            )
             return null
         }
 
@@ -277,7 +284,10 @@ class RealStakingDashboardInteractor(
     ): AggregatedStakingDashboardOption<NoStake>? {
         val asset = assets[item.chainAsset.fullId]
         if (asset == null) {
-            Log.w("StakingDashboard", "Missing asset for noStake: chain=${item.chain.name}, asset=${item.chainAsset.symbol} (${item.chainAsset.fullId})")
+            Log.w(
+                "StakingDashboard",
+                "Missing asset for noStake: chain=${item.chain.name}, asset=${item.chainAsset.symbol}"
+            )
             return null
         }
 
@@ -299,7 +309,10 @@ class RealStakingDashboardInteractor(
     ): AggregatedStakingDashboardOption<NotYetResolved>? {
         val asset = assets[item.chainAsset.fullId]
         if (asset == null) {
-            Log.w("StakingDashboard", "Missing asset for notYetResolved: chain=${item.chain.name}, asset=${item.chainAsset.symbol} (${item.chainAsset.fullId})")
+            Log.w(
+                "StakingDashboard",
+                "Missing asset for notYetResolved: chain=${item.chain.name}, asset=${item.chainAsset.symbol}"
+            )
             return null
         }
 
