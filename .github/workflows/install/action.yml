@@ -16,7 +16,9 @@ runs:
         cmdline-tools-version: 12266719
 
     - name: Install NDK
-      run: echo "y" | sudo ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --install "ndk;26.1.10909125" --sdk_root=${ANDROID_SDK_ROOT}
+      run: |
+        SDKMANAGER=$(find ${ANDROID_SDK_ROOT}/cmdline-tools -name sdkmanager -type f 2>/dev/null | head -1)
+        echo "y" | sudo ${SDKMANAGER} --install "ndk;26.1.10909125" --sdk_root=${ANDROID_SDK_ROOT}
       shell: bash
 
     - name: Set ndk.dir in local.properties
