@@ -9,7 +9,7 @@ jobs:
   build-app:
     uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
     with:
-      branch: ${{github.head_ref}}
+      branch: ${{ github.head_ref || github.ref_name || 'main' }}
       gradlew-command: assembleDebug
       upload-name: develop-apk
       run-tests: false
@@ -18,7 +18,7 @@ jobs:
 
   run-tests:
     needs: [build-app]
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: anroid-results
+          name: android-results
           path: ./allure-results.tar
 
   report:
@@ -63,7 +63,7 @@ jobs:
       - name: Unzip results
         run: |
           find artifacts -name allure-results.tar -exec tar -xvf {} \;
-      
+
       - name: Debug path
         run: |
           ls -laR
@@ -89,5 +89,5 @@ jobs:
             💸 Balances tests failed.
 
             Test Results: https://pezkuwichain.github.io/balances_test_result/${{ github.run_number }}/index.html
-            
+
             Github run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
