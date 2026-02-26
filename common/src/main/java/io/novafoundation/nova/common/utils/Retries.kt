@@ -7,6 +7,7 @@ import kotlinx.coroutines.delay
 
 suspend inline fun <T> retryUntilDone(
     retryStrategy: ReconnectStrategy = LinearReconnectStrategy(step = 500L),
+    maxAttempts: Int = Int.MAX_VALUE,
     block: () -> T,
 ): T {
     var attempt = 0
@@ -17,9 +18,13 @@ suspend inline fun <T> retryUntilDone(
         if (blockResult.isSuccess) {
             return blockResult.requireValue()
         } else {
-            Log.e("RetryUntilDone", "Failed to execute retriable operation:", blockResult.requireException())
-
             attempt++
+
+            if (attempt >= maxAttempts) {
+                throw blockResult.requireException()
+            }
+
+            Log.e("RetryUntilDone", "Failed to execute retriable operation (attempt $attempt):", blockResult.requireException())
 
             delay(retryStrategy.getTimeForReconnect(attempt))
         }

@@ -39,7 +39,7 @@ class RealStakingStatsDataSource(
         stakingAccounts: StakingAccounts,
         stakingChains: List<Chain>
     ): MultiChainStakingStats = withContext(Dispatchers.IO) {
-        retryUntilDone {
+        retryUntilDone(maxAttempts = 5) {
             val globalConfig = globalConfigDataSource.getGlobalConfig()
             val chainsByEndpoint = splitChainsByEndpoint(stakingChains, globalConfig)
 

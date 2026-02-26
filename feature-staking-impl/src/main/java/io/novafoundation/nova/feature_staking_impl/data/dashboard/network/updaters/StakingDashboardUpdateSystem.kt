@@ -127,9 +127,16 @@ class RealStakingDashboardUpdateSystem(
             .onEach { latestOffChainSyncIndex.value = it.index }
             .throttleLast(offChainSyncDebounceRate)
             .mapLatest { (index, stakingAccounts) ->
+                val stats = runCatching {
+                    stakingStatsDataSource.fetchStakingStats(stakingAccounts, stakingChains)
+                }.getOrElse {
+                    Log.d("StakingDashboardUpdateSystem", "Failed to fetch staking stats after retries", it)
+                    emptyMap()
+                }
+
                 MultiChainOffChainSyncResult(
                     index = index,
-                    multiChainStakingStats = stakingStatsDataSource.fetchStakingStats(stakingAccounts, stakingChains),
+                    multiChainStakingStats = stats,
                 )
             }
     }
