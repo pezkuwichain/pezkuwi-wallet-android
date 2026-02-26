@@ -90,8 +90,8 @@ class RealStakingDashboardUpdateSystem(
                     sharedRequestsBuilder.subscribe(accountScope)
 
                     chainUpdates.mergeIfMultiple()
-                }.catch {
-                    Log.d("StakingDashboardUpdateSystem", "Failed to sync staking dashboard status for ${stakingChain.name}")
+                }.catch { error ->
+                    Log.e("StakingDashboardUpdateSystem", "Failed to sync staking dashboard status for ${stakingChain.name}", error)
                 }
             }
 

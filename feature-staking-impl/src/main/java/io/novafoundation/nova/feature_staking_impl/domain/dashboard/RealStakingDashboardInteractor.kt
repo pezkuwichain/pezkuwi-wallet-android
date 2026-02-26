@@ -2,6 +2,7 @@
 
 package io.novafoundation.nova.feature_staking_impl.domain.dashboard
 
+import android.util.Log
 import io.novafoundation.nova.common.domain.ExtendedLoadingState
 import io.novafoundation.nova.common.domain.asLoaded
 import io.novafoundation.nova.common.domain.dataOrNull
@@ -224,9 +225,13 @@ class RealStakingDashboardInteractor(
         noPriceStakingDashboard: NoPriceStakingDashboard,
         assets: Map<FullChainAssetId, Asset>,
     ): ExtendedLoadingState<StakingDashboard> {
-        val hasStakeOptions = noPriceStakingDashboard.hasStake.map { addPriceToHasStakeItem(it, assets) }
-        val noStakeOptions = noPriceStakingDashboard.noStake.map { addAssetInfoToNoStakeItem(it, assets) }
-        val notYetResolvedOptions = noPriceStakingDashboard.notYetResolved.map { addAssetInfoToNotYetResolvedItem(it, assets) }
+        Log.d("StakingDashboard", "addPricesToDashboard: hasStake=${noPriceStakingDashboard.hasStake.size}, " +
+            "noStake=${noPriceStakingDashboard.noStake.size}, notYetResolved=${noPriceStakingDashboard.notYetResolved.size}, " +
+            "assets=${assets.size}")
+
+        val hasStakeOptions = noPriceStakingDashboard.hasStake.mapNotNull { addPriceToHasStakeItem(it, assets) }
+        val noStakeOptions = noPriceStakingDashboard.noStake.mapNotNull { addAssetInfoToNoStakeItem(it, assets) }
+        val notYetResolvedOptions = noPriceStakingDashboard.notYetResolved.mapNotNull { addAssetInfoToNotYetResolvedItem(it, assets) }
 
         return StakingDashboard(
             hasStake = hasStakeOptions.sortedByChain(),
@@ -239,8 +244,8 @@ class RealStakingDashboardInteractor(
         assets: Map<FullChainAssetId, Asset>,
         stakingDApps: ExtendedLoadingState<List<StakingDApp>>,
     ): MoreStakingOptions {
-        val noStakeOptions = noPriceMoreStakingOptions.noStake.map { addAssetInfoToNoStakeItem(it, assets) }
-        val notYetResolvedOptions = noPriceMoreStakingOptions.notYetResolved.map { addAssetInfoToNotYetResolvedItem(it, assets) }
+        val noStakeOptions = noPriceMoreStakingOptions.noStake.mapNotNull { addAssetInfoToNoStakeItem(it, assets) }
+        val notYetResolvedOptions = noPriceMoreStakingOptions.notYetResolved.mapNotNull { addAssetInfoToNotYetResolvedItem(it, assets) }
 
         return MoreStakingOptions(
             inAppStaking = (noStakeOptions + notYetResolvedOptions).sortedByChain(),
@@ -251,10 +256,16 @@ class RealStakingDashboardInteractor(
     private fun addPriceToHasStakeItem(
         item: NoPriceStakingDashboardOption<HasStake>,
         assets: Map<FullChainAssetId, Asset>,
-    ): AggregatedStakingDashboardOption<HasStake> {
+    ): AggregatedStakingDashboardOption<HasStake>? {
+        val asset = assets[item.chainAsset.fullId]
+        if (asset == null) {
+            Log.w("StakingDashboard", "Missing asset for hasStake: chain=${item.chain.name}, asset=${item.chainAsset.symbol} (${item.chainAsset.fullId})")
+            return null
+        }
+
         return AggregatedStakingDashboardOption(
             chain = item.chain,
-            token = assets.getValue(item.chainAsset.fullId).token,
+            token = asset.token,
             stakingState = item.stakingState,
             syncingStage = item.syncingStage
         )
@@ -263,8 +274,12 @@ class RealStakingDashboardInteractor(
     private fun addAssetInfoToNoStakeItem(
         item: NoPriceStakingDashboardOption<NoBalanceNoStake>,
         assets: Map<FullChainAssetId, Asset>,
-    ): AggregatedStakingDashboardOption<NoStake> {
-        val asset = assets.getValue(item.chainAsset.fullId)
+    ): AggregatedStakingDashboardOption<NoStake>? {
+        val asset = assets[item.chainAsset.fullId]
+        if (asset == null) {
+            Log.w("StakingDashboard", "Missing asset for noStake: chain=${item.chain.name}, asset=${item.chainAsset.symbol} (${item.chainAsset.fullId})")
+            return null
+        }
 
         return AggregatedStakingDashboardOption(
             chain = item.chain,
@@ -281,8 +296,12 @@ class RealStakingDashboardInteractor(
     private fun addAssetInfoToNotYetResolvedItem(
         item: NoPriceStakingDashboardOption<NotYetResolved>,
         assets: Map<FullChainAssetId, Asset>,
-    ): AggregatedStakingDashboardOption<NotYetResolved> {
-        val asset = assets.getValue(item.chainAsset.fullId)
+    ): AggregatedStakingDashboardOption<NotYetResolved>? {
+        val asset = assets[item.chainAsset.fullId]
+        if (asset == null) {
+            Log.w("StakingDashboard", "Missing asset for notYetResolved: chain=${item.chain.name}, asset=${item.chainAsset.symbol} (${item.chainAsset.fullId})")
+            return null
+        }
 
         return AggregatedStakingDashboardOption(
             chain = item.chain,
