@@ -40,6 +40,7 @@ import io.novafoundation.nova.feature_assets.presentation.balance.breakdown.mode
 import io.novafoundation.nova.feature_assets.presentation.balance.common.AssetListMixinFactory
 import io.novafoundation.nova.feature_assets.presentation.balance.common.buySell.BuySellSelectorMixin
 import io.novafoundation.nova.feature_assets.presentation.balance.common.buySell.BuySellSelectorMixinFactory
+import io.novafoundation.nova.feature_assets.presentation.citizenship.PendingCitizenshipReferrer
 import io.novafoundation.nova.feature_assets.presentation.balance.list.model.NftPreviewUi
 import io.novafoundation.nova.feature_assets.presentation.balance.list.model.TotalBalanceModel
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.AssetViewModeModel
@@ -115,8 +116,8 @@ class BalanceListViewModel(
     private val _showBalanceBreakdownEvent = MutableLiveData<Event<TotalBalanceBreakdownModel>>()
     val showBalanceBreakdownEvent: LiveData<Event<TotalBalanceBreakdownModel>> = _showBalanceBreakdownEvent
 
-    private val _openCitizenshipEvent = MutableLiveData<Event<Unit>>()
-    val openCitizenshipEvent: LiveData<Event<Unit>> = _openCitizenshipEvent
+    private val _openCitizenshipEvent = MutableLiveData<Event<String?>>()
+    val openCitizenshipEvent: LiveData<Event<String?>> = _openCitizenshipEvent
 
     private val _shareReferralEvent = MutableLiveData<Event<String>>()
     val shareReferralEvent: LiveData<Event<String>> = _shareReferralEvent
@@ -267,6 +268,10 @@ class BalanceListViewModel(
         walletInteractor.nftSyncTrigger()
             .onEach { trigger -> walletInteractor.syncChainNfts(selectedMetaAccount.first(), trigger.chain) }
             .launchIn(viewModelScope)
+
+        PendingCitizenshipReferrer.referrerEvent
+            .onEach { referrer -> _openCitizenshipEvent.postValue(Event(referrer)) }
+            .launchIn(this)
     }
 
     fun fullSync() {
@@ -409,13 +414,14 @@ class BalanceListViewModel(
     }
 
     fun basvuruClicked() = launchUnit {
-        _openCitizenshipEvent.postValue(Event(Unit))
+        _openCitizenshipEvent.postValue(Event(null))
     }
 
     fun shareReferralClicked() = launchUnit {
         val metaAccount = selectedAccountUseCase.getSelectedMetaAccount()
         val address = metaAccount.defaultSubstrateAddress ?: return@launchUnit
-        val shareText = resourceManager.getString(R.string.citizenship_share_referral, address)
+        val deepLink = "pezkuwiwallet://pezkuwi/open/citizenship?referrer=$address"
+        val shareText = resourceManager.getString(R.string.citizenship_share_referral, deepLink, address)
         _shareReferralEvent.postValue(Event(shareText))
     }
 

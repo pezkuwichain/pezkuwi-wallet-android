@@ -8,6 +8,7 @@ import io.novafoundation.nova.feature_account_api.domain.interfaces.AccountRepos
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.balance.detail.deeplink.AssetDetailsDeepLinkConfigurator
 import io.novafoundation.nova.feature_assets.presentation.balance.detail.deeplink.AssetDetailsDeepLinkHandler
+import io.novafoundation.nova.feature_assets.presentation.citizenship.deeplink.CitizenshipDeepLinkHandler
 import io.novafoundation.nova.feature_assets.presentation.novacard.common.NovaCardRestrictionCheckMixin
 import io.novafoundation.nova.feature_assets.presentation.novacard.overview.deeplink.NovaCardDeepLinkHandler
 import io.novafoundation.nova.feature_deep_linking.presentation.configuring.LinkBuilderFactory
@@ -58,10 +59,19 @@ class DeepLinkModule {
 
     @Provides
     @FeatureScope
+    fun provideCitizenshipDeepLinkHandler(
+        automaticInteractionGate: AutomaticInteractionGate
+    ): CitizenshipDeepLinkHandler {
+        return CitizenshipDeepLinkHandler(automaticInteractionGate)
+    }
+
+    @Provides
+    @FeatureScope
     fun provideDeepLinks(
         assetDetails: AssetDetailsDeepLinkHandler,
-        novaCardDeepLink: NovaCardDeepLinkHandler
+        novaCardDeepLink: NovaCardDeepLinkHandler,
+        citizenshipDeepLink: CitizenshipDeepLinkHandler
     ): AssetDeepLinks {
-        return AssetDeepLinks(listOf(assetDetails, novaCardDeepLink))
+        return AssetDeepLinks(listOf(assetDetails, novaCardDeepLink, citizenshipDeepLink))
     }
 }

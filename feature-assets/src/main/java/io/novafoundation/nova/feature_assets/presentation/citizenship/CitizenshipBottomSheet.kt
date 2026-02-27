@@ -3,6 +3,7 @@ package io.novafoundation.nova.feature_assets.presentation.citizenship
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,16 @@ import io.novafoundation.nova.feature_assets.di.AssetsFeatureComponent
 
 class CitizenshipBottomSheet : BaseBottomSheetFragment<CitizenshipViewModel, FragmentCitizenshipBottomSheetBinding>() {
 
+    companion object {
+        private const val KEY_REFERRER = "referrer"
+
+        fun newInstance(referrer: String? = null) = CitizenshipBottomSheet().apply {
+            arguments = Bundle().apply {
+                referrer?.let { putString(KEY_REFERRER, it) }
+            }
+        }
+    }
+
     override fun createBinding() = FragmentCitizenshipBottomSheetBinding.inflate(layoutInflater)
 
     override fun inject() {
@@ -35,6 +46,7 @@ class CitizenshipBottomSheet : BaseBottomSheetFragment<CitizenshipViewModel, Fra
 
     override fun initViews() {
         setupRegionSpinner()
+        prefillReferrer()
 
         binder.citizenshipActionButton.setOnClickListener {
             when (viewModel.citizenshipStatus.value) {
@@ -46,6 +58,13 @@ class CitizenshipBottomSheet : BaseBottomSheetFragment<CitizenshipViewModel, Fra
 
         binder.citizenshipShareButton.setOnClickListener {
             viewModel.shareReferralLink()
+        }
+    }
+
+    private fun prefillReferrer() {
+        val referrer = arguments?.getString(KEY_REFERRER)
+        if (!referrer.isNullOrBlank()) {
+            binder.citizenshipReferrerInput.setText(referrer)
         }
     }
 

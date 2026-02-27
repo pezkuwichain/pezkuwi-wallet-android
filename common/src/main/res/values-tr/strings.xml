@@ -45,7 +45,7 @@
     <string name="citizenship_approved">Zaten vatandaşsınız</string>
     <string name="citizenship_insufficient_balance">People Chain\'de yetersiz bakiye. En az 1.1 HEZ gerekli.</string>
     <string name="citizenship_success">Başvuru başarıyla gönderildi</string>
-    <string name="citizenship_share_referral">Dijital Kurdistan vatandaşlığı için arkadaşını davet et!\n\nReferans adresim:\n%s</string>
+    <string name="citizenship_share_referral">Dijital Kurdistan vatandaşlığı için arkadaşını davet et!\n\nUygulamada aç:\n%1$s\n\nReferans adresi:\n%2$s</string>
     <string name="citizenship_share_button">Referans Linkini Paylaş</string>
     <string name="citizenship_referrer_hint">Referans Adresi (opsiyonel)</string>
     <string name="citizenship_sign_description">Referansınız başvurunuzu onayladı. Vatandaşlığı tamamlamak için imzalayın.</string>

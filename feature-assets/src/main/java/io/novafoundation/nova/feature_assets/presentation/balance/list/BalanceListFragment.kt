@@ -178,8 +178,8 @@ class BalanceListFragment :
         viewModel.filtersIndicatorIcon.observe(headerAdapter::setFilterIconRes)
         viewModel.assetViewModeModelFlow.observe { manageAssetsAdapter.setAssetViewModeModel(it) }
 
-        viewModel.openCitizenshipEvent.observeEvent {
-            CitizenshipBottomSheet().show(childFragmentManager, "citizenship")
+        viewModel.openCitizenshipEvent.observeEvent { referrer ->
+            CitizenshipBottomSheet.newInstance(referrer).show(childFragmentManager, "citizenship")
         }
 
         viewModel.shareReferralEvent.observeEvent { shareText ->
