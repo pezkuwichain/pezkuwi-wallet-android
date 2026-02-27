@@ -65,6 +65,9 @@ class CitizenshipBottomSheet : BaseBottomSheetFragment<CitizenshipViewModel, Fra
         val referrer = arguments?.getString(KEY_REFERRER)
         if (!referrer.isNullOrBlank()) {
             binder.citizenshipReferrerInput.setText(referrer)
+            binder.citizenshipReferrerInput.isEnabled = false
+            binder.citizenshipReferrerLayout.isEnabled = false
+            binder.citizenshipReferrerLayout.hint = getString(R.string.citizenship_referrer_hint)
         }
     }
 
