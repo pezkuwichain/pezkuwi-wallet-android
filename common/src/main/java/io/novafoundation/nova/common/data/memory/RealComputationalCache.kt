@@ -1,7 +1,5 @@
 package io.novafoundation.nova.common.data.memory
 
-import android.util.Log
-import io.novafoundation.nova.common.utils.LOG_TAG
 import io.novafoundation.nova.common.utils.flowOfAll
 import io.novafoundation.nova.common.utils.inBackground
 import io.novafoundation.nova.common.utils.invokeOnCompletion
@@ -75,17 +73,12 @@ internal class RealComputationalCache : ComputationalCache, CoroutineScope by Co
         val awaitable = mutex.withLock {
             val existing = memory[key]
             if (existing != null && existing.aggregateScope.isActive) {
-                Log.d(LOG_TAG, "Key $key requested - already present")
-
                 existing.dependents += scope
 
                 existing.awaitable
             } else {
                 if (existing != null) {
-                    Log.d(LOG_TAG, "Key $key requested - stale (aggregateScope cancelled), recreating")
                     memory.remove(key)
-                } else {
-                    Log.d(LOG_TAG, "Key $key requested - creating new operation")
                 }
 
                 val aggregateScope = CoroutineScope(Dispatchers.Default)
@@ -104,13 +97,9 @@ internal class RealComputationalCache : ComputationalCache, CoroutineScope by Co
                         entry.dependents -= scope
 
                         if (entry.dependents.isEmpty()) {
-                            Log.d(this@RealComputationalCache.LOG_TAG, "Key $key - last scope cancelled")
-
                             memory.remove(key)
 
                             entry.aggregateScope.cancel()
-                        } else {
-                            Log.d(this@RealComputationalCache.LOG_TAG, "Key $key - scope cancelled, ${entry.dependents.size} remaining")
                         }
                     }
                 }

@@ -156,7 +156,6 @@ class PezkuwiDashboardRepository(
             }
             kycModule.storage("KycStatuses").query(accountId, binding = { decoded ->
                 val enumName = decoded?.castToDictEnum()?.name
-                Log.d("PezkuwiDashboard", "KYC status raw enum: '$enumName' (decoded=$decoded)")
                 when (enumName) {
                     "PendingReferral" -> CitizenshipStatus.PENDING_REFERRAL
                     "ReferrerApproved" -> CitizenshipStatus.REFERRER_APPROVED

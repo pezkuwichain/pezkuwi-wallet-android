@@ -225,14 +225,6 @@ class RealStakingDashboardInteractor(
         noPriceStakingDashboard: NoPriceStakingDashboard,
         assets: Map<FullChainAssetId, Asset>,
     ): ExtendedLoadingState<StakingDashboard> {
-        Log.d(
-            "StakingDashboard",
-            "addPricesToDashboard: hasStake=${noPriceStakingDashboard.hasStake.size}, " +
-                "noStake=${noPriceStakingDashboard.noStake.size}, " +
-                "notYetResolved=${noPriceStakingDashboard.notYetResolved.size}, " +
-                "assets=${assets.size}"
-        )
-
         val hasStakeOptions = noPriceStakingDashboard.hasStake.mapNotNull { addPriceToHasStakeItem(it, assets) }
         val noStakeOptions = noPriceStakingDashboard.noStake.mapNotNull { addAssetInfoToNoStakeItem(it, assets) }
         val notYetResolvedOptions = noPriceStakingDashboard.notYetResolved.mapNotNull { addAssetInfoToNotYetResolvedItem(it, assets) }

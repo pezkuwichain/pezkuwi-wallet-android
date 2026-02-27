@@ -130,7 +130,6 @@ class RealStakingDashboardUpdateSystem(
                 val stats = runCatching {
                     stakingStatsDataSource.fetchStakingStats(stakingAccounts, stakingChains)
                 }.getOrElse {
-                    Log.d("StakingDashboardUpdateSystem", "Failed to fetch staking stats after retries", it)
                     emptyMap()
                 }
 

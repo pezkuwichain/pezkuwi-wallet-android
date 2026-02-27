@@ -405,6 +405,16 @@ class StakingRepositoryImpl(
     }
 
     private suspend fun isPagedExposuresUsed(chainId: ChainId): Boolean {
+        // Check if the flag is already in cache before calling getEntry, which suspends
+        // forever if the entry doesn't exist. The flag is written by ValidatorExposureUpdater
+        // which only runs in the staking detail flow, not the dashboard.
+        val isCached = storageCache.isFullKeyInCache(ValidatorExposureUpdater.STORAGE_KEY_PAGED_EXPOSURES, chainId)
+        if (!isCached) {
+            // Default to paged exposures (modern chains). If paged returns empty,
+            // getElectedValidatorsExposure will return an empty map gracefully.
+            return true
+        }
+
         val isPagedExposuresValue = storageCache.getEntry(ValidatorExposureUpdater.STORAGE_KEY_PAGED_EXPOSURES, chainId)
 
         return ValidatorExposureUpdater.decodeIsPagedExposuresValue(isPagedExposuresValue.content)
