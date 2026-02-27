@@ -208,7 +208,9 @@ class ValidatorExposureUpdater(
         val isUsed = when (state) {
             ExposureState.CERTAIN_PAGED -> true
             ExposureState.CERTAIN_LEGACY -> false
-            ExposureState.UNCERTAIN -> return
+            // When no exposures found for the current era (neither paged nor legacy),
+            // still save a default flag to prevent storageCache.getEntry() from suspending forever
+            ExposureState.UNCERTAIN -> false
         }
 
         val encodedValue = isPagedExposuresValue(isUsed)
