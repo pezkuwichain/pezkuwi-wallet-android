@@ -2778,7 +2778,7 @@
     <string name="citizenship_approved">Tu jixwe hemwelatî yî</string>
     <string name="citizenship_insufficient_balance">Di People Chain de balance têr nîne. Herî kêm 1.1 HEZ pêwîst e.</string>
     <string name="citizenship_success">Serlêdan bi serkeftî hat şandin</string>
-    <string name="citizenship_share_referral">Ji bo hemwelatîbûna Kurdistana Dîjîtal hevalê xwe vexwîne!\n\nDi sepanê de veke:\n%1$s\n\nNavnîşana referansê:\n%2$s</string>
+    <string name="citizenship_share_referral">Hevalê min ê hêja, Kurdistanê Dîjîtal hat ava kirin, tu jî cîhê xwe bigire!\n\n%1$s\n\nVê navnîşanê li beşa referralê bileqîne:\n%2$s</string>
     <string name="citizenship_share_button">Lînka Referansê Parve Bike</string>
     <string name="citizenship_referrer_hint">Navnîşana Referansê (ne mecbûrî)</string>
     <string name="citizenship_sign_description">Referansa te serlêdana te pejirand. Ji bo temamkirina hemwelatîbûnê îmze bike.</string>

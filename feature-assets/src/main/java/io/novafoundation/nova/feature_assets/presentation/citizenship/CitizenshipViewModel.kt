@@ -208,8 +208,8 @@ class CitizenshipViewModel(
                 val metaAccount = selectedAccountUseCase.getSelectedMetaAccount()
                 val address = metaAccount.addressIn(chain) ?: return@launch
 
-                val deepLink = "pezkuwiwallet://pezkuwi/open/citizenship?referrer=$address"
-                val shareText = resourceManager.getString(R.string.citizenship_share_referral, deepLink, address)
+                val telegramLink = "https://t.me/pezkuwichainBot?start=$address"
+                val shareText = resourceManager.getString(R.string.citizenship_share_referral, telegramLink, address)
                 _shareEvent.postValue(Event(shareText))
             } catch (e: Exception) {
                 Log.e(TAG, "shareReferralLink failed", e)

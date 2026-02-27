@@ -2782,7 +2782,7 @@
     <string name="citizenship_approved">You are already a citizen</string>
     <string name="citizenship_insufficient_balance">Insufficient balance on People Chain. At least 1.1 HEZ required.</string>
     <string name="citizenship_success">Application submitted successfully</string>
-    <string name="citizenship_share_referral">Refer a friend for Digital Kurdistan citizenship!\n\nOpen in app:\n%1$s\n\nReferrer address:\n%2$s</string>
+    <string name="citizenship_share_referral">Dear friend, Digital Kurdistan has been established, take your place!\n\n%1$s\n\nPaste this address in the referral field:\n%2$s</string>
     <string name="citizenship_share_button">Share Referral Link</string>
     <string name="citizenship_referrer_hint">Referrer Address (optional)</string>
     <string name="citizenship_sign_description">Your referrer has approved your application. Sign to complete citizenship.</string>
