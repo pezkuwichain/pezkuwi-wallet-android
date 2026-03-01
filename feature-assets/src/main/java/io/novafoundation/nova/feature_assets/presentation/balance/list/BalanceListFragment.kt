@@ -179,7 +179,7 @@ class BalanceListFragment :
         viewModel.assetViewModeModelFlow.observe { manageAssetsAdapter.setAssetViewModeModel(it) }
 
         viewModel.openCitizenshipEvent.observeEvent { referrer ->
-            CitizenshipBottomSheet.newInstance(referrer).show(childFragmentManager, "citizenship")
+            CitizenshipBottomSheet.newInstance(referrer.ifBlank { null }).show(childFragmentManager, "citizenship")
         }
 
         viewModel.shareReferralEvent.observeEvent { shareText ->

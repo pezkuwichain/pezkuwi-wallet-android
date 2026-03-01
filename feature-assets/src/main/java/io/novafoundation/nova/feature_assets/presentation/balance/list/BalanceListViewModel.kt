@@ -414,7 +414,7 @@ class BalanceListViewModel(
     }
 
     fun basvuruClicked() = launchUnit {
-        _openCitizenshipEvent.postValue(Event(null))
+        _openCitizenshipEvent.postValue(Event(""))
     }
 
     fun shareReferralClicked() = launchUnit {
