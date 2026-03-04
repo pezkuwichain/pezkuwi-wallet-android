@@ -7,5 +7,6 @@ data class PezkuwiDashboardData(
     val roles: List<String>,
     val trustScore: BigInteger,
     val welatiCount: Int,
-    val citizenshipStatus: CitizenshipStatus = CitizenshipStatus.NOT_STARTED
+    val citizenshipStatus: CitizenshipStatus = CitizenshipStatus.NOT_STARTED,
+    val isTrackingScore: Boolean = false
 )

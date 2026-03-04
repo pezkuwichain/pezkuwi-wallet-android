@@ -23,12 +23,19 @@ class PezkuwiDashboardAdapter(
         fun onBasvuruClicked()
         fun onSignClicked()
         fun onShareReferralClicked()
+        fun onStartTrackingClicked()
     }
 
     private var model: PezkuwiDashboardModel? = null
+    private var trackingLoading: Boolean = false
 
     fun setModel(model: PezkuwiDashboardModel) {
         this.model = model
+        notifyChangedIfShown()
+    }
+
+    fun setTrackingLoading(loading: Boolean) {
+        this.trackingLoading = loading
         notifyChangedIfShown()
     }
 
@@ -38,7 +45,7 @@ class PezkuwiDashboardAdapter(
     }
 
     override fun onBindViewHolder(holder: PezkuwiDashboardHolder, position: Int) {
-        model?.let { holder.bind(it) }
+        model?.let { holder.bind(it, trackingLoading) }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -59,13 +66,23 @@ class PezkuwiDashboardHolder(
         binder.pezkuwiDashboardBasvuruButton.setOnClickListener { handler.onBasvuruClicked() }
         binder.pezkuwiDashboardSignButton.setOnClickListener { handler.onSignClicked() }
         binder.pezkuwiDashboardShareButton.setOnClickListener { handler.onShareReferralClicked() }
+        binder.pezkuwiDashboardStartTrackingButton.setOnClickListener { handler.onStartTrackingClicked() }
     }
 
-    fun bind(model: PezkuwiDashboardModel) {
+    fun bind(model: PezkuwiDashboardModel, trackingLoading: Boolean = false) {
         bindRoles(model.roles)
         binder.pezkuwiDashboardTrustValue.text = model.trustScore
         binder.pezkuwiDashboardWelatiCount.text = model.welatiCount
         bindButtons(model.citizenshipStatus)
+
+        val showTracking = !model.isTrackingScore && model.citizenshipStatus == CitizenshipStatus.APPROVED
+        binder.pezkuwiDashboardStartTrackingButton.visibility = if (showTracking) View.VISIBLE else View.GONE
+
+        if (showTracking) {
+            binder.pezkuwiDashboardStartTrackingButton.isEnabled = !trackingLoading
+            binder.pezkuwiDashboardStartTrackingButton.text = if (trackingLoading) "..." else
+                binder.root.context.getString(R.string.pezkuwi_dashboard_start_tracking)
+        }
     }
 
     private fun bindButtons(status: CitizenshipStatus) {

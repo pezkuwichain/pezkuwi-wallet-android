@@ -65,7 +65,12 @@ import io.novafoundation.nova.feature_wallet_api.presentation.formatters.amount.
 import io.novafoundation.nova.feature_wallet_api.presentation.model.FractionPartStyling
 import io.novafoundation.nova.feature_wallet_connect_api.domain.sessions.WalletConnectSessionsUseCase
 import io.novafoundation.nova.feature_wallet_connect_api.presentation.mapNumberOfActiveSessionsToUi
+import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicService
+import io.novafoundation.nova.feature_account_api.data.ethereum.transaction.TransactionOrigin
+import io.novafoundation.nova.runtime.ext.ChainGeneses
+import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
+import io.novasama.substrate_sdk_android.runtime.extrinsic.call
 import java.text.NumberFormat
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.combine
@@ -104,7 +109,9 @@ class BalanceListViewModel(
     private val novaCardRestrictionCheckMixin: NovaCardRestrictionCheckMixin,
     private val maskingModeUseCase: MaskingModeUseCase,
     private val giftsRestrictionCheckMixin: GiftsRestrictionCheckMixin,
-    private val pezkuwiDashboardInteractor: PezkuwiDashboardInteractor
+    private val pezkuwiDashboardInteractor: PezkuwiDashboardInteractor,
+    private val extrinsicService: ExtrinsicService,
+    private val chainRegistry: ChainRegistry
 ) : BaseViewModel(), Browserable.Presentation by Browserable() {
 
     private val maskableAmountFormatterFlow = maskableValueFormatterProvider.provideFormatter()
@@ -121,6 +128,12 @@ class BalanceListViewModel(
 
     private val _shareReferralEvent = MutableLiveData<Event<String>>()
     val shareReferralEvent: LiveData<Event<String>> = _shareReferralEvent
+
+    private val _showTrackingSuccessEvent = MutableLiveData<Event<Unit>>()
+    val showTrackingSuccessEvent: LiveData<Event<Unit>> = _showTrackingSuccessEvent
+
+    private val _trackingLoading = MutableLiveData(false)
+    val trackingLoading: LiveData<Boolean> = _trackingLoading
 
     val bannersMixin = promotionBannersMixinFactory.create(bannerSourceFactory.assetsSource(), viewModelScope)
 
@@ -239,7 +252,8 @@ class BalanceListViewModel(
                         roles = data.roles,
                         trustScore = data.trustScore.toString(),
                         welatiCount = NumberFormat.getIntegerInstance().format(data.welatiCount),
-                        citizenshipStatus = data.citizenshipStatus
+                        citizenshipStatus = data.citizenshipStatus,
+                        isTrackingScore = data.isTrackingScore
                     )
                 }
                 .getOrNull()
@@ -423,6 +437,31 @@ class BalanceListViewModel(
         val telegramLink = "https://t.me/pezkuwichainBot?start=$address"
         val shareText = resourceManager.getString(R.string.citizenship_share_referral, telegramLink, address)
         _shareReferralEvent.postValue(Event(shareText))
+    }
+
+    fun startTrackingClicked() {
+        if (_trackingLoading.value == true) return
+        _trackingLoading.value = true
+
+        launchUnit {
+            try {
+                val chain = chainRegistry.getChain(ChainGeneses.PEZKUWI_PEOPLE)
+                val result = extrinsicService.submitExtrinsic(chain, TransactionOrigin.SelectedWallet) {
+                    call(
+                        moduleName = "StakingScore",
+                        callName = "start_score_tracking",
+                        arguments = emptyMap()
+                    )
+                }
+                result.getOrThrow()
+                _showTrackingSuccessEvent.postValue(Event(Unit))
+                fullSync()
+            } catch (e: Exception) {
+                showError(e.message ?: "Score tracking failed")
+            } finally {
+                _trackingLoading.postValue(false)
+            }
+        }
     }
 
     fun novaCardClicked() = launchUnit {

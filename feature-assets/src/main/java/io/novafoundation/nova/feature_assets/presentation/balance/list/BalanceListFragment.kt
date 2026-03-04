@@ -33,6 +33,7 @@ import io.novafoundation.nova.feature_assets.presentation.balance.list.view.Asse
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.ManageAssetsAdapter
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.ManageAssetsHolder
 import android.content.Intent
+import android.widget.Toast
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PezkuwiDashboardAdapter
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PezkuwiDashboardHolder
 import io.novafoundation.nova.feature_assets.presentation.citizenship.CitizenshipBottomSheet
@@ -189,6 +190,14 @@ class BalanceListFragment :
             }
             startActivity(Intent.createChooser(intent, null))
         }
+
+        viewModel.showTrackingSuccessEvent.observeEvent {
+            Toast.makeText(requireContext(), R.string.pezkuwi_dashboard_tracking_success, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.trackingLoading.observe(viewLifecycleOwner) { loading ->
+            pezkuwiDashboardAdapter.setTrackingLoading(loading)
+        }
     }
 
     override fun assetClicked(asset: Chain.Asset) {
@@ -276,6 +285,10 @@ class BalanceListFragment :
 
     override fun onShareReferralClicked() {
         viewModel.shareReferralClicked()
+    }
+
+    override fun onStartTrackingClicked() {
+        viewModel.startTrackingClicked()
     }
 
     private fun setupRecyclerViewSpacing() {

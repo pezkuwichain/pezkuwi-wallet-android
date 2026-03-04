@@ -36,12 +36,14 @@ class PezkuwiDashboardRepository(
         val trustScore = queryTrustScore(chainId, accountId)
         val welatiCount = fetchWelatiCount()
         val kycStatus = runCatching { queryKycStatus(chainId, accountId) }.getOrDefault(CitizenshipStatus.NOT_STARTED)
+        val isTrackingScore = queryIsTrackingScore(chainId, accountId)
 
         return PezkuwiDashboardData(
             roles = roles.ifEmpty { listOf("Non-Citizen") },
             trustScore = trustScore,
             welatiCount = welatiCount,
-            citizenshipStatus = kycStatus
+            citizenshipStatus = kycStatus,
+            isTrackingScore = isTrackingScore
         )
     }
 
@@ -72,6 +74,15 @@ class PezkuwiDashboardRepository(
             })
         }
     }.getOrDefault(BigInteger.ZERO)
+
+    suspend fun queryIsTrackingScore(chainId: String, accountId: AccountId): Boolean = runCatching {
+        remoteStorageDataSource.query(chainId) {
+            val module = runtime.metadata.moduleOrNull("StakingScore") ?: return@query false
+            module.storage("StakingStartBlock").query(accountId, binding = { decoded ->
+                decoded != null
+            })
+        }
+    }.getOrDefault(false)
 
     suspend fun queryFreeBalance(chainId: String, accountId: AccountId): BigInteger = runCatching {
         remoteStorageDataSource.query(chainId) {

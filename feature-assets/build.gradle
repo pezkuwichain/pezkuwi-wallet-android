@@ -95,7 +95,7 @@ dependencies {
     implementation insetterDep
 
     implementation shimmerDep
-    implementation flexBoxDep
+    api flexBoxDep
 
     implementation chartsDep
 
