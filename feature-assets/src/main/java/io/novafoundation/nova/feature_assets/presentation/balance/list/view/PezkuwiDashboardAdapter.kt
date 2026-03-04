@@ -80,8 +80,11 @@ class PezkuwiDashboardHolder(
 
         if (showTracking) {
             binder.pezkuwiDashboardStartTrackingButton.isEnabled = !trackingLoading
-            binder.pezkuwiDashboardStartTrackingButton.text = if (trackingLoading) "..." else
+            binder.pezkuwiDashboardStartTrackingButton.text = if (trackingLoading) {
+                "..."
+            } else {
                 binder.root.context.getString(R.string.pezkuwi_dashboard_start_tracking)
+            }
         }
     }
 
