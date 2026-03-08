@@ -2034,6 +2034,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Skor Kepercayaan</string>
-    <string name="pezkuwi_dashboard_basvuru">Ajukan &amp; Tindakan</string>
+    <string name="pezkuwi_dashboard_basvuru">Ajukan &amp; Tindakan (KYC)</string>
     <string name="pezkuwi_dashboard_info">Gunakan Telegram MiniApp kami untuk layanan kewarganegaraan Kurdistan Digital.\n\nUntuk mendapatkan hadiah PEZ, Anda harus memiliki tiket Welatî dan telah staking minimal 10 HEZ.\n\nNon-warga negara hanya dapat memperoleh manfaat dari hadiah HEZ.</string>
+    <string name="pezkuwi_dashboard_start_tracking">Mulai pelacakan</string>
+    <string name="pezkuwi_dashboard_tracking_success">Pelacakan skor dimulai!</string>
+    <string name="pezkuwi_dashboard_kurds_title">Jumlah orang Kurdi di dunia</string>
+    <string name="citizenship_title">Permohonan kewarganegaraan</string>
+    <string name="citizenship_name">Nama lengkap</string>
+    <string name="citizenship_father_name">Nama ayah</string>
+    <string name="citizenship_grandfather_name">Nama kakek</string>
+    <string name="citizenship_mother_name">Nama ibu</string>
+    <string name="citizenship_tribe">Suku</string>
+    <string name="citizenship_region">Wilayah</string>
+    <string name="citizenship_apply">Ajukan</string>
+    <string name="citizenship_pending">Permohonan Anda menunggu persetujuan</string>
+    <string name="citizenship_sign">Tanda tangani</string>
+    <string name="citizenship_approved">Anda sudah menjadi warga negara</string>
+    <string name="citizenship_insufficient_balance">Saldo tidak cukup di People Chain. Minimal 1.1 HEZ diperlukan.</string>
+    <string name="citizenship_success">Permohonan berhasil dikirim</string>
+    <string name="citizenship_share_referral">Teman yang terhormat, Kurdistan Digital telah didirikan, ambil tempatmu!\n\n%1$s\n\nTempelkan alamat ini di kolom referral:\n%2$s</string>
+    <string name="citizenship_share_button">Bagikan tautan referral</string>
+    <string name="citizenship_referrer_hint">Alamat referral (opsional)</string>
+    <string name="citizenship_sign_description">Referral Anda telah menyetujui permohonan Anda. Tanda tangani untuk menyelesaikan kewarganegaraan.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Diaspora</string>
+    <string name="citizenship_approve_address_hint">Alamat pemohon</string>
+    <string name="citizenship_approve_button">Setujui referral</string>
+    <string name="citizenship_approve_success">Referral berhasil disetujui</string>
 </resources>

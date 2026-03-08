@@ -2034,6 +2034,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Điểm tin cậy</string>
-    <string name="pezkuwi_dashboard_basvuru">Đăng ký &amp; Hành động</string>
+    <string name="pezkuwi_dashboard_basvuru">Đăng ký &amp; Hành động (KYC)</string>
     <string name="pezkuwi_dashboard_info">Sử dụng Telegram MiniApp của chúng tôi cho dịch vụ công dân Kurdistan kỹ thuật số.\n\nĐể nhận phần thưởng PEZ, bạn phải sở hữu vé Welatî và đã stake ít nhất 10 HEZ.\n\nNgười không phải công dân chỉ có thể hưởng lợi từ phần thưởng HEZ.</string>
+    <string name="pezkuwi_dashboard_start_tracking">Bắt đầu theo dõi</string>
+    <string name="pezkuwi_dashboard_tracking_success">Đã bắt đầu theo dõi điểm!</string>
+    <string name="pezkuwi_dashboard_kurds_title">Số người Kurd trên thế giới</string>
+    <string name="citizenship_title">Đơn xin quyền công dân</string>
+    <string name="citizenship_name">Họ tên đầy đủ</string>
+    <string name="citizenship_father_name">Tên cha</string>
+    <string name="citizenship_grandfather_name">Tên ông nội</string>
+    <string name="citizenship_mother_name">Tên mẹ</string>
+    <string name="citizenship_tribe">Bộ tộc</string>
+    <string name="citizenship_region">Vùng</string>
+    <string name="citizenship_apply">Nộp đơn</string>
+    <string name="citizenship_pending">Đơn của bạn đang chờ phê duyệt</string>
+    <string name="citizenship_sign">Ký</string>
+    <string name="citizenship_approved">Bạn đã là công dân</string>
+    <string name="citizenship_insufficient_balance">Số dư không đủ trên People Chain. Cần ít nhất 1.1 HEZ.</string>
+    <string name="citizenship_success">Đơn đã được gửi thành công</string>
+    <string name="citizenship_share_referral">Bạn thân mến, Kurdistan kỹ thuật số đã được thành lập, hãy chiếm lấy vị trí của bạn!\n\n%1$s\n\nDán địa chỉ này vào trường giới thiệu:\n%2$s</string>
+    <string name="citizenship_share_button">Chia sẻ liên kết giới thiệu</string>
+    <string name="citizenship_referrer_hint">Địa chỉ giới thiệu (tùy chọn)</string>
+    <string name="citizenship_sign_description">Người giới thiệu đã phê duyệt đơn của bạn. Ký để hoàn tất quyền công dân.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Cộng đồng hải ngoại</string>
+    <string name="citizenship_approve_address_hint">Địa chỉ người nộp đơn</string>
+    <string name="citizenship_approve_button">Phê duyệt giới thiệu</string>
+    <string name="citizenship_approve_success">Giới thiệu đã được phê duyệt thành công</string>
 </resources>

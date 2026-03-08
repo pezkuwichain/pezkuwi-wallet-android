@@ -2048,5 +2048,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Bizalmi pontszám</string>
-    <string name="pezkuwi_dashboard_basvuru">Jelentkezés és Műveletek</string>
+    <string name="pezkuwi_dashboard_basvuru">Jelentkezés és Műveletek (KYC)</string>
+    <string name="pezkuwi_dashboard_info">Használja Telegram MiniApp-unkat a Digitális Kurdisztán állampolgársági szolgáltatásaihoz.\n\nA PEZ jutalmak megszerzéséhez rendelkeznie kell Welatî jeggyel és legalább 10 HEZ-t kell stake-elnie.\n\nNem állampolgárok csak a HEZ jutalmakból részesülhetnek.</string>
+    <string name="pezkuwi_dashboard_start_tracking">Követés indítása</string>
+    <string name="pezkuwi_dashboard_tracking_success">Pontszám követése elindítva!</string>
+    <string name="pezkuwi_dashboard_kurds_title">Kurdok száma a világon</string>
+    <string name="citizenship_title">Állampolgársági kérelem</string>
+    <string name="citizenship_name">Teljes név</string>
+    <string name="citizenship_father_name">Apa neve</string>
+    <string name="citizenship_grandfather_name">Nagyapa neve</string>
+    <string name="citizenship_mother_name">Anya neve</string>
+    <string name="citizenship_tribe">Törzs</string>
+    <string name="citizenship_region">Régió</string>
+    <string name="citizenship_apply">Jelentkezés</string>
+    <string name="citizenship_pending">A kérelme jóváhagyásra vár</string>
+    <string name="citizenship_sign">Aláírás</string>
+    <string name="citizenship_approved">Ön már állampolgár</string>
+    <string name="citizenship_insufficient_balance">Elégtelen egyenleg a People Chain-en. Legalább 1.1 HEZ szükséges.</string>
+    <string name="citizenship_success">Kérelem sikeresen elküldve</string>
+    <string name="citizenship_share_referral">Kedves barátom, a Digitális Kurdisztán megalakult, foglald el a helyed!\n\n%1$s\n\nIlleszd be ezt a címet az ajánlói mezőbe:\n%2$s</string>
+    <string name="citizenship_share_button">Ajánló link megosztása</string>
+    <string name="citizenship_referrer_hint">Ajánló címe (opcionális)</string>
+    <string name="citizenship_sign_description">Az ajánlója jóváhagyta a kérelmét. Írja alá az állampolgárság befejezéséhez.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Diaszpóra</string>
+    <string name="citizenship_approve_address_hint">Kérelmező címe</string>
+    <string name="citizenship_approve_button">Ajánlás jóváhagyása</string>
+    <string name="citizenship_approve_success">Ajánlás sikeresen jóváhagyva</string>
 </resources>

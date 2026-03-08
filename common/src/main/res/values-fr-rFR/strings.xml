@@ -2048,6 +2048,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Score de confiance</string>
-    <string name="pezkuwi_dashboard_basvuru">Demande et Actions</string>
+    <string name="pezkuwi_dashboard_basvuru">Demande et Actions (KYC)</string>
     <string name="pezkuwi_dashboard_info">Utilisez notre Telegram MiniApp pour les services de citoyenneté du Kurdistan numérique.\n\nPour gagner des récompenses PEZ, vous devez détenir un ticket Welatî et avoir staké au moins 10 HEZ.\n\nLes non-citoyens ne peuvent bénéficier que des récompenses HEZ.</string>
+    <string name="pezkuwi_dashboard_start_tracking">Démarrer le suivi</string>
+    <string name="pezkuwi_dashboard_tracking_success">Suivi du score lancé !</string>
+    <string name="pezkuwi_dashboard_kurds_title">Nombre de Kurdes dans le monde</string>
+    <string name="citizenship_title">Demande de citoyenneté</string>
+    <string name="citizenship_name">Nom complet</string>
+    <string name="citizenship_father_name">Nom du père</string>
+    <string name="citizenship_grandfather_name">Nom du grand-père</string>
+    <string name="citizenship_mother_name">Nom de la mère</string>
+    <string name="citizenship_tribe">Tribu</string>
+    <string name="citizenship_region">Région</string>
+    <string name="citizenship_apply">Postuler</string>
+    <string name="citizenship_pending">Votre demande est en attente d\'approbation</string>
+    <string name="citizenship_sign">Signer</string>
+    <string name="citizenship_approved">Vous êtes déjà citoyen</string>
+    <string name="citizenship_insufficient_balance">Solde insuffisant sur People Chain. Au moins 1.1 HEZ requis.</string>
+    <string name="citizenship_success">Demande envoyée avec succès</string>
+    <string name="citizenship_share_referral">Cher ami, le Kurdistan numérique a été établi, prends ta place !\n\n%1$s\n\nCollez cette adresse dans le champ de parrainage :\n%2$s</string>
+    <string name="citizenship_share_button">Partager le lien de parrainage</string>
+    <string name="citizenship_referrer_hint">Adresse du parrain (optionnel)</string>
+    <string name="citizenship_sign_description">Votre parrain a approuvé votre demande. Signez pour compléter la citoyenneté.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Diaspora</string>
+    <string name="citizenship_approve_address_hint">Adresse du demandeur</string>
+    <string name="citizenship_approve_button">Approuver le parrainage</string>
+    <string name="citizenship_approve_success">Parrainage approuvé avec succès</string>
 </resources>

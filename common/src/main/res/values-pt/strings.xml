@@ -2048,6 +2048,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Pontuação de confiança</string>
-    <string name="pezkuwi_dashboard_basvuru">Candidatura e Ações</string>
+    <string name="pezkuwi_dashboard_basvuru">Candidatura e Ações (KYC)</string>
     <string name="pezkuwi_dashboard_info">Use nosso Telegram MiniApp para serviços de cidadania do Curdistão Digital.\n\nPara ganhar recompensas PEZ, você deve possuir um bilhete Welatî e ter pelo menos 10 HEZ em stake.\n\nNão-cidadãos só podem se beneficiar das recompensas HEZ.</string>
+    <string name="pezkuwi_dashboard_start_tracking">Iniciar rastreamento</string>
+    <string name="pezkuwi_dashboard_tracking_success">Rastreamento de pontuação iniciado!</string>
+    <string name="pezkuwi_dashboard_kurds_title">Número de curdos no mundo</string>
+    <string name="citizenship_title">Pedido de cidadania</string>
+    <string name="citizenship_name">Nome completo</string>
+    <string name="citizenship_father_name">Nome do pai</string>
+    <string name="citizenship_grandfather_name">Nome do avô</string>
+    <string name="citizenship_mother_name">Nome da mãe</string>
+    <string name="citizenship_tribe">Tribo</string>
+    <string name="citizenship_region">Região</string>
+    <string name="citizenship_apply">Candidatar-se</string>
+    <string name="citizenship_pending">A sua candidatura aguarda aprovação</string>
+    <string name="citizenship_sign">Assinar</string>
+    <string name="citizenship_approved">Já é cidadão</string>
+    <string name="citizenship_insufficient_balance">Saldo insuficiente na People Chain. É necessário pelo menos 1.1 HEZ.</string>
+    <string name="citizenship_success">Candidatura enviada com sucesso</string>
+    <string name="citizenship_share_referral">Caro amigo, o Curdistão Digital foi estabelecido, ocupe o seu lugar!\n\n%1$s\n\nCole este endereço no campo de referência:\n%2$s</string>
+    <string name="citizenship_share_button">Partilhar link de referência</string>
+    <string name="citizenship_referrer_hint">Endereço de referência (opcional)</string>
+    <string name="citizenship_sign_description">O seu referente aprovou a sua candidatura. Assine para completar a cidadania.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Diáspora</string>
+    <string name="citizenship_approve_address_hint">Endereço do candidato</string>
+    <string name="citizenship_approve_button">Aprovar referência</string>
+    <string name="citizenship_approve_success">Referência aprovada com sucesso</string>
 </resources>

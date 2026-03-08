@@ -2034,6 +2034,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">信頼スコア</string>
-    <string name="pezkuwi_dashboard_basvuru">申請とアクション</string>
+    <string name="pezkuwi_dashboard_basvuru">申請とアクション (KYC)</string>
     <string name="pezkuwi_dashboard_info">デジタルクルディスタンの市民サービスにはTelegram MiniAppをご利用ください。\n\nPEZ報酬を獲得するには、Welatîチケットを保有し、最低10 HEZをステーキングする必要があります。\n\n非市民はHEZ報酬のみを受け取ることができます。</string>
+    <string name="pezkuwi_dashboard_start_tracking">追跡を開始</string>
+    <string name="pezkuwi_dashboard_tracking_success">スコア追跡が開始されました！</string>
+    <string name="pezkuwi_dashboard_kurds_title">世界のクルド人の数</string>
+    <string name="citizenship_title">市民権申請</string>
+    <string name="citizenship_name">氏名</string>
+    <string name="citizenship_father_name">父の名前</string>
+    <string name="citizenship_grandfather_name">祖父の名前</string>
+    <string name="citizenship_mother_name">母の名前</string>
+    <string name="citizenship_tribe">部族</string>
+    <string name="citizenship_region">地域</string>
+    <string name="citizenship_apply">申請</string>
+    <string name="citizenship_pending">申請は承認待ちです</string>
+    <string name="citizenship_sign">署名</string>
+    <string name="citizenship_approved">すでに市民です</string>
+    <string name="citizenship_insufficient_balance">People Chainの残高が不足しています。最低1.1 HEZが必要です。</string>
+    <string name="citizenship_success">申請が正常に送信されました</string>
+    <string name="citizenship_share_referral">親愛なる友人、デジタルクルディスタンが設立されました。あなたの場所を取ってください！\n\n%1$s\n\nこのアドレスを紹介欄に貼り付けてください：\n%2$s</string>
+    <string name="citizenship_share_button">紹介リンクを共有</string>
+    <string name="citizenship_referrer_hint">紹介者アドレス（任意）</string>
+    <string name="citizenship_sign_description">紹介者があなたの申請を承認しました。市民権を完了するために署名してください。</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">ディアスポラ</string>
+    <string name="citizenship_approve_address_hint">申請者のアドレス</string>
+    <string name="citizenship_approve_button">紹介を承認</string>
+    <string name="citizenship_approve_success">紹介が正常に承認されました</string>
 </resources>

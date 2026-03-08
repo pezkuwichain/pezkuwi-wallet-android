@@ -2076,6 +2076,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Рейтинг доверия</string>
-    <string name="pezkuwi_dashboard_basvuru">Заявка и Действия</string>
+    <string name="pezkuwi_dashboard_basvuru">Заявка и Действия (KYC)</string>
     <string name="pezkuwi_dashboard_info">Используйте наше Telegram MiniApp для услуг цифрового гражданства Курдистана.\n\nДля получения наград PEZ необходимо иметь билет Welatî и застейкать минимум 10 HEZ.\n\nНе-граждане могут получать только награды HEZ.</string>
+    <string name="pezkuwi_dashboard_start_tracking">Начать отслеживание</string>
+    <string name="pezkuwi_dashboard_tracking_success">Отслеживание рейтинга запущено!</string>
+    <string name="pezkuwi_dashboard_kurds_title">Количество курдов в мире</string>
+    <string name="citizenship_title">Заявка на гражданство</string>
+    <string name="citizenship_name">Полное имя</string>
+    <string name="citizenship_father_name">Имя отца</string>
+    <string name="citizenship_grandfather_name">Имя деда</string>
+    <string name="citizenship_mother_name">Имя матери</string>
+    <string name="citizenship_tribe">Племя</string>
+    <string name="citizenship_region">Регион</string>
+    <string name="citizenship_apply">Подать заявку</string>
+    <string name="citizenship_pending">Ваша заявка ожидает одобрения</string>
+    <string name="citizenship_sign">Подписать</string>
+    <string name="citizenship_approved">Вы уже являетесь гражданином</string>
+    <string name="citizenship_insufficient_balance">Недостаточный баланс на People Chain. Необходимо минимум 1.1 HEZ.</string>
+    <string name="citizenship_success">Заявка успешно отправлена</string>
+    <string name="citizenship_share_referral">Дорогой друг, Цифровой Курдистан создан, займи своё место!\n\n%1$s\n\nВставьте этот адрес в поле реферала:\n%2$s</string>
+    <string name="citizenship_share_button">Поделиться реферальной ссылкой</string>
+    <string name="citizenship_referrer_hint">Адрес реферала (необязательно)</string>
+    <string name="citizenship_sign_description">Ваш реферал одобрил вашу заявку. Подпишите для завершения гражданства.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Диаспора</string>
+    <string name="citizenship_approve_address_hint">Адрес заявителя</string>
+    <string name="citizenship_approve_button">Одобрить реферала</string>
+    <string name="citizenship_approve_success">Реферал успешно одобрен</string>
 </resources>

@@ -2076,5 +2076,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">Wynik zaufania</string>
-    <string name="pezkuwi_dashboard_basvuru">Wniosek i Akcje</string>
+    <string name="pezkuwi_dashboard_basvuru">Wniosek i Akcje (KYC)</string>
+    <string name="pezkuwi_dashboard_info">Użyj naszego Telegram MiniApp do usług obywatelstwa Cyfrowego Kurdystanu.\n\nAby zdobyć nagrody PEZ, musisz posiadać bilet Welatî i mieć zestakowane co najmniej 10 HEZ.\n\nNie-obywatele mogą korzystać tylko z nagród HEZ.</string>
+    <string name="pezkuwi_dashboard_start_tracking">Rozpocznij śledzenie</string>
+    <string name="pezkuwi_dashboard_tracking_success">Śledzenie wyniku rozpoczęte!</string>
+    <string name="pezkuwi_dashboard_kurds_title">Liczba Kurdów na świecie</string>
+    <string name="citizenship_title">Wniosek o obywatelstwo</string>
+    <string name="citizenship_name">Imię i nazwisko</string>
+    <string name="citizenship_father_name">Imię ojca</string>
+    <string name="citizenship_grandfather_name">Imię dziadka</string>
+    <string name="citizenship_mother_name">Imię matki</string>
+    <string name="citizenship_tribe">Plemię</string>
+    <string name="citizenship_region">Region</string>
+    <string name="citizenship_apply">Złóż wniosek</string>
+    <string name="citizenship_pending">Twój wniosek oczekuje na zatwierdzenie</string>
+    <string name="citizenship_sign">Podpisz</string>
+    <string name="citizenship_approved">Jesteś już obywatelem</string>
+    <string name="citizenship_insufficient_balance">Niewystarczające saldo na People Chain. Wymagane co najmniej 1.1 HEZ.</string>
+    <string name="citizenship_success">Wniosek wysłany pomyślnie</string>
+    <string name="citizenship_share_referral">Drogi przyjacielu, Cyfrowy Kurdystan został założony, zajmij swoje miejsce!\n\n%1$s\n\nWklej ten adres w pole polecającego:\n%2$s</string>
+    <string name="citizenship_share_button">Udostępnij link polecający</string>
+    <string name="citizenship_referrer_hint">Adres polecającego (opcjonalnie)</string>
+    <string name="citizenship_sign_description">Twój polecający zatwierdził Twój wniosek. Podpisz, aby zakończyć obywatelstwo.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">Diaspora</string>
+    <string name="citizenship_approve_address_hint">Adres wnioskodawcy</string>
+    <string name="citizenship_approve_button">Zatwierdź polecenie</string>
+    <string name="citizenship_approve_success">Polecenie zatwierdzone pomyślnie</string>
 </resources>

@@ -2034,6 +2034,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">信任评分</string>
-    <string name="pezkuwi_dashboard_basvuru">申请与操作</string>
+    <string name="pezkuwi_dashboard_basvuru">申请与操作 (KYC)</string>
     <string name="pezkuwi_dashboard_info">使用我们的 Telegram MiniApp 进行数字库尔德斯坦公民服务。\n\n要获得 PEZ 奖励，您必须持有 Welatî 票并至少质押 10 HEZ。\n\n非公民只能从 HEZ 奖励中受益。</string>
+    <string name="pezkuwi_dashboard_start_tracking">开始追踪</string>
+    <string name="pezkuwi_dashboard_tracking_success">评分追踪已启动！</string>
+    <string name="pezkuwi_dashboard_kurds_title">全球库尔德人数量</string>
+    <string name="citizenship_title">公民身份申请</string>
+    <string name="citizenship_name">全名</string>
+    <string name="citizenship_father_name">父亲姓名</string>
+    <string name="citizenship_grandfather_name">祖父姓名</string>
+    <string name="citizenship_mother_name">母亲姓名</string>
+    <string name="citizenship_tribe">部落</string>
+    <string name="citizenship_region">地区</string>
+    <string name="citizenship_apply">申请</string>
+    <string name="citizenship_pending">您的申请正在等待审批</string>
+    <string name="citizenship_sign">签名</string>
+    <string name="citizenship_approved">您已是公民</string>
+    <string name="citizenship_insufficient_balance">People Chain 余额不足。至少需要 1.1 HEZ。</string>
+    <string name="citizenship_success">申请已成功提交</string>
+    <string name="citizenship_share_referral">亲爱的朋友，数字库尔德斯坦已经建立，占据你的位置！\n\n%1$s\n\n将此地址粘贴到推荐人字段中：\n%2$s</string>
+    <string name="citizenship_share_button">分享推荐链接</string>
+    <string name="citizenship_referrer_hint">推荐人地址（可选）</string>
+    <string name="citizenship_sign_description">您的推荐人已批准您的申请。签名以完成公民身份。</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">侨民</string>
+    <string name="citizenship_approve_address_hint">申请人地址</string>
+    <string name="citizenship_approve_button">批准推荐</string>
+    <string name="citizenship_approve_success">推荐已成功批准</string>
 </resources>

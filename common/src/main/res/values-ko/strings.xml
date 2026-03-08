@@ -2034,6 +2034,35 @@
 
     <string name="pezkuwi_dashboard_title">Pezkuwi</string>
     <string name="pezkuwi_dashboard_trust_score">신뢰 점수</string>
-    <string name="pezkuwi_dashboard_basvuru">신청 및 작업</string>
+    <string name="pezkuwi_dashboard_basvuru">신청 및 작업 (KYC)</string>
     <string name="pezkuwi_dashboard_info">디지털 쿠르디스탄 시민권 서비스를 위해 Telegram MiniApp을 사용하세요.\n\nPEZ 보상을 받으려면 Welatî 티켓을 보유하고 최소 10 HEZ를 스테이킹해야 합니다.\n\n비시민권자는 HEZ 보상만 받을 수 있습니다.</string>
+    <string name="pezkuwi_dashboard_start_tracking">추적 시작</string>
+    <string name="pezkuwi_dashboard_tracking_success">점수 추적이 시작되었습니다!</string>
+    <string name="pezkuwi_dashboard_kurds_title">전 세계 쿠르드인 수</string>
+    <string name="citizenship_title">시민권 신청</string>
+    <string name="citizenship_name">성명</string>
+    <string name="citizenship_father_name">아버지 이름</string>
+    <string name="citizenship_grandfather_name">할아버지 이름</string>
+    <string name="citizenship_mother_name">어머니 이름</string>
+    <string name="citizenship_tribe">부족</string>
+    <string name="citizenship_region">지역</string>
+    <string name="citizenship_apply">신청</string>
+    <string name="citizenship_pending">신청서가 승인 대기 중입니다</string>
+    <string name="citizenship_sign">서명</string>
+    <string name="citizenship_approved">이미 시민입니다</string>
+    <string name="citizenship_insufficient_balance">People Chain 잔액 부족. 최소 1.1 HEZ가 필요합니다.</string>
+    <string name="citizenship_success">신청서가 성공적으로 제출되었습니다</string>
+    <string name="citizenship_share_referral">친구여, 디지털 쿠르디스탄이 설립되었습니다. 당신의 자리를 잡으세요!\n\n%1$s\n\n이 주소를 추천인 필드에 붙여넣으세요:\n%2$s</string>
+    <string name="citizenship_share_button">추천 링크 공유</string>
+    <string name="citizenship_referrer_hint">추천인 주소 (선택사항)</string>
+    <string name="citizenship_sign_description">추천인이 신청을 승인했습니다. 시민권을 완료하려면 서명하세요.</string>
+    <string name="citizenship_region_bakur">Bakur</string>
+    <string name="citizenship_region_basur">Başûr</string>
+    <string name="citizenship_region_rojava">Rojava</string>
+    <string name="citizenship_region_rojhelat">Rojhelat</string>
+    <string name="citizenship_region_kurdistan">Kurdistan a Sor</string>
+    <string name="citizenship_region_diaspora">디아스포라</string>
+    <string name="citizenship_approve_address_hint">신청자 주소</string>
+    <string name="citizenship_approve_button">추천 승인</string>
+    <string name="citizenship_approve_success">추천이 성공적으로 승인되었습니다</string>
 </resources>
