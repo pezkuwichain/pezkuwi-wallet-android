@@ -66,6 +66,7 @@ import io.novafoundation.nova.feature_wallet_api.presentation.model.FractionPart
 import io.novafoundation.nova.feature_wallet_connect_api.domain.sessions.WalletConnectSessionsUseCase
 import io.novafoundation.nova.feature_wallet_connect_api.presentation.mapNumberOfActiveSessionsToUi
 import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicService
+import io.novafoundation.nova.feature_account_api.data.extrinsic.execution.requireOk
 import io.novafoundation.nova.feature_account_api.data.ethereum.transaction.TransactionOrigin
 import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
@@ -454,14 +455,14 @@ class BalanceListViewModel(
         launchUnit {
             try {
                 val chain = chainRegistry.getChain(ChainGeneses.PEZKUWI_PEOPLE)
-                val result = extrinsicService.submitExtrinsic(chain, TransactionOrigin.SelectedWallet) {
+                val result = extrinsicService.submitExtrinsicAndAwaitExecution(chain, TransactionOrigin.SelectedWallet) {
                     call(
                         moduleName = "StakingScore",
                         callName = "start_score_tracking",
                         arguments = emptyMap()
                     )
                 }
-                result.getOrThrow()
+                result.requireOk()
                 _showTrackingSuccessEvent.postValue(Event(Unit))
                 refreshDashboard()
             } catch (e: Exception) {

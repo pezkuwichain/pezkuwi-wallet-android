@@ -8,6 +8,7 @@ import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.common.utils.Event
 import io.novafoundation.nova.feature_account_api.data.ethereum.transaction.TransactionOrigin
 import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicService
+import io.novafoundation.nova.feature_account_api.data.extrinsic.execution.requireOk
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
 import io.novafoundation.nova.feature_account_api.domain.model.addressIn
 import io.novafoundation.nova.feature_assets.R
@@ -147,7 +148,7 @@ class CitizenshipViewModel(
                     "referrer" to referrerAccountId
                 )
 
-                val result = extrinsicService.submitExtrinsic(
+                val result = extrinsicService.submitExtrinsicAndAwaitExecution(
                     chain = chain,
                     origin = TransactionOrigin.SelectedWallet
                 ) {
@@ -157,7 +158,7 @@ class CitizenshipViewModel(
                         arguments = arguments
                     )
                 }
-                result.getOrThrow()
+                result.requireOk()
 
                 showToast(resourceManager.getString(R.string.citizenship_success))
                 _citizenshipStatus.postValue(CitizenshipStatus.PENDING_REFERRAL)
@@ -177,7 +178,7 @@ class CitizenshipViewModel(
             try {
                 val chain = peopleChain ?: chainRegistry.getChain(ChainGeneses.PEZKUWI_PEOPLE)
 
-                val result = extrinsicService.submitExtrinsic(
+                val result = extrinsicService.submitExtrinsicAndAwaitExecution(
                     chain = chain,
                     origin = TransactionOrigin.SelectedWallet
                 ) {
@@ -187,7 +188,7 @@ class CitizenshipViewModel(
                         arguments = emptyMap()
                     )
                 }
-                result.getOrThrow()
+                result.requireOk()
 
                 showToast(resourceManager.getString(R.string.citizenship_success))
                 _citizenshipStatus.postValue(CitizenshipStatus.APPROVED)
@@ -223,7 +224,7 @@ class CitizenshipViewModel(
             try {
                 val chain = peopleChain ?: chainRegistry.getChain(ChainGeneses.PEZKUWI_PEOPLE)
 
-                val result = extrinsicService.submitExtrinsic(
+                val result = extrinsicService.submitExtrinsicAndAwaitExecution(
                     chain = chain,
                     origin = TransactionOrigin.SelectedWallet
                 ) {
@@ -233,7 +234,7 @@ class CitizenshipViewModel(
                         arguments = mapOf("applicant" to applicantAccountId)
                     )
                 }
-                result.getOrThrow()
+                result.requireOk()
 
                 showToast(resourceManager.getString(R.string.citizenship_approve_success))
                 // Reload the list
