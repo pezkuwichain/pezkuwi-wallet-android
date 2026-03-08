@@ -37,7 +37,11 @@ class CitizenshipBottomSheet : BaseBottomSheetFragment<CitizenshipViewModel, Fra
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        parentFragmentManager.setFragmentResult("citizenship_dismissed", android.os.Bundle.EMPTY)
+        (parentFragment as? CitizenshipDismissListener)?.onCitizenshipDismissed()
+    }
+
+    interface CitizenshipDismissListener {
+        fun onCitizenshipDismissed()
     }
 
     override fun inject() {

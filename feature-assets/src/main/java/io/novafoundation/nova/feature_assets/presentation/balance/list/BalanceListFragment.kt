@@ -48,7 +48,8 @@ class BalanceListFragment :
     BalanceListAdapter.ItemAssetHandler,
     AssetsHeaderAdapter.Handler,
     ManageAssetsAdapter.Handler,
-    PezkuwiDashboardAdapter.Handler {
+    PezkuwiDashboardAdapter.Handler,
+    CitizenshipBottomSheet.CitizenshipDismissListener {
 
     override fun createBinding() = FragmentBalanceListBinding.inflate(layoutInflater)
 
@@ -125,13 +126,13 @@ class BalanceListFragment :
         viewModel.refreshDashboard()
     }
 
+    override fun onCitizenshipDismissed() {
+        viewModel.refreshDashboard()
+    }
+
     override fun subscribe(viewModel: BalanceListViewModel) {
         setupBuySellSelectorMixin(viewModel.buySellSelectorMixin)
         observeBrowserEvents(viewModel)
-
-        childFragmentManager.setFragmentResultListener("citizenship_dismissed", viewLifecycleOwner) { _, _ ->
-            viewModel.refreshDashboard()
-        }
 
         viewModel.pezkuwiDashboardFlow.observe { model ->
             if (model != null) {
