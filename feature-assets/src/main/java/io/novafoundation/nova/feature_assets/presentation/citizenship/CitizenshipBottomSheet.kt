@@ -1,5 +1,6 @@
 package io.novafoundation.nova.feature_assets.presentation.citizenship
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -33,6 +34,11 @@ class CitizenshipBottomSheet : BaseBottomSheetFragment<CitizenshipViewModel, Fra
     }
 
     override fun createBinding() = FragmentCitizenshipBottomSheetBinding.inflate(layoutInflater)
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        parentFragmentManager.setFragmentResult("citizenship_dismissed", android.os.Bundle.EMPTY)
+    }
 
     override fun inject() {
         FeatureUtils.getFeature<AssetsFeatureComponent>(

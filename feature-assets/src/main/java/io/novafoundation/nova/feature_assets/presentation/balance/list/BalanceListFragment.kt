@@ -120,9 +120,18 @@ class BalanceListFragment :
             .inject(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshDashboard()
+    }
+
     override fun subscribe(viewModel: BalanceListViewModel) {
         setupBuySellSelectorMixin(viewModel.buySellSelectorMixin)
         observeBrowserEvents(viewModel)
+
+        childFragmentManager.setFragmentResultListener("citizenship_dismissed", viewLifecycleOwner) { _, _ ->
+            viewModel.refreshDashboard()
+        }
 
         viewModel.pezkuwiDashboardFlow.observe { model ->
             if (model != null) {

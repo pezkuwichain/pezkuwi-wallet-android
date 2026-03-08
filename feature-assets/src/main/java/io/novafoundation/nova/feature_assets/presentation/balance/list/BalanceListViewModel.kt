@@ -73,6 +73,7 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novasama.substrate_sdk_android.runtime.extrinsic.call
 import java.text.NumberFormat
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -134,6 +135,8 @@ class BalanceListViewModel(
 
     private val _trackingLoading = MutableLiveData(false)
     val trackingLoading: LiveData<Boolean> = _trackingLoading
+
+    private val dashboardRefreshSignal = MutableStateFlow(0)
 
     val bannersMixin = promotionBannersMixinFactory.create(bannerSourceFactory.assetsSource(), viewModelScope)
 
@@ -245,6 +248,7 @@ class BalanceListViewModel(
         .shareInBackground()
 
     val pezkuwiDashboardFlow = selectedMetaAccount
+        .combine(dashboardRefreshSignal) { account, _ -> account }
         .mapLatest { metaAccount ->
             pezkuwiDashboardInteractor.getDashboard(metaAccount)
                 .map { data ->
@@ -291,9 +295,13 @@ class BalanceListViewModel(
     fun fullSync() {
         viewModelScope.launch {
             syncWith(fullSyncActions, selectedMetaAccount.first())
-
+            refreshDashboard()
             _hideRefreshEvent.value = Event(Unit)
         }
+    }
+
+    fun refreshDashboard() {
+        dashboardRefreshSignal.value++
     }
 
     fun assetClicked(asset: Chain.Asset) {
@@ -455,7 +463,7 @@ class BalanceListViewModel(
                 }
                 result.getOrThrow()
                 _showTrackingSuccessEvent.postValue(Event(Unit))
-                fullSync()
+                refreshDashboard()
             } catch (e: Exception) {
                 showError(e.message ?: "Score tracking failed")
             } finally {
