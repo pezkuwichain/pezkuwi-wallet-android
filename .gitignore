@@ -29,6 +29,4 @@ app/*.apk
 google-services.json
 **/google-services.json
 
-# Version properties
-version.properties
 .kotlin/

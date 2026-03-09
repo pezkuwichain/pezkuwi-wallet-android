@@ -130,9 +130,7 @@ env:
 
   POLKASSEMBLY_SUMMARY_API_KEY: ${{ secrets.POLKASSEMBLY_SUMMARY_API_KEY }}
 
-  CI_BUILD_ID: ${{ github.run_number }}
-
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{inputs.upload-name}}
   cancel-in-progress: true
 
@@ -146,6 +144,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.branch }}
+          fetch-depth: 0
+
+      - name: Compute version code from commit count
+        run: |
+          COMMIT_COUNT=$(git rev-list --count HEAD)
+          VERSION_CODE=$((COMMIT_COUNT + 100))
+          echo "CI_BUILD_ID=$VERSION_CODE" >> $GITHUB_ENV
+          echo "Version code: $VERSION_CODE (commits: $COMMIT_COUNT + offset 100)"
 
       - name: 📂 Set up DEV Google Services
         uses: davidSchuppa/base64Secret-toFile-action@v3

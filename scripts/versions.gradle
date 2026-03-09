@@ -25,7 +25,7 @@ def computeVersionCode() {
         return Integer.valueOf(System.env.CI_BUILD_ID)
     }
     // Local build - auto increment
-    if (gradle.startParameter.taskNames.any { it.contains('assemble') || it.contains('install') }) {
+    if (gradle.startParameter.taskNames.any { it.contains('assemble') || it.contains('install') || it.contains('bundle') }) {
         return incrementVersionCode()
     }
     return getVersionCodeFromFile()
