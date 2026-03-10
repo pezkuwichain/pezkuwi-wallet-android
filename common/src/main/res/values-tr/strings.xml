@@ -69,8 +69,8 @@ Hesabınıza token satın alın veya yatırın.</string>
     <string name="chain_migration_details_in_progress_title">%1$s itibarıyla %2$s bakiyeniz, Staking ve Yönetişim %3$s üzerindedir. Bu özellikler 24 saate kadar kullanılamayabilir.</string>
     <string name="staking_details_migration_alert_title">%1$s staking %3$s itibarıyla %2$s üzerinde aktif</string>
     <string name="common_view">Görüntüle</string>
-    <string name="transaction_history_migration_source_message">Önceki %s işlem geçmişiniz hâlâ %s üzerinde mevcuttur</string>
-    <string name="asset_details_source_asset_alert_title">%s tokenlarınız artık %s üzerinde</string>
+    <string name="transaction_history_migration_source_message">Önceki %1$s işlem geçmişiniz hâlâ %2$s üzerinde mevcuttur</string>
+    <string name="asset_details_source_asset_alert_title">%1$s tokenlarınız artık %2$s üzerinde</string>
     <string name="asset_details_source_asset_alert_message">%1$s itibarıyla %2$s bakiyeniz, Staking ve Yönetişim %3$s üzerinde olacak — daha iyi performans ve düşük maliyetlerle.</string>
     <string name="asset_details_source_asset_alert_button">%s'e git</string>
     <string name="chain_migration_details_hint_auto_migration">Geçiş otomatik olarak gerçekleşir, işlem yapmanız gerekmez</string>
@@ -119,8 +119,8 @@ Sizden başka bir işlem gerekmemektedir.</string>
     <string name="multisig_notification_new_approval_title_additional_message">%d / %d imza toplandı.</string>
     <string name="multisig_notification_new_approval_title">%s tarafından imzalandı</string>
     <string name="multisig_notification_init_transaction_title">✍🏻 İmzanız isteniyor</string>
-    <string name="multisig_notification_init_transaction_message">%s, %s üzerinde.</string>
-    <string name="multisig_operation_default_call_format">%s: %s</string>
+    <string name="multisig_notification_init_transaction_message">%1$s, %2$s üzerinde.</string>
+    <string name="multisig_operation_default_call_format">%1$s: %2$s</string>
     <string name="multisig_notification_initiator_footer">%s tarafından başlatıldı.</string>
     <string name="multisig_notification_message_header">Cüzdan: %s</string>
     <string name="multisigs_notification_channel_name">Multisig İşlemleri Bildirim Kanalı</string>
@@ -158,9 +158,9 @@ Durumunu %s bölümünden takip edebilirsiniz.</string>
     <string name="swap_dry_run_failed_inline_message">Takas adımı simülasyonu başarısız oldu</string>
     <string name="common_dry_run_failed_title">İşlem simülasyonu başarısız</string>
     <string name="common_dry_run_failed_message">Pezkuwi Wallet, hataları önlemek için işlemi önceden simüle eder. Bu simülasyon başarılı olmadı. Daha sonra veya daha yüksek bir tutarla tekrar deneyin. Sorun devam ederse lütfen Ayarlar'dan Pezkuwi Wallet Desteği'ne başvurun.</string>
-    <string name="multisig_signatory_validation_deposit_fee">%s, %s ağ ücretini ödeyecek ve %s multisig depozitosu yatıracak yeterli bakiyeye sahip değil. Bakiyenize %s daha eklemeniz gerekiyor</string>
-    <string name="multisig_signatory_validation_deposit">%s, %s multisig depozitosu yatıracak yeterli bakiyeye sahip değil. Bakiyenize %s daha eklemeniz gerekiyor</string>
-    <string name="multisig_signatory_validation_fee">%s, %s ağ ücretini ödeyecek yeterli bakiyeye sahip değil. Bakiyenize %s daha eklemeniz gerekiyor</string>
+    <string name="multisig_signatory_validation_deposit_fee">%1$s, %2$s ağ ücretini ödeyecek ve %3$s multisig depozitosu yatıracak yeterli bakiyeye sahip değil. Bakiyenize %4$s daha eklemeniz gerekiyor</string>
+    <string name="multisig_signatory_validation_deposit">%1$s, %2$s multisig depozitosu yatıracak yeterli bakiyeye sahip değil. Bakiyenize %3$s daha eklemeniz gerekiyor</string>
+    <string name="multisig_signatory_validation_fee">%1$s, %2$s ağ ücretini ödeyecek yeterli bakiyeye sahip değil. Bakiyenize %3$s daha eklemeniz gerekiyor</string>
     <string name="invalid_call_data_title">Geçersiz çağrı verisi</string>
     <string name="invalid_call_data_message">Bu çağrı verisi, %s hash'li başka bir işlem için</string>
     <string name="multisig_operation_details_call_data_not_found">Detayları görmek için çağrı verisini girin</string>
@@ -172,14 +172,14 @@ Durumunu %s bölümünden takip edebilirsiniz.</string>
     <string name="multisig_sell_not_supported_title">Multisig için satış desteklenmiyor</string>
     <string name="multisig_sell_not_supported_message">Kripto satmak için lütfen farklı bir cüzdan türüne geçin.</string>
     <string name="multisig_pending_operations">İmzalanacak işlemler</string>
-    <string name="multisig_operations_progress">İmzalama (%s / %s)</string>
+    <string name="multisig_operations_progress">İmzalama (%1$s / %2$s)</string>
     <string name="multisig_operations_created">Sizin tarafınızdan oluşturuldu</string>
     <string name="multisig_operations_signed">Sizin tarafınızdan imzalandı</string>
     <string name="multisig_pending_operations_on_behalf_of">Adına:</string>
     <string name="multisig_operations_unknown_calldata">Bilinmeyen işlem</string>
     <string name="multisig_callhash_exists_title">İşlem zaten mevcut</string>
     <string name="multisig_callhash_exists_message">%s aynı işlemi zaten başlattı ve şu anda diğer imzacılar tarafından imzalanmayı bekliyor.</string>
-    <string name="multisig_signatory_validation_ed">%s'nin bu işlem ücretini ödeyebilmesi ve minimum ağ bakiyesinin üzerinde kalabilmesi için en az %s'e ihtiyacı var. Mevcut bakiye: %s</string>
+    <string name="multisig_signatory_validation_ed">%1$s'nin bu işlem ücretini ödeyebilmesi ve minimum ağ bakiyesinin üzerinde kalabilmesi için en az %2$s'e ihtiyacı var. Mevcut bakiye: %3$s</string>
     <string name="multisig_signing_is_not_supported_message">Multisig cüzdanlar rastgele mesaj imzalamayı desteklemez — yalnızca işlemler</string>
     <string name="multisig_signing_warning_title">Multisig işlemi</string>
     <string name="multisig_signing_warning_message">Multisig işlemi %s tarafından başlatılacak. Başlatıcı ağ ücretini öder ve işlem gerçekleştirildiğinde serbest bırakılacak bir multisig depozitosu yatırır.</string>
@@ -197,7 +197,7 @@ Durumunu %s bölümünden takip edebilirsiniz.</string>
     <string name="account_multisig">Multisig</string>
     <string name="multisig_wallet_details_info_warning">Bu cüzdandan yapılan işlemler birden fazla imzacının onayını gerektirir. Hesabınız imzacılardan biridir:</string>
     <string name="multisig_signatory">İmzacı:</string>
-    <string name="swap_failure_cannot_receive_insufficient_asset_out">%s token almak için %s üzerinde en az %s'e sahip olmanız gerekir</string>
+    <string name="swap_failure_cannot_receive_insufficient_asset_out">%1$s token almak için %2$s üzerinde en az %3$s'e sahip olmanız gerekir</string>
     <string name="account_migration_title">Pezkuwi Wallet'a Hoş Geldiniz!</string>
     <string name="account_migration_subtitle">Neredeyse tamam! 🎉
  Kurulumu tamamlamak ve hesaplarınızı hem Polkadot Uygulaması hem de Pezkuwi Wallet'ta sorunsuz kullanmaya başlamak için aşağıya dokunun</string>
@@ -296,8 +296,8 @@ Bu pencere otomatik olarak kapanacak.</string>
     <string name="price_charts_period_month">Son Ay</string>
     <string name="price_charts_period_year">Son Yıl</string>
     <string name="price_charts_period_all">Tüm Zamanlar</string>
-    <string name="price_chart_date_format">%s, %s</string>
-    <string name="price_chart_price_change">%s (%s)</string>
+    <string name="price_chart_date_format">%1$s, %2$s</string>
+    <string name="price_chart_price_change">%1$s (%2$s)</string>
     <string name="price_chart_title">%s fiyatı</string>
     <string name="price_chart_day">1G</string>
     <string name="price_chart_week">1H</string>
@@ -307,17 +307,17 @@ Bu pencere otomatik olarak kapanacak.</string>
     <string name="high_price_impact_detacted_title">Yüksek fiyat etkisi tespit edildi (%s)</string>
     <string name="high_price_impact_detacted_message">Bu takası gerçekleştirmek önemli kayma ve mali kayıplara neden olacak. İşlem boyutunu küçültmeyi veya birden fazla işleme bölmeyi düşünün.</string>
     <string name="popular_dapps_title">Popüler</string>
-    <string name="swap_intermediate_too_low_amount_to_stay_abow_ed_message">Takas yürütülmesi sırasında ara alım tutarı %s olup, minimum bakiye olan %s'den az. Daha büyük takas tutarı belirtmeyi deneyin.</string>
-    <string name="common_not_enough_to_pay_fee_message">%s ağ ücreti ödeyecek yeterli bakiyeniz yok. Mevcut bakiye %s</string>
+    <string name="swap_intermediate_too_low_amount_to_stay_abow_ed_message">Takas yürütülmesi sırasında ara alım tutarı %1$s olup, minimum bakiye olan %2$s'den az. Daha büyük takas tutarı belirtmeyi deneyin.</string>
+    <string name="common_not_enough_to_pay_fee_message">%1$s ağ ücreti ödeyecek yeterli bakiyeniz yok. Mevcut bakiye %2$s</string>
     <string name="common_sec">sn</string>
     <string name="common_do_not_close_app">Uygulamayı kapatmayın!</string>
     <string name="common_failed">Başarısız</string>
-    <string name="swap_execution_operations_progress">%s / %s işlem</string>
-    <string name="swap_execution_progress_swap_label">%s → %s takası %s üzerinde</string>
-    <string name="swap_execution_progress_transfer_label">%s → %s transferi</string>
-    <string name="swap_execution_failure">#%s işleminde başarısız (%s)</string>
-    <string name="swap_execution_failure_swap_label">%s → %s takası %s üzerinde</string>
-    <string name="swap_execution_failure_transfer_label">%s transferi %s → %s</string>
+    <string name="swap_execution_operations_progress">%1$s / %2$s işlem</string>
+    <string name="swap_execution_progress_swap_label">%1$s → %2$s takası %3$s üzerinde</string>
+    <string name="swap_execution_progress_transfer_label">%1$s → %2$s transferi</string>
+    <string name="swap_execution_failure">#%1$s işleminde başarısız (%2$s)</string>
+    <string name="swap_execution_failure_swap_label">%1$s → %2$s takası %3$s üzerinde</string>
+    <string name="swap_execution_failure_transfer_label">%1$s transferi %2$s → %3$s</string>
     <string name="swap_execution_time">İşlem süresi</string>
     <string name="common_total_fee">Toplam ücret</string>
     <string name="common_fee_with_label">Ücret: %s</string>
@@ -354,7 +354,7 @@ Bu pencere otomatik olarak kapanacak.</string>
     <string name="swipe_gov_cards_counter">%d kaldı</string>
     <string name="common_use_max">Maksimum kullan</string>
     <string name="swipe_gov_insufficient_balance_dialog_title">Oy vermek için yetersiz bakiye</string>
-    <string name="swipe_gov_insufficient_balance_dialog_message">Mevcut oy gücü %s (%sx) ile oy vermek için yeterli bakiyeniz yok. Lütfen oy gücünü değiştirin veya cüzdanınıza daha fazla fon ekleyin.</string>
+    <string name="swipe_gov_insufficient_balance_dialog_message">Mevcut oy gücü %1$s (%2$sx) ile oy vermek için yeterli bakiyeniz yok. Lütfen oy gücünü değiştirin veya cüzdanınıza daha fazla fon ekleyin.</string>
     <string name="swipe_gov_convirm_votes_success_message">%d referandum için başarıyla oy verdiniz</string>
     <string name="swipe_gov_vote_setup_title">%d referandum için oy verin</string>
     <string name="swipe_gov_basket_remove_item_confirm_title">Referandum %s oy listesinden çıkarılsın mı?</string>
@@ -566,7 +566,7 @@ burada görünecek</string>
     <string name="backup_settings_delete_backup">Yedeklemeyi sil</string>
     <string name="common_change_password">Şifre değiştir</string>
     <string name="cloud_backup_settings_disabled_state_subtitle">Cüzdanları Google Drive'ınıza yedeklemek için etkinleştirin</string>
-    <string name="cloud_backup_settings_last_sync">Son senkronizasyon: %s, %s</string>
+    <string name="cloud_backup_settings_last_sync">Son senkronizasyon: %1$s, %2$s</string>
     <string name="cloud_backup_settings_not_auth_button">Google Drive'a Giriş Yapın</string>
     <string name="cloud_backup_settings_deprecated_password_button">Yedekleme Şifresini Girin</string>
     <string name="cloud_backup_settings_corrupted_backup_button">Yedekleme Güncellemelerini İncele</string>
@@ -598,7 +598,7 @@ burada görünecek</string>
     <string name="cloud_backup_delete_backup_confirmation_message">Cüzdanlarınızla birlikte mevcut yedekleme kalıcı olarak silinecek!</string>
     <string name="cloud_backup_delete_button">Yedeklemeyi Sil</string>
     <string name="restore_cloud_backup_delete_backup_title">Şifrenizi mi kaybettiniz?</string>
-    <string name="restore_cloud_backup_delete_backup_description">%s Yalnızca size ait, güvenli şekilde saklanmış, başkalarının erişemeyeceği bir şifredir. Yedekleme şifresi olmadan Google Drive'dan cüzdanları geri yüklemek mümkün değildir. Kaybettiyseniz, yeni bir şifreyle yenisini oluşturmak için mevcut yedeği silin. %s</string>
+    <string name="restore_cloud_backup_delete_backup_description">%1$s Yalnızca size ait, güvenli şekilde saklanmış, başkalarının erişemeyeceği bir şifredir. Yedekleme şifresi olmadan Google Drive'dan cüzdanları geri yüklemek mümkün değildir. Kaybettiyseniz, yeni bir şifreyle yenisini oluşturmak için mevcut yedeği silin. %2$s</string>
     <string name="restore_cloud_backup_delete_backup_description_highlighted_1">Maalesef şifreniz kurtarılamaz.</string>
     <string name="restore_cloud_backup_delete_backup_description_highlighted_2">Alternatif olarak, geri yükleme için Parolayı kullanın.</string>
     <string name="common_forgot_password">Şifrenizi mi unuttunuz?</string>
@@ -664,13 +664,13 @@ ve ekran görüntüsü almayın</string>
     <string name="push_settings_no_selected_wallets">Herhangi bir cüzdan seçmediğiniz için Cüzdan Etkinlikleri (Bakiyeler, Staking) hakkında bildirim almayacaksınız</string>
     <string name="push_token_received_title">⬇️ %s alındı</string>
     <string name="push_token_received_no_account_name_title">⬇️ Alındı</string>
-    <string name="push_token_received_message">%s, %s üzerinde alındı</string>
+    <string name="push_token_received_message">%1$s, %2$s üzerinde alındı</string>
     <string name="push_token_sent_title">💸 %s gönderildi</string>
     <string name="push_token_sent_no_account_name_title">💸 Gönderildi</string>
     <string name="push_token_sent_message">%1$s, %3$s üzerinde %2$s'e gönderildi</string>
     <string name="push_staking_reward_single_account_title">⭐️ Yeni ödül</string>
     <string name="push_staking_reward_many_accounts_title">⭐️ Yeni ödül %s</string>
-    <string name="push_staking_reward_message">%s staking'den %s alındı</string>
+    <string name="push_staking_reward_message">%1$s staking'den %2$s alındı</string>
     <string name="push_referendum_approved_title">✅ Referandum onaylandı!</string>
     <string name="push_referendum_approved_message">%1$s referandum #%2$s sona erdi ve onaylandı 🎉</string>
     <string name="push_referendum_rejected_title">❌ Referandum reddedildi!</string>
@@ -682,7 +682,7 @@ ve ekran görüntüsü almayın</string>
     <string name="push_new_update_title">Pezkuwi Wallet'ın yeni güncellemesi mevcut!</string>
     <string name="push_new_update_message">Tüm yeni özellikleri almak için Pezkuwi Wallet v%s'i indirin!</string>
     <string name="push_new_referendum_title">🗳️ Yeni referandum</string>
-    <string name="push_new_referendum_message">%s Referandum #%s şimdi yayında!</string>
+    <string name="push_new_referendum_message">%1$s Referandum #%2$s şimdi yayında!</string>
     <string name="select_tracks_for">Şunun için track seçin:</string>
     <string name="selected_tracks_quantity">%d / %d</string>
     <string name="default_notification_channel_name">Varsayılan Bildirim Kanalı</string>
@@ -707,12 +707,12 @@ ve ekran görüntüsü almayın</string>
     <string name="push_welcome_title">Hiçbir şeyi kaçırmayın!</string>
     <string name="push_welcome_message">Cüzdan işlemleri, Yönetişim güncellemeleri, Staking etkinliği ve Güvenlik hakkında bildirim alın</string>
     <string name="push_welcome_enable_button">Anlık bildirimleri etkinleştir</string>
-    <string name="push_welcome_terms_and_conditions">Anlık bildirimleri etkinleştirerek %s ve %s kabul etmiş olursunuz</string>
+    <string name="push_welcome_terms_and_conditions">Anlık bildirimleri etkinleştirerek %1$s ve %2$s kabul etmiş olursunuz</string>
     <string name="wallet_send_cannot_dust_before_delivery_fee_message">Zincirler arası kısıtlamalar nedeniyle en fazla %s transfer edebilirsiniz</string>
     <string name="common_too_small_balance_title">Bakiyeniz çok düşük</string>
-    <string name="wallet_send_insufficient_balance_commission">Bu işlem ücretini ödemek ve minimum ağ bakiyesinin üzerinde kalmak için en az %s'e sahip olmanız gerekir. Mevcut bakiyeniz: %s. Bu işlemi gerçekleştirmek için bakiyenize %s eklemeniz gerekir.</string>
-    <string name="nft_issuance_fungible_format">%s birim %s</string>
-    <string name="nft_fungile_price">%s için %s</string>
+    <string name="wallet_send_insufficient_balance_commission">Bu işlem ücretini ödemek ve minimum ağ bakiyesinin üzerinde kalmak için en az %1$s'e sahip olmanız gerekir. Mevcut bakiyeniz: %2$s. Bu işlemi gerçekleştirmek için bakiyenize %3$s eklemeniz gerekir.</string>
+    <string name="nft_issuance_fungible_format">%1$s birim %2$s</string>
+    <string name="nft_fungile_price">%1$s için %2$s</string>
     <string name="staking_set_controller_deprecated_subtitle">Staking işlemlerini başka bir hesaba delege etmek için Proxy'leri kullanın</string>
     <string name="staking_manage_proxy_requires_stash_title">Proxy kurmak için stash hesabını seçin</string>
     <string name="staking_manage_proxy_requires_stash_message">Proxy kurmak için lütfen cüzdanınızı %s'e geçirin</string>
@@ -734,16 +734,16 @@ ve ekran görüntüsü almayın</string>
     <string name="invalid_proxy_address_message">Proxy adresi geçerli bir %s adresi olmalıdır</string>
     <string name="add_proxy_deposit_description_message">Depozito, proxy kaldırılana kadar hesabınızda ayrılmış olarak kalır.</string>
     <string name="add_proxy_maximum_reached_error_title">Maksimum proxy sayısına ulaşıldı</string>
-    <string name="add_proxy_maximum_reached_error_message">%s'de %s eklenmiş proxy sınırına ulaştınız. Yenilerini eklemek için proxy'leri kaldırın.</string>
+    <string name="add_proxy_maximum_reached_error_message">%1$s'de %2$s eklenmiş proxy sınırına ulaştınız. Yenilerini eklemek için proxy'leri kaldırın.</string>
     <string name="common_error_not_enough_tokens">Yeterli token yok</string>
-    <string name="staking_not_enough_balance_to_pay_proxy_deposit_message">%s proxy depozitosu için yeterli bakiyeniz yok. Kullanılabilir bakiye: %s</string>
+    <string name="staking_not_enough_balance_to_pay_proxy_deposit_message">%1$s proxy depozitosu için yeterli bakiyeniz yok. Kullanılabilir bakiye: %2$s</string>
     <string name="staking_action_your_proxies">Delegasyonlarınız</string>
     <string name="staking_action_add_proxy">Delege edilen yetki ekle (Proxy)</string>
     <string name="set_staking_proxy_address_description">Yetki ver:</string>
     <string name="common_proxy_deposit">Proxy depozitosu</string>
     <string name="fragment_set_staking_proxy_title">%s staking için delegasyon ekle</string>
     <string name="common_enter_address">Adres girin…</string>
-    <string name="proxy_error_not_enough_to_pay_fee_message">Delege edilen hesap %s, %s ağ ücretini ödeyecek yeterli bakiyeye sahip değil. Ücret için kullanılabilir bakiye: %s</string>
+    <string name="proxy_error_not_enough_to_pay_fee_message">Delege edilen hesap %1$s, %2$s ağ ücretini ödeyecek yeterli bakiyeye sahip değil. Ücret için kullanılabilir bakiye: %3$s</string>
     <string name="staking_no_access_to_controller_account_title">Controller hesabına erişim yok</string>
     <string name="staking_no_access_to_controller_account_message">Controller hesabınızı cihaza ekleyin.</string>
     <string name="staking_story_staking_page_1">Staking, tokenlarınızı ağda kilitleyerek pasif gelir elde etme seçeneğidir. Staking ödülleri her era'da dağıtılır (Kusama'da 6 saat, Polkadot'ta 24 saat). İstediğiniz sürece stake yapabilirsiniz ve tokenlarınızı çıkarmak için unstaking süresinin bitmesini beklemeniz gerekir.</string>
@@ -776,8 +776,8 @@ ve ekran görüntüsü almayın</string>
     <string name="operations_swap_title">Takas</string>
     <string name="swap_repeat_operation">İşlemi tekrarla</string>
     <string name="wallet_filters_swaps">Takaslar</string>
-    <string name="swap_failure_balance_not_consider_consumers">Yetersiz tokenlar tuttuğunuz için %s ağ ücreti ödedikten sonra en az %s tutmanız gerekir</string>
-    <string name="swap_failure_balance_not_consider_non_sufficient_assets">%s token almak için en az %s tutmanız gerekir</string>
+    <string name="swap_failure_balance_not_consider_consumers">Yetersiz tokenlar tuttuğunuz için %1$s ağ ücreti ödedikten sonra en az %2$s tutmanız gerekir</string>
+    <string name="swap_failure_balance_not_consider_non_sufficient_assets">%1$s token almak için en az %2$s tutmanız gerekir</string>
     <string name="swap_rate_description">İki farklı kripto para birimi arasındaki döviz kuru. Bir kripto para miktarı karşılığında diğerinden ne kadar alabileceğinizi gösterir.</string>
     <string name="swap_price_difference_description">Fiyat farkı, iki farklı varlık arasındaki fiyat farkını ifade eder. Kripto takası yaparken, fiyat farkı genellikle takas ettiğiniz varlığın fiyatı ile takasa konu olan varlığın fiyatı arasındaki farktır.</string>
     <string name="swap_slippage_description">Takas kayması, merkeziyetsiz ticarette yaygın bir durumdur. Değişen piyasa koşulları nedeniyle takas işleminin nihai fiyatı beklenen fiyattan biraz farklı olabilir.</string>
@@ -792,9 +792,9 @@ ve ekran görüntüsü almayın</string>
     <string name="common_cannot_pay_network_fee_message">En fazla %s kullanabilirsiniz çünkü
 ağ ücreti olarak %s ödemeniz gerekiyor.</string>
     <string name="swap_too_low_amount_to_stay_abow_ed_title">Çok küçük bir tutar takas etmeye çalışıyorsunuz</string>
-    <string name="swap_too_low_amount_to_stay_abow_ed_message">%s tutarı, minimum bakiye %s'den az</string>
+    <string name="swap_too_low_amount_to_stay_abow_ed_message">%1$s tutarı, minimum bakiye %2$s'den az</string>
     <string name="swap_invalid_slippage_failure_title">Geçersiz kayma</string>
-    <string name="swap_invalid_slippage_failure_message">Kayma %s ile %s arasında belirtilmelidir</string>
+    <string name="swap_invalid_slippage_failure_message">Kayma %1$s ile %2$s arasında belirtilmelidir</string>
     <string name="swap_rate_was_updated_failure_title">Takas kuru güncellendi</string>
     <string name="swap_rate_was_updated_failure_message">Eski kur: %1$s ≈ %2$s.
 Yeni kur: %1$s ≈ %3$s</string>
@@ -817,9 +817,9 @@ Kalan %6$s'i de ekleyerek tam takas yapmak ister misiniz?</string>
     <string name="common_get_token_format">%s Al</string>
     <string name="swap_custom_fee_selector_description">Ağ ücreti ödemek için token</string>
     <string name="swap_custom_fee_selector_footer">Ağ ücreti girilen tutarın üzerine eklenir</string>
-    <string name="swap_minimum_balance_buy_in_alert">Ağ ücretini %s ile ödemek için Pezkuwi Wallet, hesabınızın minimum %s bakiyesini korumak amacıyla otomatik olarak %s'i %s'e takas edecek.</string>
+    <string name="swap_minimum_balance_buy_in_alert">Ağ ücretini %1$s ile ödemek için Pezkuwi Wallet, hesabınızın minimum %2$s bakiyesini korumak amacıyla otomatik olarak %3$s'i %4$s'e takas edecek.</string>
     <string name="swap_slippage_disabled_button_state">Başka değer girin</string>
-    <string name="swap_slippage_error_not_in_available_range">%s ile %s arasında bir değer girin</string>
+    <string name="swap_slippage_error_not_in_available_range">%1$s ile %2$s arasında bir değer girin</string>
     <string name="swap_slippage_warning_too_small">Düşük kayma toleransı nedeniyle işlem geri alınabilir.</string>
     <string name="swap_slippage_warning_too_big">Yüksek kayma nedeniyle işlem önden çalınabilir.</string>
     <string name="swap_slippage">Kayma</string>
@@ -827,7 +827,7 @@ Kalan %6$s'i de ekleyerek tam takas yapmak ister misiniz?</string>
     <string name="assets_swap_flow_pay_title">Ödeme yapılacak token</string>
     <string name="assets_swap_flow_receive_title">Alınacak token</string>
     <string name="swap_error_pair_not_supported">Bu çift desteklenmiyor</string>
-    <string name="swap_price_impact">%s ≈ %s</string>
+    <string name="swap_price_impact">%1$s ≈ %2$s</string>
     <string name="swap_field_subtitle_default">Token seçin</string>
     <string name="swap_field_asset_from_title">Öde</string>
     <string name="swap_field_asset_to_title">Al</string>
@@ -846,7 +846,7 @@ Kalan %6$s'i de ekleyerek tam takas yapmak ister misiniz?</string>
     <string name="assets_buy_tokens_placeholder_button">Token satın al</string>
     <string name="assets_send_flow_placeholder">Gönderecek tokenınız yok.
 Hesabınıza token satın alın veya yatırın.</string>
-    <string name="common_days_and_hours_format_with_delimeter">%s ve %s</string>
+    <string name="common_days_and_hours_format_with_delimeter">%1$s ve %2$s</string>
     <string name="common_frequency_days_daily">günlük</string>
     <string name="referendum_status_deciding">Karar veriliyor</string>
     <string name="referendum_timeline_state_deciding">Oylama: Karar veriliyor</string>
@@ -863,7 +863,7 @@ Değişiklikleriniz uygulanmayacak.</string>
     <string name="select_custom_pool_active_pools_count">aktif havuzlar: %d</string>
     <string name="select_custom_pool_members">üyeler</string>
     <string name="setup_staking_type_staking_amount_is_less_than_min_amount_title">Stake'iniz ödül kazanmak için minimumun altında</string>
-    <string name="setup_staking_type_direct_staking_amount_is_less_than_min_amount_message">%s ile ödül kazanmak için gereken minimum stake olan %s'den daha az belirlediniz. Ödül kazanmak için Pool staking kullanmayı düşünmelisiniz.</string>
+    <string name="setup_staking_type_direct_staking_amount_is_less_than_min_amount_message">%1$s ile ödül kazanmak için gereken minimum stake olan %2$s'den daha az belirlediniz. Ödül kazanmak için Pool staking kullanmayı düşünmelisiniz.</string>
     <string name="setup_staking_type_already_used_title">Staking türü değiştirilemez</string>
     <string name="setup_staking_type_pool_already_used_message">Zaten bir havuzda staking yapıyorsunuz</string>
     <string name="setup_staking_type_direct_already_used_message">Zaten Doğrudan staking'iniz var</string>
@@ -889,19 +889,19 @@ Değişiklikleriniz uygulanmayacak.</string>
     <string name="staking_unable_to_stake_more_title">Daha fazla stake yapılamıyor</string>
     <string name="staking_unable_to_stake_more_message">Tüm tokenlarınızı çıkarıyorsunuz ve daha fazla stake yapamazsınız.</string>
     <string name="staking_stake_max">Maks stake</string>
-    <string name="staking_pool_available_validation_message">Kullanılabilir bakiyeniz %s, minimum bakiye olarak %s bırakmanız ve %s ağ ücreti ödemeniz gerekir. En fazla %s stake edebilirsiniz.</string>
+    <string name="staking_pool_available_validation_message">Kullanılabilir bakiyeniz %1$s, minimum bakiye olarak %2$s bırakmanız ve %3$s ağ ücreti ödemeniz gerekir. En fazla %4$s stake edebilirsiniz.</string>
     <string name="staking_staking_type">Staking türü</string>
     <string name="start_staking_inactive_pool_message">Seçtiğiniz havuz, doğrulayıcı seçilmemiş veya stake'i minimumun altında olduğu için aktif değil.
 Seçilen Havuz ile devam etmek istediğinizden emin misiniz?</string>
     <string name="start_staking_cant_stake_amount">Belirtilen tutarı stake edemezsiniz</string>
-    <string name="start_staking_available_balance_gap_message">%s nedeniyle bakiyenizde kilitli tokenlarınız var. Devam etmek için %s'den az veya %s'den fazla girmelisiniz. Başka bir tutarı stake etmek için %s kilitlerini kaldırmalısınız.</string>
+    <string name="start_staking_available_balance_gap_message">%1$s nedeniyle bakiyenizde kilitli tokenlarınız var. Devam etmek için %2$s'den az veya %3$s'den fazla girmelisiniz. Başka bir tutarı stake etmek için %4$s kilitlerini kaldırmalısınız.</string>
     <string name="start_staking_max_nominators_reached_title">%s şu anda kullanılamıyor</string>
     <string name="start_staking_max_nominators_reached_message">Maksimum nominator sayısına ulaşıldı. Daha sonra tekrar deneyin</string>
     <string name="start_staking_selection_validators_subtitle">Doğrulayıcılar: %d (maks %d)</string>
     <string name="start_staking_editing_selection_validators_subtitle">Seçilen: %d (maks %d)</string>
     <string name="common_recommended">Önerilen</string>
     <string name="common_fee_changed_title">Ağ ücreti çok yüksek</string>
-    <string name="common_fee_changed_message">Tahmini ağ ücreti %s, varsayılan ağ ücretinden (%s) çok daha yüksek. Bu geçici ağ yoğunluğundan kaynaklanıyor olabilir. Daha düşük bir ağ ücreti beklemek için yenileyebilirsiniz.</string>
+    <string name="common_fee_changed_message">Tahmini ağ ücreti %1$s, varsayılan ağ ücretinden (%2$s) çok daha yüksek. Bu geçici ağ yoğunluğundan kaynaklanıyor olabilir. Daha düşük bir ağ ücreti beklemek için yenileyebilirsiniz.</string>
     <string name="common_refresh_fee">Ücreti yenile</string>
     <string name="send_recipient_system_account_title">Tokenlar kaybolacak</string>
     <string name="send_recipient_system_account_message">Alıcı bir sistem hesabıdır. Herhangi bir şirket veya birey tarafından kontrol edilmez.
@@ -912,7 +912,7 @@ Bu transferi yine de gerçekleştirmek istediğinizden emin misiniz?</string>
     <string name="nomination_pools_claim_rewards_restake_subtitle">Tokenlarınız stake'e geri eklenecek</string>
     <string name="nomination_pools_pool_reached_unbondings_limit_title">Havuzunuzdan çok fazla kişi çıkış yapıyor</string>
     <string name="nomination_pools_pool_reached_unbondings_limit_message">Havuzunuz için çıkış kuyruğunda şu anda boş yer yok. Lütfen %s sonra tekrar deneyin</string>
-    <string name="staking_unbond_crossed_existential">Kısmi çıkışta en az %s stake'de bırakmalısınız. Kalan %s'i de çıkararak tam çıkış yapmak ister misiniz?</string>
+    <string name="staking_unbond_crossed_existential">Kısmi çıkışta en az %1$s stake'de bırakmalısınız. Kalan %2$s'i de çıkararak tam çıkış yapmak ister misiniz?</string>
     <string name="staking_unbond_crossed_existential_title">Stake'de çok küçük tutar kalıyor</string>
     <string name="nomination_pools_pool_destroying_error_message">Havuz yok edilme durumunda olduğu için belirtilen işlem gerçekleştirilemiyor. Yakında kapatılacak.</string>
     <string name="nomination_pools_pool_destroying_error_title">Havuz yok ediliyor</string>
@@ -962,7 +962,7 @@ Lütfen yeni QR kodu oluşturun ve %s ile imzalayın</string>
     <string name="account_details_parity_signer_alert">Bu cüzdan %1$s ile eşleştirilmiştir. Pezkuwi Wallet istediğiniz işlemleri oluşturmanıza yardımcı olacak ve bunları %1$s kullanarak imzalamanız istenecek</string>
     <string name="account_details_parity_signer_not_supported">%s tarafından desteklenmiyor</string>
     <string name="account_parity_signer_not_supported_subtitle">%s rastgele mesaj imzalamayı desteklemiyor — yalnızca işlemler</string>
-    <string name="account_parity_signer_chain_not_supported">%s, %s'i desteklemiyor</string>
+    <string name="account_parity_signer_chain_not_supported">%1$s, %2$s'i desteklemiyor</string>
     <string name="account_polkadot_vault_import_start_empty_derivation_hint">Dikkat, türetme yolu adı boş olmalıdır</string>
     <string name="account_parity_signer">Parity Signer</string>
     <string name="account_polkadot_vault">Polkadot Vault</string>
@@ -972,7 +972,7 @@ Lütfen yeni QR kodu oluşturun ve %s ile imzalayın</string>
 bulunamadı</string>
     <string name="transfer_history_income_from">Kimden: %s</string>
     <string name="transfer_history_send_to">Kime: %s</string>
-    <string name="transaction_history_fiat_with_time">%s, %s</string>
+    <string name="transaction_history_fiat_with_time">%1$s, %2$s</string>
     <string name="referenda_list_filter_placeholder">Uygulanan filtrelerle referandum yok</string>
     <string name="pincode_biometric_switch_dialog_title">Yetkilendirme için biyometrik kullan</string>
     <string name="pincode_biometric_error">Yetkilendirilmediniz. Lütfen tekrar deneyin.</string>
@@ -1048,13 +1048,13 @@ bulunamadı</string>
     <string name="web3names_integrity_check_failed_message">Pezkuwi Wallet, %1$s adreslerinin bilgi bütünlüğüyle ilgili sorunlar tespit etti. Bütünlük sorunlarını çözmek için lütfen %1$s sahibiyle iletişime geçin.</string>
     <string name="web3names_unsupported_asset_title">Token %s henüz desteklenmiyor</string>
     <string name="web3names_unsupported_asset_message">Pezkuwi Wallet, %s tokeninin kodunu çözemiyor</string>
-    <string name="web3names_address_with_description">%s (%s)</string>
+    <string name="web3names_address_with_description">%1$s (%2$s)</string>
     <string name="web3names_invalid_recepient_title">Geçersiz alıcı</string>
     <string name="web3names_service_unavailable_title">w3n çözümleme hatası</string>
     <string name="web3names_service_unavailable_message">%1$s w3n hizmetleri kullanılamıyor. Daha sonra tekrar deneyin veya %1$s adresini manuel olarak girin</string>
     <string name="web3names_recepient_not_found_message">%s bulunamadı</string>
-    <string name="web3names_no_valid_recepient_found_message">%s için %s ağında geçerli adres bulunamadı</string>
-    <string name="web3names_identifiers_sheet_title">%s için %s adresleri</string>
+    <string name="web3names_no_valid_recepient_found_message">%1$s için %2$s ağında geçerli adres bulunamadı</string>
+    <string name="web3names_identifiers_sheet_title">%1$s için %2$s adresleri</string>
     <string name="common_no_app_to_handle_intent">Bu isteği işlemek için cihazda uygun uygulama bulunamadı</string>
     <string name="select_ledger_location_enable_request_title">Lütfen cihaz ayarlarında konum hizmetini etkinleştirin</string>
     <string name="select_ledger_location_enable_request_message">Pezkuwi Wallet'ın Ledger cihazınızı bulmak için bluetooth taraması yapabilmesi için konumun etkinleştirilmiş olması gerekir</string>
@@ -1096,7 +1096,7 @@ Minimumun altında stake tutmak, staking'in ödül üretmeme olasılığını ar
     <string name="referendum_track_small_spender">Hazine: küçük harcama</string>
     <string name="referendum_track_medium_spender">Hazine: orta harcama</string>
     <string name="referendum_track_big_spender">Hazine: büyük harcama</string>
-    <string name="delegation_referendum_vote">Oylarınız: %s, %s aracılığıyla</string>
+    <string name="delegation_referendum_vote">Oylarınız: %1$s, %2$s aracılığıyla</string>
     <string name="delegation_referendum_details_vote">Oylarınız %s aracılığıyla</string>
     <string name="delegation_delegate">Delege et</string>
     <string name="delegation_your_delegation">Delegasyonunuz</string>
@@ -1108,11 +1108,11 @@ Minimumun altında stake tutmak, staking'in ödül üretmeme olasılığını ar
     <string name="delegation_multi_track_format">%s track boyunca</string>
     <string name="delegation_remove_votes">Oyları kaldır</string>
     <string name="delegation_tracks">Track'ler</string>
-    <string name="common_element_and_more_format">%s (+%s daha)</string>
+    <string name="common_element_and_more_format">%1$s (+%2$s daha)</string>
     <string name="delegation_all_votes">Tüm zamanlar oy verilen</string>
     <string name="delegation_delegate_info">Temsilci bilgisi</string>
     <string name="referendum_voted_referenda">Oy verilen referandumlar</string>
-    <string name="referendum_other_votes">%s oy, %s tarafından</string>
+    <string name="referendum_other_votes">%1$s oy, %2$s tarafından</string>
     <string name="delegation_your_delegations">Delegasyonlarınız</string>
     <string name="delegation_list_banner_title">Temsilci misiniz?</string>
     <string name="delegation_list_banner_description">Kendiniz hakkında daha fazla bilgi verin, böylece Pezkuwi Wallet kullanıcıları sizi daha iyi tanısın</string>
@@ -1212,7 +1212,7 @@ Minimumun altında stake tutmak, staking'in ödül üretmeme olasılığını ar
     <string name="referendum_timeline_state_in_queue">Oylama: Sırada</string>
     <string name="referendum_timeline_state_passing">Oylama: Geçiyor</string>
     <string name="referendum_timeline_state_not_passing">Oylama: Geçmiyor</string>
-    <string name="referendum_in_queue_position_format">Pozisyon: %s / %s</string>
+    <string name="referendum_in_queue_position_format">Pozisyon: %1$s / %2$s</string>
     <string name="referendum_timeline_state_created">Oluşturuldu</string>
     <string name="referendum_timeline_state_approved">Oylandı: Onaylandı</string>
     <string name="referendum_timeline_state_rejected">Oylandı: Reddedildi</string>
@@ -1230,10 +1230,10 @@ Minimumun altında stake tutmak, staking'in ödül üretmeme olasılığını ar
     <string name="vote_vote">Oy Ver</string>
     <string name="common_governance">Yönetişim</string>
     <string name="referendum_name_unknown">Referandum %s</string>
-    <string name="referendum_support_threshold_format">Eşik: %s / %s</string>
+    <string name="referendum_support_threshold_format">Eşik: %1$s / %2$s</string>
     <string name="referendum_your_vote_format">Oyunuz: %s oy</string>
     <string name="referendum_status_approved">Onaylandı</string>
-    <string name="referendum_status_in_queue_format">Sırada (%s / %s)</string>
+    <string name="referendum_status_in_queue_format">Sırada (%1$s / %2$s)</string>
     <string name="referendum_status_timeout">Zaman aşımı</string>
     <string name="referendum_status_cancelled">İptal edildi</string>
     <string name="referendum_status_passing">Geçiyor</string>
@@ -1269,7 +1269,7 @@ Minimumun altında stake tutmak, staking'in ödül üretmeme olasılığını ar
     <string name="referendum_negative_voters_title">Hayır oyları</string>
     <string name="referendum_description_fallback">Bu açıklamayı ve başlığı yalnızca önerici düzenleyebilir. Önerici hesabına sahipseniz, Polkassembly'yi ziyaret edin ve teklifiniz hakkında bilgi girin</string>
     <string name="referendum_voter_vote">%s oy</string>
-    <string name="referendum_voter_vote_details">%s × %sx</string>
+    <string name="referendum_voter_vote_details">%1$s × %2$sx</string>
     <string name="confirm_referendum_vote_title">Oy Ver</string>
     <string name="confirm_referendum_vote_track">Track</string>
     <string name="confirm_referendum_vote_referendum">Referandum</string>
@@ -1279,7 +1279,7 @@ Minimumun altında stake tutmak, staking'in ödül üretmeme olasılığını ar
     <string name="crowdloan_contributions_parallel_source">Parallel</string>
     <string name="assets_balance_details_locks_crowdloans">Crowdloan'lar</string>
     <string name="common_accept_terms">Şartları kabul edin...</string>
-    <string name="yield_boost_terms">Yield Boost, %s'den fazla olan tüm transfer edilebilir tokenlarımı otomatik olarak %s stake edecek</string>
+    <string name="yield_boost_terms">Yield Boost, %1$s'den fazla olan tüm transfer edilebilir tokenlarımı otomatik olarak %2$s stake edecek</string>
     <string name="yield_boost_stake_increase_time">Stake artış zamanı</string>
     <string name="yiled_boost_yield_boosted">Yield Artırıldı</string>
     <string name="yield_boost_already_enabled_title">Yield Boost Collator'ü değiştirilsin mi?</string>
@@ -1296,7 +1296,7 @@ Minimumun altında stake tutmak, staking'in ödül üretmeme olasılığını ar
     <string name="staking_turing_collator_title">Collator'üm için</string>
     <string name="staking_turing_restake_title">Stake etmek istiyorum</string>
     <string name="staking_turing_frequency_new_title">transfer edilebilir tokenlarımın hepsini %s otomatik olarak stake etmek için şunun üzerinde</string>
-    <string name="staking_turing_frequency_update_title">transfer edilebilir tokenlarımın hepsini %s (önceki: %s) otomatik olarak stake etmek için şunun üzerinde</string>
+    <string name="staking_turing_frequency_update_title">transfer edilebilir tokenlarımın hepsini %1$s (önceki: %2$s) otomatik olarak stake etmek için şunun üzerinde</string>
     <string name="common_frequency_days_everyday">her gün</string>
     <string name="staking_turing_boost_threshold">Boost eşiği</string>
     <string name="common_on">Açık</string>
@@ -1304,7 +1304,7 @@ Minimumun altında stake tutmak, staking'in ödül üretmeme olasılığını ar
     <string name="staking_turing_yield_boost">Yield Boost</string>
     <string name="ledger_chain_not_supported">Ledger %s'i desteklemiyor</string>
     <string name="ledger_sign_raw_not_supported">Ledger rastgele mesaj imzalamayı desteklemiyor — yalnızca işlemler</string>
-    <string name="assets_receive_ledger_not_supported_message">Ledger, %s gönderimini desteklemediğinden %s'i Ledger kontrollü hesaba transfer etmeyin, aksi takdirde varlıklar bu hesapta kalacak</string>
+    <string name="assets_receive_ledger_not_supported_message">Ledger, %1$s gönderimini desteklemediğinden %2$s'i Ledger kontrollü hesaba transfer etmeyin, aksi takdirde varlıklar bu hesapta kalacak</string>
     <string name="assets_receive_ledger_not_supported_title">Ledger bu tokeni desteklemiyor</string>
     <string name="common_signature_invalid">İmza geçersiz</string>
     <string name="ledger_sign_signature_invalid_message">Lütfen onaylanan işlem için doğru Ledger cihazını seçtiğinizden emin olun</string>
@@ -1512,7 +1512,7 @@ Transfer sonrası kalan bakiye: %s</string>
     <string name="nft_owned_by">Sahibi</string>
     <string name="nft_created_by">Oluşturan</string>
     <string name="nft_issuance_unlimited">Sınırsız seri</string>
-    <string name="nft_issuance_limited_format">#%s, %s adetlik seri</string>
+    <string name="nft_issuance_limited_format">#%1$s, %2$s adetlik seri</string>
     <string name="nft_your_nfts">NFT'leriniz</string>
     <string name="wallet_assets_empty">Varlıklarınız burada görünecek.
 "Sıfır bakiyeleri gizle" filtresinin kapalı olduğundan emin olun</string>
@@ -1700,7 +1700,7 @@ Transfer sonrası kalan bakiye: %s</string>
     <string name="crowdloan_contribution_format">Katkınız: %s</string>
     <string name="crowdloan_contributions_placeholder">Katkılarınız
 burada görünecek</string>
-    <string name="crowdloan_contributions_with_source">%s (%s aracılığıyla)</string>
+    <string name="crowdloan_contributions_with_source">%1$s (%2$s aracılığıyla)</string>
     <string name="crowdloan_crowdloan">Crowdloan'lar</string>
     <string name="crowdloan_empty_bonus_title">Özel bonus kazanın</string>
     <string name="crowdloan_empty_message_v2_2_0">Crowdloan'lar burada görüntülenecek</string>
@@ -1733,7 +1733,7 @@ burada görünecek</string>
     <string name="crowdloan_too_small_contribution_title">Katkı tutarı çok küçük</string>
     <string name="crowdloan_unlock_hint">%s tokenlarınız kiralama süresinden sonra iade edilecek.</string>
     <string name="crowdloan_your_contributions">Katkılarınız</string>
-    <string name="crownloans_raised_format">Toplanan: %s / %s</string>
+    <string name="crownloans_raised_format">Toplanan: %1$s / %2$s</string>
     <string name="dapp_dapps">DApp'ler</string>
     <string name="ecdsa_selection_subtitle">(BTC/ETH uyumlu)</string>
     <string name="ecdsa_selection_title">ECDSA</string>
@@ -1829,7 +1829,7 @@ Mnemonic: %s</string>
     <string name="staking_balance_title_v2_2_0">Bakiye</string>
     <string name="staking_bond_more_v1_9_0">Daha fazla stake et</string>
     <string name="staking_bonded_inactive">Ne nominate ediyorsunuz ne de doğrulama yapıyorsunuz</string>
-    <string name="staking_confirm_nominations">%s / %s</string>
+    <string name="staking_confirm_nominations">%1$s / %2$s</string>
     <string name="staking_confirm_selected_validators">Seçilen doğrulayıcılar</string>
     <string name="staking_controller_account">Controller hesabı</string>
     <string name="staking_controller_account_zero_balance">Bu hesapta serbest token olmadığını tespit ettik, controller'ı değiştirmek istediğinizden emin misiniz?</string>
@@ -1868,7 +1868,7 @@ Mnemonic: %s</string>
     <string name="staking_main_network_title">%s ağı</string>
     <string name="staking_main_stake_balance_staked">Stake edilen</string>
     <string name="staking_manage_title">Yönet</string>
-    <string name="staking_max_format">%s (maks %s)</string>
+    <string name="staking_max_format">%1$s (maks %2$s)</string>
     <string name="staking_max_nominators_reached_message">Maksimum nominatör sayısına ulaşıldı</string>
     <string name="staking_max_nominators_reached_title">Staking başlatılamıyor</string>
     <string name="staking_month_period_title">Aylık</string>
@@ -2025,7 +2025,7 @@ transferler burada görünecek</string>
     <string name="wallet_nickname_create_caption_v2_2_0">İsim örnekleri: Ana hesap, Doğrulayıcım, Dotsama crowdloan'lar, vb.</string>
     <string name="wallet_receive_description">Bu QR'ı göndericiye paylaşın</string>
     <string name="wallet_receive_description_v2_2_0">Göndericinin bu QR kodu taramasını sağlayın</string>
-    <string name="wallet_receive_share_message">%s almak için %s adresim:</string>
+    <string name="wallet_receive_share_message">%1$s almak için %2$s adresim:</string>
     <string name="wallet_receive_share_qr">QR kodu paylaş</string>
     <string name="wallet_search_empty_title">Adresin doğru ağdan
 olduğundan emin olun</string>
