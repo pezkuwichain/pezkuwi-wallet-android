@@ -53,7 +53,7 @@
     <string name="gift_reclaimed_subtitle">Reclaimed</string>
     <string name="gifts_claim_fee">Network fee on claim</string>
 
-    <string name="share_gift_text">Hello! You’ve got a %s gift waiting for you!\n\nInstall Pezkuwi Wallet app, set up your wallet, and claim it via this special link:\n%s</string>
+    <string name="share_gift_text">Hello! You’ve got a %1$s gift waiting for you!\n\nInstall Pezkuwi Wallet app, set up your wallet, and claim it via this special link:\n%2$s</string>
 
     <string name="share_gift_title">Gift Has Been Prepared.\nShare It Now!</string>
     <string name="share_gift_button">Share gift link</string>
@@ -96,9 +96,9 @@
     <string name="staking_details_migration_alert_title">%1$s staking is live on %2$s starting %3$s</string>
 
     <string name="common_view">View</string>
-    <string name="transaction_history_migration_source_message">Your previous %s transaction history is still available on %s</string>
+    <string name="transaction_history_migration_source_message">Your previous %1$s transaction history is still available on %2$s</string>
 
-    <string name="asset_details_source_asset_alert_title">Your %s tokens now on %s</string>
+    <string name="asset_details_source_asset_alert_title">Your %1$s tokens now on %2$s</string>
     <string name="asset_details_source_asset_alert_message">Starting %1$s, your %2$s balance, Staking, and Governance will be on %3$s — with improved performance and lower costs.</string>
     <string name="asset_details_source_asset_alert_button">Go to %s</string>
 
@@ -143,8 +143,8 @@
     <string name="multisig_transaction_executed_dialog_title">Multisig Transaction Executed</string>
     <string name="multisig_transaction_rejected_dialog_title">Multisig Transaction Rejected</string>
 
-    <string name="multisig_transaction_rejected_dialog_message">%s on %s.\nRejected by: %s.\nNo further actions are required from you.</string>
-    <string name="multisig_transaction_executed_dialog_message">%s on %s.\nNo further actions are required from you.</string>
+    <string name="multisig_transaction_rejected_dialog_message">%1$s on %2$s.\nRejected by: %3$s.\nNo further actions are required from you.</string>
+    <string name="multisig_transaction_executed_dialog_message">%1$s on %2$s.\nNo further actions are required from you.</string>
 
     <string name="multisig_transaction_dialog_message_unknown_call">Transaction without initial on-chain information (call data) was rejected</string>
 
@@ -157,12 +157,12 @@
     <string name="multisig_notification_executed_transaction_title">✅ Multisig transaction executed</string>
     <string name="multisig_notification_executed_transaction_message">Signed and executed by %s.</string>
 
-    <string name="multisig_notification_new_approval_title_additional_message">%d of %d signatures collected.</string>
+    <string name="multisig_notification_new_approval_title_additional_message">%1$d of %2$d signatures collected.</string>
     <string name="multisig_notification_new_approval_title">Signed by %s</string>
 
     <string name="multisig_notification_init_transaction_title">✍🏻 Your signature requested </string>
-    <string name="multisig_notification_init_transaction_message">%s on %s.</string>
-    <string name="multisig_operation_default_call_format">%s: %s</string>
+    <string name="multisig_notification_init_transaction_message">%1$s on %2$s.</string>
+    <string name="multisig_operation_default_call_format">%1$s: %2$s</string>
     <string name="multisig_notification_initiator_footer">Initiated by %s.</string>
     <string name="multisig_notification_message_header">Wallet: %s</string>
 
@@ -213,16 +213,16 @@
     <string name="common_signatory">Signatory</string>
     <string name="common_hide">Hide</string>
     <string name="common_show">Show</string>
-    <string name="multisig_operation_details_signatories">Signatories (%d of %d)</string>
+    <string name="multisig_operation_details_signatories">Signatories (%1$d of %2$d)</string>
 
     <string name="swap_dry_run_failed_inline_message">Simulation of swap step failed</string>
 
     <string name="common_dry_run_failed_title">Transaction simulation failed</string>
     <string name="common_dry_run_failed_message">Pezkuwi Wallet simulates the transaction beforehand to prevent errors. This simulation didn’t succeed. Try again later or with a higher amount. If the issue persists, please contact Pezkuwi Wallet Support in Settings.</string>
 
-    <string name="multisig_signatory_validation_deposit_fee">%s doesn’t have enough balance to pay the network fee of %s and place multisig deposit of %s. You need to add %s more to your balance</string>
-    <string name="multisig_signatory_validation_deposit">%s doesn’t have enough balance to place multisig deposit of %s. You need to add %s more to your balance</string>
-    <string name="multisig_signatory_validation_fee">%s doesn’t have enough balance to pay the network fee of %s. You need to add %s more to your balance</string>
+    <string name="multisig_signatory_validation_deposit_fee">%1$s doesn’t have enough balance to pay the network fee of %2$s and place multisig deposit of %3$s. You need to add %4$s more to your balance</string>
+    <string name="multisig_signatory_validation_deposit">%1$s doesn’t have enough balance to place multisig deposit of %2$s. You need to add %3$s more to your balance</string>
+    <string name="multisig_signatory_validation_fee">%1$s doesn’t have enough balance to pay the network fee of %2$s. You need to add %3$s more to your balance</string>
 
     <string name="invalid_call_data_title">Invalid call data</string>
     <string name="invalid_call_data_message">This call data for another operation with call hash %s</string>
@@ -233,7 +233,7 @@
 
 
     <string name="multisig_wallet_details_info_warning_other_signatories">Other signatories:</string>
-    <string name="multisig_wallet_details_info_warning_title">Threshold %d out of %d</string>
+    <string name="multisig_wallet_details_info_warning_title">Threshold %1$d out of %2$d</string>
 
     <string name="multisig_card_not_supported_title">Debit Card is not supported for Multisig</string>
     <string name="multisig_card_not_supported_message">To manage your Debit Card, please switch to a different type of wallet.</string>
@@ -244,7 +244,7 @@
 
     <string name="multisig_pending_operations">Transactions to sign</string>
 
-    <string name="multisig_operations_progress">Signing (%s of %s)</string>
+    <string name="multisig_operations_progress">Signing (%1$s of %2$s)</string>
 
 
     <string name="multisig_operations_created">Created by you</string>
@@ -259,7 +259,7 @@
     <string name="multisig_callhash_exists_title">Operation already exists</string>
     <string name="multisig_callhash_exists_message">%s has already initiated the same operation and it is currently waiting to be signed by other signatories.</string>
 
-    <string name="multisig_signatory_validation_ed">%s needs at least %s to pay this transaction fee and stay above the minimum network balance. Current balance is: %s</string>
+    <string name="multisig_signatory_validation_ed">%1$s needs at least %2$s to pay this transaction fee and stay above the minimum network balance. Current balance is: %3$s</string>
 
     <string name="multisig_signing_is_not_supported_message">Multisig wallets do not support signing arbitrary messages — only transactions</string>
 
@@ -289,7 +289,7 @@
     <string name="multisig_signatory">Signatory:</string>
 
 
-    <string name="swap_failure_cannot_receive_insufficient_asset_out">You must have at least %s on %s to receive %s token</string>
+    <string name="swap_failure_cannot_receive_insufficient_asset_out">You must have at least %1$s on %2$s to receive %3$s token</string>
 
     <string name="account_migration_title">Welcome to Pezkuwi Wallet!</string>
     <string name="account_migration_subtitle">You’re almost there! 🎉\n Just tap below to complete the setup and start using your accounts seamlessly in both the Polkadot App and Pezkuwi Wallet</string>
@@ -429,8 +429,8 @@
     <string name="price_charts_period_year">Last Year</string>
     <string name="price_charts_period_all">All Time</string>
 
-    <string name="price_chart_date_format">%s at %s</string>
-    <string name="price_chart_price_change">%s (%s)</string>
+    <string name="price_chart_date_format">%1$s at %2$s</string>
+    <string name="price_chart_price_change">%1$s (%2$s)</string>
 
     <string name="price_chart_title">%s price</string>
     <string name="price_chart_day">1D</string>
@@ -447,9 +447,9 @@
 
     <string name="popular_dapps_title">Popular</string>
 
-    <string name="swap_intermediate_too_low_amount_to_stay_abow_ed_message">During swap execution intermediate receive amount is %s which is less than minimum balance of %s. Try specifying larger swap amount.</string>
+    <string name="swap_intermediate_too_low_amount_to_stay_abow_ed_message">During swap execution intermediate receive amount is %1$s which is less than minimum balance of %2$s. Try specifying larger swap amount.</string>
 
-    <string name="common_not_enough_to_pay_fee_message">You don\'t have enough balance to pay network fee of %s. Current balance is %s</string>
+    <string name="common_not_enough_to_pay_fee_message">You don\'t have enough balance to pay network fee of %1$s. Current balance is %2$s</string>
 
     <string name="common_sec">sec</string>
 
@@ -457,19 +457,19 @@
 
     <string name="common_failed">Failed</string>
 
-    <string name="swap_execution_operations_progress">%s of %s operations</string>
+    <string name="swap_execution_operations_progress">%1$s of %2$s operations</string>
 
     <plurals name="swap_execution_operations_completed">
         <item quantity="one">%s operation</item>
         <item quantity="other">%s operations</item>
     </plurals>
 
-    <string name="swap_execution_progress_swap_label">Swapping %s to %s on %s</string>
-    <string name="swap_execution_progress_transfer_label">Transferring %s to %s</string>
+    <string name="swap_execution_progress_swap_label">Swapping %1$s to %2$s on %3$s</string>
+    <string name="swap_execution_progress_transfer_label">Transferring %1$s to %2$s</string>
 
-    <string name="swap_execution_failure">Failed on operation #%s (%s)</string>
-    <string name="swap_execution_failure_swap_label">%s to %s swap on %s</string>
-    <string name="swap_execution_failure_transfer_label">%s transfer from %s to %s</string>
+    <string name="swap_execution_failure">Failed on operation #%1$s (%2$s)</string>
+    <string name="swap_execution_failure_swap_label">%1$s to %2$s swap on %3$s</string>
+    <string name="swap_execution_failure_transfer_label">%1$s transfer from %2$s to %3$s</string>
 
     <plurals name="common_seconds_format">
         <item quantity="one">%d second</item>
@@ -529,7 +529,7 @@
     <string name="common_use_max">Use max</string>
 
     <string name="swipe_gov_insufficient_balance_dialog_title">Insufficient balance for voting</string>
-    <string name="swipe_gov_insufficient_balance_dialog_message">You don\'t have enough balance to vote with the current voting power %s (%sx). Please change voting power or add more funds to your wallet.</string>
+    <string name="swipe_gov_insufficient_balance_dialog_message">You don\'t have enough balance to vote with the current voting power %1$s (%2$sx). Please change voting power or add more funds to your wallet.</string>
     <string name="swipe_gov_convirm_votes_success_message">You have successfully voted for %d referenda</string>
 
     <string name="swipe_gov_vote_setup_title">Vote for %d referenda</string>
@@ -772,7 +772,7 @@
     <string name="manual_backup_select_account_default_key_title">Accounts with default key</string>
     <string name="manual_backup_select_account_custom_key_title">Accounts with custom key</string>
     <string name="manual_backup_select_account_default_key_account">Default accounts</string>
-    <string name="manual_backup_select_account_default_key_account_subtitle_more_chains">%s, +%d others</string>
+    <string name="manual_backup_select_account_default_key_account_subtitle_more_chains">%1$s, +%2$d others</string>
     <string name="manual_backup_select_account_header">Select the key to back up</string>
 
     <string name="manual_backup_select_wallet_header">Select a wallet to back up</string>
@@ -822,7 +822,7 @@
     <string name="common_change_password">Change password</string>
 
     <string name="cloud_backup_settings_disabled_state_subtitle">Enable to backup wallets to your Google Drive</string>
-    <string name="cloud_backup_settings_last_sync">Last sync: %s at %s</string>
+    <string name="cloud_backup_settings_last_sync">Last sync: %1$s at %2$s</string>
     <string name="cloud_backup_settings_not_auth_button">Sign In to Google Drive</string>
     <string name="cloud_backup_settings_deprecated_password_button">Enter Backup Password</string>
     <string name="cloud_backup_settings_corrupted_backup_button">Review Backup Updates</string>
@@ -861,7 +861,7 @@
 
     <string name="cloud_backup_delete_button">Delete Backup</string>
     <string name="restore_cloud_backup_delete_backup_title">Have you lost your password?</string>
-    <string name="restore_cloud_backup_delete_backup_description">%s It\'s exclusively yours, securely stored, inaccessible to others. Without the backup password, restoring wallets from Google Drive is impossible. If lost, delete the current backup to create a new one with a fresh password. %s</string>
+    <string name="restore_cloud_backup_delete_backup_description">%1$s It\'s exclusively yours, securely stored, inaccessible to others. Without the backup password, restoring wallets from Google Drive is impossible. If lost, delete the current backup to create a new one with a fresh password. %2$s</string>
     <string name="restore_cloud_backup_delete_backup_description_highlighted_1">Unfortunately, your password cannot be recovered.</string>
     <string name="restore_cloud_backup_delete_backup_description_highlighted_2">Alternatively, use Passphrase for restoration.</string>
 
@@ -959,7 +959,7 @@
 
     <string name="push_token_received_title">⬇️ Received %s</string>
     <string name="push_token_received_no_account_name_title">⬇️ Received</string>
-    <string name="push_token_received_message">Received %s on %s</string>
+    <string name="push_token_received_message">Received %1$s on %2$s</string>
 
     <string name="push_token_sent_title">💸 Sent %s</string>
     <string name="push_token_sent_no_account_name_title">💸 Sent</string>
@@ -967,7 +967,7 @@
 
     <string name="push_staking_reward_single_account_title">⭐️ New reward</string>
     <string name="push_staking_reward_many_accounts_title">⭐️ New reward %s</string>
-    <string name="push_staking_reward_message">Received %s from %s staking</string>
+    <string name="push_staking_reward_message">Received %1$s from %2$s staking</string>
 
     <string name="push_referendum_approved_title">✅ Referendum approved!</string>
     <string name="push_referendum_approved_message">%1$s referendum #%2$s has ended and been approved 🎉</string>
@@ -982,7 +982,7 @@
     <string name="push_new_update_title">A new update of Pezkuwi Wallet is available!</string>
     <string name="push_new_update_message">Download Pezkuwi Wallet v%s to get all the new features!</string>
     <string name="push_new_referendum_title">🗳️ New referendum</string>
-    <string name="push_new_referendum_message">%s Referendum #%s is now live!</string>
+    <string name="push_new_referendum_message">%1$s Referendum #%2$s is now live!</string>
 
     <plurals name="governance_select_tracks_min_tracks_error">
         <item quantity="one">You need to select at least %d track</item>
@@ -1031,11 +1031,11 @@
     <string name="wallet_send_cannot_dust_before_delivery_fee_message">Due to the cross-chain restrictions you can transfer not more than %s</string>
 
     <string name="common_too_small_balance_title">Your balance is too small</string>
-    <string name="wallet_send_insufficient_balance_commission">You need to have at least %s to pay this transaction fee and stay above the minimum network balance. Your current balance is: %s. You need to add %s to your balance to perform this operation.</string>
+    <string name="wallet_send_insufficient_balance_commission">You need to have at least %1$s to pay this transaction fee and stay above the minimum network balance. Your current balance is: %2$s. You need to add %3$s to your balance to perform this operation.</string>
 
-    <string name="nft_issuance_fungible_format">%s units of %s</string>
+    <string name="nft_issuance_fungible_format">%1$s units of %2$s</string>
 
-    <string name="nft_fungile_price">%s for %s</string>
+    <string name="nft_fungile_price">%1$s for %2$s</string>
 
     <string name="staking_set_controller_deprecated_subtitle">Use Proxies to delegate Staking operations to another account</string>
 
@@ -1070,10 +1070,10 @@
     <string name="add_proxy_deposit_description_message">The deposit stays reserved on your account until the proxy is removed.</string>
 
     <string name="add_proxy_maximum_reached_error_title">Maximum number of proxies has been reached</string>
-    <string name="add_proxy_maximum_reached_error_message">You have reached the limit of %s added proxies in %s. Remove proxies to add new ones.</string>
+    <string name="add_proxy_maximum_reached_error_message">You have reached the limit of %1$s added proxies in %2$s. Remove proxies to add new ones.</string>
 
     <string name="common_error_not_enough_tokens">Not enough tokens</string>
-    <string name="staking_not_enough_balance_to_pay_proxy_deposit_message">You don’t have enough balance for proxy deposit of %s. Available balance: %s</string>
+    <string name="staking_not_enough_balance_to_pay_proxy_deposit_message">You don’t have enough balance for proxy deposit of %1$s. Available balance: %2$s</string>
 
     <string name="staking_action_your_proxies">Your delegations</string>
     <string name="staking_action_add_proxy">Add delegated authority (Proxy)</string>
@@ -1083,7 +1083,7 @@
     <string name="fragment_set_staking_proxy_title">Add delegation for %s staking</string>
 
     <string name="common_enter_address">Enter address…</string>
-    <string name="proxy_error_not_enough_to_pay_fee_message">Delegated account %s doesn’t have enough balance to pay the network fee of %s. Available balance to pay fee: %s</string>
+    <string name="proxy_error_not_enough_to_pay_fee_message">Delegated account %1$s doesn’t have enough balance to pay the network fee of %2$s. Available balance to pay fee: %3$s</string>
     <string name="staking_no_access_to_controller_account_title">No access to controller account</string>
     <string name="staking_no_access_to_controller_account_message">Add your controller account in device.</string>
 
@@ -1130,8 +1130,8 @@
 
     <string name="wallet_filters_swaps">Swaps</string>
 
-    <string name="swap_failure_balance_not_consider_consumers">You should keep at least %s after paying %s network fee as you are holding non sufficient tokens</string>
-    <string name="swap_failure_balance_not_consider_non_sufficient_assets">You must keep at least %s to receive %s token</string>
+    <string name="swap_failure_balance_not_consider_consumers">You should keep at least %1$s after paying %2$s network fee as you are holding non sufficient tokens</string>
+    <string name="swap_failure_balance_not_consider_non_sufficient_assets">You must keep at least %1$s to receive %2$s token</string>
 
     <string name="swap_rate_description">Exchange rate between two different cryptocurrencies. It represents how much of one cryptocurrency you can get in exchange for a certain amount of another cryptocurrency.</string>
     <string name="swap_price_difference_description">Price difference refers to the difference in price between two different assets. When making a swap in crypto, the price difference is usually the difference between the price of the asset you are swapping for and the price of the asset you are swapping with.</string>
@@ -1147,13 +1147,13 @@
     <string name="swap_field_validation_not_enough_amount_to_swap">Not enough tokens to swap</string>
     <string name="swap_field_validation_to_low_amount_out">You can’t receive less than %s</string>
 
-    <string name="common_cannot_pay_network_fee_message">You can use up to %s since you need to pay\n%s for network fee.</string>
+    <string name="common_cannot_pay_network_fee_message">You can use up to %1$s since you need to pay\n%2$s for network fee.</string>
 
     <string name="swap_too_low_amount_to_stay_abow_ed_title">You are trying to swap too small amount</string>
-    <string name="swap_too_low_amount_to_stay_abow_ed_message">Amount of %s is less than minimum balance of %s</string>
+    <string name="swap_too_low_amount_to_stay_abow_ed_message">Amount of %1$s is less than minimum balance of %2$s</string>
 
     <string name="swap_invalid_slippage_failure_title">Invalid slippage</string>
-    <string name="swap_invalid_slippage_failure_message">Slippage must be specified between %s and %s</string>
+    <string name="swap_invalid_slippage_failure_message">Slippage must be specified between %1$s and %2$s</string>
     <string name="swap_rate_was_updated_failure_title">Swap rate was updated</string>
     <string name="swap_rate_was_updated_failure_message">Old rate: %1$s ≈ %2$s.\nNew rate: %1$s ≈ %3$s</string>
     <string name="swap_not_enought_liquidity_failure">Pool doesn’t have enough liquidity to swap</string>
@@ -1179,10 +1179,10 @@
 
     <string name="swap_custom_fee_selector_description">Token for paying network fee</string>
     <string name="swap_custom_fee_selector_footer">Network fee is added on top of entered amount</string>
-    <string name="swap_minimum_balance_buy_in_alert">To pay network fee with %s, Pezkuwi Wallet will automatically swap %s for %s to maintain your account\'s minimum %s balance.</string>
+    <string name="swap_minimum_balance_buy_in_alert">To pay network fee with %1$s, Pezkuwi Wallet will automatically swap %2$s for %3$s to maintain your account\'s minimum %4$s balance.</string>
 
     <string name="swap_slippage_disabled_button_state">Enter other value</string>
-    <string name="swap_slippage_error_not_in_available_range">Enter a value between %s and %s</string>
+    <string name="swap_slippage_error_not_in_available_range">Enter a value between %1$s and %2$s</string>
     <string name="swap_slippage_warning_too_small">Transaction might be reverted because of low slippage tolerance.</string>
     <string name="swap_slippage_warning_too_big">Transaction might be frontrun because of high slippage.</string>
     <string name="swap_slippage">Slippage</string>
@@ -1194,7 +1194,7 @@
     <string name="assets_swap_flow_receive_title">Token to receive</string>
 
     <string name="swap_error_pair_not_supported">This pair is not supported</string>
-    <string name="swap_price_impact">%s ≈ %s</string>
+    <string name="swap_price_impact">%1$s ≈ %2$s</string>
 
     <string name="swap_field_subtitle_default">Select a token</string>
     <string name="swap_field_asset_from_title">Pay</string>
@@ -1218,7 +1218,7 @@
     <string name="assets_buy_tokens_placeholder_button">Buy tokens</string>
 
     <string name="assets_send_flow_placeholder">You don’t have tokens to send.\nBuy or Deposit tokens to your account.</string>
-    <string name="common_days_and_hours_format_with_delimeter">%s and %s</string>
+    <string name="common_days_and_hours_format_with_delimeter">%1$s and %2$s</string>
     <string name="common_frequency_days_daily">daily</string>
 
     <string name="referendum_status_deciding">Deciding</string>
@@ -1244,7 +1244,7 @@
     <string name="select_custom_pool_members">members</string>
 
     <string name="setup_staking_type_staking_amount_is_less_than_min_amount_title">Your stake is less than the minimum to earn rewards</string>
-    <string name="setup_staking_type_direct_staking_amount_is_less_than_min_amount_message">You have specified less than the minimum stake of %s required to earn rewards with %s. You should consider using Pool staking to earn rewards.</string>
+    <string name="setup_staking_type_direct_staking_amount_is_less_than_min_amount_message">You have specified less than the minimum stake of %1$s required to earn rewards with %2$s. You should consider using Pool staking to earn rewards.</string>
     <string name="setup_staking_type_already_used_title">Staking type cannot be changed</string>
     <string name="setup_staking_type_pool_already_used_message">You are already staking in a pool</string>
     <string name="setup_staking_type_direct_already_used_message">You are already have Direct staking</string>
@@ -1281,23 +1281,23 @@
     <string name="staking_unable_to_stake_more_message">You are unstaking all of your tokens and can\'t stake more.</string>
 
     <string name="staking_stake_max">Stake max</string>
-    <string name="staking_pool_available_validation_message">Your available balance is %s, you need to leave %s as minimal balance and pay network fee of %s. You can stake not more than %s.</string>
+    <string name="staking_pool_available_validation_message">Your available balance is %1$s, you need to leave %2$s as minimal balance and pay network fee of %3$s. You can stake not more than %4$s.</string>
     <string name="staking_staking_type">Staking type</string>
 
     <string name="start_staking_inactive_pool_message">The pool you have selected is inactive due to no validators selected or its stake is less than the minimum.\nAre you sure you want to proceed with the selected Pool?</string>
 
     <string name="start_staking_cant_stake_amount">You can\'t stake the specified amount</string>
-    <string name="start_staking_available_balance_gap_message">You have locked tokens on your balance due to %s. In order to continue you should enter less than %s or more than %s. To stake another amount you should remove your %s locks.</string>
+    <string name="start_staking_available_balance_gap_message">You have locked tokens on your balance due to %1$s. In order to continue you should enter less than %2$s or more than %3$s. To stake another amount you should remove your %4$s locks.</string>
 
     <string name="start_staking_max_nominators_reached_title">%s is currently unavailable</string>
     <string name="start_staking_max_nominators_reached_message">The maximum number of nominators has been reached. Try again later</string>
 
-    <string name="start_staking_selection_validators_subtitle">Validators: %d (max %d)</string>
-    <string name="start_staking_editing_selection_validators_subtitle">Selected: %d (max %d)</string>
+    <string name="start_staking_selection_validators_subtitle">Validators: %1$d (max %2$d)</string>
+    <string name="start_staking_editing_selection_validators_subtitle">Selected: %1$d (max %2$d)</string>
     <string name="common_recommended">Recommended</string>
 
     <string name="common_fee_changed_title">Network fee is too high</string>
-    <string name="common_fee_changed_message">The estimated network fee %s is much higher than the default network fee (%s). This might be due to temporary network congestion. You can refresh to wait for a lower network fee.</string>
+    <string name="common_fee_changed_message">The estimated network fee %1$s is much higher than the default network fee (%2$s). This might be due to temporary network congestion. You can refresh to wait for a lower network fee.</string>
     <string name="common_refresh_fee">Refresh fee</string>
 
     <string name="send_recipient_system_account_title">Tokens will be lost</string>
@@ -1312,7 +1312,7 @@
     <string name="nomination_pools_pool_reached_unbondings_limit_title">Too many people are unstaking from your pool</string>
     <string name="nomination_pools_pool_reached_unbondings_limit_message">There are currently no free spots in unstaking queue for your pool. Please try again in %s</string>
 
-    <string name="staking_unbond_crossed_existential">When unstaking partially, you should leave at least %s in stake. Do you want to perform full unstake by unstaking remaining %s as well?</string>
+    <string name="staking_unbond_crossed_existential">When unstaking partially, you should leave at least %1$s in stake. Do you want to perform full unstake by unstaking remaining %2$s as well?</string>
     <string name="staking_unbond_crossed_existential_title">Too small amount remains in stake</string>
 
     <string name="nomination_pools_pool_destroying_error_message">Cannot perform specified operation since pool is in destroying state. It will be closed soon.</string>
@@ -1363,7 +1363,7 @@
     <string name="start_staking_fragment_terms_of_use">See %s</string>
     <string name="start_staking_fragment_terms_of_use_clicable_part">Terms of Use</string>
 
-    <string name="account_parity_signer_sign_qr_code_expired_descrition">For security reasons generated operations valid for only %s.\nPlease generate new QR code and sign it with %s</string>
+    <string name="account_parity_signer_sign_qr_code_expired_descrition">For security reasons generated operations valid for only %1$s.\nPlease generate new QR code and sign it with %2$s</string>
     <string name="account_parity_signer_import_scan_invalid_qr">Invalid QR code, please make sure you are scanning QR code from %s</string>
     <string name="account_parity_signer_sign_have_error">I have an error in %s</string>
     <string name="account_parity_signer_sign_title">Sign with %s</string>
@@ -1373,7 +1373,7 @@
     <string name="account_details_parity_signer_alert">This wallet is paired with %1$s. Pezkuwi Wallet will help you to form any operations you want, and you will be requested to sign them using %1$s</string>
     <string name="account_details_parity_signer_not_supported">Not supported by %s</string>
     <string name="account_parity_signer_not_supported_subtitle">%s does not support signing arbitrary messages — only transactions</string>
-    <string name="account_parity_signer_chain_not_supported">%s doesn’t support %s</string>
+    <string name="account_parity_signer_chain_not_supported">%1$s doesn’t support %2$s</string>
 
     <string name="account_polkadot_vault_import_start_empty_derivation_hint">Pay attention, the derivation path name should be empty</string>
 
@@ -1388,7 +1388,7 @@
     <string name="transfer_history_income_from">From: %s</string>
     <string name="transfer_history_send_to">To: %s</string>
 
-    <string name="transaction_history_fiat_with_time">%s at %s</string>
+    <string name="transaction_history_fiat_with_time">%1$s at %2$s</string>
 
     <string name="referenda_list_filter_placeholder">There are no referenda with filters applied</string>
 
@@ -1514,13 +1514,13 @@
 
     <string name="web3names_unsupported_asset_title">Token %s is not supported yet</string>
     <string name="web3names_unsupported_asset_message">Pezkuwi Wallet can\'t resolve code for token %s</string>
-    <string name="web3names_address_with_description">%s (%s)</string>
+    <string name="web3names_address_with_description">%1$s (%2$s)</string>
     <string name="web3names_invalid_recepient_title">Invalid recipient</string>
     <string name="web3names_service_unavailable_title">Error resolving w3n</string>
     <string name="web3names_service_unavailable_message">%1$s w3n services are unavailable. Try again later or enter the %1$s address manually</string>
     <string name="web3names_recepient_not_found_message">%s not found</string>
-    <string name="web3names_no_valid_recepient_found_message">No valid address was found for %s on the %s network</string>
-    <string name="web3names_identifiers_sheet_title">%s addresses for %s</string>
+    <string name="web3names_no_valid_recepient_found_message">No valid address was found for %1$s on the %2$s network</string>
+    <string name="web3names_identifiers_sheet_title">%1$s addresses for %2$s</string>
 
     <string name="common_no_app_to_handle_intent">No suitable app found on device to handle this intent</string>
 
@@ -1582,7 +1582,7 @@
     <string name="referendum_track_medium_spender">Treasury: medium spend</string>
     <string name="referendum_track_big_spender">Treasury: big spend</string>
 
-    <string name="delegation_referendum_vote">Your votes: %s via %s</string>
+    <string name="delegation_referendum_vote">Your votes: %1$s via %2$s</string>
     <string name="delegation_referendum_details_vote">Your votes via %s</string>
 
     <string name="delegation_delegate">Delegate</string>
@@ -1601,14 +1601,14 @@
     <string name="delegation_remove_votes">Remove votes</string>
     <string name="delegation_tracks">Tracks</string>
 
-    <string name="common_element_and_more_format">%s (+%s more)</string>
+    <string name="common_element_and_more_format">%1$s (+%2$s more)</string>
 
     <string name="delegation_all_votes">Voted for all time</string>
     <string name="delegation_delegate_info">Delegate info</string>
 
     <string name="referendum_voted_referenda">Voted referenda</string>
 
-    <string name="referendum_other_votes">%s votes by %s</string>
+    <string name="referendum_other_votes">%1$s votes by %2$s</string>
 
     <string name="delegation_your_delegations">Your delegations</string>
 
@@ -1774,7 +1774,7 @@
     <string name="referendum_timeline_state_passing">Voting: Passing</string>
     <string name="referendum_timeline_state_not_passing">Voting: Not passing</string>
 
-    <string name="referendum_in_queue_position_format">Position: %s of %s</string>
+    <string name="referendum_in_queue_position_format">Position: %1$s of %2$s</string>
 
     <string name="referendum_timeline_state_created">Created</string>
     <string name="referendum_timeline_state_approved">Voted: Approved</string>
@@ -1800,11 +1800,11 @@
 
     <string name="referendum_name_unknown">Referendum %s</string>
 
-    <string name="referendum_support_threshold_format">Threshold: %s of %s</string>
+    <string name="referendum_support_threshold_format">Threshold: %1$s of %2$s</string>
     <string name="referendum_your_vote_format">Your vote: %s votes</string>
 
     <string name="referendum_status_approved">Approved</string>
-    <string name="referendum_status_in_queue_format">In queue (%s of %s)</string>
+    <string name="referendum_status_in_queue_format">In queue (%1$s of %2$s)</string>
     <string name="referendum_status_timeout">Timed out</string>
     <string name="referendum_status_cancelled">Cancelled</string>
     <string name="referendum_status_passing">Passing</string>
@@ -1848,7 +1848,7 @@
     <string name="referendum_description_fallback">Only the proposer can edit this description and the title. If you own proposer\'s account, visit Polkassembly and fill in information about your proposal</string>
 
     <string name="referendum_voter_vote">%s votes</string>
-    <string name="referendum_voter_vote_details">%s × %sx</string>
+    <string name="referendum_voter_vote_details">%1$s × %2$sx</string>
 
     <string name="confirm_referendum_vote_title">Vote</string>
     <string name="confirm_referendum_vote_track">Track</string>
@@ -1863,7 +1863,7 @@
     <string name="assets_balance_details_locks_crowdloans">Crowdloans</string>
 
     <string name="common_accept_terms">Accept terms...</string>
-    <string name="yield_boost_terms">Yield Boost will automatically stake %s all my transferable tokens above %s</string>
+    <string name="yield_boost_terms">Yield Boost will automatically stake %1$s all my transferable tokens above %2$s</string>
 
     <string name="yield_boost_stake_increase_time">Stake increase time</string>
     <string name="yiled_boost_yield_boosted">Yield Boosted</string>
@@ -1872,10 +1872,10 @@
     <string name="yield_boost_already_enabled_message">Yield Boost will be turned off for current collators. New collator: %s</string>
 
     <string name="yield_boost_not_enough_threshold_title">Not enough tokens to stay above threshold</string>
-    <string name="yield_boost_not_enough_threshold_message">You don’t have enough balance to pay the network fee of %s and not drop below the threshold %s.\nAvailable balance to pay the fee: %s</string>
+    <string name="yield_boost_not_enough_threshold_message">You don’t have enough balance to pay the network fee of %1$s and not drop below the threshold %2$s.\nAvailable balance to pay the fee: %3$s</string>
 
     <string name="yield_boost_not_enough_execution_fee_title">Not enough tokens to pay first execution fee</string>
-    <string name="yield_boost_not_enough_execution_fee_message">You don’t have enough balance to pay the network fee of %s and the yield boost execution fee of %s.\nAvailable balance to pay the fee: %s</string>
+    <string name="yield_boost_not_enough_execution_fee_message">You don’t have enough balance to pay the network fee of %1$s and the yield boost execution fee of %2$s.\nAvailable balance to pay the fee: %3$s</string>
 
     <string name="common_no_changes">No changes</string>
 
@@ -1885,7 +1885,7 @@
     <string name="staking_turing_collator_title">For my collator</string>
     <string name="staking_turing_restake_title">I want to stake</string>
     <string name="staking_turing_frequency_new_title">to automatically stake %s all my transferable tokens above</string>
-    <string name="staking_turing_frequency_update_title">to automatically stake %s (before: %s) all my transferable tokens above</string>
+    <string name="staking_turing_frequency_update_title">to automatically stake %1$s (before: %2$s) all my transferable tokens above</string>
 
     <string name="common_frequency_days_everyday">everyday</string>
     <plurals name="common_frequency_days">
@@ -1902,7 +1902,7 @@
 
     <string name="ledger_sign_raw_not_supported">Ledger does not support signing arbitrary messages — only transactions</string>
 
-    <string name="assets_receive_ledger_not_supported_message">Do not transfer %s to the Ledger-controlled account since Ledger does not support sending of %s, so assets will be stuck on this account</string>
+    <string name="assets_receive_ledger_not_supported_message">Do not transfer %1$s to the Ledger-controlled account since Ledger does not support sending of %2$s, so assets will be stuck on this account</string>
     <string name="assets_receive_ledger_not_supported_title">Ledger does not support this token</string>
 
     <string name="common_signature_invalid">Signature is invalid</string>
@@ -2038,7 +2038,7 @@
     </plurals>
     <string name="wallet_send_myself">Myself</string>
 
-    <string name="wallet_send_cannot_pay_cross_chain_fee">You don’t have enough balance to pay the Cross-chain fee of %s.\nRemaining balance after transfer: %s</string>
+    <string name="wallet_send_cannot_pay_cross_chain_fee">You don’t have enough balance to pay the Cross-chain fee of %1$s.\nRemaining balance after transfer: %2$s</string>
 
     <string name="wallet_send_confirm_hint">Cross-chain fee is added on top of entered amount. Recipient may receive part of cross-chain fee</string>
 
@@ -2216,7 +2216,7 @@
     <string name="nft_created_by">Created by</string>
 
     <string name="nft_issuance_unlimited">Unlimited series</string>
-    <string name="nft_issuance_limited_format">#%s Edition of %s</string>
+    <string name="nft_issuance_limited_format">#%1$s Edition of %2$s</string>
     <string name="nft_your_nfts">Your NFTs</string>
 
     <string name="wallet_assets_empty">Your assets will appear here.\nMake sure the "Hide zero balances" filter is turned off</string>
