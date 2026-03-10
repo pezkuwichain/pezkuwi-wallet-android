@@ -57,7 +57,7 @@
     <string name="gift_reclaimed_subtitle">Reclaimed</string>
     <string name="gifts_claim_fee">Heqê torê on claim</string>
 
-    <string name="share_gift_text">Hello! You’ve got a %s gift waiting ji bo you!\n\nInstall Pezkuwi Cîzdan app, set up yê te wallet, û claim it via ev special link:\n%s</string>
+    <string name="share_gift_text">Hello! You’ve got a %1$s gift waiting ji bo you!\n\nInstall Pezkuwi Cîzdan app, set up yê te wallet, û claim it via ev special link:\n%2$s</string>
 
     <string name="share_gift_title">Diyarî Has Been Prepared.\nShare It Niha!</string>
     <string name="share_gift_button">Diyarî parve bike link</string>
@@ -99,9 +99,9 @@
     <string name="staking_details_migration_alert_title">%1$s staking e live on %2$s starting %3$s</string>
 
     <string name="common_view">Bibîne</string>
-    <string name="transaction_history_migration_source_message">Yê te previous %s transaction history e still available on %s</string>
+    <string name="transaction_history_migration_source_message">Yê te previous %1$s transaction history e still available on %2$s</string>
 
-    <string name="asset_details_source_asset_alert_title">Yê te %s tokens niha on %s</string>
+    <string name="asset_details_source_asset_alert_title">Yê te %1$s tokens niha on %2$s</string>
     <string name="asset_details_source_asset_alert_message">Starting %1$s, yê te %2$s balance, Staking, û Rêveberî dê be on %3$s — bi improved performance û lower costs.</string>
     <string name="asset_details_source_asset_alert_button">Go to %s</string>
 
@@ -146,8 +146,8 @@
     <string name="multisig_transaction_executed_dialog_title">Multisig Danûstandin Hate înfazkirin</string>
     <string name="multisig_transaction_rejected_dialog_title">Multisig Danûstandin Hate redkirin</string>
 
-    <string name="multisig_transaction_rejected_dialog_message">%s on %s.\nRejected by: %s.\nNo further actions in required ji you.</string>
-    <string name="multisig_transaction_executed_dialog_message">%s on %s.\nNo further actions in required ji you.</string>
+    <string name="multisig_transaction_rejected_dialog_message">%1$s on %2$s.\nRejected by: %3$s.\nNo further actions in required ji you.</string>
+    <string name="multisig_transaction_executed_dialog_message">%1$s on %2$s.\nNo further actions in required ji you.</string>
 
     <string name="multisig_transaction_dialog_message_unknown_call">Danûstandin without initial on-chain information (call data) bû rejected</string>
 
@@ -160,12 +160,12 @@
     <string name="multisig_notification_executed_transaction_title">✅ Multisig transaction executed</string>
     <string name="multisig_notification_executed_transaction_message">Hate îmzekirin û executed by %s.</string>
 
-    <string name="multisig_notification_new_approval_title_additional_message">%d of %d signatures collected.</string>
+    <string name="multisig_notification_new_approval_title_additional_message">%1$d of %2$d signatures collected.</string>
     <string name="multisig_notification_new_approval_title">Hate îmzekirin by %s</string>
 
     <string name="multisig_notification_init_transaction_title">✍🏻 Yê te signature requested </string>
-    <string name="multisig_notification_init_transaction_message">%s on %s.</string>
-    <string name="multisig_operation_default_call_format">%s: %s</string>
+    <string name="multisig_notification_init_transaction_message">%1$s on %2$s.</string>
+    <string name="multisig_operation_default_call_format">%1$s: %2$s</string>
     <string name="multisig_notification_initiator_footer">Initiated by %s.</string>
     <string name="multisig_notification_message_header">Cîzdan: %s</string>
 
@@ -216,16 +216,16 @@
     <string name="common_signatory">Îmzekar</string>
     <string name="common_hide">Hide</string>
     <string name="common_show">Show</string>
-    <string name="multisig_operation_details_signatories">Îmzekar (%d of %d)</string>
+    <string name="multisig_operation_details_signatories">Îmzekar (%1$d of %2$d)</string>
 
     <string name="swap_dry_run_failed_inline_message">Simulation of swap step failed</string>
 
     <string name="common_dry_run_failed_title">Danûstandin simulation failed</string>
     <string name="common_dry_run_failed_message">Pezkuwi Cîzdan simulates  transaction beforehand to prevent errors. Ev simulation didn’t succeed. Dîsa biceribîne later an bi a higher amount. If  issue persists, ji kerema xwe contact Pezkuwi Cîzdan Support in Mîheng.</string>
 
-    <string name="multisig_signatory_validation_deposit_fee">%s doesn’t have enough balance to pay  network fee of %s û place multisig deposit of %s. You need to add %s bêtir to yê te balance</string>
-    <string name="multisig_signatory_validation_deposit">%s doesn’t have enough balance to place multisig deposit of %s. You need to add %s bêtir to yê te balance</string>
-    <string name="multisig_signatory_validation_fee">%s doesn’t have enough balance to pay  network fee of %s. You need to add %s bêtir to yê te balance</string>
+    <string name="multisig_signatory_validation_deposit_fee">%1$s doesn’t have enough balance to pay  network fee of %2$s û place multisig deposit of %3$s. You need to add %4$s bêtir to yê te balance</string>
+    <string name="multisig_signatory_validation_deposit">%1$s doesn’t have enough balance to place multisig deposit of %2$s. You need to add %3$s bêtir to yê te balance</string>
+    <string name="multisig_signatory_validation_fee">%1$s doesn’t have enough balance to pay  network fee of %2$s. You need to add %3$s bêtir to yê te balance</string>
 
     <string name="invalid_call_data_title">Nederbasdar call data</string>
     <string name="invalid_call_data_message">Ev call data ji bo another operation bi call hash %s</string>
@@ -236,7 +236,7 @@
 
 
     <string name="multisig_wallet_details_info_warning_other_signatories">Din signatories:</string>
-    <string name="multisig_wallet_details_info_warning_title">Threshold %d out of %d</string>
+    <string name="multisig_wallet_details_info_warning_title">Threshold %1$d out of %2$d</string>
 
     <string name="multisig_card_not_supported_title">Debit Card e ne supported ji bo Multisig</string>
     <string name="multisig_card_not_supported_message">Bo manage yê te Debit Card, ji kerema xwe switch to a different type of wallet.</string>
@@ -247,7 +247,7 @@
 
     <string name="multisig_pending_operations">Danûstandin to sign</string>
 
-    <string name="multisig_operations_progress">Tê îmzekirin (%s of %s)</string>
+    <string name="multisig_operations_progress">Tê îmzekirin (%1$s of %2$s)</string>
 
 
     <string name="multisig_operations_created">Hate afirandin by you</string>
@@ -262,7 +262,7 @@
     <string name="multisig_callhash_exists_title">Operation already exists</string>
     <string name="multisig_callhash_exists_message">%s has already initiated  same operation û it e currently waiting to be signed by din signatories.</string>
 
-    <string name="multisig_signatory_validation_ed">%s needs at least %s to pay ev transaction fee û stay above  minimum network balance. Current balance e: %s</string>
+    <string name="multisig_signatory_validation_ed">%1$s needs at least %2$s to pay ev transaction fee û stay above  minimum network balance. Current balance e: %3$s</string>
 
     <string name="multisig_signing_is_not_supported_message">Multisig wallets do ne support signing arbitrary messages — only transactions</string>
 
@@ -292,7 +292,7 @@
     <string name="multisig_signatory">Îmzekar:</string>
 
 
-    <string name="swap_failure_cannot_receive_insufficient_asset_out">You must have at least %s on %s to receive %s token</string>
+    <string name="swap_failure_cannot_receive_insufficient_asset_out">You must have at least %1$s on %2$s to receive %3$s token</string>
 
     <string name="account_migration_title">Bi xêr hatî to Pezkuwi Cîzdan!</string>
     <string name="account_migration_subtitle">You’re almost there! 🎉\n Just tap below to complete  setup û start using yê te accounts seamlessly in both  Polkadot App û Pezkuwi Cîzdan</string>
@@ -415,8 +415,8 @@
     <string name="price_charts_period_year">Last Year</string>
     <string name="price_charts_period_all">Hemû Dem</string>
 
-    <string name="price_chart_date_format">%s at %s</string>
-    <string name="price_chart_price_change">%s (%s)</string>
+    <string name="price_chart_date_format">%1$s at %2$s</string>
+    <string name="price_chart_price_change">%1$s (%2$s)</string>
 
     <string name="price_chart_title">%s price</string>
     <string name="price_chart_day">1D</string>
@@ -433,9 +433,9 @@
 
     <string name="popular_dapps_title">Popular</string>
 
-    <string name="swap_intermediate_too_low_amount_to_stay_abow_ed_message">During swap execution intermediate receive amount e %s which e kêmtir than minimum balance of %s. Try specifying larger swap amount.</string>
+    <string name="swap_intermediate_too_low_amount_to_stay_abow_ed_message">During swap execution intermediate receive amount e %1$s which e kêmtir than minimum balance of %2$s. Try specifying larger swap amount.</string>
 
-    <string name="common_not_enough_to_pay_fee_message">You don\'t have enough balance to pay network fee of %s. Current balance e %s</string>
+    <string name="common_not_enough_to_pay_fee_message">You don\'t have enough balance to pay network fee of %1$s. Current balance e %2$s</string>
 
     <string name="common_sec">sec</string>
 
@@ -443,19 +443,19 @@
 
     <string name="common_failed">Serneket</string>
 
-    <string name="swap_execution_operations_progress">%s of %s operations</string>
+    <string name="swap_execution_operations_progress">%1$s of %2$s operations</string>
 
     <plurals name="swap_execution_operations_completed">
         <item quantity="one">%s operation</item>
         <item quantity="other">%s operations</item>
     </plurals>
 
-    <string name="swap_execution_progress_swap_label">Swapping %s to %s on %s</string>
-    <string name="swap_execution_progress_transfer_label">Transferring %s to %s</string>
+    <string name="swap_execution_progress_swap_label">Swapping %1$s to %2$s on %3$s</string>
+    <string name="swap_execution_progress_transfer_label">Transferring %1$s to %2$s</string>
 
-    <string name="swap_execution_failure">Serneket on operation #%s (%s)</string>
-    <string name="swap_execution_failure_swap_label">%s to %s swap on %s</string>
-    <string name="swap_execution_failure_transfer_label">%s transfer ji %s to %s</string>
+    <string name="swap_execution_failure">Serneket on operation #%1$s (%2$s)</string>
+    <string name="swap_execution_failure_swap_label">%1$s to %2$s swap on %3$s</string>
+    <string name="swap_execution_failure_transfer_label">%1$s transfer ji %2$s to %3$s</string>
 
     <plurals name="common_seconds_format">
         <item quantity="one">%d second</item>
@@ -515,7 +515,7 @@
     <string name="common_use_max">Use max</string>
 
     <string name="swipe_gov_insufficient_balance_dialog_title">Insufficient balance ji bo voting</string>
-    <string name="swipe_gov_insufficient_balance_dialog_message">You don\'t have enough balance to vote bi  current voting power %s (%sx). Ji kerema xwe change voting power an add bêtir funds to yê te wallet.</string>
+    <string name="swipe_gov_insufficient_balance_dialog_message">You don\'t have enough balance to vote bi  current voting power %1$s (%2$sx). Ji kerema xwe change voting power an add bêtir funds to yê te wallet.</string>
     <string name="swipe_gov_convirm_votes_success_message">You have successfully voted ji bo %d referenda</string>
 
     <string name="swipe_gov_vote_setup_title">Deng bide ji bo %d referenda</string>
@@ -756,7 +756,7 @@
     <string name="manual_backup_select_account_default_key_title">Hesab bi default key</string>
     <string name="manual_backup_select_account_custom_key_title">Hesab bi custom key</string>
     <string name="manual_backup_select_account_default_key_account">Default accounts</string>
-    <string name="manual_backup_select_account_default_key_account_subtitle_more_chains">%s, +%d others</string>
+    <string name="manual_backup_select_account_default_key_account_subtitle_more_chains">%1$s, +%2$d others</string>
     <string name="manual_backup_select_account_header">Hilbijêre  key to back up</string>
 
     <string name="manual_backup_select_wallet_header">Hilbijêre a wallet to back up</string>
@@ -806,7 +806,7 @@
     <string name="common_change_password">Change password</string>
 
     <string name="cloud_backup_settings_disabled_state_subtitle">Enable to backup wallets to yê te Google Drive</string>
-    <string name="cloud_backup_settings_last_sync">Last sync: %s at %s</string>
+    <string name="cloud_backup_settings_last_sync">Last sync: %1$s at %2$s</string>
     <string name="cloud_backup_settings_not_auth_button">Îmze bike In to Google Drive</string>
     <string name="cloud_backup_settings_deprecated_password_button">Enter Paşvekişandin Şîfre</string>
     <string name="cloud_backup_settings_corrupted_backup_button">Review Paşvekişandin Updates</string>
@@ -845,7 +845,7 @@
 
     <string name="cloud_backup_delete_button">Jê bibe Paşvekişandin</string>
     <string name="restore_cloud_backup_delete_backup_title">Have you lost yê te password?</string>
-    <string name="restore_cloud_backup_delete_backup_description">%s It\'s exclusively yours, securely stored, inaccessible to others. Without  backup password, restoring wallets ji Google Drive e impossible. If lost, delete  current backup to create a nû one bi a fresh password. %s</string>
+    <string name="restore_cloud_backup_delete_backup_description">%1$s It\'s exclusively yours, securely stored, inaccessible to others. Without  backup password, restoring wallets ji Google Drive e impossible. If lost, delete  current backup to create a nû one bi a fresh password. %2$s</string>
     <string name="restore_cloud_backup_delete_backup_description_highlighted_1">Unfortunately, yê te password nikare be recovered.</string>
     <string name="restore_cloud_backup_delete_backup_description_highlighted_2">Alternatively, use Passphrase ji bo restoration.</string>
 
@@ -941,7 +941,7 @@
 
     <string name="push_token_received_title">⬇️ Hate wergirtin %s</string>
     <string name="push_token_received_no_account_name_title">⬇️ Hate wergirtin</string>
-    <string name="push_token_received_message">Hate wergirtin %s on %s</string>
+    <string name="push_token_received_message">Hate wergirtin %1$s on %2$s</string>
 
     <string name="push_token_sent_title">💸 Hate şandin %s</string>
     <string name="push_token_sent_no_account_name_title">💸 Hate şandin</string>
@@ -949,7 +949,7 @@
 
     <string name="push_staking_reward_single_account_title">⭐️ Nû reward</string>
     <string name="push_staking_reward_many_accounts_title">⭐️ Nû reward %s</string>
-    <string name="push_staking_reward_message">Hate wergirtin %s ji %s staking</string>
+    <string name="push_staking_reward_message">Hate wergirtin %1$s ji %2$s staking</string>
 
     <string name="push_referendum_approved_title">✅ Referandom approved!</string>
     <string name="push_referendum_approved_message">%1$s referendum #%2$s has ended û been approved 🎉</string>
@@ -964,7 +964,7 @@
     <string name="push_new_update_title">A nû update of Pezkuwi Cîzdan e available!</string>
     <string name="push_new_update_message">Download Pezkuwi Cîzdan v%s to get hemû  nû features!</string>
     <string name="push_new_referendum_title">🗳️ Nû referendum</string>
-    <string name="push_new_referendum_message">%s Referandom #%s e niha live!</string>
+    <string name="push_new_referendum_message">%1$s Referandom #%2$s e niha live!</string>
 
     <plurals name="governance_select_tracks_min_tracks_error">
         <item quantity="one">You need to select at least %d track</item>
@@ -1013,11 +1013,11 @@
     <string name="wallet_send_cannot_dust_before_delivery_fee_message">Due to  cross-chain restrictions you dikare transfer ne bêtir than %s</string>
 
     <string name="common_too_small_balance_title">Yê te balance e too small</string>
-    <string name="wallet_send_insufficient_balance_commission">You need to have at least %s to pay ev transaction fee û stay above  minimum network balance. Yê te current balance e: %s. You need to add %s to yê te balance to perform ev operation.</string>
+    <string name="wallet_send_insufficient_balance_commission">You need to have at least %1$s to pay ev transaction fee û stay above  minimum network balance. Yê te current balance e: %2$s. You need to add %3$s to yê te balance to perform ev operation.</string>
 
-    <string name="nft_issuance_fungible_format">%s units of %s</string>
+    <string name="nft_issuance_fungible_format">%1$s units of %2$s</string>
 
-    <string name="nft_fungile_price">%s ji bo %s</string>
+    <string name="nft_fungile_price">%1$s ji bo %2$s</string>
 
     <string name="staking_set_controller_deprecated_subtitle">Use Proxies to delegate Staking operations to another account</string>
 
@@ -1052,10 +1052,10 @@
     <string name="add_proxy_deposit_description_message"> deposit stays reserved on yê te account until  proxy e removed.</string>
 
     <string name="add_proxy_maximum_reached_error_title">Herî zêde number of proxies has been reached</string>
-    <string name="add_proxy_maximum_reached_error_message">You have reached  limit of %s added proxies in %s. Rake proxies to add nû ones.</string>
+    <string name="add_proxy_maximum_reached_error_message">You have reached  limit of %1$s added proxies in %2$s. Rake proxies to add nû ones.</string>
 
     <string name="common_error_not_enough_tokens">Ne enough tokens</string>
-    <string name="staking_not_enough_balance_to_pay_proxy_deposit_message">You don’t have enough balance ji bo proxy deposit of %s. Peyda balance: %s</string>
+    <string name="staking_not_enough_balance_to_pay_proxy_deposit_message">You don’t have enough balance ji bo proxy deposit of %1$s. Peyda balance: %2$s</string>
 
     <string name="staking_action_your_proxies">Yê te delegations</string>
     <string name="staking_action_add_proxy">Lê zêde bike delegated authority (Proxy)</string>
@@ -1065,7 +1065,7 @@
     <string name="fragment_set_staking_proxy_title">Lê zêde bike delegation ji bo %s staking</string>
 
     <string name="common_enter_address">Enter address…</string>
-    <string name="proxy_error_not_enough_to_pay_fee_message">Delegated account %s doesn’t have enough balance to pay  network fee of %s. Peyda balance to pay fee: %s</string>
+    <string name="proxy_error_not_enough_to_pay_fee_message">Delegated account %1$s doesn’t have enough balance to pay  network fee of %2$s. Peyda balance to pay fee: %3$s</string>
     <string name="staking_no_access_to_controller_account_title">Na access to controller account</string>
     <string name="staking_no_access_to_controller_account_message">Lê zêde bike yê te controller account in device.</string>
 
@@ -1112,8 +1112,8 @@
 
     <string name="wallet_filters_swaps">Swaps</string>
 
-    <string name="swap_failure_balance_not_consider_consumers">You should keep at least %s after paying %s network fee as you in holding non sufficient tokens</string>
-    <string name="swap_failure_balance_not_consider_non_sufficient_assets">You must keep at least %s to receive %s token</string>
+    <string name="swap_failure_balance_not_consider_consumers">You should keep at least %1$s after paying %2$s network fee as you in holding non sufficient tokens</string>
+    <string name="swap_failure_balance_not_consider_non_sufficient_assets">You must keep at least %1$s to receive %2$s token</string>
 
     <string name="swap_rate_description">Exchange rate between two different cryptocurrencies. It represents how much of one cryptocurrency you dikare get in exchange ji bo a certain amount of another cryptocurrency.</string>
     <string name="swap_price_difference_description">Biha difference refers to  difference in price between two different assets. When making a swap in crypto,  price difference e usually  difference between  price of  asset you in swapping ji bo û  price of  asset you in swapping bi.</string>
@@ -1129,13 +1129,13 @@
     <string name="swap_field_validation_not_enough_amount_to_swap">Ne enough tokens to swap</string>
     <string name="swap_field_validation_to_low_amount_out">You dikare’t receive kêmtir than %s</string>
 
-    <string name="common_cannot_pay_network_fee_message">You dikare use up to %s since you need to pay\n%s ji bo network fee.</string>
+    <string name="common_cannot_pay_network_fee_message">You dikare use up to %1$s since you need to pay\n%2$s ji bo network fee.</string>
 
     <string name="swap_too_low_amount_to_stay_abow_ed_title">You in trying to swap too small amount</string>
-    <string name="swap_too_low_amount_to_stay_abow_ed_message">Mîqdar of %s e kêmtir than minimum balance of %s</string>
+    <string name="swap_too_low_amount_to_stay_abow_ed_message">Mîqdar of %1$s e kêmtir than minimum balance of %2$s</string>
 
     <string name="swap_invalid_slippage_failure_title">Nederbasdar slippage</string>
-    <string name="swap_invalid_slippage_failure_message">Slippage must be specified between %s û %s</string>
+    <string name="swap_invalid_slippage_failure_message">Slippage must be specified between %1$s û %2$s</string>
     <string name="swap_rate_was_updated_failure_title">Swap rate bû updated</string>
     <string name="swap_rate_was_updated_failure_message">Kevn rate: %1$s ≈ %2$s.\nNew rate: %1$s ≈ %3$s</string>
     <string name="swap_not_enought_liquidity_failure">Hewz doesn’t have enough liquidity to swap</string>
@@ -1161,10 +1161,10 @@
 
     <string name="swap_custom_fee_selector_description">Token ji bo paying network fee</string>
     <string name="swap_custom_fee_selector_footer">Heqê torê e added on top of entered amount</string>
-    <string name="swap_minimum_balance_buy_in_alert">Bo pay network fee bi %s, Pezkuwi Cîzdan dê automatically swap %s ji bo %s to maintain yê te account\'s minimum %s balance.</string>
+    <string name="swap_minimum_balance_buy_in_alert">Bo pay network fee bi %1$s, Pezkuwi Cîzdan dê automatically swap %2$s ji bo %3$s to maintain yê te account\'s minimum %4$s balance.</string>
 
     <string name="swap_slippage_disabled_button_state">Enter din value</string>
-    <string name="swap_slippage_error_not_in_available_range">Enter a value between %s û %s</string>
+    <string name="swap_slippage_error_not_in_available_range">Enter a value between %1$s û %2$s</string>
     <string name="swap_slippage_warning_too_small">Danûstandin might be reverted because of low slippage tolerance.</string>
     <string name="swap_slippage_warning_too_big">Danûstandin might be frontrun because of high slippage.</string>
     <string name="swap_slippage">Slippage</string>
@@ -1176,7 +1176,7 @@
     <string name="assets_swap_flow_receive_title">Token to receive</string>
 
     <string name="swap_error_pair_not_supported">Ev pair e ne supported</string>
-    <string name="swap_price_impact">%s ≈ %s</string>
+    <string name="swap_price_impact">%1$s ≈ %2$s</string>
 
     <string name="swap_field_subtitle_default">Hilbijêre a token</string>
     <string name="swap_field_asset_from_title">Pay</string>
@@ -1200,7 +1200,7 @@
     <string name="assets_buy_tokens_placeholder_button">Buy tokens</string>
 
     <string name="assets_send_flow_placeholder">You don’t have tokens to send.\nBuy an Deposit tokens to yê te account.</string>
-    <string name="common_days_and_hours_format_with_delimeter">%s û %s</string>
+    <string name="common_days_and_hours_format_with_delimeter">%1$s û %2$s</string>
     <string name="common_frequency_days_daily">daily</string>
 
     <string name="referendum_status_deciding">Deciding</string>
@@ -1226,7 +1226,7 @@
     <string name="select_custom_pool_members">members</string>
 
     <string name="setup_staking_type_staking_amount_is_less_than_min_amount_title">Yê te stake e kêmtir than  minimum to earn rewards</string>
-    <string name="setup_staking_type_direct_staking_amount_is_less_than_min_amount_message">You have specified kêmtir than  minimum stake of %s required to earn rewards bi %s. You should consider using Hewz staking to earn rewards.</string>
+    <string name="setup_staking_type_direct_staking_amount_is_less_than_min_amount_message">You have specified kêmtir than  minimum stake of %1$s required to earn rewards bi %2$s. You should consider using Hewz staking to earn rewards.</string>
     <string name="setup_staking_type_already_used_title">Staking type nikare be changed</string>
     <string name="setup_staking_type_pool_already_used_message">You in already staking in a pool</string>
     <string name="setup_staking_type_direct_already_used_message">You in already have Direct staking</string>
@@ -1263,23 +1263,23 @@
     <string name="staking_unable_to_stake_more_message">You in unstaking hemû of yê te tokens û dikare\'t stake bêtir.</string>
 
     <string name="staking_stake_max">Stake max</string>
-    <string name="staking_pool_available_validation_message">Yê te available balance e %s, you need to leave %s as minimal balance û pay network fee of %s. You dikare stake ne bêtir than %s.</string>
+    <string name="staking_pool_available_validation_message">Yê te available balance e %1$s, you need to leave %2$s as minimal balance û pay network fee of %3$s. You dikare stake ne bêtir than %4$s.</string>
     <string name="staking_staking_type">Staking type</string>
 
     <string name="start_staking_inactive_pool_message"> pool you have selected e inactive due to no validators selected an its stake e kêmtir than  minimum.\nAre you sure you want to proceed bi  selected Hewz?</string>
 
     <string name="start_staking_cant_stake_amount">You dikare\'t stake  specified amount</string>
-    <string name="start_staking_available_balance_gap_message">You have locked tokens on yê te balance due to %s. In order to continue you should enter kêmtir than %s an bêtir than %s. Bo stake another amount you should remove yê te %s locks.</string>
+    <string name="start_staking_available_balance_gap_message">You have locked tokens on yê te balance due to %1$s. In order to continue you should enter kêmtir than %2$s an bêtir than %3$s. Bo stake another amount you should remove yê te %4$s locks.</string>
 
     <string name="start_staking_max_nominators_reached_title">%s e currently unavailable</string>
     <string name="start_staking_max_nominators_reached_message"> maximum number of nominators has been reached. Dîsa biceribîne later</string>
 
-    <string name="start_staking_selection_validators_subtitle">Pejirandkar: %d (max %d)</string>
-    <string name="start_staking_editing_selection_validators_subtitle">Selected: %d (max %d)</string>
+    <string name="start_staking_selection_validators_subtitle">Pejirandkar: %1$d (max %2$d)</string>
+    <string name="start_staking_editing_selection_validators_subtitle">Selected: %1$d (max %2$d)</string>
     <string name="common_recommended">Recommended</string>
 
     <string name="common_fee_changed_title">Heqê torê e too high</string>
-    <string name="common_fee_changed_message"> estimated network fee %s e much higher than  default network fee (%s). Ev might be due to temporary network congestion. You dikare refresh to wait ji bo a lower network fee.</string>
+    <string name="common_fee_changed_message"> estimated network fee %1$s e much higher than  default network fee (%2$s). Ev might be due to temporary network congestion. You dikare refresh to wait ji bo a lower network fee.</string>
     <string name="common_refresh_fee">Nû bike fee</string>
 
     <string name="send_recipient_system_account_title">Token dê be lost</string>
@@ -1294,7 +1294,7 @@
     <string name="nomination_pools_pool_reached_unbondings_limit_title">Too many people in unstaking ji yê te pool</string>
     <string name="nomination_pools_pool_reached_unbondings_limit_message">There in currently no free spots in unstaking queue ji bo yê te pool. Ji kerema xwe try again in %s</string>
 
-    <string name="staking_unbond_crossed_existential">When unstaking partially, you should leave at least %s in stake. Do you want to perform full unstake by unstaking remaining %s as well?</string>
+    <string name="staking_unbond_crossed_existential">When unstaking partially, you should leave at least %1$s in stake. Do you want to perform full unstake by unstaking remaining %2$s as well?</string>
     <string name="staking_unbond_crossed_existential_title">Too small amount remains in stake</string>
 
     <string name="nomination_pools_pool_destroying_error_message">Cannot perform specified operation since pool e in destroying state. It dê be closed soon.</string>
@@ -1345,7 +1345,7 @@
     <string name="start_staking_fragment_terms_of_use">See %s</string>
     <string name="start_staking_fragment_terms_of_use_clicable_part">Şert of Use</string>
 
-    <string name="account_parity_signer_sign_qr_code_expired_descrition">Ji bo security reasons generated operations valid ji bo only %s.\nPlease generate nû Koda QR û sign it bi %s</string>
+    <string name="account_parity_signer_sign_qr_code_expired_descrition">Ji bo security reasons generated operations valid ji bo only %1$s.\nPlease generate nû Koda QR û sign it bi %2$s</string>
     <string name="account_parity_signer_import_scan_invalid_qr">Nederbasdar Koda QR, ji kerema xwe make sure you in scanning Koda QR ji %s</string>
     <string name="account_parity_signer_sign_have_error">I have an error in %s</string>
     <string name="account_parity_signer_sign_title">Îmze bike bi %s</string>
@@ -1355,7 +1355,7 @@
     <string name="account_details_parity_signer_alert">Ev wallet e paired bi %1$s. Pezkuwi Cîzdan dê help you to form her operations you want, û you dê be requested to sign them using %1$s</string>
     <string name="account_details_parity_signer_not_supported">Ne supported by %s</string>
     <string name="account_parity_signer_not_supported_subtitle">%s does ne support signing arbitrary messages — only transactions</string>
-    <string name="account_parity_signer_chain_not_supported">%s doesn’t support %s</string>
+    <string name="account_parity_signer_chain_not_supported">%1$s doesn’t support %2$s</string>
 
     <string name="account_polkadot_vault_import_start_empty_derivation_hint">Pay attention,  derivation path name should be empty</string>
 
@@ -1370,7 +1370,7 @@
     <string name="transfer_history_income_from">Ji: %s</string>
     <string name="transfer_history_send_to">Bo: %s</string>
 
-    <string name="transaction_history_fiat_with_time">%s at %s</string>
+    <string name="transaction_history_fiat_with_time">%1$s at %2$s</string>
 
     <string name="referenda_list_filter_placeholder">There in no referenda bi filters applied</string>
 
@@ -1495,13 +1495,13 @@
 
     <string name="web3names_unsupported_asset_title">Token %s e ne supported yet</string>
     <string name="web3names_unsupported_asset_message">Pezkuwi Cîzdan dikare\'t resolve code ji bo token %s</string>
-    <string name="web3names_address_with_description">%s (%s)</string>
+    <string name="web3names_address_with_description">%1$s (%2$s)</string>
     <string name="web3names_invalid_recepient_title">Nederbasdar recipient</string>
     <string name="web3names_service_unavailable_title">Çewtî resolving w3n</string>
     <string name="web3names_service_unavailable_message">%1$s w3n services in unavailable. Dîsa biceribîne later an enter  %1$s address manually</string>
     <string name="web3names_recepient_not_found_message">%s ne found</string>
-    <string name="web3names_no_valid_recepient_found_message">Na valid address bû found ji bo %s on  %s network</string>
-    <string name="web3names_identifiers_sheet_title">%s addresses ji bo %s</string>
+    <string name="web3names_no_valid_recepient_found_message">Na valid address bû found ji bo %1$s on  %2$s network</string>
+    <string name="web3names_identifiers_sheet_title">%1$s addresses ji bo %2$s</string>
 
     <string name="common_no_app_to_handle_intent">Na suitable app found on device to handle ev intent</string>
 
@@ -1563,7 +1563,7 @@
     <string name="referendum_track_medium_spender">Treasury: medium spend</string>
     <string name="referendum_track_big_spender">Treasury: big spend</string>
 
-    <string name="delegation_referendum_vote">Yê te votes: %s via %s</string>
+    <string name="delegation_referendum_vote">Yê te votes: %1$s via %2$s</string>
     <string name="delegation_referendum_details_vote">Yê te votes via %s</string>
 
     <string name="delegation_delegate">Delegat bike</string>
@@ -1582,14 +1582,14 @@
     <string name="delegation_remove_votes">Rake votes</string>
     <string name="delegation_tracks">Tracks</string>
 
-    <string name="common_element_and_more_format">%s (+%s bêtir)</string>
+    <string name="common_element_and_more_format">%1$s (+%2$s bêtir)</string>
 
     <string name="delegation_all_votes">Voted ji bo hemû time</string>
     <string name="delegation_delegate_info">Delegat bike info</string>
 
     <string name="referendum_voted_referenda">Voted referenda</string>
 
-    <string name="referendum_other_votes">%s votes by %s</string>
+    <string name="referendum_other_votes">%1$s votes by %2$s</string>
 
     <string name="delegation_your_delegations">Yê te delegations</string>
 
@@ -1755,7 +1755,7 @@
     <string name="referendum_timeline_state_passing">Dengdan: Passing</string>
     <string name="referendum_timeline_state_not_passing">Dengdan: Ne passing</string>
 
-    <string name="referendum_in_queue_position_format">Position: %s of %s</string>
+    <string name="referendum_in_queue_position_format">Position: %1$s of %2$s</string>
 
     <string name="referendum_timeline_state_created">Hate afirandin</string>
     <string name="referendum_timeline_state_approved">Voted: Hate pejirandin</string>
@@ -1781,11 +1781,11 @@
 
     <string name="referendum_name_unknown">Referandom %s</string>
 
-    <string name="referendum_support_threshold_format">Threshold: %s of %s</string>
+    <string name="referendum_support_threshold_format">Threshold: %1$s of %2$s</string>
     <string name="referendum_your_vote_format">Yê te vote: %s votes</string>
 
     <string name="referendum_status_approved">Hate pejirandin</string>
-    <string name="referendum_status_in_queue_format">In queue (%s of %s)</string>
+    <string name="referendum_status_in_queue_format">In queue (%1$s of %2$s)</string>
     <string name="referendum_status_timeout">Timed out</string>
     <string name="referendum_status_cancelled">Cancelled</string>
     <string name="referendum_status_passing">Passing</string>
@@ -1829,7 +1829,7 @@
     <string name="referendum_description_fallback">Only  proposer dikare edit ev description û  title. If you own proposer\'s account, visit Polkassembly û fill in information about yê te proposal</string>
 
     <string name="referendum_voter_vote">%s votes</string>
-    <string name="referendum_voter_vote_details">%s × %sx</string>
+    <string name="referendum_voter_vote_details">%1$s × %2$sx</string>
 
     <string name="confirm_referendum_vote_title">Deng bide</string>
     <string name="confirm_referendum_vote_track">Track</string>
@@ -1844,7 +1844,7 @@
     <string name="assets_balance_details_locks_crowdloans">Crowdloan</string>
 
     <string name="common_accept_terms">Accept terms...</string>
-    <string name="yield_boost_terms">Yield Boost dê automatically stake %s hemû my transferable tokens above %s</string>
+    <string name="yield_boost_terms">Yield Boost dê automatically stake %1$s hemû my transferable tokens above %2$s</string>
 
     <string name="yield_boost_stake_increase_time">Stake increase time</string>
     <string name="yiled_boost_yield_boosted">Yield Boosted</string>
@@ -1853,10 +1853,10 @@
     <string name="yield_boost_already_enabled_message">Yield Boost dê be turned off ji bo current collators. Nû collator: %s</string>
 
     <string name="yield_boost_not_enough_threshold_title">Ne enough tokens to stay above threshold</string>
-    <string name="yield_boost_not_enough_threshold_message">You don’t have enough balance to pay  network fee of %s û ne drop below  threshold %s.\nAvailable balance to pay  fee: %s</string>
+    <string name="yield_boost_not_enough_threshold_message">You don’t have enough balance to pay  network fee of %1$s û ne drop below  threshold %2$s.\nAvailable balance to pay  fee: %3$s</string>
 
     <string name="yield_boost_not_enough_execution_fee_title">Ne enough tokens to pay first execution fee</string>
-    <string name="yield_boost_not_enough_execution_fee_message">You don’t have enough balance to pay  network fee of %s û  yield boost execution fee of %s.\nAvailable balance to pay  fee: %s</string>
+    <string name="yield_boost_not_enough_execution_fee_message">You don’t have enough balance to pay  network fee of %1$s û  yield boost execution fee of %2$s.\nAvailable balance to pay  fee: %3$s</string>
 
     <string name="common_no_changes">Na changes</string>
 
@@ -1866,7 +1866,7 @@
     <string name="staking_turing_collator_title">Ji bo my collator</string>
     <string name="staking_turing_restake_title">I want to stake</string>
     <string name="staking_turing_frequency_new_title">to automatically stake %s hemû my transferable tokens above</string>
-    <string name="staking_turing_frequency_update_title">to automatically stake %s (before: %s) hemû my transferable tokens above</string>
+    <string name="staking_turing_frequency_update_title">to automatically stake %1$s (before: %2$s) hemû my transferable tokens above</string>
 
     <string name="common_frequency_days_everyday">everyday</string>
     <plurals name="common_frequency_days">
@@ -1883,7 +1883,7 @@
 
     <string name="ledger_sign_raw_not_supported">Ledger does ne support signing arbitrary messages — only transactions</string>
 
-    <string name="assets_receive_ledger_not_supported_message">Do ne transfer %s to  Ledger-controlled account since Ledger does ne support sending of %s, so assets dê be stuck on ev account</string>
+    <string name="assets_receive_ledger_not_supported_message">Do ne transfer %1$s to  Ledger-controlled account since Ledger does ne support sending of %2$s, so assets dê be stuck on ev account</string>
     <string name="assets_receive_ledger_not_supported_title">Ledger does ne support ev token</string>
 
     <string name="common_signature_invalid">Îmze e invalid</string>
@@ -2019,7 +2019,7 @@
     </plurals>
     <string name="wallet_send_myself">Myself</string>
 
-    <string name="wallet_send_cannot_pay_cross_chain_fee">You don’t have enough balance to pay  Cross-chain fee of %s.\nRemaining balance after transfer: %s</string>
+    <string name="wallet_send_cannot_pay_cross_chain_fee">You don’t have enough balance to pay  Cross-chain fee of %1$s.\nRemaining balance after transfer: %2$s</string>
 
     <string name="wallet_send_confirm_hint">Cross-chain fee e added on top of entered amount. Recipient may receive part of cross-chain fee</string>
 
@@ -2197,7 +2197,7 @@
     <string name="nft_created_by">Hate afirandin by</string>
 
     <string name="nft_issuance_unlimited">Unlimited series</string>
-    <string name="nft_issuance_limited_format">#%s Edition of %s</string>
+    <string name="nft_issuance_limited_format">#%1$s Edition of %2$s</string>
     <string name="nft_your_nfts">Yê te NFTs</string>
 
     <string name="wallet_assets_empty">Yê te assets dê appear li vir.\nMake sure  "Hide zero balances" filter e turned off</string>
