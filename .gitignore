@@ -30,3 +30,11 @@ google-services.json
 **/google-services.json
 
 .kotlin/
+
+# Node artifacts (not part of Android build)
+node_modules/
+package.json
+package-lock.json
+
+# Local build version counter
+version.properties

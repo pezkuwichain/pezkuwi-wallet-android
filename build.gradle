@@ -1,7 +1,7 @@
 buildscript {
     ext {
         // App version
-        versionName = '1.0.2'
+        versionName = '1.0.3'
         versionCode = 1
 
         applicationId = "io.pezkuwichain.wallet"
