@@ -135,6 +135,8 @@ android {
         resources.excludes.add("META-INF/NOTICE.md")
         // Use 16KB-aligned libsqlcipher.so from jniLibs instead of AAR's 4KB-aligned version
         jniLibs.pickFirsts.add("**/libsqlcipher.so")
+        // Store native libs uncompressed and 16KB-aligned for Android 15+ compatibility
+        jniLibs.useLegacyPackaging = false
     }
 
     buildFeatures {
