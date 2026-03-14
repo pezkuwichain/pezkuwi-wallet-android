@@ -133,6 +133,8 @@ android {
         resources.excludes.add("META-INF/versions/9/previous-compilation-data.bin")
         resources.excludes.add("META-INF/DEPENDENCIES")
         resources.excludes.add("META-INF/NOTICE.md")
+        // Use 16KB-aligned libsqlcipher.so from jniLibs instead of AAR's 4KB-aligned version
+        jniLibs.pickFirsts.add("**/libsqlcipher.so")
     }
 
     buildFeatures {
