@@ -12,8 +12,6 @@ import io.novafoundation.nova.feature_dapp_api.di.deeplinks.DAppDeepLinks
 import io.novafoundation.nova.feature_deep_linking.presentation.handling.DeepLinkHandler
 import io.novafoundation.nova.feature_deep_linking.presentation.handling.PendingDeepLinkProvider
 import io.novafoundation.nova.feature_deep_linking.presentation.handling.RootDeepLinkHandler
-import io.novafoundation.nova.feature_deep_linking.presentation.handling.branchIo.BranchIOLinkHandler
-import io.novafoundation.nova.feature_deep_linking.presentation.handling.branchIo.BranchIoLinkConverter
 import io.novafoundation.nova.feature_gift_api.di.GiftDeepLinks
 import io.novafoundation.nova.feature_governance_api.di.deeplinks.GovernanceDeepLinks
 import io.novafoundation.nova.feature_multisig_operations.di.deeplink.MultisigDeepLinks
@@ -65,11 +63,4 @@ class DeepLinksModule {
         )
     }
 
-    @Provides
-    @FeatureScope
-    fun provideBranchIOLinkHandler(
-        branchIoLinkConverter: BranchIoLinkConverter
-    ): BranchIOLinkHandler {
-        return BranchIOLinkHandler(branchIoLinkConverter)
-    }
 }

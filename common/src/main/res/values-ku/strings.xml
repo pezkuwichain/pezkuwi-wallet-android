@@ -302,8 +302,6 @@
     <string name="account_migration_accepted_url" translatable="false">%s://polkadot/migration-accepted?key=%s</string>
     <string name="account_ledger_import_start_step_3_highlighted">access Bluetooth</string>
 
-    <string name="branch_io_link_host" translatable="false">pezkuwi-wallet.app.link</string>
-    <string name="branch_io_link_host_alternate" translatable="false">pezkuwi-wallet-alternate.app.link</string>
 
     <string name="ledger_verify_addresses_message_both_buttons">Press both buttons on yê te %s to approve  addresses</string>
     <string name="ledger_verify_addresses_message_confirm_button">Press confirm button on yê te %s to approve  addresses</string>

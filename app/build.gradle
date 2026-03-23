@@ -11,10 +11,6 @@ android {
         versionCode computeVersionCode()
         versionName computeVersionName()
 
-        // Branch.io key from local.properties or environment variable
-        manifestPlaceholders = [
-            BRANCH_KEY: readRawSecretOrNull('BRANCH_KEY') ?: "key_test_placeholder"
-        ]
     }
     signingConfigs {
         dev {

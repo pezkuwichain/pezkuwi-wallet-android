@@ -19,7 +19,6 @@ import io.novafoundation.nova.common.utils.systemCall.SystemCallExecutor
 import io.novafoundation.nova.common.utils.updatePadding
 import io.novafoundation.nova.common.view.bottomSheet.action.observeActionBottomSheet
 import io.novafoundation.nova.common.view.dialog.dialog
-import io.novafoundation.nova.feature_deep_linking.presentation.handling.branchIo.BranchIOLinkHandler
 import io.novafoundation.nova.feature_push_notifications.presentation.multisigsWarning.observeEnableMultisigPushesAlert
 import io.novafoundation.nova.splash.presentation.SplashBackgroundHolder
 
@@ -35,9 +34,6 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>(), SplashB
 
     @Inject
     lateinit var contextManager: ContextManager
-
-    @Inject
-    lateinit var branchIOLinkHandler: BranchIOLinkHandler
 
     override fun createBinding(): ActivityRootBinding {
         return ActivityRootBinding.inflate(LayoutInflater.from(this))
@@ -92,7 +88,6 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>(), SplashB
         super.onNewIntent(intent)
         setIntent(intent)
 
-        branchIOLinkHandler.onActivityNewIntent(this, intent)
         processIntent(intent)
     }
 
@@ -107,8 +102,6 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>(), SplashB
 
     override fun onStart() {
         super.onStart()
-
-        branchIOLinkHandler.onActivityStart(this, viewModel::handleDeepLink)
 
         viewModel.noticeInForeground()
     }

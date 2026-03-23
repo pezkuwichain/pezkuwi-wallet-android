@@ -2,7 +2,6 @@ package io.novafoundation.nova.feature_deep_linking.presentation.configuring
 
 import android.net.Uri
 import io.novafoundation.nova.common.utils.appendPathOrSkip
-import io.novafoundation.nova.feature_deep_linking.presentation.handling.branchIo.BranchIOConstants
 import io.novafoundation.nova.feature_deep_linking.presentation.handling.common.DeepLinkingPreferences
 
 interface LinkBuilder {
@@ -76,22 +75,26 @@ class AppLinkBuilderType(
     private val deepLinkingPreferences: DeepLinkingPreferences
 ) : LinkBuilder {
 
+    private var action: String? = null
+    private var entity: String? = null
+    private var screen: String? = null
+
     private val urlBuilder = Uri.Builder()
         .scheme("https")
-        .authority(deepLinkingPreferences.branchIoLinkHosts.first())
+        .authority(deepLinkingPreferences.appLinkHost)
 
     override fun setAction(action: String): LinkBuilder {
-        urlBuilder.appendQueryParameter(BranchIOConstants.ACTION_QUERY, action)
+        this.action = action
         return this
     }
 
     override fun setEntity(entity: String): LinkBuilder {
-        urlBuilder.appendQueryParameter(BranchIOConstants.ENTITY_QUERY, entity)
+        this.entity = entity
         return this
     }
 
     override fun setScreen(screen: String): LinkBuilder {
-        urlBuilder.appendQueryParameter(BranchIOConstants.SCREEN_QUERY, screen)
+        this.screen = screen
         return this
     }
 
@@ -101,7 +104,14 @@ class AppLinkBuilderType(
     }
 
     override fun build(): Uri {
-        return urlBuilder.build()
+        val finalPath = Uri.Builder()
+            .appendPathOrSkip(action)
+            .appendPathOrSkip(entity)
+            .appendPathOrSkip(screen)
+            .build()
+            .path
+
+        return urlBuilder.path(finalPath).build()
     }
 }
 

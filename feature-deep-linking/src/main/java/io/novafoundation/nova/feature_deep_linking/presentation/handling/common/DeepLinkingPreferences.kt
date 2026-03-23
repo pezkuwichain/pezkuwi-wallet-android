@@ -5,8 +5,7 @@ import android.net.Uri
 class DeepLinkingPreferences(
     val deepLinkScheme: String,
     val deepLinkHost: String,
-    val appLinkHost: String,
-    val branchIoLinkHosts: List<String>
+    val appLinkHost: String
 )
 
 fun Uri.isDeepLink(preferences: DeepLinkingPreferences): Boolean {

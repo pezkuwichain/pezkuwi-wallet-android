@@ -127,17 +127,6 @@
                 <data android:host="app.pezkuwichain.io" />
             </intent-filter>
 
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https"/>
-                <data android:host="@string/branch_io_link_host"/>
-                <data android:host="@string/branch_io_link_host_alternate"/>
-            </intent-filter>
-
         </activity>
 
         <activity
@@ -205,12 +194,6 @@
         <meta-data
             android:name="io.novafoundation.nova.multisigs_notification_channel_id"
             android:value="@string/multisigs_notification_channel_id" />
-
-        <meta-data
-            android:name="io.branch.sdk.BranchKey"
-            android:value="${BRANCH_KEY}" />
-
-        <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />
 
     </application>
 
