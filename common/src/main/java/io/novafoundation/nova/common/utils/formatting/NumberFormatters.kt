@@ -25,6 +25,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Calendar
@@ -203,16 +204,11 @@ fun formatDateISO_8601_NoMs(date: Date): String {
 }
 
 fun decimalFormatterFor(pattern: String): DecimalFormat {
-    return DecimalFormat(pattern).apply {
-        val symbols = decimalFormatSymbols
-
-        symbols.groupingSeparator = GROUPING_SEPARATOR
-        symbols.decimalSeparator = DECIMAL_SEPARATOR
-
-        decimalFormatSymbols = symbols
-
-        decimalFormatSymbols = decimalFormatSymbols
+    val symbols = DecimalFormatSymbols(Locale.US).apply {
+        groupingSeparator = GROUPING_SEPARATOR
+        decimalSeparator = DECIMAL_SEPARATOR
     }
+    return DecimalFormat(pattern, symbols)
 }
 
 fun CharSequence.toAmountWithFraction(): AmountWithFraction {
