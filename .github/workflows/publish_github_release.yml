@@ -16,7 +16,7 @@ jobs:
   build:
     uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
     with:
-      branch: master
+      branch: main
       gradlew-command: assembleReleaseGithub
       keystore-file-name: github_key.jks
     secrets: inherit
