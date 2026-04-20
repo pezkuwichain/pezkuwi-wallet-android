@@ -32,5 +32,4 @@ class DeepLinkingFeatureModule {
     fun providePendingDeepLinkProvider(preferences: Preferences): PendingDeepLinkProvider {
         return PendingDeepLinkProvider(preferences)
     }
-
 }
