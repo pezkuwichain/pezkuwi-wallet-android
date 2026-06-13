@@ -32,6 +32,24 @@
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="DOT" />
 
+    <TextView
+        android:id="@+id/itemTokenAssetPez20"
+        style="@style/TextAppearance.NovaFoundation.Regular.Caption1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:background="@drawable/bg_chip_6"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="1dp"
+        android:textColor="@color/chip_text"
+        android:textSize="9sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/itemTokenAssetToken"
+        app:layout_constraintStart_toEndOf="@+id/itemTokenAssetToken"
+        app:layout_constraintTop_toTopOf="@+id/itemTokenAssetToken"
+        tools:text="PEZ-20"
+        tools:visibility="visible" />
+
     <LinearLayout
         android:id="@+id/itemTokenAssetRateContainer"
         android:layout_width="wrap_content"

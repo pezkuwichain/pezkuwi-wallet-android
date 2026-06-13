@@ -1,5 +1,6 @@
 package io.novafoundation.nova.feature_assets.presentation.balance.common.holders
 
+import androidx.core.view.isVisible
 import coil.ImageLoader
 import io.novafoundation.nova.common.list.GroupedListHolder
 import io.novafoundation.nova.common.presentation.masking.setMaskableText
@@ -13,6 +14,11 @@ import io.novafoundation.nova.feature_assets.presentation.balance.list.model.ite
 import io.novafoundation.nova.feature_assets.presentation.model.AssetModel
 import io.novafoundation.nova.feature_wallet_api.presentation.model.maskableFiat
 import io.novafoundation.nova.feature_wallet_api.presentation.model.maskableToken
+import io.novafoundation.nova.runtime.ext.Geneses
+import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
+
+// Fungible assets on Pezkuwi Asset Hub follow the PEZ-20 token standard.
+private val PEZ20_SYMBOLS = setOf("PEZ", "USDT", "wUSDT")
 
 class TokenAssetViewHolder(
     private val binder: ItemTokenAssetBinding,
@@ -31,7 +37,12 @@ class TokenAssetViewHolder(
 
         bindTotal(asset)
 
-        binder.itemTokenAssetToken.text = asset.token.configuration.symbol.value
+        val config = asset.token.configuration
+        binder.itemTokenAssetToken.text = config.symbol.value
+
+        val isPez20 = config.chainId == Chain.Geneses.PEZKUWI_ASSET_HUB && config.symbol.value in PEZ20_SYMBOLS
+        binder.itemTokenAssetPez20.isVisible = isPez20
+        if (isPez20) binder.itemTokenAssetPez20.text = "PEZ-20"
 
         setOnClickListener { itemHandler.assetClicked(asset.token.configuration) }
     }
