@@ -5,6 +5,23 @@ Context sıfırlanması durumunda referans olarak kullanılmalıdır.
 
 ---
 
+## v1.1.0 — Brand-book UI redesign (2026-06-15)
+
+Görsel kimlik Pezkuwi marka kitabına hizalandı; iş mantığına dokunulmadı.
+
+- **Renkler:** colors.xml'deki yasak magenta/mor değerleri marka renkleriyle değiştirildi
+  (isimler korundu). Raster illustration'lardaki pembe/mor pikseller (siri, networks
+  banner, no-added-networks, hardware import, tinder-gov, crowdloan) kesk/teal'e retint
+  edildi. Üçüncü-taraf OAK logosuna dokunulmadı.
+- **Tipografi:** Public Sans → Space Grotesk (display) + Plus Jakarta Sans (gövde) +
+  JetBrains Mono (adres/hash). TR + Kurmancî glifleri doğrulandı.
+- **Splash:** Kurdistan-haritalı logo → Newroz alevi marka işareti.
+- **Onboarding:** welcome hero → "Global United States of Pezkuwi" infografiği (tam/kırpılmadan).
+- **Hijyen:** production-öncesi debug kodları kaldırıldı (FeeLoader user-facing DEBUG mesajı,
+  RuntimeFactory diagnostics). Brand kuralları için `BRAND.md` eklendi.
+
+---
+
 ## DEBUG KODLARI — ✅ TEMİZLENDİ (2026-06-15, v1.1.0 öncesi)
 
 > Aşağıdaki tüm debug kodları production'a çıkmadan kaldırıldı:
