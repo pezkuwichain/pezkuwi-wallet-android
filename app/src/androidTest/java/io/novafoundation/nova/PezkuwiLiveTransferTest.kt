@@ -229,9 +229,6 @@ class PezkuwiLiveTransferTest : BaseIntegrationTest() {
         // Just log the extension names - type access might be restricted
         Log.d("LiveTransferTest", "Signed extensions count: ${extrinsicMeta.signedExtensions.size}")
 
-        // Log the extrinsic address type if available
-        Log.d("LiveTransferTest", "RuntimeFactory diagnostics: ${io.novafoundation.nova.runtime.multiNetwork.runtime.RuntimeFactory.lastDiagnostics}")
-
         println("Type resolution results:\n${results.joinToString("\n")}")
     }
 

@@ -5,7 +5,13 @@ Context sıfırlanması durumunda referans olarak kullanılmalıdır.
 
 ---
 
-## DEBUG KODLARI (Production öncesi KALDIRILMALI)
+## DEBUG KODLARI — ✅ TEMİZLENDİ (2026-06-15, v1.1.0 öncesi)
+
+> Aşağıdaki tüm debug kodları production'a çıkmadan kaldırıldı:
+> #1 FeeLoaderV2Provider (kullanıcıya görünen DEBUG hata mesajı) ve #2 RuntimeFactory
+> (`lastDiagnostics` + test referansı) bu sürümde temizlendi; #3–#6 zaten kaldırılmıştı.
+> Doğrulama: repoda `"DEBUG:` literali / `lastDiagnostics` referansı kalmadı.
+> (Aşağıdaki kayıtlar tarihsel referans içindir.)
 
 ### 1. FeeLoaderV2Provider.kt - Hata mesajı gösterimi
 **Dosya:** `feature-wallet-api/src/main/java/io/novafoundation/nova/feature_wallet_api/presentation/mixin/fee/v2/FeeLoaderV2Provider.kt`

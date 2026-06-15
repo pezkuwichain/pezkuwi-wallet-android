@@ -47,10 +47,6 @@ class RuntimeFactory(
     private val gson: Gson,
     private val concurrencyLimit: Int = 1
 ) {
-    companion object {
-        @Volatile
-        var lastDiagnostics: String = "not yet initialized"
-    }
 
     private val dispatcher = newLimitedThreadPoolExecutor(concurrencyLimit).asCoroutineDispatcher()
     private val semaphore = Semaphore(concurrencyLimit)
@@ -109,11 +105,6 @@ class RuntimeFactory(
         val finalTypes = addPezkuwiTypeAliases(types)
 
         val typeRegistry = TypeRegistry(finalTypes, DynamicTypeResolver(DynamicTypeResolver.DEFAULT_COMPOUND_EXTENSIONS + GenericsExtension))
-
-        // Store diagnostic info for error messages
-        val hasExtrinsicSignature = typeRegistry["ExtrinsicSignature"] != null
-        val hasAddress = typeRegistry["Address"] != null
-        lastDiagnostics = "typesUsage=$typesUsage, ExtrinsicSig=$hasExtrinsicSignature, Address=$hasAddress, typeCount=${finalTypes.size}"
 
         val runtimeMetadata = VersionedRuntimeBuilder.buildMetadata(metadataReader, typeRegistry)
 

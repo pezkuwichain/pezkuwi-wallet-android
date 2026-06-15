@@ -160,15 +160,11 @@ internal class FeeLoaderV2Provider<F, D>(
 
             fee.emit(FeeStatus.Error)
 
-            // Show detailed error in retry dialog with runtime diagnostics
-            val diagnostics = try {
-                io.novafoundation.nova.runtime.multiNetwork.runtime.RuntimeFactory.lastDiagnostics
-            } catch (e: Exception) { "N/A" }
             retryEvent.postValue(
                 Event(
                     RetryPayload(
                         title = resourceManager.getString(R.string.choose_amount_network_error),
-                        message = "DEBUG: $errorMsg | Runtime: $diagnostics",
+                        message = resourceManager.getString(R.string.choose_amount_error_fee),
                         onRetry = { loadFee(feeConstructor) },
                         onCancel = { }
                     )
