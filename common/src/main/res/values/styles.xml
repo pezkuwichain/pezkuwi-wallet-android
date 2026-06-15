@@ -245,7 +245,7 @@
 
     <style name="TextAppearance.NovaFoundation.Regular.Monospace">
         <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">monospace</item>
+        <item name="android:fontFamily">@font/jetbrains_mono_regular</item>
     </style>
 
     <!-- Buttons -->
