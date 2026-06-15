@@ -21,13 +21,19 @@ on:
           - beta
           - production
       status:
-        description: 'Release status (draft, completed)'
+        description: 'Release status (draft, completed, inProgress=staged)'
         required: true
         default: draft
         type: choice
         options:
           - draft
           - completed
+          - inProgress
+      user_fraction:
+        description: 'Staged rollout fraction for inProgress (e.g. 0.2 = 20%). Ignored unless status=inProgress.'
+        required: false
+        default: '0.2'
+        type: string
 
 jobs:
   build:
@@ -83,6 +89,8 @@ jobs:
           releaseFiles: app/bundle/releaseMarket/pezkuwi-wallet-android-${{ github.event.inputs.app_version }}.aab
           track: ${{ github.event.inputs.track }}
           status: ${{ github.event.inputs.status }}
+          # userFraction only applies to staged rollout (status=inProgress); empty otherwise
+          userFraction: ${{ github.event.inputs.status == 'inProgress' && github.event.inputs.user_fraction || '' }}
           inAppUpdatePriority: 2
           whatsNewDirectory: distribution/whatsnew
           mappingFile: app/mapping/releaseMarket/mapping.txt
