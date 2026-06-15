@@ -10,5 +10,6 @@ jobs:
     with:
       branch: ${{github.head_ref}}
       gradlew-command: assembleDevelop
+      keystore-file-name: develop_key.jks # develop variant is signed with signingConfigs.dev (develop_key.jks)
       build-debug-tests: false # TODO: Enable this, when debug build will be fixed for tests
     secrets: inherit

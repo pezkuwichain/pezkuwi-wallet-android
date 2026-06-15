@@ -119,6 +119,7 @@ env:
   CI_MARKET_KEYSTORE_KEY_ALIAS: ${{ secrets.CI_MARKET_KEYSTORE_KEY_ALIAS }}
   CI_MARKET_KEYSTORE_KEY_PASS: ${{ secrets.CI_MARKET_KEYSTORE_KEY_PASS }}
   CI_MARKET_KEY_FILE: ${{ secrets.RELEASE_MARKET_KEY_FILE }}
+  CI_DEV_KEY_FILE: ${{ secrets.BASE64_DEV_KEYSTORE_FILE }}
 
   CI_KEYSTORE_PASS: ${{ secrets.CI_KEYSTORE_PASS }}
   CI_KEYSTORE_KEY_ALIAS: ${{ secrets.CI_KEYSTORE_KEY_ALIAS }}
@@ -214,6 +215,14 @@ jobs:
           fileName: ${{ inputs.keystore-file-name }}
           fileDir: './app/'
           encodedString: ${{ env.CI_MARKET_KEY_FILE }}
+
+      - name: 🔐 Getting develop sign key
+        if: ${{ startsWith(inputs.keystore-file-name, 'develop_key.jks') }}
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileName: ${{ inputs.keystore-file-name }}
+          fileDir: './app/'
+          encodedString: ${{ env.CI_DEV_KEY_FILE }}
 
       - name: 🏗 Build app
         if: ${{ !startsWith(inputs.gradlew-command, 'false') }}
