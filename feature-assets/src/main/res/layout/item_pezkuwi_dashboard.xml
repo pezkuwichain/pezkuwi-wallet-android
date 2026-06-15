@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="20dp"
     app:cardElevation="0dp"
     app:strokeWidth="0dp">
 
@@ -33,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pezkuwi_dashboard_title"
-                    android:textColor="@android:color/white"
+                    android:textColor="#E0FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -58,7 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pezkuwi_dashboard_trust_score"
-                        android:textColor="#B0BEC5"
+                        android:textColor="#7AFFFFFF"
                         android:textSize="12sp" />
 
                     <TextView
@@ -66,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:textColor="#FFD54F"
+                        android:textColor="#FDB813"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -83,7 +84,7 @@
                         android:textColor="@android:color/white"
                         android:textSize="11sp"
                         android:visibility="gone"
-                        app:backgroundTint="#FF9800"
+                        app:backgroundTint="#009639"
                         app:cornerRadius="8dp" />
                 </LinearLayout>
             </LinearLayout>
@@ -99,7 +100,7 @@
                     android:id="@+id/pezkuwiDashboardWelatiCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#4CAF50"
+                    android:textColor="#2FC864"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
@@ -107,12 +108,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pezkuwi_dashboard_kurds_title"
-                    android:textColor="#CFD8DC"
+                    android:textColor="#7AFFFFFF"
                     android:textSize="10sp" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Action buttons: Kesk (green), Sor (red), Zer (yellow) -->
+        <!-- Action buttons: kesk (primary), sor (sign), frosted-navy (share secondary) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pezkuwiDashboardBasvuruButton"
             android:layout_width="match_parent"
@@ -121,8 +122,8 @@
             android:text="@string/pezkuwi_dashboard_basvuru"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            app:backgroundTint="#4CAF50"
-            app:cornerRadius="8dp" />
+            app:backgroundTint="#009639"
+            app:cornerRadius="12dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pezkuwiDashboardSignButton"
@@ -132,8 +133,8 @@
             android:text="@string/citizenship_sign"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            app:backgroundTint="#E53935"
-            app:cornerRadius="8dp" />
+            app:backgroundTint="#E2231A"
+            app:cornerRadius="12dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pezkuwiDashboardShareButton"
@@ -142,8 +143,8 @@
             android:layout_marginTop="6dp"
             android:text="@string/citizenship_share_button"
             android:textAllCaps="false"
-            android:textColor="#212121"
-            app:backgroundTint="#FDD835"
-            app:cornerRadius="8dp" />
+            android:textColor="#E0FFFFFF"
+            app:backgroundTint="#2A2F45"
+            app:cornerRadius="12dp" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
