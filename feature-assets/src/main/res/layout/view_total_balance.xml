@@ -124,71 +124,145 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewAssetsTotalBalanceContainer">
 
-        <TextView
+        <LinearLayout
             android:id="@+id/viewAssetsTotalBalanceSend"
-            style="@style/Widget.Nova.ActionButton"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:breakStrategy="high_quality"
-            android:hyphenationFrequency="full"
-            android:paddingBottom="8dp"
-            android:text="@string/wallet_asset_send"
-            app:drawableTopCompat="@drawable/ic_send_tokens"
-            tools:drawableTop="@drawable/ic_send_tokens" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="6dp">
 
-        <TextView
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_action_circle_primary"
+                android:padding="13dp"
+                android:src="@drawable/ic_send_tokens"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/wallet_asset_send"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/viewAssetsTotalBalanceReceive"
-            style="@style/Widget.Nova.ActionButton"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:breakStrategy="high_quality"
-            android:hyphenationFrequency="full"
-            android:paddingBottom="8dp"
-            android:text="@string/wallet_asset_receive"
-            app:drawableTopCompat="@drawable/ic_receive_tokens"
-            tools:drawableTop="@drawable/ic_receive_tokens"
-            tools:text="Получить" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="6dp">
 
-        <TextView
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_action_circle_secondary"
+                android:padding="13dp"
+                android:src="@drawable/ic_receive_tokens"
+                app:tint="@color/icon_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/wallet_asset_receive"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/viewAssetsTotalBalanceSwap"
-            style="@style/Widget.Nova.ActionButton"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:breakStrategy="high_quality"
-            android:hyphenationFrequency="full"
-            android:paddingBottom="8dp"
-            android:text="@string/wallet_asset_swap"
-            app:drawableTopCompat="@drawable/ic_swap"
-            tools:drawableTop="@drawable/ic_swap" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="6dp">
 
-        <TextView
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_action_circle_secondary"
+                android:padding="13dp"
+                android:src="@drawable/ic_swap"
+                app:tint="@color/icon_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/wallet_asset_swap"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/viewAssetsTotalBalanceBuy"
-            style="@style/Widget.Nova.ActionButton"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:breakStrategy="high_quality"
-            android:hyphenationFrequency="full"
-            android:paddingBottom="8dp"
-            android:text="@string/wallet_asset_buy_sell"
-            app:drawableTopCompat="@drawable/ic_buy_tokens"
-            tools:drawableTop="@drawable/ic_buy" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="6dp">
 
-        <TextView
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_action_circle_secondary"
+                android:padding="13dp"
+                android:src="@drawable/ic_buy_tokens"
+                app:tint="@color/icon_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/wallet_asset_buy_sell"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/viewAssetsTotalBalanceGift"
-            style="@style/Widget.Nova.ActionButton"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:breakStrategy="high_quality"
-            android:hyphenationFrequency="full"
-            android:paddingBottom="8dp"
-            android:text="@string/common_gift"
-            app:drawableTopCompat="@drawable/ic_gift_card"
-            tools:drawableTop="@drawable/ic_gift_card" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="6dp">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_action_circle_secondary"
+                android:padding="13dp"
+                android:src="@drawable/ic_gift_card"
+                app:tint="@color/icon_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/common_gift"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
 
     </LinearLayout>
 
