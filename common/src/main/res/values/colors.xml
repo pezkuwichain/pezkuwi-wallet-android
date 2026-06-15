@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Pezkuwi Wallet — common/src/main/res/values/colors.xml
+  REDESIGN per Pezkuwi Wallet Design System (brand book).
+
+  This is a DROP-IN replacement for the current file: every color NAME is
+  preserved (so no Kotlin/XML references break), only VALUES change.
+
+  What changed vs. the shipped file — and why:
+  • Purged forbidden Nova-legacy PINK / MAGENTA / PURPLE. The brand permits ONLY
+    the Kurdistan palette (kesk green / sor red / zer gold / fire) + navy/neutral.
+      - crowdloan_banner_gradient_start  #BD387F (magenta) -> #009639 (kesk)
+      - networks_banner_gradient_end     #661D78 (purple)  -> #017A2F (kesk-700)
+      - chip_on_card_background          #443679 (purple)  -> #3D999EC7 (frosted)
+  • Everything else is unchanged from the already-Kurdistan-themed file.
+
+  Search the file for "REDESIGN:" to see each changed line.
+-->
 <resources>
     <!-- Colors not included in the design system -->
     <color name="address_icon_background">#eeeeee</color>
@@ -44,11 +61,13 @@
     <color name="staking_type_banner_text_inactive">#52FFFFFF</color>
     <color name="tinder_gov_banner_secondary_text">#A3FFFFFF</color>
 
-    <color name="crowdloan_banner_gradient_start">#BD387F</color>
+    <!-- REDESIGN: crowdloan banner is now the Newroz-flame gradient (kesk -> fire), not magenta -> orange -->
+    <color name="crowdloan_banner_gradient_start">#009639</color>
     <color name="crowdloan_banner_gradient_end">#FF7A00</color>
 
+    <!-- REDESIGN: networks banner is now navy -> kesk green, not navy -> purple -->
     <color name="networks_banner_gradient_start">#00072E</color>
-    <color name="networks_banner_gradient_end">#661D78</color>
+    <color name="networks_banner_gradient_end">#017A2F</color>
 
     <!-- Icon Colors -->
     <color name="icon_primary">#E0FFFFFF</color>
@@ -70,12 +89,12 @@
     <color name="bottom_sheet_background">#181920</color>
     <color name="block_background">#1A999EC7</color>
     <color name="hided_networks_block_background">#3D999EC7</color>
-    <!--    TODO update name once in design system-->
     <color name="block_background_dark">#5205081C</color>
     <color name="cell_background_pressed">#291F78FF</color>
     <color name="input_background">#1A999EC7</color>
     <color name="chips_background">#29999EC7</color>
-    <color name="chip_on_card_background">#443679</color>
+    <!-- REDESIGN: was #443679 (purple). Now frosted periwinkle, on-brand. -->
+    <color name="chip_on_card_background">#3D999EC7</color>
     <color name="container_background">#1A999EC7</color>
     <color name="token_container_background">#3D08090E</color>
     <color name="segmented_background">#5208090E</color>
@@ -109,7 +128,8 @@
     <color name="button_background_inactive_on_gradient">#1A999EC7</color>
     <color name="button_background_inactive">#181920</color>
 
-    <color name="button_wallet_connect_background">#353D67</color>
+    <!-- REDESIGN: WalletConnect button retinted off the indigo #353D67 to a neutral navy. -->
+    <color name="button_wallet_connect_background">#1F2A4D</color>
     <color name="wallet_connections_background">#101636</color>
 
     <!-- Border Colors - Kurdistan Green -->
