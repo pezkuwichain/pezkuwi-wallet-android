@@ -5,6 +5,15 @@ Context sıfırlanması durumunda referans olarak kullanılmalıdır.
 
 ---
 
+## v1.1.1 — Dashboard & action-row screen redesign (2026-06-15)
+
+Screen-level brand-book alignment (foundation landed in v1.1.0):
+- **Pezkuwi dashboard card:** blue/indigo gradient → frosted dark-navy surface with
+  a small Newroz-flame icon; brand buttons (Approve = kesk, Sign = sor, Share =
+  frosted-dark — the old yellow Share button removed); zer/positive accents.
+- **Balance action row:** flat icon+label → circular buttons (Send on a kesk-green
+  circle, Receive/Swap/Buy/Gift on frosted-dark circles with labels below).
+
 ## v1.1.0 — Brand-book UI redesign (2026-06-15)
 
 Görsel kimlik Pezkuwi marka kitabına hizalandı; iş mantığına dokunulmadı.
