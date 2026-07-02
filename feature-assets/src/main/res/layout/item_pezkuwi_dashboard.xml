@@ -10,151 +10,218 @@
     app:strokeWidth="0dp">
 
     <LinearLayout
+        android:id="@+id/pezkuwiDashboardRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_pezkuwi_dashboard"
-        android:orientation="vertical"
-        android:padding="18dp">
+        android:orientation="vertical">
 
-        <!-- Header: flame badge + title/roles (left), citizen count (right) -->
+        <!-- Collapsed state: minimal single-line pill showing only Trust Score.
+             Default/visible on first bind each app session. -->
         <LinearLayout
+            android:id="@+id/pezkuwiDashboardCollapsedBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_pezkuwi_dashboard_collapsed"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="12dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_nevroz_flame" />
 
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:text="@string/pezkuwi_dashboard_trust_score"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/pezkuwiDashboardTitle"
+            <TextView
+                android:id="@+id/pezkuwiDashboardTrustValueCollapsed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_chevron_down"
+                app:tint="@android:color/white" />
+        </LinearLayout>
+
+        <!-- Expanded state: full card, hidden by default. -->
+        <LinearLayout
+            android:id="@+id/pezkuwiDashboardExpandedContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pezkuwi_dashboard"
+            android:orientation="vertical"
+            android:padding="18dp"
+            android:visibility="gone">
+
+            <!-- Header: flame badge + title/roles (left), citizen count + collapse chevron (right) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_nevroz_flame" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/pezkuwiDashboardTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pezkuwi_dashboard_title"
+                        android:textColor="#E0FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/pezkuwiDashboardRoles"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        app:alignItems="center"
+                        app:flexWrap="wrap"
+                        app:justifyContent="flex_start" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/pezkuwi_dashboard_title"
-                    android:textColor="#E0FFFFFF"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:gravity="end"
+                    android:orientation="vertical">
 
-                <com.google.android.flexbox.FlexboxLayout
-                    android:id="@+id/pezkuwiDashboardRoles"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    app:alignItems="center"
-                    app:flexWrap="wrap"
-                    app:justifyContent="flex_start" />
+                    <TextView
+                        android:id="@+id/pezkuwiDashboardWelatiCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:textColor="#2FC864"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="@string/pezkuwi_dashboard_kurds_title"
+                        android:textColor="#7AFFFFFF"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/pezkuwiDashboardCollapseButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_chevron_up"
+                    app:tint="#7AFFFFFF" />
             </LinearLayout>
 
+            <!-- Trust score -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="end"
-                android:orientation="vertical">
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/pezkuwiDashboardWelatiCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:textColor="#2FC864"
-                    android:textSize="24sp"
+                    android:text="@string/pezkuwi_dashboard_trust_score"
+                    android:textColor="#7AFFFFFF"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/pezkuwiDashboardTrustValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="#FDB813"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <TextView
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pezkuwiDashboardStartTrackingButton"
+                    style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:text="@string/pezkuwi_dashboard_kurds_title"
-                    android:textColor="#7AFFFFFF"
-                    android:textSize="10sp" />
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/pezkuwi_dashboard_start_tracking"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:backgroundTint="#009639"
+                    app:cornerRadius="8dp" />
             </LinearLayout>
-        </LinearLayout>
 
-        <!-- Trust score -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pezkuwi_dashboard_trust_score"
-                android:textColor="#7AFFFFFF"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/pezkuwiDashboardTrustValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textColor="#FDB813"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
+            <!-- Action buttons -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/pezkuwiDashboardStartTrackingButton"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:minWidth="0dp"
-                android:paddingHorizontal="10dp"
-                android:text="@string/pezkuwi_dashboard_start_tracking"
+                android:id="@+id/pezkuwiDashboardBasvuruButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/pezkuwi_dashboard_basvuru"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="11sp"
-                android:visibility="gone"
+                android:textStyle="bold"
                 app:backgroundTint="#009639"
-                app:cornerRadius="8dp" />
+                app:cornerRadius="14dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pezkuwiDashboardSignButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/citizenship_sign"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:backgroundTint="#E2231A"
+                app:cornerRadius="14dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pezkuwiDashboardShareButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/citizenship_share_button"
+                android:textAllCaps="false"
+                android:textColor="#E0FFFFFF"
+                app:backgroundTint="#2A2F45"
+                app:cornerRadius="14dp"
+                app:strokeColor="#33999EC7"
+                app:strokeWidth="1dp" />
         </LinearLayout>
-
-        <!-- Action buttons -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pezkuwiDashboardBasvuruButton"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/pezkuwi_dashboard_basvuru"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            app:backgroundTint="#009639"
-            app:cornerRadius="14dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pezkuwiDashboardSignButton"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/citizenship_sign"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            app:backgroundTint="#E2231A"
-            app:cornerRadius="14dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pezkuwiDashboardShareButton"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/citizenship_share_button"
-            android:textAllCaps="false"
-            android:textColor="#E0FFFFFF"
-            app:backgroundTint="#2A2F45"
-            app:cornerRadius="14dp"
-            app:strokeColor="#33999EC7"
-            app:strokeWidth="1dp" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -2,6 +2,8 @@ package io.novafoundation.nova.feature_assets.presentation.balance.list.view
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +31,10 @@ class PezkuwiDashboardAdapter(
     private var model: PezkuwiDashboardModel? = null
     private var trackingLoading: Boolean = false
 
+    // Survives ViewHolder recycling (scroll) within the process, but not process restart —
+    // resets to collapsed (false) whenever the app is freshly opened, by design.
+    private var isExpanded: Boolean = false
+
     fun setModel(model: PezkuwiDashboardModel) {
         this.model = model
         notifyChangedIfShown()
@@ -41,11 +47,11 @@ class PezkuwiDashboardAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PezkuwiDashboardHolder {
         val binding = ItemPezkuwiDashboardBinding.inflate(parent.inflater(), parent, false)
-        return PezkuwiDashboardHolder(binding, handler)
+        return PezkuwiDashboardHolder(binding, handler) { expanded -> isExpanded = expanded }
     }
 
     override fun onBindViewHolder(holder: PezkuwiDashboardHolder, position: Int) {
-        model?.let { holder.bind(it, trackingLoading) }
+        model?.let { holder.bind(it, trackingLoading, isExpanded) }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -55,7 +61,8 @@ class PezkuwiDashboardAdapter(
 
 class PezkuwiDashboardHolder(
     private val binder: ItemPezkuwiDashboardBinding,
-    handler: PezkuwiDashboardAdapter.Handler
+    handler: PezkuwiDashboardAdapter.Handler,
+    private val onExpandedChanged: (Boolean) -> Unit
 ) : RecyclerView.ViewHolder(binder.root) {
 
     companion object : WithViewType {
@@ -67,13 +74,29 @@ class PezkuwiDashboardHolder(
         binder.pezkuwiDashboardSignButton.setOnClickListener { handler.onSignClicked() }
         binder.pezkuwiDashboardShareButton.setOnClickListener { handler.onShareReferralClicked() }
         binder.pezkuwiDashboardStartTrackingButton.setOnClickListener { handler.onStartTrackingClicked() }
+
+        binder.pezkuwiDashboardCollapsedBar.setOnClickListener { setExpanded(true) }
+        binder.pezkuwiDashboardCollapseButton.setOnClickListener { setExpanded(false) }
     }
 
-    fun bind(model: PezkuwiDashboardModel, trackingLoading: Boolean = false) {
+    private fun setExpanded(expanded: Boolean) {
+        TransitionManager.beginDelayedTransition(binder.pezkuwiDashboardRoot, AutoTransition().apply { duration = 200 })
+        binder.pezkuwiDashboardCollapsedBar.visibility = if (expanded) View.GONE else View.VISIBLE
+        binder.pezkuwiDashboardExpandedContent.visibility = if (expanded) View.VISIBLE else View.GONE
+        onExpandedChanged(expanded)
+    }
+
+    fun bind(model: PezkuwiDashboardModel, trackingLoading: Boolean = false, isExpanded: Boolean = false) {
         bindRoles(model.roles)
         binder.pezkuwiDashboardTrustValue.text = model.trustScore
+        binder.pezkuwiDashboardTrustValueCollapsed.text = model.trustScore
         binder.pezkuwiDashboardWelatiCount.text = model.welatiCount
         bindButtons(model.citizenshipStatus)
+
+        // Reflect current expand state without animating (this runs on every bind/rebind,
+        // e.g. after RecyclerView recycling — animation is only for user-initiated toggles).
+        binder.pezkuwiDashboardCollapsedBar.visibility = if (isExpanded) View.GONE else View.VISIBLE
+        binder.pezkuwiDashboardExpandedContent.visibility = if (isExpanded) View.VISIBLE else View.GONE
 
         val showTracking = !model.isTrackingScore && model.citizenshipStatus == CitizenshipStatus.APPROVED
         binder.pezkuwiDashboardStartTrackingButton.visibility = if (showTracking) View.VISIBLE else View.GONE
