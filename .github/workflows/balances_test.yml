@@ -19,7 +19,7 @@ jobs:
 
   run-tests:
     needs: [build-app]
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -36,13 +36,19 @@ jobs:
       - name: Add permissions
         run: chmod +x .github/scripts/run_balances_test.sh
 
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
       - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           disable-animations: true
           profile: Nexus 6
           api-level: 29
-          arch: arm64-v8a
+          arch: x86_64
           script: .github/scripts/run_balances_test.sh
 
       - uses: actions/upload-artifact@v4
