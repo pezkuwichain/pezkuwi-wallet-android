@@ -9,6 +9,9 @@ const val ASSET_UNSUPPORTED = "unsupported"
 const val ASSET_EVM_ERC20 = "evm"
 const val ASSET_EVM_NATIVE = "evmNative"
 
+const val ASSET_TRON_NATIVE = "tronNative"
+const val ASSET_TRC20 = "trc20"
+
 const val ASSET_EQUILIBRIUM = "equilibrium"
 const val ASSET_EQUILIBRIUM_ON_CHAIN_ID = "assetId"
 

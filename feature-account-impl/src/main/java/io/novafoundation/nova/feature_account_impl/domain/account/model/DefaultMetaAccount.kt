@@ -21,7 +21,9 @@ open class DefaultMetaAccount(
     override val type: LightMetaAccount.Type,
     override val status: LightMetaAccount.Status,
     override val chainAccounts: Map<ChainId, MetaAccount.ChainAccount>,
-    override val parentMetaId: Long?
+    override val parentMetaId: Long?,
+    override val tronAddress: ByteArray? = null,
+    override val tronPublicKey: ByteArray? = null,
 ) : MetaAccount {
 
     override suspend fun supportsAddingChainAccount(chain: Chain): Boolean {
@@ -31,6 +33,7 @@ open class DefaultMetaAccount(
     override fun hasAccountIn(chain: Chain): Boolean {
         return when {
             hasChainAccountIn(chain.id) -> true
+            chain.isTronBased -> tronAddress != null
             chain.isEthereumBased -> ethereumAddress != null
             else -> substrateAccountId != null
         }
@@ -39,6 +42,7 @@ open class DefaultMetaAccount(
     override fun accountIdIn(chain: Chain): AccountId? {
         return when {
             hasChainAccountIn(chain.id) -> chainAccounts.getValue(chain.id).accountId
+            chain.isTronBased -> tronAddress
             chain.isEthereumBased -> ethereumAddress
             else -> substrateAccountId
         }
@@ -47,6 +51,7 @@ open class DefaultMetaAccount(
     override fun publicKeyIn(chain: Chain): ByteArray? {
         return when {
             hasChainAccountIn(chain.id) -> chainAccounts.getValue(chain.id).publicKey
+            chain.isTronBased -> tronPublicKey
             chain.isEthereumBased -> ethereumPublicKey
             else -> substratePublicKey
         }

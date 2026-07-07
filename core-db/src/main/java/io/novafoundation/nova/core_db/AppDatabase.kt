@@ -94,6 +94,7 @@ import io.novafoundation.nova.core_db.migrations.AddStakingTypeToTotalRewards_44
 import io.novafoundation.nova.core_db.migrations.AddSwapOption_48_49
 import io.novafoundation.nova.core_db.migrations.AddTransactionVersionToRuntime_50_51
 import io.novafoundation.nova.core_db.migrations.AddTransferApisTable_29_30
+import io.novafoundation.nova.core_db.migrations.AddTronSupport_73_74
 import io.novafoundation.nova.core_db.migrations.AddTypeExtrasToMetaAccount_68_69
 import io.novafoundation.nova.core_db.migrations.AddVersioningToGovernanceDapps_32_33
 import io.novafoundation.nova.core_db.migrations.AddWalletConnectSessions_39_40
@@ -166,7 +167,7 @@ import io.novafoundation.nova.core_db.model.operation.SwapTypeLocal
 import io.novafoundation.nova.core_db.model.operation.TransferTypeLocal
 
 @Database(
-    version = 73,
+    version = 74,
     entities = [
         AccountLocal::class,
         NodeLocal::class,
@@ -271,6 +272,7 @@ abstract class AppDatabase : RoomDatabase() {
                     .addMigrations(AddFavoriteDAppsOrdering_65_66, AddLegacyAddressPrefix_66_67, AddSellProviders_67_68)
                     .addMigrations(AddTypeExtrasToMetaAccount_68_69, AddMultisigCalls_69_70, AddMultisigSupportFlag_70_71)
                     .addMigrations(AddGifts_71_72, AddFieldsToContributions)
+                    .addMigrations(AddTronSupport_73_74)
                     .build()
             }
             return instance!!

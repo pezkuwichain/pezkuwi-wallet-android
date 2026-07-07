@@ -57,6 +57,7 @@ fun chainOf(
     legacyPrefix = null,
     isTestNet = false,
     isEthereumBased = false,
+    isTronBased = false,
     hasCrowdloans = false,
     additional = "",
     governance = "governance",

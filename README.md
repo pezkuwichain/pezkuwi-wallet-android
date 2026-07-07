@@ -2,7 +2,7 @@
 
 Next generation mobile wallet for Pezkuwichain and the Polkadot ecosystem.
 
-[![](https://img.shields.io/twitter/follow/pezkuwichain?label=Follow&style=social)](https://twitter.com/pezkuwichain)
+[![](https://img.shields.io/twitter/follow/pezkuwichain?label=Follow&style=social)](https://x.com/bizinikiwi)
 
 ## About
 
@@ -105,8 +105,8 @@ WALLET_CONNECT_PROJECT_ID=mock
 
 - Website: https://pezkuwichain.io
 - Documentation: https://docs.pezkuwichain.io
-- Telegram: https://t.me/pezkuwichain
-- Twitter: https://twitter.com/pezkuwichain
+- Telegram: https://t.me/kurdishmedya
+- Twitter: https://x.com/bizinikiwi
 - GitHub: https://github.com/pezkuwichain
 
 ## License

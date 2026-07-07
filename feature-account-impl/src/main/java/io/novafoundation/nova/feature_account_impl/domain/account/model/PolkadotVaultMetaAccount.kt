@@ -19,7 +19,9 @@ class PolkadotVaultMetaAccount(
     type: LightMetaAccount.Type,
     status: LightMetaAccount.Status,
     chainAccounts: Map<ChainId, MetaAccount.ChainAccount>,
-    parentMetaId: Long?
+    parentMetaId: Long?,
+    tronAddress: ByteArray? = null,
+    tronPublicKey: ByteArray? = null,
 ) : DefaultMetaAccount(
     id = id,
     globallyUniqueId = globallyUniqueId,
@@ -33,10 +35,12 @@ class PolkadotVaultMetaAccount(
     type = type,
     status = status,
     chainAccounts = chainAccounts,
-    parentMetaId = parentMetaId
+    parentMetaId = parentMetaId,
+    tronAddress = tronAddress,
+    tronPublicKey = tronPublicKey
 ) {
 
     override suspend fun supportsAddingChainAccount(chain: Chain): Boolean {
-        return !chain.isEthereumBased
+        return !chain.isEthereumBased && !chain.isTronBased
     }
 }
