@@ -2,6 +2,7 @@ package io.novafoundation.nova.common.utils
 
 import io.novasama.substrate_sdk_android.extensions.asEthereumPublicKey
 import io.novasama.substrate_sdk_android.extensions.toAccountId
+import io.novasama.substrate_sdk_android.extensions.toHexString
 import io.novasama.substrate_sdk_android.runtime.AccountId
 import java.math.BigInteger
 
@@ -113,3 +114,21 @@ fun String.tronAddressToAccountId(): AccountId {
 fun String.isValidTronAddress(): Boolean = runCatching { tronAddressToAccountId() }.isSuccess
 
 fun emptyTronAccountId() = ByteArray(20) { 1 }
+
+/**
+ * Hex form of a Tron address (`0x41` prefix byte ++ accountId, hex-encoded, no `0x` prefix), e.g.
+ * `41a614f803b6fd780986a42c78ec9c7f77e6ded13c`. This is the format TronGrid's `/wallet/*` transaction
+ * construction/broadcast endpoints expect when called with `"visible": false` (as opposed to the human-facing
+ * Base58Check form used by the `/v1/accounts/{address}` balance endpoint and by [toTronAddress]).
+ */
+fun AccountId.toTronHexAddress(): String {
+    require(size == 20) { "Tron account id must be 20 bytes, got $size" }
+
+    return byteArrayOf(TRON_ADDRESS_PREFIX_BYTE).toHexString(withPrefix = false) + toHexString(withPrefix = false)
+}
+
+/**
+ * Converts a human-facing Base58Check Tron address (e.g. a TRC20 `contractAddress` from chain config) directly
+ * into the hex form described in [toTronHexAddress].
+ */
+fun String.tronAddressToHexAddress(): String = tronAddressToAccountId().toTronHexAddress()

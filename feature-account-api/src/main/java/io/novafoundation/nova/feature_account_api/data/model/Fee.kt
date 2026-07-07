@@ -63,6 +63,19 @@ class SubstrateFee(
     override val asset: Chain.Asset
 ) : Fee
 
+/**
+ * Fee for a Tron transaction (native TRX or TRC-20), always denominated in TRX (sun), regardless of which asset
+ * is being sent - Tron has no separate "gas token" concept, network resources (bandwidth/energy) are always
+ * burned as TRX. [amount] is this client's own estimate of that burn (see `RealTronTransactionService`); the
+ * network only ever burns what it actually uses, so the real cost can be lower, but never higher than what this
+ * client authorized via `fee_limit` when submitting.
+ */
+class TronFee(
+    override val amount: BigInteger,
+    override val submissionOrigin: SubmissionOrigin,
+    override val asset: Chain.Asset
+) : Fee
+
 class SubstrateFeeBase(
     override val amount: BigInteger,
     override val asset: Chain.Asset

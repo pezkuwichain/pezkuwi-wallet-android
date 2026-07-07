@@ -15,6 +15,7 @@ import io.novafoundation.nova.common.utils.findIsInstanceOrNull
 import io.novafoundation.nova.common.utils.formatNamed
 import io.novafoundation.nova.common.utils.removeHexPrefix
 import io.novafoundation.nova.common.utils.emptyTronAccountId
+import io.novafoundation.nova.common.utils.isValidTronAddress
 import io.novafoundation.nova.common.utils.substrateAccountId
 import io.novafoundation.nova.common.utils.toTronAddress
 import io.novafoundation.nova.common.utils.tronAddressToAccountId
@@ -361,13 +362,19 @@ fun Chain.multiAddressOf(accountId: ByteArray): MultiAddress {
 
 fun Chain.isValidAddress(address: String): Boolean {
     return runCatching {
-        if (isEthereumBased) {
-            address.asEthereumAddress().isValid()
-        } else {
-            address.toAccountId() // verify supplied address can be converted to account id
+        when {
+            // Tron addresses are Base58Check(0x41 ++ accountId), not SS58 or plain 0x-hex - neither of the two
+            // branches below would ever accept them, so this needs its own dedicated check.
+            isTronBased -> address.isValidTronAddress()
 
-            addressPrefix.toShort() == address.addressPrefix() ||
-                legacyAddressPrefix?.toShort() == address.addressPrefix()
+            isEthereumBased -> address.asEthereumAddress().isValid()
+
+            else -> {
+                address.toAccountId() // verify supplied address can be converted to account id
+
+                addressPrefix.toShort() == address.addressPrefix() ||
+                    legacyAddressPrefix?.toShort() == address.addressPrefix()
+            }
         }
     }.getOrDefault(false)
 }
