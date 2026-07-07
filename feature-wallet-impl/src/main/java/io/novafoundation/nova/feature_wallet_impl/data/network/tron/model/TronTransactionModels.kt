@@ -4,7 +4,7 @@ import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
 /**
- * Request/response shapes for TronGrid's transaction-construction/broadcast endpoints (`/wallet/*`).
+ * Request/response shapes for TronGrid's transaction-construction/broadcast endpoints (`/wallet/`).
  *
  * All requests are sent with `"visible": false`, i.e. addresses are hex-encoded (`41` prefix byte ++ 20-byte
  * accountId, see `toTronHexAddress`) rather than Base58Check. Every shape below was confirmed against

@@ -117,7 +117,7 @@ fun emptyTronAccountId() = ByteArray(20) { 1 }
 
 /**
  * Hex form of a Tron address (`0x41` prefix byte ++ accountId, hex-encoded, no `0x` prefix), e.g.
- * `41a614f803b6fd780986a42c78ec9c7f77e6ded13c`. This is the format TronGrid's `/wallet/*` transaction
+ * `41a614f803b6fd780986a42c78ec9c7f77e6ded13c`. This is the format TronGrid's `/wallet/` transaction
  * construction/broadcast endpoints expect when called with `"visible": false` (as opposed to the human-facing
  * Base58Check form used by the `/v1/accounts/{address}` balance endpoint and by [toTronAddress]).
  */

@@ -14,7 +14,7 @@ import java.math.BigInteger
 
 /**
  * Thrown whenever TronGrid reports a failure via an HTTP-200 body (rather than an HTTP error status), which is
- * how most `/wallet/*` endpoints signal validation/execution failures, e.g.
+ * how most `/wallet/` endpoints signal validation/execution failures, e.g.
  * `{"Error": "... no OwnerAccount."}` from `createtransaction`, or
  * `{"code": "CONTRACT_VALIDATE_ERROR", "message": "<hex>"}` from `broadcasttransaction`.
  */
@@ -98,7 +98,12 @@ class RealTronGridApi(
         return rawBalance?.toBigIntegerOrNull() ?: BigInteger.ZERO
     }
 
-    override suspend fun createNativeTransfer(baseUrl: String, ownerHexAddress: String, toHexAddress: String, amountSun: BigInteger): TronUnsignedTransactionResponse {
+    override suspend fun createNativeTransfer(
+        baseUrl: String,
+        ownerHexAddress: String,
+        toHexAddress: String,
+        amountSun: BigInteger
+    ): TronUnsignedTransactionResponse {
         val request = TronCreateTransactionRequest(
             ownerAddress = ownerHexAddress,
             toAddress = toHexAddress,

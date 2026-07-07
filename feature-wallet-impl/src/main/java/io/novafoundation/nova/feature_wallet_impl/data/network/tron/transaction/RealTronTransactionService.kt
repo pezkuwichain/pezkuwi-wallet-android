@@ -100,7 +100,13 @@ class RealTronTransactionService(
 
         val feeSun = when (intent) {
             is TronTransactionIntent.Native -> estimateNativeFee(baseUrl, ownerHex, recipient, intent.amountSun)
-            is TronTransactionIntent.Trc20Transfer -> estimateTrc20FeeFromContractHex(baseUrl, ownerHex, recipient, intent.contractAddress.tronAddressToHexAddress(), intent.amountSun)
+            is TronTransactionIntent.Trc20Transfer -> estimateTrc20FeeFromContractHex(
+                baseUrl,
+                ownerHex,
+                recipient,
+                intent.contractAddress.tronAddressToHexAddress(),
+                intent.amountSun
+            )
         }
 
         return TronFee(feeSun, SubmissionOrigin.singleOrigin(ownerAccountId), chain.commissionAsset)
@@ -213,7 +219,13 @@ class RealTronTransactionService(
         return bandwidthShortfall.toBigInteger() * bandwidthPrice
     }
 
-    private suspend fun estimateTrc20FeeFromContractHex(baseUrl: String, ownerHex: String, recipient: AccountId, contractHex: String, amountSun: BigInteger): BigInteger {
+    private suspend fun estimateTrc20FeeFromContractHex(
+        baseUrl: String,
+        ownerHex: String,
+        recipient: AccountId,
+        contractHex: String,
+        amountSun: BigInteger
+    ): BigInteger {
         val parameterHex = Trc20TransferAbi.encodeTransferParameters(recipient, amountSun)
 
         val dryRun = runCatching {
