@@ -45,6 +45,13 @@ interface LightMetaAccount {
     val substrateAccountId: ByteArray?
     val ethereumAddress: ByteArray?
     val ethereumPublicKey: ByteArray?
+
+    /**
+     * Tron account id (same keccak-based derivation as [ethereumAddress], different derivation path and address encoding).
+     * Only populated for [Type.SECRETS] wallets today (Phase 1 read-only support) - null for every other wallet type.
+     */
+    val tronAddress: ByteArray?
+    val tronPublicKey: ByteArray?
     val isSelected: Boolean
     val name: String
     val type: Type
@@ -81,6 +88,8 @@ fun LightMetaAccount(
     type: LightMetaAccount.Type,
     status: LightMetaAccount.Status,
     parentMetaId: Long?,
+    tronAddress: ByteArray? = null,
+    tronPublicKey: ByteArray? = null,
 ) = object : LightMetaAccount {
     override val id: Long = id
     override val globallyUniqueId: String = globallyUniqueId
@@ -89,6 +98,8 @@ fun LightMetaAccount(
     override val substrateAccountId: ByteArray? = substrateAccountId
     override val ethereumAddress: ByteArray? = ethereumAddress
     override val ethereumPublicKey: ByteArray? = ethereumPublicKey
+    override val tronAddress: ByteArray? = tronAddress
+    override val tronPublicKey: ByteArray? = tronPublicKey
     override val isSelected: Boolean = isSelected
     override val name: String = name
     override val type: LightMetaAccount.Type = type
@@ -155,7 +166,7 @@ sealed class MultisigAvailability {
 }
 
 fun MetaAccount.isUniversal(): Boolean {
-    return substrateAccountId != null || ethereumAddress != null
+    return substrateAccountId != null || ethereumAddress != null || tronAddress != null
 }
 
 fun MultisigAvailability.singleChainId(): ChainId? {

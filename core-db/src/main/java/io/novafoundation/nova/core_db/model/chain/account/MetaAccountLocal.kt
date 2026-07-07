@@ -36,7 +36,9 @@ class MetaAccountLocal(
     @ColumnInfo(defaultValue = "ACTIVE")
     val status: Status,
     val globallyUniqueId: String,
-    val typeExtras: SerializedJson?
+    val typeExtras: SerializedJson?,
+    val tronPublicKey: ByteArray? = null,
+    val tronAddress: ByteArray? = null,
 ) {
 
     enum class Status {
@@ -53,6 +55,9 @@ class MetaAccountLocal(
 
             const val ETHEREUM_PUBKEY = "ethereumPublicKey"
             const val ETHEREUM_ADDRESS = "ethereumAddress"
+
+            const val TRON_PUBKEY = "tronPublicKey"
+            const val TRON_ADDRESS = "tronAddress"
 
             const val NAME = "name"
             const val IS_SELECTED = "isSelected"
@@ -83,7 +88,9 @@ class MetaAccountLocal(
             type = type,
             status = status,
             globallyUniqueId = globallyUniqueId,
-            typeExtras = typeExtras
+            typeExtras = typeExtras,
+            tronPublicKey = tronPublicKey,
+            tronAddress = tronAddress
         ).also {
             it.id = id
         }
@@ -100,6 +107,8 @@ class MetaAccountLocal(
         if (!substrateAccountId.contentEquals(other.substrateAccountId)) return false
         if (!ethereumPublicKey.contentEquals(other.ethereumPublicKey)) return false
         if (!ethereumAddress.contentEquals(other.ethereumAddress)) return false
+        if (!tronPublicKey.contentEquals(other.tronPublicKey)) return false
+        if (!tronAddress.contentEquals(other.tronAddress)) return false
         if (name != other.name) return false
         if (parentMetaId != other.parentMetaId) return false
         if (isSelected != other.isSelected) return false
@@ -119,6 +128,8 @@ class MetaAccountLocal(
         result = 31 * result + (substrateAccountId?.contentHashCode() ?: 0)
         result = 31 * result + (ethereumPublicKey?.contentHashCode() ?: 0)
         result = 31 * result + (ethereumAddress?.contentHashCode() ?: 0)
+        result = 31 * result + (tronPublicKey?.contentHashCode() ?: 0)
+        result = 31 * result + (tronAddress?.contentHashCode() ?: 0)
         result = 31 * result + name.hashCode()
         result = 31 * result + (parentMetaId?.hashCode() ?: 0)
         result = 31 * result + isSelected.hashCode()

@@ -20,6 +20,7 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.remote.model.ChainAsset
 import io.novafoundation.nova.runtime.multiNetwork.chain.remote.model.ChainRemote
 
 private const val ETHEREUM_OPTION = "ethereumBased"
+private const val TRON_OPTION = "tronBased"
 private const val CROWDLOAN_OPTION = "crowdloans"
 private const val TESTNET_OPTION = "testnet"
 private const val PROXY_OPTION = "proxy"
@@ -90,6 +91,7 @@ fun mapRemoteChainToLocal(
             prefix = addressPrefix,
             legacyPrefix = legacyAddressPrefix,
             isEthereumBased = ETHEREUM_OPTION in optionsOrEmpty,
+            isTronBased = TRON_OPTION in optionsOrEmpty,
             isTestNet = TESTNET_OPTION in optionsOrEmpty,
             hasCrowdloans = CROWDLOAN_OPTION in optionsOrEmpty,
             supportProxy = PROXY_OPTION in optionsOrEmpty,

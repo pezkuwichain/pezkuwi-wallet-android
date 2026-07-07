@@ -29,6 +29,8 @@ class TypeBasedAssetSourceRegistry(
     private val evmErc20Source: Lazy<AssetSource>,
     private val evmNativeSource: Lazy<AssetSource>,
     private val equilibriumAssetSource: Lazy<AssetSource>,
+    private val tronNativeSource: Lazy<AssetSource>,
+    private val trc20Source: Lazy<AssetSource>,
     private val unsupportedBalanceSource: AssetSource,
 
     private val nativeAssetEventDetector: NativeAssetEventDetector,
@@ -45,6 +47,8 @@ class TypeBasedAssetSourceRegistry(
             is Chain.Asset.Type.EvmErc20 -> evmErc20Source.get()
             is Chain.Asset.Type.EvmNative -> evmNativeSource.get()
             is Chain.Asset.Type.Equilibrium -> equilibriumAssetSource.get()
+            is Chain.Asset.Type.TronNative -> tronNativeSource.get()
+            is Chain.Asset.Type.Trc20 -> trc20Source.get()
             Chain.Asset.Type.Unsupported -> unsupportedBalanceSource
         }
     }
@@ -57,6 +61,8 @@ class TypeBasedAssetSourceRegistry(
             add(evmNativeSource.get())
             add(evmErc20Source.get())
             add(equilibriumAssetSource.get())
+            add(tronNativeSource.get())
+            add(trc20Source.get())
         }
     }
 
@@ -64,6 +70,8 @@ class TypeBasedAssetSourceRegistry(
         return when (chainAsset.type) {
             is Chain.Asset.Type.Equilibrium,
             Chain.Asset.Type.EvmNative,
+            is Chain.Asset.Type.TronNative,
+            is Chain.Asset.Type.Trc20,
 
             Chain.Asset.Type.Unsupported -> UnsupportedEventDetector()
 

@@ -28,6 +28,12 @@ import io.novasama.substrate_sdk_android.scale.Schema
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * SLIP-44 coin type 195 is Tron's registered BIP44 coin type (Ethereum's is 60).
+ * Not user-configurable via the "Advanced Encryption" UI yet (Phase 1 read-only Tron support) - always derived at this fixed path.
+ */
+const val TRON_DEFAULT_DERIVATION_PATH = "//44//195//0/0/0"
+
 class AccountSecretsFactory(
     private val JsonDecoder: JsonDecoder
 ) {
@@ -124,6 +130,7 @@ class AccountSecretsFactory(
         substrateDerivationPath: String?,
         ethereumDerivationPath: String?,
         accountSource: AccountSource,
+        tronDerivationPath: String? = TRON_DEFAULT_DERIVATION_PATH,
     ): Result<MetaAccountSecrets> = withContext(Dispatchers.Default) {
         val (substrateSecrets, substrateCryptoType) = chainAccountSecrets(
             derivationPath = substrateDerivationPath,
@@ -139,13 +146,26 @@ class AccountSecretsFactory(
             Bip32EcdsaKeypairFactory.generate(seed = seed, junctions = decodedEthereumDerivationPath?.junctions.orEmpty())
         }
 
+        // Tron uses the same secp256k1/BIP32 keypair generation as Ethereum, just under its own SLIP-44 coin-type (195)
+        // derivation path, so it always yields a different keypair from the Ethereum one above, even though the math is identical.
+        val tronKeypair = accountSource.castOrNull<AccountSource.Mnemonic>()?.let {
+            // "Ethereum" here just means "BIP32/ECDSA junction decoding", which is exactly what Tron's path also needs.
+            val decodedTronDerivationPath = decodeDerivationPath(tronDerivationPath, ethereum = true)
+
+            val seed = deriveSeed(it.mnemonic, password = decodedTronDerivationPath?.password, ethereum = true).seed
+
+            Bip32EcdsaKeypairFactory.generate(seed = seed, junctions = decodedTronDerivationPath?.junctions.orEmpty())
+        }
+
         val secrets = MetaAccountSecrets(
             entropy = substrateSecrets[ChainAccountSecrets.Entropy],
             substrateSeed = substrateSecrets[ChainAccountSecrets.Seed],
             substrateKeyPair = mapKeypairStructToKeypair(substrateSecrets[ChainAccountSecrets.Keypair]),
             substrateDerivationPath = substrateDerivationPath,
             ethereumKeypair = ethereumKeypair,
-            ethereumDerivationPath = ethereumDerivationPath
+            ethereumDerivationPath = ethereumDerivationPath,
+            tronKeypair = tronKeypair,
+            tronDerivationPath = tronDerivationPath
         )
 
         Result(secrets = secrets, cryptoType = substrateCryptoType)
