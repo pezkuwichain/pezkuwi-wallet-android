@@ -59,6 +59,12 @@ fun mapChainAssetTypeToRaw(type: Chain.Asset.Type): Pair<String, Map<String, Any
 
     is Chain.Asset.Type.EvmNative -> ASSET_EVM_NATIVE to null
 
+    is Chain.Asset.Type.TronNative -> ASSET_TRON_NATIVE to null
+
+    is Chain.Asset.Type.Trc20 -> ASSET_TRC20 to mapOf(
+        EVM_EXTRAS_CONTRACT_ADDRESS to type.contractAddress
+    )
+
     is Chain.Asset.Type.Equilibrium -> ASSET_EQUILIBRIUM to mapOf(
         ASSET_EQUILIBRIUM_ON_CHAIN_ID to type.id.toString()
     )
@@ -121,6 +127,7 @@ fun mapChainToLocal(chain: Chain, gson: Gson): ChainLocal {
         prefix = chain.addressPrefix,
         legacyPrefix = chain.legacyAddressPrefix,
         isEthereumBased = chain.isEthereumBased,
+        isTronBased = chain.isTronBased,
         isTestNet = chain.isTestNet,
         hasSubstrateRuntime = chain.hasSubstrateRuntime,
         pushSupport = chain.pushSupport,

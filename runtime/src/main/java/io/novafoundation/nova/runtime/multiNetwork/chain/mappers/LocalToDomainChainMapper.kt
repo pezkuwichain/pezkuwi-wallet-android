@@ -85,6 +85,14 @@ private fun mapChainAssetTypeFromRaw(type: String?, typeExtras: Map<String, Any?
 
         ASSET_EVM_NATIVE -> Chain.Asset.Type.EvmNative
 
+        ASSET_TRON_NATIVE -> Chain.Asset.Type.TronNative
+
+        ASSET_TRC20 -> {
+            Chain.Asset.Type.Trc20(
+                contractAddress = typeExtras!![EVM_EXTRAS_CONTRACT_ADDRESS] as String
+            )
+        }
+
         ASSET_EQUILIBRIUM -> Chain.Asset.Type.Equilibrium((typeExtras!![ASSET_EQUILIBRIUM_ON_CHAIN_ID] as String).toBigInteger())
 
         else -> Chain.Asset.Type.Unsupported
@@ -267,6 +275,7 @@ fun mapChainLocalToChain(
             addressPrefix = prefix,
             legacyAddressPrefix = legacyPrefix,
             isEthereumBased = isEthereumBased,
+            isTronBased = isTronBased,
             isTestNet = isTestNet,
             hasCrowdloans = hasCrowdloans,
             pushSupport = pushSupport,

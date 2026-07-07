@@ -27,7 +27,9 @@ class RealMultisigMetaAccount(
     private val otherSignatoriesUnsorted: List<AccountIdKey>,
     override val threshold: Int,
     private val multisigRepository: MultisigRepository,
-    parentMetaId: Long?
+    parentMetaId: Long?,
+    tronAddress: ByteArray? = null,
+    tronPublicKey: ByteArray? = null,
 ) : DefaultMetaAccount(
     id = id,
     globallyUniqueId = globallyUniqueId,
@@ -41,7 +43,9 @@ class RealMultisigMetaAccount(
     type = LightMetaAccount.Type.MULTISIG,
     status = status,
     chainAccounts = chainAccounts,
-    parentMetaId = parentMetaId
+    parentMetaId = parentMetaId,
+    tronAddress = tronAddress,
+    tronPublicKey = tronPublicKey
 ),
     MultisigMetaAccount {
 

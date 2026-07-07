@@ -21,6 +21,8 @@ data class ChainLocal(
     val prefix: Int,
     val legacyPrefix: Int?,
     val isEthereumBased: Boolean,
+    @ColumnInfo(defaultValue = "0")
+    val isTronBased: Boolean,
     val isTestNet: Boolean,
     @ColumnInfo(defaultValue = "1")
     val hasSubstrateRuntime: Boolean,

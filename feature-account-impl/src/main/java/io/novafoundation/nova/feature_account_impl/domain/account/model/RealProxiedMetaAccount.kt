@@ -21,7 +21,9 @@ internal class RealProxiedMetaAccount(
     status: LightMetaAccount.Status,
     override val proxy: ProxyAccount,
     chainAccounts: Map<ChainId, MetaAccount.ChainAccount>,
-    parentMetaId: Long?
+    parentMetaId: Long?,
+    tronAddress: ByteArray? = null,
+    tronPublicKey: ByteArray? = null,
 ) : DefaultMetaAccount(
     id = id,
     globallyUniqueId = globallyUniqueId,
@@ -35,7 +37,9 @@ internal class RealProxiedMetaAccount(
     type = LightMetaAccount.Type.PROXIED,
     status = status,
     chainAccounts = chainAccounts,
-    parentMetaId = parentMetaId
+    parentMetaId = parentMetaId,
+    tronAddress = tronAddress,
+    tronPublicKey = tronPublicKey
 ),
     ProxiedMetaAccount {
 

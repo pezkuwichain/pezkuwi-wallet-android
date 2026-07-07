@@ -124,6 +124,7 @@ class CustomChainFactory(
             legacyAddressPrefix = null,
             types = prefilledChain?.types,
             isEthereumBased = isEthereumBased,
+            isTronBased = false,
             isTestNet = prefilledChain?.isTestNet.orFalse(),
             source = Chain.Source.CUSTOM,
             hasSubstrateRuntime = hasSubstrateRuntime,

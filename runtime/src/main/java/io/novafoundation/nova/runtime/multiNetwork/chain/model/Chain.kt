@@ -32,6 +32,7 @@ data class Chain(
     val legacyAddressPrefix: Int?,
     val types: Types?,
     val isEthereumBased: Boolean,
+    val isTronBased: Boolean,
     val isTestNet: Boolean,
     val source: Source,
     val hasSubstrateRuntime: Boolean,
@@ -122,6 +123,19 @@ data class Chain(
 
             data class Equilibrium(
                 val id: BigInteger
+            ) : Type()
+
+            /**
+             * Native TRX balance on a Tron-based chain.
+             * Balance is fetched from a TronGrid-style REST API rather than JSON-RPC.
+             */
+            object TronNative : Type()
+
+            /**
+             * TRC-20 token on a Tron-based chain (EVM-compatible token standard, different REST API shape from Ethereum's ERC-20).
+             */
+            data class Trc20(
+                val contractAddress: String
             ) : Type()
 
             object Unsupported : Type()

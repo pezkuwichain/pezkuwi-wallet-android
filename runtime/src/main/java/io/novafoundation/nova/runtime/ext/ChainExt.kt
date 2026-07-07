@@ -14,7 +14,11 @@ import io.novafoundation.nova.common.utils.emptySubstrateAccountId
 import io.novafoundation.nova.common.utils.findIsInstanceOrNull
 import io.novafoundation.nova.common.utils.formatNamed
 import io.novafoundation.nova.common.utils.removeHexPrefix
+import io.novafoundation.nova.common.utils.emptyTronAccountId
 import io.novafoundation.nova.common.utils.substrateAccountId
+import io.novafoundation.nova.common.utils.toTronAddress
+import io.novafoundation.nova.common.utils.tronAddressToAccountId
+import io.novafoundation.nova.common.utils.tronPublicKeyToAccountId
 import io.novafoundation.nova.core_db.model.AssetAndChainId
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain.Asset.StakingType.ALEPH_ZERO
@@ -266,10 +270,10 @@ fun Chain.supportsLegacyAddressFormat() = legacyAddressPrefix != null
 fun Chain.requireGenesisHash() = requireNotNull(genesisHash)
 
 fun Chain.addressOf(accountId: ByteArray): String {
-    return if (isEthereumBased) {
-        accountId.toEthereumAddress()
-    } else {
-        accountId.toAddress(addressPrefix.toShort())
+    return when {
+        isTronBased -> accountId.toTronAddress()
+        isEthereumBased -> accountId.toEthereumAddress()
+        else -> accountId.toAddress(addressPrefix.toShort())
     }
 }
 
@@ -278,7 +282,7 @@ fun Chain.addressOf(accountId: AccountIdKey): String {
 }
 
 fun Chain.legacyAddressOfOrNull(accountId: ByteArray): String? {
-    return if (isEthereumBased) {
+    return if (isEthereumBased || isTronBased) {
         null
     } else {
         legacyAddressPrefix?.let { accountId.toAddress(it.toShort()) }
@@ -290,10 +294,10 @@ fun ByteArray.toEthereumAddress(): String {
 }
 
 fun Chain.accountIdOf(address: String): ByteArray {
-    return if (isEthereumBased) {
-        address.asEthereumAddress().toAccountId().value
-    } else {
-        address.toAccountId()
+    return when {
+        isTronBased -> address.tronAddressToAccountId()
+        isEthereumBased -> address.asEthereumAddress().toAccountId().value
+        else -> address.toAccountId()
     }
 }
 
@@ -323,10 +327,10 @@ fun Chain.accountIdOrNull(address: String): ByteArray? {
     return runCatching { accountIdOf(address) }.getOrNull()
 }
 
-fun Chain.emptyAccountId() = if (isEthereumBased) {
-    emptyEthereumAccountId()
-} else {
-    emptySubstrateAccountId()
+fun Chain.emptyAccountId() = when {
+    isTronBased -> emptyTronAccountId()
+    isEthereumBased -> emptyEthereumAccountId()
+    else -> emptySubstrateAccountId()
 }
 
 fun Chain.emptyAccountIdKey() = emptyAccountId().intoKey()
@@ -336,10 +340,10 @@ fun Chain.accountIdOrDefault(maybeAddress: String): ByteArray {
 }
 
 fun Chain.accountIdOf(publicKey: ByteArray): ByteArray {
-    return if (isEthereumBased) {
-        publicKey.asEthereumPublicKey().toAccountId().value
-    } else {
-        publicKey.substrateAccountId()
+    return when {
+        isTronBased -> publicKey.tronPublicKeyToAccountId()
+        isEthereumBased -> publicKey.asEthereumPublicKey().toAccountId().value
+        else -> publicKey.substrateAccountId()
     }
 }
 
@@ -525,6 +529,26 @@ fun Chain.Asset.requireErc20(): Type.EvmErc20 {
     return type
 }
 
+fun Chain.Asset.requireTrc20(): Type.Trc20 {
+    require(type is Type.Trc20)
+
+    return type
+}
+
+/**
+ * The TronGrid-style REST API base url for a Tron-based chain.
+ * Unlike EVM chains (where balance/rpc calls go through the chain's `nodes` JSON-RPC/WS endpoints and only tx-history
+ * REST APIs are sourced from a separate `externalApis` entry), Tron has no JSON-RPC/WS node concept at all - the
+ * configured `nodes` entry directly *is* the TronGrid REST API base url used for both balance and history.
+ */
+fun Chain.requireTronGridBaseUrl(): String {
+    require(isTronBased) { "Chain $id is not Tron-based" }
+
+    return requireNotNull(nodes.nodes.minByOrNull { it.orderId }?.unformattedUrl) {
+        "No TronGrid node configured for chain $id"
+    }
+}
+
 fun Chain.Asset.requireEquilibrium(): Type.Equilibrium {
     require(type is Type.Equilibrium)
 
@@ -588,6 +612,8 @@ val Chain.Asset.onChainAssetId: String?
         is Type.EvmErc20 -> this.type.contractAddress
         is Type.Native -> null
         is Type.EvmNative -> null
+        is Type.Trc20 -> this.type.contractAddress
+        Type.TronNative -> null
         Type.Unsupported -> error("Unsupported assetId type: ${this.type::class.simpleName}")
     }
 

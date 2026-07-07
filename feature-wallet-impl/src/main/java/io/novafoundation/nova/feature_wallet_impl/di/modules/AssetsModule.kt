@@ -21,6 +21,7 @@ import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets
         EvmErc20AssetsModule::class,
         EvmNativeAssetsModule::class,
         EquilibriumAssetsModule::class,
+        TronAssetsModule::class,
         UnsupportedAssetsModule::class
     ]
 )
@@ -35,6 +36,8 @@ class AssetsModule {
         @EvmErc20Assets evmErc20: Lazy<AssetSource>,
         @EvmNativeAssets evmNative: Lazy<AssetSource>,
         @EquilibriumAsset equilibrium: Lazy<AssetSource>,
+        @TronNativeAssets tronNative: Lazy<AssetSource>,
+        @Trc20Assets trc20: Lazy<AssetSource>,
         @UnsupportedAssets unsupported: AssetSource,
 
         nativeAssetEventDetector: NativeAssetEventDetector,
@@ -48,6 +51,8 @@ class AssetsModule {
         evmErc20Source = evmErc20,
         evmNativeSource = evmNative,
         equilibriumAssetSource = equilibrium,
+        tronNativeSource = tronNative,
+        trc20Source = trc20,
         unsupportedBalanceSource = unsupported,
 
         nativeAssetEventDetector = nativeAssetEventDetector,
