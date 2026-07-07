@@ -4,9 +4,8 @@ adb devices
 # Install debug app
 adb -s emulator-5554 install app/debug/app-debug.apk
 
-# Install instrumental tests (built from the instrumentialTest build type, which is the only one
-# declaring AllureAndroidJUnitRunner as its testInstrumentationRunner - see app/build.gradle)
-adb -s emulator-5554 install app/androidTest/instrumentialTest/app-instrumentialTest-androidTest.apk
+# Install instrumental tests
+adb -s emulator-5554 install app/androidTest/debug/app-debug-androidTest.apk
 
 # Run tests
 adb logcat -c &&
