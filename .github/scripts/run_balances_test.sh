@@ -7,6 +7,12 @@ adb -s emulator-5554 install app/debug/app-debug.apk
 # Install instrumental tests
 adb -s emulator-5554 install app/androidTest/debug/app-debug-androidTest.apk
 
+# DIAGNOSTIC: show what instrumentation component(s) PackageManager actually registered
+# for the installed test APK, to settle whether testInstrumentationRunner is taking effect.
+echo "=== pm list instrumentation ==="
+adb shell pm list instrumentation
+echo "================================"
+
 # Run tests
 adb logcat -c &&
 python - <<END
