@@ -230,7 +230,7 @@ jobs:
 
       - name: 🏗 Build debug tests
         if: ${{ inputs.build-debug-tests }}
-        run: ./gradlew assembleDebugAndroidTest
+        run: ./gradlew assembleInstrumentialTestAndroidTest
 
       - name: 🧹 Delete key after building
         if: ${{ !startsWith(inputs.keystore-file-name, 'false') }}
