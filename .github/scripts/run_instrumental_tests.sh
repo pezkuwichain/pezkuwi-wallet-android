@@ -28,7 +28,7 @@ t.dameon = True
 t.start()
 def run():
   os.system('adb wait-for-device')
-  p = sp.Popen('adb shell am instrument -w -m -e notClass io.novafoundation.nova.balances.BalancesIntegrationTest -e package io.novafoundation.nova.debug io.novafoundation.nova.debug.test/io.qameta.allure.android.runners.AllureAndroidJUnitRunner',
+  p = sp.Popen('adb shell am instrument -w -m -e notClass io.novafoundation.nova.balances.BalancesIntegrationTest -e package io.pezkuwichain.wallet.debug io.pezkuwichain.wallet.debug.test/io.qameta.allure.android.runners.AllureAndroidJUnitRunner',
                shell=True, stdout=sp.PIPE, stderr=sp.PIPE, stdin=sp.PIPE)
   return p.communicate()
 success = re.compile(r'OK \(\d+ tests\)')
@@ -47,6 +47,6 @@ EXIT_CODE=$?
 adb logcat -d '*:E'
 
 # Export results
-adb exec-out run-as io.novafoundation.nova.debug sh -c 'cd /data/data/io.novafoundation.nova.debug/files && tar cf - allure-results' > allure-results.tar
+adb exec-out run-as io.pezkuwichain.wallet.debug sh -c 'cd /data/data/io.pezkuwichain.wallet.debug/files && tar cf - allure-results' > allure-results.tar
 
 exit $EXIT_CODE
