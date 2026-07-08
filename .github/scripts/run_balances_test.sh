@@ -9,7 +9,7 @@ adb -s emulator-5554 install app/androidTest/debug/app-debug-androidTest.apk
 
 # Run tests
 adb logcat -c &&
-python - <<END
+python -u - <<END
 import os
 import re
 import subprocess as sp
