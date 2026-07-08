@@ -151,6 +151,9 @@ class NativeAssetBalance(
         }
     }
 
+    // Setup/subscription failures are allowed to propagate rather than being swallowed into emptyFlow()/NoCause:
+    // the caller, FullSyncPaymentUpdater.syncAsset(), wraps this whole call in a single retryWhen boundary meant
+    // to catch and retry exactly these failures. Swallowing here would make that retry boundary never trigger.
     override suspend fun startSyncingBalance(
         chain: Chain,
         chainAsset: Chain.Asset,
@@ -160,13 +163,7 @@ class NativeAssetBalance(
     ): Flow<BalanceSyncUpdate> {
         val runtime = chainRegistry.getRuntime(chain.id)
 
-        val key = try {
-            runtime.metadata.system().storage("Account").storageKey(runtime, accountId)
-        } catch (e: Exception) {
-            Log.e(LOG_TAG, "Failed to construct account storage key: ${e.message} in ${chain.name}")
-
-            return emptyFlow()
-        }
+        val key = runtime.metadata.system().storage("Account").storageKey(runtime, accountId)
 
         return subscriptionBuilder.subscribe(key)
             .map { change ->
@@ -178,10 +175,6 @@ class NativeAssetBalance(
                 } else {
                     BalanceSyncUpdate.NoCause
                 }
-            }
-            .catch { error ->
-                Log.e(LOG_TAG, "Balance sync failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
-                emit(BalanceSyncUpdate.NoCause)
             }
     }
 

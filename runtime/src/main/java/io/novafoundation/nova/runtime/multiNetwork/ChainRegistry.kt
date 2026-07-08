@@ -41,6 +41,7 @@ import io.novafoundation.nova.runtime.multiNetwork.runtime.types.BaseTypeSynchro
 import io.novasama.substrate_sdk_android.wsrpc.SocketService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -67,14 +68,28 @@ class ChainRegistry(
     private val runtimeSyncService: RuntimeSyncService,
     private val web3ApiPool: Web3ApiPool,
     private val gson: Gson
-) : CoroutineScope by CoroutineScope(Dispatchers.Default) {
+    // SupervisorJob, not the plain Job a bare CoroutineScope(Dispatchers.Default) would give: without it, an
+    // uncaught exception in ANY coroutine sharing this scope (e.g. currentChains'/chainsById's shareIn, or any
+    // launch{} below) cancels every sibling, including the other one - a single malformed/leftover chain row
+    // would then permanently kill sync for every chain, not just the offending one.
+) : CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.Default) {
 
     val currentChains = chainDao.joinChainInfoFlow()
         .mapList { mapChainLocalToChain(it, gson) }
         .diffed()
         .map { diff ->
-            diff.removed.forEach { unregisterChain(it) }
-            diff.newOrUpdated.forEach { chain -> registerChain(chain) }
+            // Each chain's register/unregister is isolated: one malformed/leftover row (e.g. a chain persisted
+            // as disabled from an earlier session) must not throw out of this operator and kill this flow for
+            // every other chain - shareIn(..., Eagerly) never restarts once its upstream completes/throws, so
+            // any single unhandled exception here would silently and permanently break sync for the whole app.
+            diff.removed.forEach { chain ->
+                runCatching { unregisterChain(chain) }
+                    .onFailure { Log.e(LOG_TAG, "Failed to unregister chain ${chain.name} (${chain.id})", it) }
+            }
+            diff.newOrUpdated.forEach { chain ->
+                runCatching { registerChain(chain) }
+                    .onFailure { Log.e(LOG_TAG, "Failed to register chain ${chain.name} (${chain.id})", it) }
+            }
 
             diff.all
         }
