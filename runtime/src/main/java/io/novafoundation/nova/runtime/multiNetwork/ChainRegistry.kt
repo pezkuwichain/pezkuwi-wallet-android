@@ -215,12 +215,18 @@ class ChainRegistry(
 
         if (chain.hasSubstrateRuntime) {
             runtimeProviderPool.setupRuntimeProvider(chain)
-            runtimeSyncService.registerChain(chain, connection)
-            runtimeSubscriptionPool.setupRuntimeSubscription(chain, connection)
+            runtimeSyncService.registerChain(chain, requireNotNull(connection))
+            runtimeSubscriptionPool.setupRuntimeSubscription(chain, requireNotNull(connection))
         }
     }
 
-    private suspend fun registerConnection(chain: Chain): ChainConnection {
+    private suspend fun registerConnection(chain: Chain): ChainConnection? {
+        // Tron nodes are plain REST APIs (TronGrid), not WSS JSON-RPC endpoints - ChainConnection's
+        // SocketService can only speak the latter, so attempting to set one up here would hang
+        // indefinitely instead of failing fast. Tron balance/transfer operations already go through
+        // their own dedicated TronGridApi client, independent of this connection pool.
+        if (chain.isTronBased) return null
+
         val connection = connectionPool.setupConnection(chain)
 
         if (chain.isEthereumBased) {

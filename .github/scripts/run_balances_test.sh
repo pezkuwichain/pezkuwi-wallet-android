@@ -8,8 +8,14 @@ adb -s emulator-5554 install app/debug/app-debug.apk
 adb -s emulator-5554 install app/androidTest/debug/app-debug-androidTest.apk
 
 # Run tests
-adb logcat -c &&
-python - <<END
+adb logcat -c
+
+# DIAGNOSTIC: stream logcat live (unbuffered) alongside the test run, so a hang shows real
+# device-side activity (network calls, coroutine timeouts, ANRs) instead of just silence.
+adb logcat -v time '*:D' &
+LOGCAT_PID=$!
+
+python -u - <<END
 import os
 import re
 import subprocess as sp
@@ -26,9 +32,10 @@ def update():
 t = threading.Thread(target=update)
 t.dameon = True
 t.start()
+
 def run():
   os.system('adb wait-for-device')
-  p = sp.Popen('adb shell am instrument -w -m -e debug false -e class "io.novafoundation.nova.balances.BalancesIntegrationTest" io.novafoundation.nova.debug.test/io.qameta.allure.android.runners.AllureAndroidJUnitRunner',
+  p = sp.Popen('adb shell am instrument -w -m -e debug false -e class "io.novafoundation.nova.balances.BalancesIntegrationTest" io.pezkuwichain.wallet.debug.test/io.qameta.allure.android.runners.AllureAndroidJUnitRunner',
                shell=True, stdout=sp.PIPE, stderr=sp.PIPE, stdin=sp.PIPE)
   return p.communicate()
 success = re.compile(r'OK \(\d+ tests\)')
@@ -44,9 +51,10 @@ else:
   sys.exit(1) # make sure we fail if the tests fail
 END
 EXIT_CODE=$?
+kill "$LOGCAT_PID" 2>/dev/null
 adb logcat -d '*:E'
 
 # Export results
-adb exec-out run-as io.novafoundation.nova.debug sh -c 'cd /data/data/io.novafoundation.nova.debug/files && tar cf - allure-results' > allure-results.tar
+adb exec-out run-as io.pezkuwichain.wallet.debug sh -c 'cd /data/data/io.pezkuwichain.wallet.debug/files && tar cf - allure-results' > allure-results.tar
 
 exit $EXIT_CODE

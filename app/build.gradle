@@ -36,6 +36,11 @@ android {
         debug {
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
+            // androidTest is only ever compiled against this build type (AGP's testBuildType
+            // defaults to "debug" and is not overridden anywhere in this project), so this is the
+            // only place a testInstrumentationRunner override actually takes effect - the identical
+            // override on the instrumentialTest build type below is unreachable dead config.
+            defaultConfig.testInstrumentationRunner "io.qameta.allure.android.runners.AllureAndroidJUnitRunner"
 
             buildConfigField "String", "BuildType", "\"debug\""
         }
@@ -94,7 +99,6 @@ android {
         instrumentialTest {
             initWith buildTypes.debug
             matchingFallbacks = ['debug']
-            defaultConfig.testInstrumentationRunner "io.qameta.allure.android.runners.AllureAndroidJUnitRunner"
 
             buildConfigField "String", "BuildType", "\"instrumentalTest\""
         }
