@@ -12,7 +12,7 @@ adb logcat -c
 
 # DIAGNOSTIC: stream logcat live (unbuffered) alongside the test run, so a hang shows real
 # device-side activity (network calls, coroutine timeouts, ANRs) instead of just silence.
-adb logcat -v time '*:I' &
+adb logcat -v time '*:D' &
 LOGCAT_PID=$!
 
 python -u - <<END
@@ -32,6 +32,27 @@ def update():
 t = threading.Thread(target=update)
 t.dameon = True
 t.start()
+
+def dump_threads_if_stuck():
+  # If the test is still running 3 minutes in, force a full thread/stack dump (SIGQUIT) into
+  # logcat - the standard ANR-diagnosis technique - to see exactly which coroutine/thread is
+  # blocked and where, instead of guessing from log filters.
+  time.sleep(180)
+  if done:
+    return
+  print("DIAGNOSTIC: still running after 3 minutes, dumping thread stacks...")
+  pid = sp.run(
+      'adb shell pidof io.pezkuwichain.wallet.debug', shell=True, capture_output=True, text=True
+  ).stdout.strip()
+  if pid:
+      sp.run(f'adb shell run-as io.pezkuwichain.wallet.debug kill -3 {pid}', shell=True)
+      print(f"DIAGNOSTIC: sent SIGQUIT to pid {pid}")
+  else:
+      print("DIAGNOSTIC: could not find pid for io.pezkuwichain.wallet.debug")
+t2 = threading.Thread(target=dump_threads_if_stuck)
+t2.daemon = True
+t2.start()
+
 def run():
   os.system('adb wait-for-device')
   p = sp.Popen('adb shell am instrument -w -m -e debug false -e class "io.novafoundation.nova.balances.BalancesIntegrationTest" io.pezkuwichain.wallet.debug.test/io.qameta.allure.android.runners.AllureAndroidJUnitRunner',
