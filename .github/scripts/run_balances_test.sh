@@ -8,7 +8,13 @@ adb -s emulator-5554 install app/debug/app-debug.apk
 adb -s emulator-5554 install app/androidTest/debug/app-debug-androidTest.apk
 
 # Run tests
-adb logcat -c &&
+adb logcat -c
+
+# DIAGNOSTIC: stream logcat live (unbuffered) alongside the test run, so a hang shows real
+# device-side activity (network calls, coroutine timeouts, ANRs) instead of just silence.
+adb logcat -v time '*:I' &
+LOGCAT_PID=$!
+
 python -u - <<END
 import os
 import re
@@ -44,6 +50,7 @@ else:
   sys.exit(1) # make sure we fail if the tests fail
 END
 EXIT_CODE=$?
+kill "$LOGCAT_PID" 2>/dev/null
 adb logcat -d '*:E'
 
 # Export results
