@@ -49,7 +49,9 @@ class RealSecretsMetaAccount(
             hasChainAccountIn(chain.id) -> {
                 val cryptoType = chainAccounts.getValue(chain.id).cryptoType ?: return null
 
-                if (chain.isEthereumBased) {
+                // Tron reuses the same secp256k1 keypair/signing as Ethereum - see
+                // RealTronTransactionService's use of Signer.sign(MultiChainEncryption.Ethereum, ...).
+                if (chain.isEthereumBased || chain.isTronBased) {
                     MultiChainEncryption.Ethereum
                 } else {
                     MultiChainEncryption.substrateFrom(cryptoType)
@@ -57,6 +59,8 @@ class RealSecretsMetaAccount(
             }
 
             chain.isEthereumBased -> MultiChainEncryption.Ethereum
+
+            chain.isTronBased -> MultiChainEncryption.Ethereum
 
             else -> substrateCryptoType?.let(MultiChainEncryption.Companion::substrateFrom)
         }
