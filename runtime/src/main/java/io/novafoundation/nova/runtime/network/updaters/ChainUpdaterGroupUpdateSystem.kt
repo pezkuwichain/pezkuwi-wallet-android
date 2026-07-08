@@ -67,7 +67,10 @@ abstract class ChainUpdaterGroupUpdateSystem(
             // Explicitly qualified: unqualified LOG_TAG here would resolve against the nearest implicit
             // receiver, which is this catch lambda's FlowCollector, not this class - Any.LOG_TAG applies to
             // any receiver, so it would silently compile but log the wrong (unhelpful) tag.
-            Log.e(this@ChainUpdaterGroupUpdateSystem.LOG_TAG, "Failed to start updaters in ${this@ChainUpdaterGroupUpdateSystem::class.java.simpleName} for ${chain.name}", error)
+            val outerLogTag = this@ChainUpdaterGroupUpdateSystem.LOG_TAG
+            val outerSelfName = this@ChainUpdaterGroupUpdateSystem::class.java.simpleName
+
+            Log.e(outerLogTag, "Failed to start updaters in $outerSelfName for ${chain.name}", error)
         }
     }
 }
