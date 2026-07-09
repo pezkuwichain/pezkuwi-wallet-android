@@ -8,8 +8,10 @@ import io.novafoundation.nova.core_db.dao.AssetDao
 import io.novafoundation.nova.core_db.dao.MetaAccountDao
 import io.novafoundation.nova.core_db.di.DbApi
 import io.novafoundation.nova.core_db.model.chain.account.MetaAccountLocal
+import io.novafoundation.nova.feature_assets.di.AssetsFeatureApi
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.Assert.assertNotNull
@@ -21,6 +23,11 @@ import kotlin.time.Duration.Companion.seconds
  * end, unlike [BalancesIntegrationTest] which bypasses it entirely via a direct low-level storage query. This
  * is meant to answer one question with hard evidence, not speculation: does the app's real, running background
  * sync ever write an `assets` cache row for HEZ on the Pezkuwi Asset Hub chain, for a real, well-funded account?
+ *
+ * BalancesUpdateSystem.start() is a cold flow - in production it's only ever collected by RootInteractor,
+ * which is wired to the root Activity/ViewModel lifecycle. A bare instrumented test never launches that
+ * Activity, so we collect it ourselves here via the same AssetsFeatureApi.updateSystem instance the real app
+ * uses, instead of relying on app UI lifecycle to start it.
  *
  * If this test fails, the failure message + logcat (tag "BalancesDiag", plus the standard per-updater error
  * logs already wired into BalancesUpdateSystem/FullSyncPaymentUpdater) shows exactly which decision branch or
@@ -40,27 +47,35 @@ class PezkuwiFullArchitectureBalancesTest {
     private val metaAccountDao = dbApi.metaAccountDao()
     private val assetDao: AssetDao = dbApi.provideAssetDao()
 
+    private val assetsFeatureApi = FeatureUtils.getFeature<AssetsFeatureApi>(context, AssetsFeatureApi::class.java)
+
     @Test
     fun testPezkuwiAssetHubHezBalanceActuallySyncs() = runBlocking {
-        val metaId = insertAndSelectFounderWatchAccount(metaAccountDao)
+        val updateSystemJob = launch { assetsFeatureApi.updateSystem.start().collect {} }
 
-        val assetRow = withTimeoutOrNull(90.seconds) {
-            while (true) {
-                val asset = assetDao.getAsset(metaId, pezkuwiAssetHubChainId, hezAssetId)
-                if (asset != null) return@withTimeoutOrNull asset
+        try {
+            val metaId = insertAndSelectFounderWatchAccount(metaAccountDao)
 
-                delay(2.seconds)
+            val assetRow = withTimeoutOrNull(90.seconds) {
+                while (true) {
+                    val asset = assetDao.getAsset(metaId, pezkuwiAssetHubChainId, hezAssetId)
+                    if (asset != null) return@withTimeoutOrNull asset
+
+                    delay(2.seconds)
+                }
+                @Suppress("UNREACHABLE_CODE")
+                null
             }
-            @Suppress("UNREACHABLE_CODE")
-            null
-        }
 
-        assertNotNull(
-            "No `assets` row was ever written for HEZ on Pezkuwi Asset Hub (metaId=$metaId) within 90s. " +
-                "The real BalancesUpdateSystem pipeline never completed a sync for this asset - check logcat " +
-                "tag 'BalancesDiag' and the standard FullSyncPaymentUpdater/StatemineAssetBalance error logs.",
-            assetRow
-        )
+            assertNotNull(
+                "No `assets` row was ever written for HEZ on Pezkuwi Asset Hub (metaId=$metaId) within 90s. " +
+                    "The real BalancesUpdateSystem pipeline never completed a sync for this asset - check logcat " +
+                    "tag 'BalancesDiag' and the standard FullSyncPaymentUpdater/StatemineAssetBalance error logs.",
+                assetRow
+            )
+        } finally {
+            updateSystemJob.cancel()
+        }
     }
 
     private suspend fun insertAndSelectFounderWatchAccount(dao: MetaAccountDao): Long {
