@@ -161,12 +161,17 @@ class NativeAssetBalance(
         accountId: AccountId,
         subscriptionBuilder: SharedRequestsBuilder
     ): Flow<BalanceSyncUpdate> {
+        Log.d("BalancesDiag", "NativeAssetBalance.startSyncingBalance() ENTERED for ${chainAsset.symbol} on ${chain.name}")
+
         val runtime = chainRegistry.getRuntime(chain.id)
+        Log.d("BalancesDiag", "NativeAssetBalance: got runtime for ${chain.name}")
 
         val key = runtime.metadata.system().storage("Account").storageKey(runtime, accountId)
+        Log.d("BalancesDiag", "NativeAssetBalance: computed key for ${chainAsset.symbol} on ${chain.name}: $key")
 
         return subscriptionBuilder.subscribe(key)
             .map { change ->
+                Log.d("BalancesDiag", "NativeAssetBalance: received change for ${chainAsset.symbol} on ${chain.name}")
                 val accountInfo = bindAccountInfoOrDefault(change.value, runtime)
                 val assetChanged = assetCache.updateAsset(metaAccount.id, chain.utilityAsset, accountInfo)
 
