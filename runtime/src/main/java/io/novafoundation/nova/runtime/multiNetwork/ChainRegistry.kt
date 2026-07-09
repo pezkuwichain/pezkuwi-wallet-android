@@ -7,7 +7,7 @@ import io.novafoundation.nova.common.utils.RuntimeContext
 import io.novafoundation.nova.common.utils.diffed
 import io.novafoundation.nova.common.utils.filterList
 import io.novafoundation.nova.common.utils.inBackground
-import io.novafoundation.nova.common.utils.mapList
+import io.novafoundation.nova.common.utils.mapListNotNull
 import io.novafoundation.nova.common.utils.mapNotNullToSet
 import io.novafoundation.nova.common.utils.provideContext
 import io.novafoundation.nova.common.utils.removeHexPrefix
@@ -75,7 +75,16 @@ class ChainRegistry(
 ) : CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.Default) {
 
     val currentChains = chainDao.joinChainInfoFlow()
-        .mapList { mapChainLocalToChain(it, gson) }
+        // mapListNotNull, not mapList: mapChainLocalToChain() can throw on a single malformed row (e.g. a
+        // gson.fromJson() failure on the chain's `additional` JSON blob) - since this whole step runs as ONE
+        // transform over the ENTIRE chain list, one bad chain would previously throw out of this operator and
+        // permanently kill this Eagerly-shared flow for every chain, not just the offending one. Skip and log
+        // instead, matching the per-chain isolation already applied to registerChain/unregisterChain below.
+        .mapListNotNull { chainLocal ->
+            runCatching { mapChainLocalToChain(chainLocal, gson) }
+                .onFailure { Log.e(LOG_TAG, "Failed to map chain ${chainLocal.chain.id} (${chainLocal.chain.name}) from local DB", it) }
+                .getOrNull()
+        }
         .diffed()
         .map { diff ->
             // Each chain's register/unregister is isolated: one malformed/leftover row (e.g. a chain persisted
