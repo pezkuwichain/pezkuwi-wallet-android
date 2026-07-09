@@ -46,7 +46,14 @@ internal class FullSyncPaymentUpdater(
     ): Flow<Updater.SideEffect> {
         val accountId = scopeValue.requireAccountIdIn(chain)
 
-        return chain.enabledAssets().map { chainAsset ->
+        val enabled = chain.enabledAssets()
+        Log.d(
+            "BalancesDiag",
+            "FullSyncPaymentUpdater(${chain.name}): allAssets=${chain.assets.map { "${it.symbol}(id=${it.id},enabled=${it.enabled},type=${it.type})" }} " +
+                "enabledAssets=${enabled.map { it.symbol }}"
+        )
+
+        return enabled.map { chainAsset ->
             syncAsset(chainAsset, scopeValue, accountId, storageSubscriptionBuilder)
         }
             .mergeIfMultiple()
