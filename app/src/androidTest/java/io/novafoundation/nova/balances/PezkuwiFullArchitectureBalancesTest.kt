@@ -68,9 +68,10 @@ class PezkuwiFullArchitectureBalancesTest {
             val stillMissing = fixture.assets.toMutableList()
             withTimeoutOrNull(120.seconds) {
                 while (stillMissing.isNotEmpty()) {
-                    stillMissing.removeAll { asset ->
+                    val found = stillMissing.filter { asset ->
                         assetDao.getAsset(metaId, asset.chainId, asset.assetId) != null
                     }
+                    stillMissing.removeAll(found)
                     if (stillMissing.isNotEmpty()) delay(2.seconds)
                 }
             }
