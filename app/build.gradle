@@ -324,6 +324,7 @@ dependencies {
     androidTestImplementation androidTestRunnerDep
     androidTestImplementation androidTestRulesDep
     androidTestImplementation androidJunitDep
+    androidTestImplementation scalarsConverterDep
 
     androidTestImplementation allureKotlinModel
     androidTestImplementation allureKotlinCommons
