@@ -164,7 +164,12 @@ abstract class ChainDao {
 
     // ------- Queries ------
 
-    @Query("SELECT * FROM chains")
+    // ORDER BY rowid: without an explicit order, SQLite gives no guarantee about row order for `SELECT *`.
+    // The merged chains.json lists Pezkuwi's own chains first (see wallet-utils' merge_chains()), and that
+    // order is what gets inserted first on initial sync - rowid tracks insertion order, so ordering by it
+    // means Pezkuwi's chains reliably register/connect first instead of being interleaved unpredictably
+    // among the ~90+ Nova-inherited chains, where they could otherwise end up processed last.
+    @Query("SELECT * FROM chains ORDER BY rowid")
     @Transaction
     abstract suspend fun getJoinChainInfo(): List<JoinedChainInfo>
 
@@ -172,7 +177,7 @@ abstract class ChainDao {
     @Transaction
     abstract suspend fun getAllChainIds(): List<String>
 
-    @Query("SELECT * FROM chains")
+    @Query("SELECT * FROM chains ORDER BY rowid")
     @Transaction
     abstract fun joinChainInfoFlow(): Flow<List<JoinedChainInfo>>
 
