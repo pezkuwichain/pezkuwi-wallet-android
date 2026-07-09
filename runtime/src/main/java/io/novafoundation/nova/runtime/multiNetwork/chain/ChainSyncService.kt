@@ -1,7 +1,9 @@
 package io.novafoundation.nova.runtime.multiNetwork.chain
 
+import android.util.Log
 import com.google.gson.Gson
 import io.novafoundation.nova.common.utils.CollectionDiffer
+import io.novafoundation.nova.common.utils.LOG_TAG
 import io.novafoundation.nova.common.utils.retryUntilDone
 import io.novafoundation.nova.core_db.dao.ChainDao
 import io.novafoundation.nova.core_db.dao.FullAssetIdLocal
@@ -39,6 +41,21 @@ class ChainSyncService(
         val associatedOldAssets = oldAssets.associateBy { it.fullId() }
 
         val remoteChains = retryUntilDone { chainFetcher.getChains() }
+
+        // A transient upstream issue (CDN hiccup, regional network filtering, a bad publish) can make
+        // chainFetcher.getChains() return successfully with a suspiciously small/empty list instead of
+        // throwing. Applying that as a diff against a populated local DB would delete most or all of the
+        // user's chains/assets - not a sync failure, but active data loss, for something that self-heals on
+        // the next successful sync if we just skip applying it. Only guard when we HAD data: an empty result
+        // on a genuinely first-ever sync is normal and must proceed.
+        if (oldChains.isNotEmpty() && remoteChains.size < oldChains.size / 2) {
+            Log.e(
+                LOG_TAG,
+                "Refusing to apply chain sync: remote returned ${remoteChains.size} chains vs ${oldChains.size} currently stored " +
+                    "(would remove more than half). Likely a transient fetch issue - skipping this sync cycle."
+            )
+            return@withContext
+        }
 
         val newChains = remoteChains.map { mapRemoteChainToLocal(it, oldChainsById[it.chainId], source = ChainLocal.Source.DEFAULT, gson) }
         val newAssets = remoteChains.flatMap { chain ->
