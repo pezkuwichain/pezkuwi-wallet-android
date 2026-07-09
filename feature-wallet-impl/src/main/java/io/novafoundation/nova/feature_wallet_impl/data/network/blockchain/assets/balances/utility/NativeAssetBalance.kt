@@ -1,6 +1,7 @@
 package io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.balances.utility
 
 import android.util.Log
+import io.novafoundation.nova.common.data.network.runtime.binding.AccountInfo
 import io.novafoundation.nova.common.data.network.runtime.binding.bindList
 import io.novafoundation.nova.common.data.network.runtime.binding.bindNumber
 import io.novafoundation.nova.common.data.network.runtime.binding.castToDictEnum
@@ -17,7 +18,6 @@ import io.novafoundation.nova.core_db.dao.LockDao
 import io.novafoundation.nova.core_db.model.BalanceHoldLocal
 import io.novafoundation.nova.feature_account_api.domain.model.MetaAccount
 import io.novafoundation.nova.feature_wallet_api.data.cache.AssetCache
-import io.novafoundation.nova.feature_wallet_api.data.cache.bindAccountInfoOrDefault
 import io.novafoundation.nova.feature_wallet_api.data.cache.updateAsset
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.balances.AssetBalance
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.balances.BalanceSyncUpdate
@@ -154,6 +154,14 @@ class NativeAssetBalance(
     // Setup/subscription failures are allowed to propagate rather than being swallowed into emptyFlow()/NoCause:
     // the caller, FullSyncPaymentUpdater.syncAsset(), wraps this whole call in a single retryWhen boundary meant
     // to catch and retry exactly these failures. Swallowing here would make that retry boundary never trigger.
+    //
+    // Uses the typed remoteStorage.subscribe { metadata.system.account... } DSL (same as this class's own
+    // subscribeAccountBalanceUpdatePoint() and PooledBalanceUpdater/BalanceLocksUpdater) instead of a raw
+    // subscriptionBuilder.subscribe(key) call: on chains with several other assets/updaters already sharing
+    // the same SharedRequestsBuilder (e.g. Pezkuwi Asset Hub's 5 statemine assets + nomination-pools updater),
+    // the raw form's System.Account subscription was silently never reaching the wire - no exception, no data,
+    // ever - while every other asset on the same chain synced fine. The typed DSL is what every other caller
+    // on a busy shared connection already uses successfully.
     override suspend fun startSyncingBalance(
         chain: Chain,
         chainAsset: Chain.Asset,
@@ -161,26 +169,18 @@ class NativeAssetBalance(
         accountId: AccountId,
         subscriptionBuilder: SharedRequestsBuilder
     ): Flow<BalanceSyncUpdate> {
-        Log.d("BalancesDiag", "NativeAssetBalance.startSyncingBalance() ENTERED for ${chainAsset.symbol} on ${chain.name}")
+        return remoteStorage.subscribe(chain.id, subscriptionBuilder) {
+            metadata.system.account.observeWithRaw(accountId)
+        }.map { change ->
+            val accountInfo = change.value ?: AccountInfo.empty()
+            val assetChanged = assetCache.updateAsset(metaAccount.id, chain.utilityAsset, accountInfo)
 
-        val runtime = chainRegistry.getRuntime(chain.id)
-        Log.d("BalancesDiag", "NativeAssetBalance: got runtime for ${chain.name}")
-
-        val key = runtime.metadata.system().storage("Account").storageKey(runtime, accountId)
-        Log.d("BalancesDiag", "NativeAssetBalance: computed key for ${chainAsset.symbol} on ${chain.name}: $key")
-
-        return subscriptionBuilder.subscribe(key)
-            .map { change ->
-                Log.d("BalancesDiag", "NativeAssetBalance: received change for ${chainAsset.symbol} on ${chain.name}")
-                val accountInfo = bindAccountInfoOrDefault(change.value, runtime)
-                val assetChanged = assetCache.updateAsset(metaAccount.id, chain.utilityAsset, accountInfo)
-
-                if (assetChanged) {
-                    BalanceSyncUpdate.CauseFetchable(change.block)
-                } else {
-                    BalanceSyncUpdate.NoCause
-                }
+            if (assetChanged) {
+                BalanceSyncUpdate.CauseFetchable(change.at!!)
+            } else {
+                BalanceSyncUpdate.NoCause
             }
+        }
     }
 
     private fun bindBalanceHolds(dynamicInstance: Any?): List<BlockchainHold>? {

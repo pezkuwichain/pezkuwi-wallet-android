@@ -29,9 +29,9 @@ import kotlin.time.Duration.Companion.seconds
  * Activity, so we collect it ourselves here via the same AssetsFeatureApi.updateSystem instance the real app
  * uses, instead of relying on app UI lifecycle to start it.
  *
- * If this test fails, the failure message + logcat (tag "BalancesDiag", plus the standard per-updater error
- * logs already wired into BalancesUpdateSystem/FullSyncPaymentUpdater) shows exactly which decision branch or
- * exception is responsible - not another layer of inference from silence.
+ * If this test fails, the standard per-updater error logs already wired into BalancesUpdateSystem/
+ * FullSyncPaymentUpdater/NativeAssetBalance show exactly which decision branch or exception is responsible -
+ * not another layer of inference from silence.
  */
 class PezkuwiFullArchitectureBalancesTest {
 
@@ -69,8 +69,8 @@ class PezkuwiFullArchitectureBalancesTest {
 
             assertNotNull(
                 "No `assets` row was ever written for HEZ on Pezkuwi Asset Hub (metaId=$metaId) within 90s. " +
-                    "The real BalancesUpdateSystem pipeline never completed a sync for this asset - check logcat " +
-                    "tag 'BalancesDiag' and the standard FullSyncPaymentUpdater/StatemineAssetBalance error logs.",
+                    "The real BalancesUpdateSystem pipeline never completed a sync for this asset - check the " +
+                    "standard FullSyncPaymentUpdater/NativeAssetBalance error logs in logcat.",
                 assetRow
             )
         } finally {

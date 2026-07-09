@@ -45,11 +45,6 @@ class BalancesUpdateSystem(
     }
 
     private suspend fun balancesSync(chain: Chain, metaAccount: MetaAccount): Flow<Updater.SideEffect> {
-        Log.d(
-            "BalancesDiag",
-            "balancesSync(${chain.name}): hasAccountIn=${metaAccount.hasAccountIn(chain)} " +
-                "isDisabled=${chain.connectionState.isDisabled} canPerformFullSync=${chain.canPerformFullSync()}"
-        )
         return when {
             !metaAccount.hasAccountIn(chain) -> emptyFlow()
             chain.connectionState.isDisabled -> emptyFlow()
@@ -97,7 +92,7 @@ class BalancesUpdateSystem(
                     // Was silently swallowed here with zero logging - listenForUpdates() itself is a suspend
                     // call that can throw synchronously (e.g. FullSyncPaymentUpdater.listenForUpdates() calling
                     // requireAccountIdIn(chain)), before ever returning a flow for the .catch{} above to guard.
-                    Log.e("BalancesDiag", "listenForUpdates() threw synchronously for ${updater.javaClass.simpleName} in ${chain.name}", e)
+                    Log.e(LOG_TAG, "listenForUpdates() threw synchronously for ${updater.javaClass.simpleName} in ${chain.name}", e)
                     emptyFlow()
                 }
             }
