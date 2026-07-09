@@ -22,14 +22,9 @@ import io.novafoundation.nova.runtime.ext.enabledAssets
 import io.novafoundation.nova.runtime.ext.localId
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novasama.substrate_sdk_android.runtime.AccountId
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.retryWhen
-
-private const val SYNC_RETRY_DELAY_MS = 30_000L
 
 internal class FullSyncPaymentUpdater(
     private val operationDao: OperationDao,
@@ -46,43 +41,32 @@ internal class FullSyncPaymentUpdater(
     ): Flow<Updater.SideEffect> {
         val accountId = scopeValue.requireAccountIdIn(chain)
 
-        return chain.enabledAssets().map { chainAsset ->
+        return chain.enabledAssets().mapNotNull { chainAsset ->
             syncAsset(chainAsset, scopeValue, accountId, storageSubscriptionBuilder)
         }
             .mergeIfMultiple()
             .noSideAffects()
     }
 
-    /**
-     * Wraps both the initial `startSyncingBalance()` call and the resulting flow in a single retry
-     * boundary. Without this, any transient failure - during initial subscription setup (a WSS
-     * hiccup, an orml currencyId-decode edge case, a node not supporting a specific RPC method
-     * during round-robin) or later in the flow (a dropped connection) - would permanently and
-     * silently kill sync for that one asset: no DB row ever gets created/updated for it, so it
-     * vanishes from every UI screen with nothing but a logcat line as evidence, until the app is
-     * restarted (and even then, with the same odds of failing again). Retrying indefinitely on a
-     * fixed interval matches the same fix already applied to Tron's balance polling.
-     */
-    private fun syncAsset(
+    private suspend fun syncAsset(
         chainAsset: Chain.Asset,
         metaAccount: MetaAccount,
         accountId: AccountId,
         storageSubscriptionBuilder: SharedRequestsBuilder
-    ): Flow<BalanceSyncUpdate> {
+    ): Flow<BalanceSyncUpdate>? {
         val assetSource = assetSourceRegistry.sourceFor(chainAsset)
 
-        return flow {
-            val assetUpdateFlow = assetSource.balance.startSyncingBalance(chain, chainAsset, metaAccount, accountId, storageSubscriptionBuilder)
-            emitAll(assetUpdateFlow)
+        val assetUpdateFlow = runCatching {
+            assetSource.balance.startSyncingBalance(chain, chainAsset, metaAccount, accountId, storageSubscriptionBuilder)
         }
-            .onEach { balanceUpdate ->
-                assetSource.history.syncOperationsForBalanceChange(chainAsset, balanceUpdate, accountId)
-            }
-            .retryWhen { cause, _ ->
-                logSyncError(chain, chainAsset, error = cause)
-                delay(SYNC_RETRY_DELAY_MS)
-                true
-            }
+            .onFailure { logSyncError(chain, chainAsset, error = it) }
+            .getOrNull()
+            ?: return null
+
+        return assetUpdateFlow.onEach { balanceUpdate ->
+            assetSource.history.syncOperationsForBalanceChange(chainAsset, balanceUpdate, accountId)
+        }
+            .catch { logSyncError(chain, chainAsset, error = it) }
     }
 
     private fun logSyncError(chain: Chain, chainAsset: Chain.Asset, error: Throwable) {
