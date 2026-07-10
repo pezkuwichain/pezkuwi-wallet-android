@@ -7,11 +7,13 @@ import io.novafoundation.nova.common.di.FeatureUtils
 import io.novafoundation.nova.common.utils.fromJson
 import io.novafoundation.nova.core.model.CryptoType
 import io.novafoundation.nova.core_db.dao.AssetDao
+import io.novafoundation.nova.core_db.dao.ChainAssetDao
 import io.novafoundation.nova.core_db.dao.MetaAccountDao
 import io.novafoundation.nova.core_db.di.DbApi
 import io.novafoundation.nova.core_db.model.chain.account.MetaAccountLocal
 import io.novafoundation.nova.feature_assets.di.AssetsFeatureApi
 import io.novafoundation.nova.runtime.BuildConfig.TEST_ASSETS_URL
+import io.novasama.substrate_sdk_android.extensions.fromHex
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -48,11 +50,21 @@ private data class AssetsFixtureFile(val account: String, val assets: List<Asset
  */
 class PezkuwiFullArchitectureBalancesTest {
 
+    // Standard BIP44 Ethereum derivation (m/44'/60'/0'/0/0) from the same already-verified Founder mnemonic
+    // used for the substrate address below - this is exactly what Nova/Pezkuwi Wallet's own unified account
+    // creation derives when a single seed produces both a substrate and an Ethereum account. No dedicated
+    // "founder EVM wallet" record exists anywhere else, so this is the correct, non-fabricated way to get a
+    // real EVM address to test USDT-on-Ethereum sync with - it doesn't need to hold any balance, since this
+    // test only asserts a row gets written (see below), not that the balance is non-zero.
+    private val founderEthereumAddress = "0x1aa2EA1292c62BdC6E49E0C12134263efc73713A"
+    private val ethereumChainId = "eip155:1"
+
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
     private val dbApi = FeatureUtils.getFeature<DbApi>(context, DbApi::class.java)
     private val metaAccountDao = dbApi.metaAccountDao()
     private val assetDao: AssetDao = dbApi.provideAssetDao()
+    private val chainAssetDao: ChainAssetDao = dbApi.chainAssetDao()
 
     private val assetsFeatureApi = FeatureUtils.getFeature<AssetsFeatureApi>(context, AssetsFeatureApi::class.java)
 
@@ -63,9 +75,35 @@ class PezkuwiFullArchitectureBalancesTest {
         val updateSystemJob = launch { assetsFeatureApi.updateSystem.start().collect {} }
 
         try {
-            val metaId = insertAndSelectWatchAccount(metaAccountDao, fixture.account)
+            val metaId = insertAndSelectWatchAccount(metaAccountDao, fixture.account, founderEthereumAddress)
 
-            val stillMissing = fixture.assets.toMutableList()
+            // Ethereum's USDT isn't in the JSON fixture because its assetId isn't a fixed, known integer like
+            // Substrate assets - EvmAssetsSyncService computes it as a hash of the ERC20 contract address at
+            // sync time (see chainAssetIdOfErc20Token()), so it has to be resolved dynamically here instead of
+            // hardcoded. This closes out the third of the three originally-reported symptoms (Tron disabled,
+            // Pezkuwi tokens missing, USDT on Polkadot AH/Ethereum missing) - the first two are already covered
+            // by the fixture-driven assets above.
+            val ethereumUsdtAssetId = withTimeoutOrNull(30.seconds) {
+                var assetId: Int? = null
+                while (assetId == null) {
+                    assetId = chainAssetDao.getEnabledAssets()
+                        .firstOrNull { it.chainId == ethereumChainId && it.symbol == "USDT" }
+                        ?.id
+                    if (assetId == null) delay(2.seconds)
+                }
+                assetId
+            }
+            assertTrue(
+                "USDT was never registered as an enabled asset on Ethereum (chainId=$ethereumChainId) within 30s - " +
+                    "EvmAssetsSyncService may have failed to sync from EVM_ASSETS_URL.",
+                ethereumUsdtAssetId != null
+            )
+
+            val stillMissing = (
+                fixture.assets +
+                    AssetFixture(ethereumChainId, "Ethereum", ethereumUsdtAssetId!!, "USDT")
+                ).toMutableList()
+
             withTimeoutOrNull(120.seconds) {
                 while (stillMissing.isNotEmpty()) {
                     val found = stillMissing.filter { asset ->
@@ -78,9 +116,9 @@ class PezkuwiFullArchitectureBalancesTest {
 
             assertTrue(
                 "No `assets` row was ever written for: ${stillMissing.joinToString { "${it.symbol} on ${it.chainName}" }} " +
-                    "(metaId=$metaId) within 120s, out of ${fixture.assets.size} total. The real BalancesUpdateSystem " +
+                    "(metaId=$metaId) within 120s, out of ${fixture.assets.size + 1} total. The real BalancesUpdateSystem " +
                     "pipeline never completed a sync for these - check the standard FullSyncPaymentUpdater/" +
-                    "NativeAssetBalance/StatemineAssetBalance error logs in logcat.",
+                    "NativeAssetBalance/StatemineAssetBalance/EvmErc20AssetBalance error logs in logcat.",
                 stillMissing.isEmpty()
             )
         } finally {
@@ -88,15 +126,16 @@ class PezkuwiFullArchitectureBalancesTest {
         }
     }
 
-    private suspend fun insertAndSelectWatchAccount(dao: MetaAccountDao, substrateAddress: String): Long {
+    private suspend fun insertAndSelectWatchAccount(dao: MetaAccountDao, substrateAddress: String, ethereumAddress: String): Long {
         val accountId = substrateAddress.toAccountId()
+        val evmAddress = ethereumAddress.removePrefix("0x").fromHex()
 
         val metaAccount = MetaAccountLocal(
             substratePublicKey = accountId,
             substrateCryptoType = CryptoType.SR25519,
             substrateAccountId = accountId,
             ethereumPublicKey = null,
-            ethereumAddress = null,
+            ethereumAddress = evmAddress,
             name = "PezkuwiFullArchitectureBalancesTest",
             parentMetaId = null,
             isSelected = false,
