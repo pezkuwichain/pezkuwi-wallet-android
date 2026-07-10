@@ -15,10 +15,6 @@ import io.novafoundation.nova.feature_wallet_impl.data.network.tron.TronGridApi
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.model.TronAccountResourceResponse
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.model.TronUnsignedTransactionResponse
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
-import io.novafoundation.nova.test_shared.any
-import io.novafoundation.nova.test_shared.argThat
-import io.novafoundation.nova.test_shared.eq
-import io.novafoundation.nova.test_shared.whenever
 import io.novasama.substrate_sdk_android.encrypt.SignatureWrapper
 import io.novasama.substrate_sdk_android.extensions.fromHex
 import io.novasama.substrate_sdk_android.extensions.toHexString
@@ -31,10 +27,24 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.any
+import org.mockito.Mockito.argThat
+import org.mockito.Mockito.eq
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import java.math.BigInteger
+
+// Deliberately NOT using io.novafoundation.nova.test_shared's eq/any/argThat/whenever here: those are thin
+// Kotlin wrappers around the raw org.mockito.Mockito statics, and a Kotlin function with a declared non-null
+// generic return type T gets a compiler-inserted null-check on that return value whenever T is inferred as
+// non-null at the call site (e.g. eq(baseUrl: String) here) - crashing with "eq(...) must not be null", since
+// Mockito.eq()/any() genuinely return null at runtime (that's how their matcher-stack recording works). Calling
+// org.mockito.Mockito's statics directly avoids this: Kotlin treats a direct Java static call's return as a
+// platform type (T!) and does not insert that check. Fixing test_shared itself would apply project-wide and
+// wasn't attempted here (shared-infra change out of scope for this test file).
+private fun <T> whenever(methodCall: T?) = Mockito.`when`(methodCall)
 
 /**
  * Covers the native-TRX branch of [RealTronTransactionService.transact] - the sign/broadcast pipeline this class'
