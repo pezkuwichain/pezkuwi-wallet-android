@@ -97,7 +97,7 @@ class RealTronTransactionServiceTest {
     }
 
     @Test
-    fun `transact with Native intent should build, sign with sha256(raw_data), and broadcast a 65-byte r+s+v signature`() = runBlocking {
+    fun `transact with Native intent should build, sign with sha256(raw_data), and broadcast a 65-byte r+s+v signature`(): Unit = runBlocking {
         val unsigned = TronUnsignedTransactionResponse(
             visible = false,
             txID = expectedTxId,
@@ -147,7 +147,7 @@ class RealTronTransactionServiceTest {
     }
 
     @Test
-    fun `transact should refuse to sign when TronGrid's txID does not match sha256(raw_data)`() = runBlocking {
+    fun `transact should refuse to sign when TronGrid's txID does not match sha256(raw_data)`(): Unit = runBlocking {
         val tamperedTxId = "0".repeat(64) // deliberately wrong - does not match sha256(rawDataHex)
         val unsigned = TronUnsignedTransactionResponse(
             visible = false,
@@ -175,7 +175,7 @@ class RealTronTransactionServiceTest {
     }
 
     @Test
-    fun `calculateFee for Native intent should charge bandwidth shortfall at the fallback price when TronGrid's own resource_endpoints are unavailable`() = runBlocking {
+    fun `calculateFee for Native intent should charge bandwidth shortfall at the fallback price when TronGrid's own resource_endpoints are unavailable`(): Unit = runBlocking {
         val unsigned = TronUnsignedTransactionResponse(
             visible = false,
             txID = expectedTxId,
