@@ -1,5 +1,6 @@
 package io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration
 
+import android.util.Log
 import io.novafoundation.nova.common.data.secrets.v2.ChainAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.MetaAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
@@ -23,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private const val PREFS_TRON_ADDRESS_BACKFILL_DONE = "tron_address_backfill_1_1_3"
+private const val TAG = "TronAddressBackfill"
 
 /**
  * One-time backfill for accounts created before Tron support existed. `73_74_AddTronSupport` (the migration
@@ -57,24 +59,49 @@ class TronAddressBackfillMigration(
 ) {
 
     suspend fun migrationNeeded(): Boolean = withContext(Dispatchers.Default) {
-        !preferences.getBoolean(PREFS_TRON_ADDRESS_BACKFILL_DONE, false)
+        val needed = !preferences.getBoolean(PREFS_TRON_ADDRESS_BACKFILL_DONE, false)
+        Log.d(TAG, "migrationNeeded = $needed")
+        needed
     }
 
     suspend fun migrate() = withContext(Dispatchers.Default) {
         val secretsAccounts = metaAccountDao.getMetaAccounts().filter { it.type == MetaAccountLocal.Type.SECRETS }
+        Log.d(TAG, "migrate() starting - ${secretsAccounts.size} SECRETS-type account(s): ${secretsAccounts.map { it.id }}")
 
         secretsAccounts.forEach { account ->
-            backfillIfNeeded(account)
+            try {
+                backfillIfNeeded(account)
+            } catch (e: Throwable) {
+                Log.e(TAG, "backfill failed for metaId=${account.id}, continuing with remaining accounts", e)
+            }
         }
 
         preferences.putBoolean(PREFS_TRON_ADDRESS_BACKFILL_DONE, true)
+        Log.d(TAG, "migrate() done, flag persisted")
     }
 
     private suspend fun backfillIfNeeded(account: MetaAccountLocal) {
-        val secrets = secretStoreV2.getMetaAccountSecrets(account.id) ?: return
-        val entropy = secrets.entropy ?: return
-        if (secrets.tronKeypair != null) return
-        val substrateCryptoType = account.substrateCryptoType ?: return
+        val secrets = secretStoreV2.getMetaAccountSecrets(account.id)
+        if (secrets == null) {
+            Log.d(TAG, "metaId=${account.id}: no stored secrets at all (watch-only/Ledger/etc) - skipping")
+            return
+        }
+        val entropy = secrets.entropy
+        if (entropy == null) {
+            Log.d(TAG, "metaId=${account.id}: no entropy (raw-seed import, not a mnemonic) - skipping")
+            return
+        }
+        if (secrets.tronKeypair != null) {
+            Log.d(TAG, "metaId=${account.id}: already has a TronKeypair - skipping")
+            return
+        }
+        val substrateCryptoType = account.substrateCryptoType
+        if (substrateCryptoType == null) {
+            Log.d(TAG, "metaId=${account.id}: substrateCryptoType is null - skipping")
+            return
+        }
+
+        Log.d(TAG, "metaId=${account.id}: deriving Tron keypair")
 
         val mnemonic = MnemonicCreator.fromEntropy(entropy).words
 
@@ -101,5 +128,7 @@ class TronAddressBackfillMigration(
 
         val tronAccountId = tronKeypair.publicKey.tronPublicKeyToAccountId()
         metaAccountDao.updateMetaAccount(account.id) { it.addTronAccount(tronKeypair.publicKey, tronAccountId) }
+
+        Log.d(TAG, "metaId=${account.id}: backfilled successfully, tronAddress set (${tronAccountId.size} bytes)")
     }
 }

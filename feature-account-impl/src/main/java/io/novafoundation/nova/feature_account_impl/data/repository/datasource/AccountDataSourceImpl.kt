@@ -74,13 +74,19 @@ class AccountDataSourceImpl(
         // very old (pre-MetaAccount) installs, and two separate GlobalScope.launch calls give no ordering
         // guarantee relative to each other.
         async {
+            Log.d("AccountDataSourceImpl", "migrations block starting")
+
             if (accountDataMigration.migrationNeeded()) {
                 accountDataMigration.migrate(::saveSecuritySource)
             }
 
+            Log.d("AccountDataSourceImpl", "about to check tronAddressBackfillMigration")
+
             if (tronAddressBackfillMigration.migrationNeeded()) {
                 tronAddressBackfillMigration.migrate()
             }
+
+            Log.d("AccountDataSourceImpl", "migrations block done")
         }
     }
 
