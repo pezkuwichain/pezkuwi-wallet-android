@@ -30,6 +30,7 @@ import io.novafoundation.nova.feature_account_impl.data.mappers.AccountMappers
 import io.novafoundation.nova.feature_account_impl.data.mappers.mapMetaAccountTypeToLocal
 import io.novafoundation.nova.feature_account_impl.data.mappers.mapMetaAccountWithBalanceFromLocal
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.AccountDataMigration
+import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.TronAddressBackfillMigration
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.model.ChainAccountInsertionData
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.model.MetaAccountInsertionData
 import io.novafoundation.nova.runtime.ext.accountIdOf
@@ -64,15 +65,22 @@ class AccountDataSourceImpl(
     private val secretsMetaAccountLocalFactory: SecretsMetaAccountLocalFactory,
     secretStoreV1: SecretStoreV1,
     accountDataMigration: AccountDataMigration,
+    tronAddressBackfillMigration: TronAddressBackfillMigration,
 ) : AccountDataSource, SecretStoreV1 by secretStoreV1 {
 
     init {
-        migrateIfNeeded(accountDataMigration)
-    }
+        // Run sequentially in one coroutine, not as two independent migrateIfNeeded() launches - the Tron
+        // backfill reads accounts/secrets that the legacy migration may still be in the middle of writing for
+        // very old (pre-MetaAccount) installs, and two separate GlobalScope.launch calls give no ordering
+        // guarantee relative to each other.
+        async {
+            if (accountDataMigration.migrationNeeded()) {
+                accountDataMigration.migrate(::saveSecuritySource)
+            }
 
-    private fun migrateIfNeeded(migration: AccountDataMigration) = async {
-        if (migration.migrationNeeded()) {
-            migration.migrate(::saveSecuritySource)
+            if (tronAddressBackfillMigration.migrationNeeded()) {
+                tronAddressBackfillMigration.migrate()
+            }
         }
     }
 

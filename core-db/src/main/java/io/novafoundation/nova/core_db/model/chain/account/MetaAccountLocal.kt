@@ -96,6 +96,32 @@ class MetaAccountLocal(
         }
     }
 
+    // We do not use copy as we need explicitly set id
+    fun addTronAccount(
+        tronPublicKey: ByteArray,
+        tronAddress: ByteArray,
+    ): MetaAccountLocal {
+        return MetaAccountLocal(
+            substratePublicKey = substratePublicKey,
+            substrateCryptoType = substrateCryptoType,
+            substrateAccountId = substrateAccountId,
+            ethereumPublicKey = ethereumPublicKey,
+            ethereumAddress = ethereumAddress,
+            name = name,
+            parentMetaId = parentMetaId,
+            isSelected = isSelected,
+            position = position,
+            type = type,
+            status = status,
+            globallyUniqueId = globallyUniqueId,
+            typeExtras = typeExtras,
+            tronPublicKey = tronPublicKey,
+            tronAddress = tronAddress
+        ).also {
+            it.id = id
+        }
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is MetaAccountLocal) return false
