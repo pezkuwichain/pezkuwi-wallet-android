@@ -6,6 +6,7 @@ import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
 import io.novafoundation.nova.common.data.secrets.v2.mapKeypairStructToKeypair
 import io.novafoundation.nova.common.data.secrets.v2.tronKeypair
 import io.novafoundation.nova.common.data.storage.Preferences
+import io.novafoundation.nova.common.utils.invoke
 import io.novafoundation.nova.common.utils.tronAddressToAccountId
 import io.novafoundation.nova.common.utils.tronPublicKeyToAccountId
 import io.novafoundation.nova.core.model.CryptoType
