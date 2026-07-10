@@ -133,7 +133,7 @@ class RealTronTransactionServiceTest {
         // equality in Kotlin, so this must compare contents (contentEquals), not rely on SignerPayloadRaw.equals().
         val expectedMessage = rawDataHex.fromHex().sha256()
         verify(signer).signRaw(
-            argThat<SignerPayloadRaw> { payload ->
+            argThat<SignerPayloadRaw> { payload: SignerPayloadRaw ->
                 payload.message.contentEquals(expectedMessage) &&
                     payload.accountId.contentEquals(ownerAccountId) &&
                     payload.skipMessageHashing
@@ -186,7 +186,7 @@ class RealTronTransactionServiceTest {
 
         whenever(tronGridApi.createNativeTransfer(eq(baseUrl), eq(ownerHex), eq(recipientHex), eq(amountSun))).thenReturn(unsigned)
         whenever(tronGridApi.getAccountResource(eq(baseUrl), eq(ownerHex))).thenReturn(TronAccountResourceResponse())
-        whenever(tronGridApi.getChainParameters(eq(baseUrl))).thenReturn(emptyMap())
+        whenever(tronGridApi.getChainParameters(eq(baseUrl))).thenReturn(emptyMap<String, Long>())
 
         val fee = subject.calculateFee(
             chain = chain,
