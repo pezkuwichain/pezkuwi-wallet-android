@@ -2,10 +2,12 @@ package io.novafoundation.nova.balances
 
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.RealTronGridApi
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.RetrofitTronGridApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -40,9 +42,25 @@ class TronBalancesIntegrationTest {
         RealTronGridApi(retrofit.create(RetrofitTronGridApi::class.java))
     }
 
+    // TronGrid's public (no API key) endpoint rate-limits aggressively, and this test now runs on every PR
+    // (see balances_test.yml) in addition to its own 2 calls back-to-back - a bare 429 previously failed the
+    // whole run for a transient, infrastructure-level reason unrelated to whether the wallet's code is correct.
+    // Retry with backoff instead of just tolerating the flake.
+    private suspend fun <T> retryOn429(maxAttempts: Int = 4, block: suspend () -> T): T {
+        repeat(maxAttempts - 1) { attempt ->
+            try {
+                return block()
+            } catch (e: HttpException) {
+                if (e.code() != 429) throw e
+                delay(2_000L * (attempt + 1))
+            }
+        }
+        return block()
+    }
+
     @Test
     fun testNativeTrxBalanceLoading() = runBlocking {
-        val freeBalance = tronGridApi.fetchNativeBalance(baseUrl, testAddress)
+        val freeBalance = retryOn429 { tronGridApi.fetchNativeBalance(baseUrl, testAddress) }
 
         assertTrue("TRX balance: $freeBalance is less than $maxAmount", maxAmount > freeBalance)
         assertTrue("TRX balance: $freeBalance is greater than 0", BigInteger.ZERO < freeBalance)
@@ -50,7 +68,7 @@ class TronBalancesIntegrationTest {
 
     @Test
     fun testTrc20UsdtBalanceLoading() = runBlocking {
-        val freeBalance = tronGridApi.fetchTrc20Balance(baseUrl, testAddress, usdtContractAddress)
+        val freeBalance = retryOn429 { tronGridApi.fetchTrc20Balance(baseUrl, testAddress, usdtContractAddress) }
 
         assertTrue("USDT-TRC20 balance: $freeBalance is less than $maxAmount", maxAmount > freeBalance)
         assertTrue("USDT-TRC20 balance: $freeBalance is greater than 0", BigInteger.ZERO < freeBalance)
