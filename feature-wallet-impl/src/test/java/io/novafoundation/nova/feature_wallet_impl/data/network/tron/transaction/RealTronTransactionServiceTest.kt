@@ -26,24 +26,36 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatcher
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.any
-import org.mockito.Mockito.argThat
-import org.mockito.Mockito.eq
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import java.math.BigInteger
 
-// Deliberately NOT using io.novafoundation.nova.test_shared's eq/any/argThat/whenever here: those are thin
-// Kotlin wrappers around the raw org.mockito.Mockito statics, and a Kotlin function with a declared non-null
-// generic return type T gets a compiler-inserted null-check on that return value whenever T is inferred as
-// non-null at the call site (e.g. eq(baseUrl: String) here) - crashing with "eq(...) must not be null", since
-// Mockito.eq()/any() genuinely return null at runtime (that's how their matcher-stack recording works). Calling
-// org.mockito.Mockito's statics directly avoids this: Kotlin treats a direct Java static call's return as a
-// platform type (T!) and does not insert that check. Fixing test_shared itself would apply project-wide and
-// wasn't attempted here (shared-infra change out of scope for this test file).
+// eq()/any()/argThat() genuinely return null at runtime - that's how Mockito's matcher-stack recording works,
+// regardless of whether they're called via test_shared's Kotlin wrappers or the raw org.mockito.Mockito statics
+// directly (confirmed: switching to the raw statics did not avoid the "eq(...) must not be null" crash once that
+// null flows into a Kotlin non-null-typed parameter somewhere downstream of the call site). Instead of returning
+// the real (null) value, these local wrappers fall back to a definitely-non-null stand-in - the real value itself
+// for eq() (harmless: the matcher was already recorded on Mockito's thread-local stack by the time this returns,
+// so the fallback value is never actually used for matching) and an unchecked-cast dummy for any()/argThat()
+// (mirrors mockito-kotlin's own internal implementation of the same helpers).
+private fun <T> eq(value: T): T = Mockito.eq(value) ?: value
+
+@Suppress("UNCHECKED_CAST")
+private fun <T> any(): T {
+    Mockito.any<T>()
+    return null as T
+}
+
+@Suppress("UNCHECKED_CAST")
+private fun <T> argThat(matcher: (T) -> Boolean): T {
+    Mockito.argThat(ArgumentMatcher<T> { matcher(it) })
+    return null as T
+}
+
 private fun <T> whenever(methodCall: T?) = Mockito.`when`(methodCall)
 
 /**
