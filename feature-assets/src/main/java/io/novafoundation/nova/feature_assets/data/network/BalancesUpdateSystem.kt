@@ -39,12 +39,24 @@ class BalancesUpdateSystem(
     override fun start(): Flow<Updater.SideEffect> {
         return accountUpdateScope.invalidationFlow().flatMapLatest { metaAccount ->
             chainRegistry.currentChains.transformLatestDiffed { chain ->
+                if (chain.isTronBased) {
+                    Log.d(LOG_TAG, "TronDebug: currentChains delivered chain=${chain.id} name=${chain.name}")
+                }
                 emitAll(balancesSync(chain, metaAccount))
             }
         }.flowOn(Dispatchers.Default)
     }
 
     private suspend fun balancesSync(chain: Chain, metaAccount: MetaAccount): Flow<Updater.SideEffect> {
+        if (chain.isTronBased) {
+            Log.d(
+                LOG_TAG,
+                "TronDebug: gate check chain=${chain.id} name=${chain.name} hasAccountIn=${metaAccount.hasAccountIn(chain)} " +
+                    "connectionState=${chain.connectionState} isDisabled=${chain.connectionState.isDisabled} " +
+                    "hasSubstrateRuntime=${chain.hasSubstrateRuntime} canPerformFullSync=${chain.canPerformFullSync()}"
+            )
+        }
+
         return when {
             !metaAccount.hasAccountIn(chain) -> emptyFlow()
             chain.connectionState.isDisabled -> emptyFlow()
