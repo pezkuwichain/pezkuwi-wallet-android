@@ -9,6 +9,7 @@ import io.novafoundation.nova.runtime.ext.isCustomNetwork
 import io.novafoundation.nova.runtime.ext.isDisabled
 import io.novafoundation.nova.runtime.ext.isEnabled
 import io.novafoundation.nova.runtime.ext.selectedUnformattedWssNodeUrlOrNull
+import io.novafoundation.nova.runtime.ext.httpNodes
 import io.novafoundation.nova.runtime.ext.wssNodes
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
@@ -132,7 +133,13 @@ class RealNetworkManagementChainInteractor(
     }
 
     private fun nodesHealthState(chain: Chain, coroutineScope: CoroutineScope): Flow<List<NodeHealthState>> {
-        return chain.nodes.wssNodes().map {
+        // wssNodes() alone leaves an HTTPS-only chain (Tron today - no wss endpoint at all) with an empty list
+        // here, which silently renders as "nothing to show" rather than a real health state - fall back to the
+        // http nodes only when there are no wss ones, since a chain that genuinely has wss nodes should still
+        // prefer testing those.
+        val nodesToCheck = chain.nodes.wssNodes().ifEmpty { chain.nodes.httpNodes() }
+
+        return nodesToCheck.map {
             nodeHealthState(chain, it, coroutineScope)
         }.combine()
     }
