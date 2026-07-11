@@ -488,6 +488,7 @@ object ChainGeneses {
 object ChainIds {
 
     const val ETHEREUM = "$EIP_155_PREFIX:1"
+    const val TRON = "tron:0x2b6653dc"
 
     const val MOONBEAM = ChainGeneses.MOONBEAM
     const val MOONRIVER = ChainGeneses.MOONRIVER
@@ -498,6 +499,21 @@ val Chain.Companion.Geneses
 
 val Chain.Companion.Ids
     get() = ChainIds
+
+/**
+ * A short, user-facing token-standard label for chains where disambiguating "which token standard is this"
+ * is actually useful (multiple ecosystems all issue their own USDT/USDC etc., so a bare chain name isn't
+ * always enough context). Deliberately NOT derived from [Chain.Asset.Type] (e.g. every Statemine-type chain
+ * would get the same label) - this is chain-specific by design, matching exactly which labels are
+ * recognizable/expected by users (PEZ-20, ERC-20, TRC-20), not a mechanical one-label-per-asset-type mapping.
+ */
+val Chain.assetStandardLabelOrNull: String?
+    get() = when {
+        genesisHash == Chain.Geneses.PEZKUWI_ASSET_HUB -> "PEZ-20"
+        id == Chain.Ids.ETHEREUM -> "ERC-20"
+        id == Chain.Ids.TRON -> "TRC-20"
+        else -> null
+    }
 
 fun Chain.Asset.requireStatemine(): Type.Statemine {
     require(type is Type.Statemine)
