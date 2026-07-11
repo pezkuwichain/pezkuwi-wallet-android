@@ -57,17 +57,33 @@ class ChainSyncService(
             return@withContext
         }
 
-        val newChains = remoteChains.map { mapRemoteChainToLocal(it, oldChainsById[it.chainId], source = ChainLocal.Source.DEFAULT, gson) }
-        val newAssets = remoteChains.flatMap { chain ->
-            chain.assets.map {
-                val fullAssetId = FullAssetIdLocal(chain.chainId, it.assetId)
-                val oldAsset = associatedOldAssets[fullAssetId]
-                mapRemoteAssetToLocal(chain, it, gson, oldAsset?.enabled ?: ENABLED_DEFAULT_BOOL)
+        // One malformed/incompatible chain (a new field the app's mapper doesn't understand yet, a bad
+        // publish, etc.) must not take down sync for every other chain - a plain .map{} here means a single
+        // throwing chain aborts before chainDao.applyDiff() is ever called, leaving a brand new install with
+        // zero locally-cached chains forever (a completely empty tokens list), since nothing else in this
+        // function ever gets a chance to run. Isolate failures per chain, and per asset within a chain that
+        // otherwise mapped fine, instead.
+        val remoteChainsWithLocal = remoteChains.mapNotNull { chainRemote ->
+            runCatching { chainRemote to mapRemoteChainToLocal(chainRemote, oldChainsById[chainRemote.chainId], source = ChainLocal.Source.DEFAULT, gson) }
+                .onFailure { Log.e(LOG_TAG, "Failed to map remote chain ${chainRemote.chainId} (${chainRemote.name}), skipping it for this sync cycle", it) }
+                .getOrNull()
+        }
+
+        val newChains = remoteChainsWithLocal.map { (_, chainLocal) -> chainLocal }
+        val newAssets = remoteChainsWithLocal.flatMap { (chain, _) ->
+            chain.assets.mapNotNull { assetRemote ->
+                runCatching {
+                    val fullAssetId = FullAssetIdLocal(chain.chainId, assetRemote.assetId)
+                    val oldAsset = associatedOldAssets[fullAssetId]
+                    mapRemoteAssetToLocal(chain, assetRemote, gson, oldAsset?.enabled ?: ENABLED_DEFAULT_BOOL)
+                }.onFailure {
+                    Log.e(LOG_TAG, "Failed to map asset ${assetRemote.assetId} (${assetRemote.symbol}) on chain ${chain.chainId}, skipping it", it)
+                }.getOrNull()
             }
         }
-        val newNodes = remoteChains.flatMap(::mapRemoteNodesToLocal)
-        val newExplorers = remoteChains.flatMap(::mapRemoteExplorersToLocal)
-        val newExternalApis = remoteChains.flatMap(::mapExternalApisToLocal)
+        val newNodes = remoteChainsWithLocal.flatMap { (chain, _) -> mapRemoteNodesToLocal(chain) }
+        val newExplorers = remoteChainsWithLocal.flatMap { (chain, _) -> mapRemoteExplorersToLocal(chain) }
+        val newExternalApis = remoteChainsWithLocal.flatMap { (chain, _) -> mapExternalApisToLocal(chain) }
         val newNodeSelectionPreferences = nodeSelectionPreferencesFor(newChains, oldNodeSelectionPreferences)
 
         val chainsDiff = CollectionDiffer.findDiff(newChains, oldChains, forceUseNewItems = false)
