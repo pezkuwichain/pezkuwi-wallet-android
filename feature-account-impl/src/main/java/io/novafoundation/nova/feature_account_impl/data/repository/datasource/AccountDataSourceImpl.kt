@@ -80,11 +80,9 @@ class AccountDataSourceImpl(
                 accountDataMigration.migrate(::saveSecuritySource)
             }
 
-            Log.d("AccountDataSourceImpl", "about to check tronAddressBackfillMigration")
+            Log.d("AccountDataSourceImpl", "about to run tronAddressBackfillMigration")
 
-            if (tronAddressBackfillMigration.migrationNeeded()) {
-                tronAddressBackfillMigration.migrate()
-            }
+            tronAddressBackfillMigration.migrate()
 
             Log.d("AccountDataSourceImpl", "migrations block done")
 

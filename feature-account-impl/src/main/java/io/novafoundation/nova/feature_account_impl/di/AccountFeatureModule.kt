@@ -445,12 +445,11 @@ class AccountFeatureModule {
     @Provides
     @FeatureScope
     fun provideTronAddressBackfillMigration(
-        preferences: Preferences,
         secretStoreV2: SecretStoreV2,
         metaAccountDao: MetaAccountDao,
         accountSecretsFactory: AccountSecretsFactory,
     ): TronAddressBackfillMigration {
-        return TronAddressBackfillMigration(preferences, secretStoreV2, metaAccountDao, accountSecretsFactory)
+        return TronAddressBackfillMigration(secretStoreV2, metaAccountDao, accountSecretsFactory)
     }
 
     @Provides

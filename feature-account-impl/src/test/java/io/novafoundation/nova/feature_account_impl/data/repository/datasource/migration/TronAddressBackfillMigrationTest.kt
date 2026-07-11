@@ -5,7 +5,6 @@ import io.novafoundation.nova.common.data.secrets.v2.MetaAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
 import io.novafoundation.nova.common.data.secrets.v2.mapKeypairStructToKeypair
 import io.novafoundation.nova.common.data.secrets.v2.tronKeypair
-import io.novafoundation.nova.common.data.storage.Preferences
 import io.novafoundation.nova.common.utils.invoke
 import io.novafoundation.nova.common.utils.tronAddressToAccountId
 import io.novafoundation.nova.common.utils.tronPublicKeyToAccountId
@@ -17,7 +16,6 @@ import io.novasama.substrate_sdk_android.encrypt.json.JsonDecoder
 import io.novasama.substrate_sdk_android.encrypt.mnemonic.MnemonicCreator
 import io.novasama.substrate_sdk_android.scale.EncodableStruct
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -59,9 +57,6 @@ private fun <T> whenever(methodCall: T?) = Mockito.`when`(methodCall)
 class TronAddressBackfillMigrationTest {
 
     @Mock
-    lateinit var preferences: Preferences
-
-    @Mock
     lateinit var secretStoreV2: SecretStoreV2
 
     @Mock
@@ -79,19 +74,7 @@ class TronAddressBackfillMigrationTest {
     fun setup() {
         // Real factory, not a mock - the whole point of this test is to exercise the actual derivation.
         val accountSecretsFactory = AccountSecretsFactory(jsonDecoder)
-        subject = TronAddressBackfillMigration(preferences, secretStoreV2, metaAccountDao, accountSecretsFactory)
-    }
-
-    @Test
-    fun `migrationNeeded should reflect the persisted flag`(): Unit = runBlocking {
-        // The flag's preference key is a private implementation detail of the production class - matched via
-        // any() here rather than duplicating the literal key string, which would let this test pass even if
-        // that string silently drifted out of sync with the production code.
-        whenever(preferences.getBoolean(any(), Mockito.anyBoolean())).thenReturn(false)
-        assertTrue(subject.migrationNeeded())
-
-        whenever(preferences.getBoolean(any(), Mockito.anyBoolean())).thenReturn(true)
-        assertTrue(!subject.migrationNeeded())
+        subject = TronAddressBackfillMigration(secretStoreV2, metaAccountDao, accountSecretsFactory)
     }
 
     @Test
