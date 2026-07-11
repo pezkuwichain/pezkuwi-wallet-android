@@ -1,5 +1,7 @@
 package io.novafoundation.nova.feature_wallet_impl.data.network.tron
 
+import io.novafoundation.nova.common.utils.toTronHexAddress
+import io.novafoundation.nova.common.utils.tronAddressToHexAddress
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.types.Balance
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.model.TronAccountResourceResponse
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.model.TronAddressRequest
@@ -9,7 +11,9 @@ import io.novafoundation.nova.feature_wallet_impl.data.network.tron.model.TronCr
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.model.TronTriggerContractRequest
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.model.TronTriggerContractResponse
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.model.TronUnsignedTransactionResponse
+import io.novafoundation.nova.feature_wallet_impl.data.network.tron.transaction.Trc20TransferAbi
 import io.novasama.substrate_sdk_android.extensions.fromHex
+import io.novasama.substrate_sdk_android.runtime.AccountId
 import java.math.BigInteger
 
 /**
@@ -24,7 +28,15 @@ interface TronGridApi {
 
     suspend fun fetchNativeBalance(baseUrl: String, address: String): Balance
 
-    suspend fun fetchTrc20Balance(baseUrl: String, address: String, contractAddress: String): Balance
+    /**
+     * Reads via an on-chain `balanceOf(address)` call (`triggerconstantcontract`), NOT `/v1/accounts` - a
+     * TRC-20 balance lives in the token contract's own storage, not in the holder's Account object, so an
+     * address that has only ever received TRC-20 tokens (never native TRX, never otherwise "activated") has no
+     * Account object at all and `/v1/accounts` returns empty for it regardless of its real token balance.
+     * Confirmed live: a wallet holding exactly 5 USDT-TRC20 and zero TRX/activation history returned `data: []`
+     * from `/v1/accounts` while `balanceOf` correctly returned 5000000.
+     */
+    suspend fun fetchTrc20Balance(baseUrl: String, holderAccountId: AccountId, contractAddress: String): Balance
 
     /**
      * Builds an unsigned native TRX transfer via `POST /wallet/createtransaction`.
@@ -89,13 +101,18 @@ class RealTronGridApi(
         return accountData.balance?.toBigInteger() ?: BigInteger.ZERO
     }
 
-    override suspend fun fetchTrc20Balance(baseUrl: String, address: String, contractAddress: String): Balance {
-        val accountData = fetchAccountData(baseUrl, address) ?: return BigInteger.ZERO
+    override suspend fun fetchTrc20Balance(baseUrl: String, holderAccountId: AccountId, contractAddress: String): Balance {
+        val response = triggerConstantContract(
+            baseUrl = baseUrl,
+            ownerHexAddress = holderAccountId.toTronHexAddress(),
+            contractHexAddress = contractAddress.tronAddressToHexAddress(),
+            functionSelector = Trc20TransferAbi.BALANCE_OF_FUNCTION_SELECTOR,
+            parameterHex = Trc20TransferAbi.encodeBalanceOfParameters(holderAccountId)
+        )
 
-        val rawBalance = accountData.trc20.orEmpty()
-            .firstNotNullOfOrNull { entry -> entry[contractAddress] }
+        val resultHex = response.constantResult?.firstOrNull() ?: return BigInteger.ZERO
 
-        return rawBalance?.toBigIntegerOrNull() ?: BigInteger.ZERO
+        return runCatching { BigInteger(resultHex, 16) }.getOrDefault(BigInteger.ZERO)
     }
 
     override suspend fun createNativeTransfer(
