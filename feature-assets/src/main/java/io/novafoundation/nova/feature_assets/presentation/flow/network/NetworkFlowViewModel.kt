@@ -16,10 +16,9 @@ import io.novafoundation.nova.feature_assets.presentation.flow.network.model.Net
 import io.novafoundation.nova.feature_wallet_api.presentation.formatters.amount.AmountFormatter
 import io.novafoundation.nova.feature_wallet_api.presentation.formatters.amount.formatAmountToAmountModel
 import io.novafoundation.nova.feature_wallet_api.presentation.formatters.amount.model.AmountConfig
-import io.novafoundation.nova.runtime.ext.assetStandardLabelOrNull
+import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.asset
-import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -84,11 +83,5 @@ abstract class NetworkFlowViewModel(
                     )
                 )
             }
-    }
-
-    private fun Chain.displayNameWithAssetStandard(): String {
-        val standardLabel = assetStandardLabelOrNull ?: return name
-
-        return "$name ($standardLabel)"
     }
 }

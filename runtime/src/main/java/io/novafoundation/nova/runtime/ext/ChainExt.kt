@@ -515,6 +515,18 @@ val Chain.assetStandardLabelOrNull: String?
         else -> null
     }
 
+/**
+ * Chain display name with its token-standard label appended where [assetStandardLabelOrNull] applies, e.g.
+ * "Ethereum (ERC-20)". Shared across every screen that lists the same token symbol once per chain (the
+ * Send/Receive/etc. network picker, the main balance list's per-token chain breakdown) - a bare chain name
+ * alone doesn't convey which issuance this is when multiple ecosystems share the same symbol.
+ */
+fun Chain.displayNameWithAssetStandard(): String {
+    val standardLabel = assetStandardLabelOrNull ?: return name
+
+    return "$name ($standardLabel)"
+}
+
 fun Chain.Asset.requireStatemine(): Type.Statemine {
     require(type is Type.Statemine)
 
