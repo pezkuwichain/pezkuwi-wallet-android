@@ -87,6 +87,15 @@ class AccountDataSourceImpl(
             }
 
             Log.d("AccountDataSourceImpl", "migrations block done")
+
+            metaAccountDao.getMetaAccounts().forEach {
+                Log.d(
+                    "TronDiag",
+                    "metaId=${it.id} name=${it.name} type=${it.type} isSelected=${it.isSelected} " +
+                        "tronAddress=${it.tronAddress?.joinToString("") { b -> "%02x".format(b) } ?: "NULL"} " +
+                        "tronPublicKey=${if (it.tronPublicKey != null) "present(${it.tronPublicKey!!.size}B)" else "NULL"}"
+                )
+            }
         }
     }
 
