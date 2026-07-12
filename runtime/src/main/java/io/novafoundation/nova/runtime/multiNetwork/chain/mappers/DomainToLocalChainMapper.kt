@@ -128,6 +128,7 @@ fun mapChainToLocal(chain: Chain, gson: Gson): ChainLocal {
         legacyPrefix = chain.legacyAddressPrefix,
         isEthereumBased = chain.isEthereumBased,
         isTronBased = chain.isTronBased,
+        isBitcoinBased = chain.isBitcoinBased,
         isTestNet = chain.isTestNet,
         hasSubstrateRuntime = chain.hasSubstrateRuntime,
         pushSupport = chain.pushSupport,

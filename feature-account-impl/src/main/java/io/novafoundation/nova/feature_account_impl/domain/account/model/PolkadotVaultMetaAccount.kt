@@ -41,6 +41,6 @@ class PolkadotVaultMetaAccount(
 ) {
 
     override suspend fun supportsAddingChainAccount(chain: Chain): Boolean {
-        return !chain.isEthereumBased && !chain.isTronBased
+        return !chain.isEthereumBased && !chain.isTronBased && !chain.isBitcoinBased
     }
 }

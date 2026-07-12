@@ -30,6 +30,7 @@ import io.novafoundation.nova.feature_account_impl.data.mappers.AccountMappers
 import io.novafoundation.nova.feature_account_impl.data.mappers.mapMetaAccountTypeToLocal
 import io.novafoundation.nova.feature_account_impl.data.mappers.mapMetaAccountWithBalanceFromLocal
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.AccountDataMigration
+import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.BitcoinAddressBackfillMigration
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.model.ChainAccountInsertionData
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.model.MetaAccountInsertionData
 import io.novafoundation.nova.runtime.ext.accountIdOf
@@ -64,10 +65,12 @@ class AccountDataSourceImpl(
     private val secretsMetaAccountLocalFactory: SecretsMetaAccountLocalFactory,
     secretStoreV1: SecretStoreV1,
     accountDataMigration: AccountDataMigration,
+    private val bitcoinAddressBackfillMigration: BitcoinAddressBackfillMigration,
 ) : AccountDataSource, SecretStoreV1 by secretStoreV1 {
 
     init {
         migrateIfNeeded(accountDataMigration)
+        async { bitcoinAddressBackfillMigration.migrate() }
     }
 
     private fun migrateIfNeeded(migration: AccountDataMigration) = async {

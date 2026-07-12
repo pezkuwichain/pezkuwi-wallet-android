@@ -23,7 +23,11 @@ data class CloudBackup(
         val ethereumPublicKey: ByteArray?,
         val name: String,
         val type: Type,
-        val chainAccounts: Set<ChainAccountInfo>
+        val chainAccounts: Set<ChainAccountInfo>,
+        // Nullable and defaulted so that Gson deserializing a backup written before Bitcoin support existed -
+        // which has no such field in its JSON at all - lands on null here rather than failing.
+        val bitcoinAddress: ByteArray? = null,
+        val bitcoinPublicKey: ByteArray? = null,
     ) : Identifiable {
 
         override val identifier: String = walletId
@@ -72,7 +76,9 @@ data class CloudBackup(
                 ethereumPublicKey.contentEquals(other.ethereumPublicKey) &&
                 name == other.name &&
                 type == other.type &&
-                chainAccounts == other.chainAccounts
+                chainAccounts == other.chainAccounts &&
+                bitcoinAddress.contentEquals(other.bitcoinAddress) &&
+                bitcoinPublicKey.contentEquals(other.bitcoinPublicKey)
         }
 
         override fun hashCode(): Int {
@@ -85,6 +91,8 @@ data class CloudBackup(
             result = 31 * result + name.hashCode()
             result = 31 * result + type.hashCode()
             result = 31 * result + chainAccounts.hashCode()
+            result = 31 * result + (bitcoinAddress?.contentHashCode() ?: 0)
+            result = 31 * result + (bitcoinPublicKey?.contentHashCode() ?: 0)
             result = 31 * result + identifier.hashCode()
             return result
         }
@@ -100,6 +108,7 @@ data class CloudBackup(
         val substrate: SubstrateSecrets?,
         val ethereum: EthereumSecrets?,
         val chainAccounts: List<ChainAccountSecrets>,
+        val bitcoin: BitcoinSecrets? = null,
     ) : Identifiable {
 
         override val identifier: String = walletId
@@ -118,6 +127,7 @@ data class CloudBackup(
             if (substrate != other.substrate) return false
             if (ethereum != other.ethereum) return false
             if (chainAccounts != other.chainAccounts) return false
+            if (bitcoin != other.bitcoin) return false
             return identifier == other.identifier
         }
 
@@ -127,6 +137,7 @@ data class CloudBackup(
             result = 31 * result + (substrate?.hashCode() ?: 0)
             result = 31 * result + (ethereum?.hashCode() ?: 0)
             result = 31 * result + chainAccounts.hashCode()
+            result = 31 * result + (bitcoin?.hashCode() ?: 0)
             result = 31 * result + identifier.hashCode()
             return result
         }
@@ -201,6 +212,11 @@ data class CloudBackup(
             val derivationPath: String?,
         )
 
+        data class BitcoinSecrets(
+            val keypair: KeyPairSecrets,
+            val derivationPath: String?,
+        )
+
         data class KeyPairSecrets(
             val publicKey: ByteArray,
             val privateKey: ByteArray,
@@ -234,5 +250,5 @@ data class CloudBackup(
 }
 
 fun CloudBackup.WalletPrivateInfo.isCompletelyEmpty(): Boolean {
-    return entropy == null && substrate == null && ethereum == null && chainAccounts.isEmpty()
+    return entropy == null && substrate == null && ethereum == null && bitcoin == null && chainAccounts.isEmpty()
 }

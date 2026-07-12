@@ -104,6 +104,7 @@ import io.novafoundation.nova.feature_account_impl.data.repository.datasource.Ac
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.RealSecretsMetaAccountLocalFactory
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.SecretsMetaAccountLocalFactory
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.AccountDataMigration
+import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.BitcoinAddressBackfillMigration
 import io.novafoundation.nova.feature_account_impl.data.secrets.AccountSecretsFactory
 import io.novafoundation.nova.feature_account_impl.data.signer.signingContext.SigningContextFactory
 import io.novafoundation.nova.feature_account_impl.di.AccountFeatureModule.BindsModule
@@ -406,6 +407,7 @@ class AccountFeatureModule {
         secretsMetaAccountLocalFactory: SecretsMetaAccountLocalFactory,
         secretStoreV2: SecretStoreV2,
         accountMappers: AccountMappers,
+        bitcoinAddressBackfillMigration: BitcoinAddressBackfillMigration,
     ): AccountDataSource {
         return AccountDataSourceImpl(
             preferences,
@@ -416,8 +418,19 @@ class AccountFeatureModule {
             secretStoreV2,
             secretsMetaAccountLocalFactory,
             secretStoreV1,
-            accountDataMigration
+            accountDataMigration,
+            bitcoinAddressBackfillMigration
         )
+    }
+
+    @Provides
+    @FeatureScope
+    fun provideBitcoinAddressBackfillMigration(
+        secretStoreV2: SecretStoreV2,
+        metaAccountDao: MetaAccountDao,
+        accountSecretsFactory: AccountSecretsFactory,
+    ): BitcoinAddressBackfillMigration {
+        return BitcoinAddressBackfillMigration(secretStoreV2, metaAccountDao, accountSecretsFactory)
     }
 
     @Provides

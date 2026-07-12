@@ -33,6 +33,7 @@ data class Chain(
     val types: Types?,
     val isEthereumBased: Boolean,
     val isTronBased: Boolean,
+    val isBitcoinBased: Boolean,
     val isTestNet: Boolean,
     val source: Source,
     val hasSubstrateRuntime: Boolean,

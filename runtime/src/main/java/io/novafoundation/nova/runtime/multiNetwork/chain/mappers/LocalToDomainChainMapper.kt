@@ -276,6 +276,7 @@ fun mapChainLocalToChain(
             legacyAddressPrefix = legacyPrefix,
             isEthereumBased = isEthereumBased,
             isTronBased = isTronBased,
+            isBitcoinBased = isBitcoinBased,
             isTestNet = isTestNet,
             hasCrowdloans = hasCrowdloans,
             pushSupport = pushSupport,

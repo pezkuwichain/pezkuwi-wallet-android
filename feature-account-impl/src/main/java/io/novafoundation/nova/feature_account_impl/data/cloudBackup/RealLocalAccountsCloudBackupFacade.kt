@@ -7,6 +7,8 @@ import io.novafoundation.nova.common.data.secrets.v2.KeyPairSchema
 import io.novafoundation.nova.common.data.secrets.v2.MetaAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
 import io.novafoundation.nova.common.data.secrets.v2.derivationPath
+import io.novafoundation.nova.common.data.secrets.v2.bitcoinDerivationPath
+import io.novafoundation.nova.common.data.secrets.v2.bitcoinKeypair
 import io.novafoundation.nova.common.data.secrets.v2.entropy
 import io.novafoundation.nova.common.data.secrets.v2.ethereumDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.ethereumKeypair
@@ -90,6 +92,7 @@ class RealLocalAccountsCloudBackupFacade(
             substrate = baseSecrets.getSubstrateBackupSecrets(),
             ethereum = baseSecrets.getEthereumBackupSecrets(),
             chainAccounts = emptyList(),
+            bitcoin = baseSecrets.getBitcoinBackupSecrets(),
         )
 
         return CloudBackup(
@@ -357,6 +360,7 @@ class RealLocalAccountsCloudBackupFacade(
             substrate = prepareSubstrateBackupSecrets(baseSecrets, joinedMetaAccountInfo),
             ethereum = baseSecrets.getEthereumBackupSecrets(),
             chainAccounts = chainAccountsFromChainSecrets + chainAccountFromAdditionalSecrets,
+            bitcoin = baseSecrets.getBitcoinBackupSecrets(),
         )
     }
 
@@ -466,7 +470,9 @@ class RealLocalAccountsCloudBackupFacade(
             substrateKeyPair = substrate?.keypair?.toLocalKeyPair() ?: return null,
             substrateDerivationPath = substrate?.derivationPath,
             ethereumKeypair = ethereum?.keypair?.toLocalKeyPair(),
-            ethereumDerivationPath = ethereum?.derivationPath
+            ethereumDerivationPath = ethereum?.derivationPath,
+            bitcoinKeypair = bitcoin?.keypair?.toLocalKeyPair(),
+            bitcoinDerivationPath = bitcoin?.derivationPath
         )
     }
 
@@ -476,6 +482,15 @@ class RealLocalAccountsCloudBackupFacade(
         return CloudBackup.WalletPrivateInfo.EthereumSecrets(
             keypair = ethereumKeypair?.toBackupKeypairSecrets() ?: return null,
             derivationPath = ethereumDerivationPath
+        )
+    }
+
+    private fun EncodableStruct<MetaAccountSecrets>?.getBitcoinBackupSecrets(): CloudBackup.WalletPrivateInfo.BitcoinSecrets? {
+        if (this == null) return null
+
+        return CloudBackup.WalletPrivateInfo.BitcoinSecrets(
+            keypair = bitcoinKeypair?.toBackupKeypairSecrets() ?: return null,
+            derivationPath = bitcoinDerivationPath
         )
     }
 
@@ -520,7 +535,9 @@ class RealLocalAccountsCloudBackupFacade(
             ethereumPublicKey = metaAccount.ethereumPublicKey,
             name = metaAccount.name,
             type = metaAccount.type.toBackupWalletType() ?: return null,
-            chainAccounts = chainAccounts.mapToSet { chainAccount -> chainAccount.toBackupPublicChainAccount(chainsById) }
+            chainAccounts = chainAccounts.mapToSet { chainAccount -> chainAccount.toBackupPublicChainAccount(chainsById) },
+            bitcoinAddress = metaAccount.bitcoinAddress,
+            bitcoinPublicKey = metaAccount.bitcoinPublicKey
         )
     }
 
@@ -542,7 +559,9 @@ class RealLocalAccountsCloudBackupFacade(
             isSelected = isSelected,
             position = accountPosition,
             status = MetaAccountLocal.Status.ACTIVE,
-            typeExtras = null
+            typeExtras = null,
+            bitcoinAddress = bitcoinAddress,
+            bitcoinPublicKey = bitcoinPublicKey
         ).also {
             if (localIdOverwrite != null) {
                 it.id = localIdOverwrite

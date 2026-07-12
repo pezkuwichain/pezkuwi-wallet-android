@@ -23,6 +23,8 @@ data class ChainLocal(
     val isEthereumBased: Boolean,
     @ColumnInfo(defaultValue = "0")
     val isTronBased: Boolean,
+    @ColumnInfo(defaultValue = "0")
+    val isBitcoinBased: Boolean,
     val isTestNet: Boolean,
     @ColumnInfo(defaultValue = "1")
     val hasSubstrateRuntime: Boolean,

@@ -272,6 +272,7 @@ fun Chain.requireGenesisHash() = requireNotNull(genesisHash)
 fun Chain.addressOf(accountId: ByteArray): String {
     return when {
         isTronBased -> accountId.toTronAddress()
+        isBitcoinBased -> accountId.toBitcoinAddress()
         isEthereumBased -> accountId.toEthereumAddress()
         else -> accountId.toAddress(addressPrefix.toShort())
     }
@@ -282,7 +283,7 @@ fun Chain.addressOf(accountId: AccountIdKey): String {
 }
 
 fun Chain.legacyAddressOfOrNull(accountId: ByteArray): String? {
-    return if (isEthereumBased || isTronBased) {
+    return if (isEthereumBased || isTronBased || isBitcoinBased) {
         null
     } else {
         legacyAddressPrefix?.let { accountId.toAddress(it.toShort()) }
@@ -296,6 +297,7 @@ fun ByteArray.toEthereumAddress(): String {
 fun Chain.accountIdOf(address: String): ByteArray {
     return when {
         isTronBased -> address.tronAddressToAccountId()
+        isBitcoinBased -> address.bitcoinAddressToAccountId()
         isEthereumBased -> address.asEthereumAddress().toAccountId().value
         else -> address.toAccountId()
     }
@@ -329,6 +331,7 @@ fun Chain.accountIdOrNull(address: String): ByteArray? {
 
 fun Chain.emptyAccountId() = when {
     isTronBased -> emptyTronAccountId()
+    isBitcoinBased -> emptyBitcoinAccountId()
     isEthereumBased -> emptyEthereumAccountId()
     else -> emptySubstrateAccountId()
 }
@@ -342,6 +345,7 @@ fun Chain.accountIdOrDefault(maybeAddress: String): ByteArray {
 fun Chain.accountIdOf(publicKey: ByteArray): ByteArray {
     return when {
         isTronBased -> publicKey.tronPublicKeyToAccountId()
+        isBitcoinBased -> publicKey.bitcoinPublicKeyToAccountId()
         isEthereumBased -> publicKey.asEthereumPublicKey().toAccountId().value
         else -> publicKey.substrateAccountId()
     }
@@ -361,13 +365,15 @@ fun Chain.multiAddressOf(accountId: ByteArray): MultiAddress {
 
 fun Chain.isValidAddress(address: String): Boolean {
     return runCatching {
-        if (isEthereumBased) {
-            address.asEthereumAddress().isValid()
-        } else {
-            address.toAccountId() // verify supplied address can be converted to account id
+        when {
+            isBitcoinBased -> address.isValidBitcoinAddress()
+            isEthereumBased -> address.asEthereumAddress().isValid()
+            else -> {
+                address.toAccountId() // verify supplied address can be converted to account id
 
-            addressPrefix.toShort() == address.addressPrefix() ||
-                legacyAddressPrefix?.toShort() == address.addressPrefix()
+                addressPrefix.toShort() == address.addressPrefix() ||
+                    legacyAddressPrefix?.toShort() == address.addressPrefix()
+            }
         }
     }.getOrDefault(false)
 }
