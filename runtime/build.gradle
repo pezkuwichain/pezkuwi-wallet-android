@@ -21,6 +21,7 @@ android {
 
         buildConfigField "String", "INFURA_API_KEY", readStringSecret("INFURA_API_KEY")
         buildConfigField "String", "DWELLIR_API_KEY", readStringSecret("DWELLIR_API_KEY")
+        buildConfigField "String", "TRONGRID_API_KEY", readStringSecret("TRONGRID_API_KEY")
     }
 
     buildTypes {
