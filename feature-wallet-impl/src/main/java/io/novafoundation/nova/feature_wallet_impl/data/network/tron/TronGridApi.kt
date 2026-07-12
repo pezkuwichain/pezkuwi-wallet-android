@@ -14,6 +14,8 @@ import io.novafoundation.nova.feature_wallet_impl.data.network.tron.model.TronUn
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.transaction.Trc20TransferAbi
 import io.novasama.substrate_sdk_android.extensions.fromHex
 import io.novasama.substrate_sdk_android.runtime.AccountId
+import kotlinx.coroutines.delay
+import retrofit2.HttpException
 import java.math.BigInteger
 
 /**
@@ -95,6 +97,24 @@ class RealTronGridApi(
     private val retrofitApi: RetrofitTronGridApi
 ) : TronGridApi {
 
+    // TronGrid's public (no API key) endpoint rate-limits aggressively - confirmed live to return a bare HTTP
+    // 429 under normal, human-paced usage (not just load testing) once a handful of requests land in a short
+    // window. Without this, a 429 on any call in the send flow (fee estimation re-runs on every keystroke,
+    // broadcast, etc.) surfaced straight to the user as a raw error dialog, and the only way through was to
+    // keep tapping Confirm until a request happened to land outside the rate-limit window. Retrying here means
+    // every TronGrid call gets this transparently, not just the ones a caller remembered to wrap.
+    private suspend fun <T> retryOn429(maxAttempts: Int = 4, block: suspend () -> T): T {
+        repeat(maxAttempts - 1) { attempt ->
+            try {
+                return block()
+            } catch (e: HttpException) {
+                if (e.code() != 429) throw e
+                delay(1_000L * (attempt + 1))
+            }
+        }
+        return block()
+    }
+
     override suspend fun fetchNativeBalance(baseUrl: String, address: String): Balance {
         val accountData = fetchAccountData(baseUrl, address) ?: return BigInteger.ZERO
 
@@ -127,7 +147,7 @@ class RealTronGridApi(
             amount = amountSun.toLongExactOrThrow("amount")
         )
 
-        val response = retrofitApi.createTransaction(walletUrl(baseUrl, "createtransaction"), request)
+        val response = retryOn429 { retrofitApi.createTransaction(walletUrl(baseUrl, "createtransaction"), request) }
 
         return response.requireConstructed()
     }
@@ -146,7 +166,7 @@ class RealTronGridApi(
             parameter = parameterHex
         )
 
-        return retrofitApi.triggerConstantContract(walletUrl(baseUrl, "triggerconstantcontract"), request)
+        return retryOn429 { retrofitApi.triggerConstantContract(walletUrl(baseUrl, "triggerconstantcontract"), request) }
     }
 
     override suspend fun triggerSmartContract(
@@ -165,7 +185,7 @@ class RealTronGridApi(
             feeLimit = feeLimitSun.toLongExactOrThrow("feeLimit")
         )
 
-        val response = retrofitApi.triggerSmartContract(walletUrl(baseUrl, "triggersmartcontract"), request)
+        val response = retryOn429 { retrofitApi.triggerSmartContract(walletUrl(baseUrl, "triggersmartcontract"), request) }
 
         if (response.result?.result != true) {
             throw TronApiException(response.result?.message ?: response.result?.code ?: "triggersmartcontract failed without a message")
@@ -188,7 +208,10 @@ class RealTronGridApi(
             signature = listOf(signatureHex)
         )
 
-        val response = retrofitApi.broadcastTransaction(walletUrl(baseUrl, "broadcasttransaction"), request)
+        // Safe to retry on 429 specifically: a 429 means TronGrid rejected the request before processing it
+        // (rate limit), not that the transaction may have already been broadcast - unlike a timeout, it can't
+        // cause a double-send.
+        val response = retryOn429 { retrofitApi.broadcastTransaction(walletUrl(baseUrl, "broadcasttransaction"), request) }
 
         if (response.result != true) {
             throw TronApiException(response.decodeErrorMessage())
@@ -198,18 +221,18 @@ class RealTronGridApi(
     }
 
     override suspend fun getChainParameters(baseUrl: String): Map<String, Long> {
-        return retrofitApi.getChainParameters(walletUrl(baseUrl, "getchainparameters"))
+        return retryOn429 { retrofitApi.getChainParameters(walletUrl(baseUrl, "getchainparameters")) }
             .chainParameter
             .associate { it.key to it.value }
     }
 
     override suspend fun getAccountResource(baseUrl: String, addressHex: String): TronAccountResourceResponse {
-        return retrofitApi.getAccountResource(walletUrl(baseUrl, "getaccountresource"), TronAddressRequest(address = addressHex))
+        return retryOn429 { retrofitApi.getAccountResource(walletUrl(baseUrl, "getaccountresource"), TronAddressRequest(address = addressHex)) }
     }
 
-    private suspend fun fetchAccountData(baseUrl: String, address: String) = retrofitApi.getAccount(
-        url = accountUrl(baseUrl, address)
-    ).data?.firstOrNull()
+    private suspend fun fetchAccountData(baseUrl: String, address: String) = retryOn429 {
+        retrofitApi.getAccount(url = accountUrl(baseUrl, address))
+    }.data?.firstOrNull()
 
     private fun accountUrl(baseUrl: String, address: String): String {
         return "${baseUrl.trimEnd('/')}/v1/accounts/$address"
