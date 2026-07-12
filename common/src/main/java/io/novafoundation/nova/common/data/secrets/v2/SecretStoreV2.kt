@@ -156,17 +156,21 @@ val AccountSecrets.isChainAccountSecrets
 suspend fun SecretStoreV2.getMetaAccountKeypair(
     metaId: Long,
     isEthereum: Boolean,
+    isBitcoin: Boolean = false,
 ): Keypair = withContext(Dispatchers.Default) {
     val secrets = getMetaAccountSecrets(metaId) ?: noMetaSecrets(metaId)
 
-    mapMetaAccountSecretsToKeypair(secrets, isEthereum)
+    mapMetaAccountSecretsToKeypair(secrets, isEthereum, isBitcoin)
 }
 
 fun mapMetaAccountSecretsToKeypair(
     secrets: EncodableStruct<MetaAccountSecrets>,
     ethereum: Boolean,
+    bitcoin: Boolean = false,
 ): Keypair {
-    val keypairStruct = if (ethereum) {
+    val keypairStruct = if (bitcoin) {
+        secrets[MetaAccountSecrets.BitcoinKeypair] ?: noBitcoinSecret()
+    } else if (ethereum) {
         secrets[MetaAccountSecrets.EthereumKeypair] ?: noEthereumSecret()
     } else {
         secrets[MetaAccountSecrets.SubstrateKeypair]
@@ -178,8 +182,11 @@ fun mapMetaAccountSecretsToKeypair(
 fun mapMetaAccountSecretsToDerivationPath(
     secrets: EncodableStruct<MetaAccountSecrets>,
     ethereum: Boolean,
+    bitcoin: Boolean = false,
 ): String? {
-    return if (ethereum) {
+    return if (bitcoin) {
+        secrets[MetaAccountSecrets.BitcoinDerivationPath]
+    } else if (ethereum) {
         secrets[MetaAccountSecrets.EthereumDerivationPath]
     } else {
         secrets[MetaAccountSecrets.SubstrateDerivationPath]
@@ -197,6 +204,8 @@ private fun noChainSecrets(metaId: Long, accountId: ByteArray): Nothing {
 }
 
 private fun noEthereumSecret(): Nothing = error("No ethereum keypair found")
+
+private fun noBitcoinSecret(): Nothing = error("No bitcoin keypair found")
 
 fun mapKeypairStructToKeypair(struct: EncodableStruct<KeyPairSchema>): Keypair {
     return Keypair(

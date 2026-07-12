@@ -8,4 +8,6 @@ sealed interface TransactionExecution {
     class Ethereum(val ethereumTransactionExecution: EthereumTransactionExecution) : TransactionExecution
 
     class Substrate(val extrinsicExecutionResult: ExtrinsicExecutionResult) : TransactionExecution
+
+    class Bitcoin(val hash: String) : TransactionExecution
 }

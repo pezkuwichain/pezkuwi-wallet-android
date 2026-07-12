@@ -146,7 +146,8 @@ class SecretsSigner(
         return secretStoreV2.getKeypair(
             metaAccount = metaAccount,
             accountId = accountId,
-            isEthereumBased = multiChainEncryption is MultiChainEncryption.Ethereum
+            isEthereumBased = multiChainEncryption is MultiChainEncryption.Ethereum,
+            isBitcoinBased = metaAccount.bitcoinAddress?.contentEquals(accountId) == true
         )
     }
 
@@ -159,11 +160,12 @@ class SecretsSigner(
     private suspend fun SecretStoreV2.getKeypair(
         metaAccount: MetaAccount,
         accountId: AccountId,
-        isEthereumBased: Boolean
+        isEthereumBased: Boolean,
+        isBitcoinBased: Boolean = false,
     ) = if (hasChainSecrets(metaAccount.id, accountId)) {
         getChainAccountKeypair(metaAccount.id, accountId)
     } else {
-        getMetaAccountKeypair(metaAccount.id, isEthereumBased)
+        getMetaAccountKeypair(metaAccount.id, isEthereumBased, isBitcoinBased)
     }
 
     /**
@@ -173,6 +175,7 @@ class SecretsSigner(
         return when {
             substrateAccountId.contentEquals(accountId) -> substrateCryptoType?.let(MultiChainEncryption.Companion::substrateFrom)
             ethereumAccountId().contentEquals(accountId) -> MultiChainEncryption.Ethereum
+            bitcoinAddress?.contentEquals(accountId) == true -> MultiChainEncryption.Ethereum
             else -> {
                 val chainAccount = chainAccounts.values.firstOrNull { it.accountId.contentEquals(accountId) } ?: return null
                 val cryptoType = chainAccount.cryptoType ?: return null

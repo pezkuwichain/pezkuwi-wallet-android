@@ -4,26 +4,31 @@ import dagger.Module
 import dagger.Provides
 import io.novafoundation.nova.common.data.network.NetworkApiCreator
 import io.novafoundation.nova.common.di.scope.FeatureScope
+import io.novafoundation.nova.feature_account_api.data.signer.SignerProvider
+import io.novafoundation.nova.feature_account_api.domain.interfaces.AccountRepository
 import io.novafoundation.nova.feature_wallet_api.data.cache.AssetCache
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.AssetSource
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.AssetSourceRegistry
 import io.novafoundation.nova.feature_wallet_impl.data.network.bitcoin.BitcoinApi
 import io.novafoundation.nova.feature_wallet_impl.data.network.bitcoin.RealBitcoinApi
 import io.novafoundation.nova.feature_wallet_impl.data.network.bitcoin.RetrofitBitcoinApi
+import io.novafoundation.nova.feature_wallet_impl.data.network.bitcoin.transaction.BitcoinTransactionService
+import io.novafoundation.nova.feature_wallet_impl.data.network.bitcoin.transaction.RealBitcoinTransactionService
 import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.StaticAssetSource
 import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.balances.bitcoinNative.BitcoinNativeAssetBalance
 import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.history.UnsupportedAssetHistory
-import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.transfers.UnsupportedAssetTransfers
+import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.transfers.bitcoinNative.BitcoinNativeAssetTransfers
 import javax.inject.Qualifier
 
 @Qualifier
 annotation class BitcoinNativeAssets
 
 /**
- * Bitcoin support - Phase 4, read-only.
+ * Bitcoin support: `balance` (REST polling against mempool.space) and `transfers` (client-side UTXO selection,
+ * BIP143 signing, raw broadcast - see `RealBitcoinTransactionService` for the full construction/signing notes).
  *
- * Only `balance` is implemented for real; `transfers`/`history` reuse the same `Unsupported*` stubs the rest of
- * the app uses for asset types with no send/history support yet (see `TronAssetsModule` for the identical
- * Phase-1 precedent this mirrors). Send support is separate, later work.
+ * `history` remains unsupported (out of scope for this phase, same as the rest of the app's `Unsupported*`
+ * stubs used for asset types without history support - see `TronAssetsModule` for the identical precedent).
  */
 @Module
 class BitcoinAssetsModule {
@@ -40,17 +45,36 @@ class BitcoinAssetsModule {
 
     @Provides
     @FeatureScope
+    fun provideBitcoinTransactionService(
+        accountRepository: AccountRepository,
+        signerProvider: SignerProvider,
+        bitcoinApi: BitcoinApi,
+    ): BitcoinTransactionService = RealBitcoinTransactionService(
+        accountRepository = accountRepository,
+        signerProvider = signerProvider,
+        bitcoinApi = bitcoinApi
+    )
+
+    @Provides
+    @FeatureScope
     fun provideBitcoinNativeBalance(assetCache: AssetCache, bitcoinApi: BitcoinApi) = BitcoinNativeAssetBalance(assetCache, bitcoinApi)
+
+    @Provides
+    @FeatureScope
+    fun provideBitcoinNativeAssetTransfers(
+        bitcoinTransactionService: BitcoinTransactionService,
+        assetSourceRegistry: AssetSourceRegistry,
+    ) = BitcoinNativeAssetTransfers(bitcoinTransactionService, assetSourceRegistry)
 
     @Provides
     @BitcoinNativeAssets
     @FeatureScope
     fun provideBitcoinNativeAssetSource(
         bitcoinNativeAssetBalance: BitcoinNativeAssetBalance,
-        unsupportedAssetTransfers: UnsupportedAssetTransfers,
+        bitcoinNativeAssetTransfers: BitcoinNativeAssetTransfers,
         unsupportedAssetHistory: UnsupportedAssetHistory,
     ): AssetSource = StaticAssetSource(
-        transfers = unsupportedAssetTransfers,
+        transfers = bitcoinNativeAssetTransfers,
         balance = bitcoinNativeAssetBalance,
         history = unsupportedAssetHistory
     )
