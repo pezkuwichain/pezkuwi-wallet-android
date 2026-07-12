@@ -121,6 +121,7 @@ private fun Chain.Asset.existentialDepositError(amount: BigDecimal): WillRemoveA
     is Type.Statemine -> WillRemoveAccount.WillTransferDust(amount)
     is Type.EvmErc20, is Type.EvmNative -> WillRemoveAccount.WillBurnDust
     is Type.Trc20, Type.TronNative -> WillRemoveAccount.WillBurnDust
+    Type.BitcoinNative -> WillRemoveAccount.WillBurnDust
     is Type.Equilibrium -> WillRemoveAccount.WillBurnDust
     Type.Unsupported -> throw IllegalArgumentException("Unsupported")
 }

@@ -637,6 +637,7 @@ val Chain.Asset.onChainAssetId: String?
         is Type.EvmNative -> null
         is Type.Trc20 -> this.type.contractAddress
         Type.TronNative -> null
+        Type.BitcoinNative -> null
         Type.Unsupported -> error("Unsupported assetId type: ${this.type::class.simpleName}")
     }
 
