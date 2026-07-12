@@ -37,6 +37,7 @@ import io.novafoundation.nova.runtime.multiNetwork.runtime.types.BaseTypeSynchro
 import io.novafoundation.nova.runtime.multiNetwork.runtime.types.TypesFetcher
 import io.novasama.substrate_sdk_android.wsrpc.SocketService
 import kotlinx.coroutines.flow.MutableStateFlow
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.web3j.protocol.http.HttpService
 import javax.inject.Provider
@@ -160,12 +161,14 @@ class ChainRegistryModule {
         socketProvider: Provider<SocketService>,
         bulkRetriever: BulkRetriever,
         connectionSecrets: ConnectionSecrets,
-        web3ApiFactory: Web3ApiFactory
+        web3ApiFactory: Web3ApiFactory,
+        httpClient: OkHttpClient,
     ) = NodeHealthStateTesterFactory(
         socketProvider,
         connectionSecrets,
         bulkRetriever,
-        web3ApiFactory
+        web3ApiFactory,
+        httpClient
     )
 
     @Provides

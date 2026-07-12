@@ -139,6 +139,12 @@ data class Chain(
                 val contractAddress: String
             ) : Type()
 
+            /**
+             * Native BTC balance on a Bitcoin-based chain.
+             * Balance is fetched from a mempool.space-style REST API rather than JSON-RPC.
+             */
+            object BitcoinNative : Type()
+
             object Unsupported : Type()
         }
 

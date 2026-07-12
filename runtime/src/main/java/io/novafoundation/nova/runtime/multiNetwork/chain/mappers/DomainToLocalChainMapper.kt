@@ -69,6 +69,8 @@ fun mapChainAssetTypeToRaw(type: Chain.Asset.Type): Pair<String, Map<String, Any
         ASSET_EQUILIBRIUM_ON_CHAIN_ID to type.id.toString()
     )
 
+    Chain.Asset.Type.BitcoinNative -> ASSET_BITCOIN_NATIVE to null
+
     Chain.Asset.Type.Unsupported -> ASSET_UNSUPPORTED to null
 }
 

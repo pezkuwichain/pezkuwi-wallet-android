@@ -560,6 +560,18 @@ fun Chain.requireTronGridBaseUrl(): String {
     }
 }
 
+/**
+ * The mempool.space-style REST API base url for a Bitcoin-based chain - same rationale as [requireTronGridBaseUrl]:
+ * Bitcoin has no JSON-RPC/WS node concept at all, so the configured `nodes` entry directly *is* the REST API base url.
+ */
+fun Chain.requireMempoolSpaceBaseUrl(): String {
+    require(isBitcoinBased) { "Chain $id is not Bitcoin-based" }
+
+    return requireNotNull(nodes.nodes.minByOrNull { it.orderId }?.unformattedUrl) {
+        "No mempool.space-style node configured for chain $id"
+    }
+}
+
 fun Chain.Asset.requireEquilibrium(): Type.Equilibrium {
     require(type is Type.Equilibrium)
 

@@ -12,6 +12,8 @@ const val ASSET_EVM_NATIVE = "evmNative"
 const val ASSET_TRON_NATIVE = "tronNative"
 const val ASSET_TRC20 = "trc20"
 
+const val ASSET_BITCOIN_NATIVE = "bitcoinNative"
+
 const val ASSET_EQUILIBRIUM = "equilibrium"
 const val ASSET_EQUILIBRIUM_ON_CHAIN_ID = "assetId"
 
