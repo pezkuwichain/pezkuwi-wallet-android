@@ -62,6 +62,9 @@ on:
       # RPC provider - use own nodes or Dwellir
       DWELLIR_API_KEY:
         required: false
+      # Tron - raises TronGrid's aggressive anonymous rate limit
+      TRONGRID_API_KEY:
+        required: false
       # WalletConnect - REQUIRED for dApp connections
       WALLET_CONNECT_PROJECT_ID:
         required: true
@@ -111,6 +114,7 @@ env:
   EHTERSCAN_API_KEY_ETHEREUM: ${{ secrets.EHTERSCAN_API_KEY_ETHEREUM }}
   INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
   DWELLIR_API_KEY: ${{ secrets.DWELLIR_API_KEY }}
+  TRONGRID_API_KEY: ${{ secrets.TRONGRID_API_KEY }}
   WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
   DEBUG_GOOGLE_OAUTH_ID:  ${{ secrets.DEBUG_GOOGLE_OAUTH_ID }}
   RELEASE_GOOGLE_OAUTH_ID:  ${{ secrets.RELEASE_GOOGLE_OAUTH_ID }}
