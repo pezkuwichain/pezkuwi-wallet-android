@@ -22,7 +22,10 @@ class BitcoinTransactionTest {
     private val input0Txid = "9f96ade4b41d5433f4eda31e1738ec2b36f6e7d1420d94a6af99801a88f7f7ff".fromHex()
     private val input1Txid = "8ac60eb9575db5b2d987e29f301b5b819ea83a5c6579d282d189cc04b8e151ef".fromHex()
 
-    private val input0 = BitcoinInput(txid = input0Txid, vout = 0, valueSat = 625_000_000L, sequence = 0xeeffffffL)
+    // sequence is the *value* that gets LE-encoded, NOT the wire bytes - the doc shows input 0's on-wire
+    // sequence bytes as "eeffffff", which as a little-endian integer is 0xffffffee, not 0xeeffffff (a
+    // transcription of this exact off-by-reversal was caught by a failing CI run before this fix).
+    private val input0 = BitcoinInput(txid = input0Txid, vout = 0, valueSat = 625_000_000L, sequence = 0xffffffeeL)
     private val input1 = BitcoinInput(txid = input1Txid, vout = 1, valueSat = 600_000_000L, sequence = 0xffffffffL)
 
     private val output0 = BitcoinOutput(
