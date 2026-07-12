@@ -208,7 +208,12 @@ class RealTronTransactionService(
     }
 
     private suspend fun estimateNativeFee(baseUrl: String, ownerHex: String, recipient: AccountId, amountSun: BigInteger): BigInteger {
-        val unsigned = tronGridApi.createNativeTransfer(baseUrl, ownerHex, recipient.toTronHexAddress(), amountSun)
+        // TronGrid's createtransaction rejects amount=0 outright with a ContractValidateException (confirmed
+        // live) - the send screen's fee loader calls calculateFee reactively as the user types, including before
+        // any amount has been entered. Substitute a minimal placeholder purely for this dry-run construction call;
+        // it does not affect the real amount used when the transfer is actually built in transact().
+        val dryRunAmountSun = amountSun.takeIf { it > BigInteger.ZERO } ?: BigInteger.ONE
+        val unsigned = tronGridApi.createNativeTransfer(baseUrl, ownerHex, recipient.toTronHexAddress(), dryRunAmountSun)
         val txSizeBytes = requireNotNull(unsigned.rawDataHex) { "TronGrid returned no raw_data_hex" }.length / 2
 
         val resource = runCatching { tronGridApi.getAccountResource(baseUrl, ownerHex) }.getOrDefault(EMPTY_RESOURCE)
