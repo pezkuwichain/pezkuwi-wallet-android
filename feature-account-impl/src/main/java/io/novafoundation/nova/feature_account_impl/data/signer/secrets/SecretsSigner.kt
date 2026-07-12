@@ -142,11 +142,13 @@ class SecretsSigner(
     private suspend fun getKeypair(accountId: AccountId): Keypair {
         val chainsById = chainRegistry.chainsById()
         val multiChainEncryption = metaAccount.multiChainEncryptionFor(accountId, chainsById)!!
+        val isTronBased = metaAccount.tronAddress?.contentEquals(accountId) == true
 
         return secretStoreV2.getKeypair(
             metaAccount = metaAccount,
             accountId = accountId,
-            isEthereumBased = multiChainEncryption is MultiChainEncryption.Ethereum
+            isEthereumBased = multiChainEncryption is MultiChainEncryption.Ethereum,
+            isTronBased = isTronBased
         )
     }
 
@@ -159,11 +161,12 @@ class SecretsSigner(
     private suspend fun SecretStoreV2.getKeypair(
         metaAccount: MetaAccount,
         accountId: AccountId,
-        isEthereumBased: Boolean
+        isEthereumBased: Boolean,
+        isTronBased: Boolean = false,
     ) = if (hasChainSecrets(metaAccount.id, accountId)) {
         getChainAccountKeypair(metaAccount.id, accountId)
     } else {
-        getMetaAccountKeypair(metaAccount.id, isEthereumBased)
+        getMetaAccountKeypair(metaAccount.id, isEthereumBased, isTronBased)
     }
 
     /**
@@ -173,6 +176,10 @@ class SecretsSigner(
         return when {
             substrateAccountId.contentEquals(accountId) -> substrateCryptoType?.let(MultiChainEncryption.Companion::substrateFrom)
             ethereumAccountId().contentEquals(accountId) -> MultiChainEncryption.Ethereum
+            // Tron reuses the exact same secp256k1 signing scheme as Ethereum - it just has its own accountId
+            // (different SLIP-44 derivation path), so it doesn't match ethereumAccountId() above and was
+            // falling through to the chainAccounts lookup, which doesn't cover it either -> null -> NPE on `!!`.
+            tronAddress?.contentEquals(accountId) == true -> MultiChainEncryption.Ethereum
             else -> {
                 val chainAccount = chainAccounts.values.firstOrNull { it.accountId.contentEquals(accountId) } ?: return null
                 val cryptoType = chainAccount.cryptoType ?: return null
