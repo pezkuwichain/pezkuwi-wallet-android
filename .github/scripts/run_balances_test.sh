@@ -35,7 +35,7 @@ t.start()
 
 def run():
   os.system('adb wait-for-device')
-  p = sp.Popen('adb shell am instrument -w -m -e debug false -e class "io.novafoundation.nova.balances.BalancesIntegrationTest" io.pezkuwichain.wallet.debug.test/io.qameta.allure.android.runners.AllureAndroidJUnitRunner',
+  p = sp.Popen('adb shell am instrument -w -m -e debug false -e package "io.novafoundation.nova.balances" io.pezkuwichain.wallet.debug.test/io.qameta.allure.android.runners.AllureAndroidJUnitRunner',
                shell=True, stdout=sp.PIPE, stderr=sp.PIPE, stdin=sp.PIPE)
   return p.communicate()
 success = re.compile(r'OK \(\d+ tests\)')

@@ -131,6 +131,10 @@ class StatemineAssetBalance(
         )
     }
 
+    // Deliberately lets setup/subscription failures propagate as exceptions rather than swallowing them into
+    // emptyFlow()/BalanceSyncUpdate.NoCause: the caller, FullSyncPaymentUpdater.syncAsset(), wraps this whole
+    // call in a single retryWhen boundary that exists specifically to catch and retry failures like these. If
+    // we swallow here, that boundary never triggers - the asset silently stops syncing instead of retrying.
     override suspend fun startSyncingBalance(
         chain: Chain,
         chainAsset: Chain.Asset,
@@ -138,40 +142,32 @@ class StatemineAssetBalance(
         accountId: AccountId,
         subscriptionBuilder: SharedRequestsBuilder
     ): Flow<BalanceSyncUpdate> {
-        return runCatching {
-            val runtime = chainRegistry.getRuntime(chain.id)
+        val runtime = chainRegistry.getRuntime(chain.id)
 
-            val statemineType = chainAsset.requireStatemine()
-            val encodableAssetId = statemineType.prepareIdForEncoding(runtime)
+        val statemineType = chainAsset.requireStatemine()
+        val encodableAssetId = statemineType.prepareIdForEncoding(runtime)
 
-            val module = runtime.metadata.statemineModule(statemineType)
+        val module = runtime.metadata.statemineModule(statemineType)
 
-            val assetAccountStorage = module.storage("Account")
-            val assetAccountKey = assetAccountStorage.storageKey(runtime, encodableAssetId, accountId)
+        val assetAccountStorage = module.storage("Account")
+        val assetAccountKey = assetAccountStorage.storageKey(runtime, encodableAssetId, accountId)
 
-            val assetDetailsFlow = statemineAssetsRepository.subscribeAndSyncAssetDetails(chain.id, statemineType, subscriptionBuilder)
+        val assetDetailsFlow = statemineAssetsRepository.subscribeAndSyncAssetDetails(chain.id, statemineType, subscriptionBuilder)
 
-            combine(
-                subscriptionBuilder.subscribe(assetAccountKey),
-                assetDetailsFlow.map { it.status.transfersFrozen }
-            ) { balanceStorageChange, isAssetFrozen ->
-                val assetAccountDecoded = assetAccountStorage.decodeValue(balanceStorageChange.value, runtime)
-                val assetAccount = bindAssetAccountOrEmpty(assetAccountDecoded)
+        return combine(
+            subscriptionBuilder.subscribe(assetAccountKey),
+            assetDetailsFlow.map { it.status.transfersFrozen }
+        ) { balanceStorageChange, isAssetFrozen ->
+            val assetAccountDecoded = assetAccountStorage.decodeValue(balanceStorageChange.value, runtime)
+            val assetAccount = bindAssetAccountOrEmpty(assetAccountDecoded)
 
-                val assetChanged = updateAssetBalance(metaAccount.id, chainAsset, isAssetFrozen, assetAccount)
+            val assetChanged = updateAssetBalance(metaAccount.id, chainAsset, isAssetFrozen, assetAccount)
 
-                if (assetChanged) {
-                    BalanceSyncUpdate.CauseFetchable(balanceStorageChange.block)
-                } else {
-                    BalanceSyncUpdate.NoCause
-                }
-            }.catch { error ->
-                Log.e(LOG_TAG, "Balance sync failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
-                emit(BalanceSyncUpdate.NoCause)
+            if (assetChanged) {
+                BalanceSyncUpdate.CauseFetchable(balanceStorageChange.block)
+            } else {
+                BalanceSyncUpdate.NoCause
             }
-        }.getOrElse { error ->
-            Log.e(LOG_TAG, "Failed to start balance sync for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
-            emptyFlow()
         }
     }
 

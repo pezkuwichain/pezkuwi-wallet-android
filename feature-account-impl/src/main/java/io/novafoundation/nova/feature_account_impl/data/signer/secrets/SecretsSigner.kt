@@ -142,12 +142,15 @@ class SecretsSigner(
     private suspend fun getKeypair(accountId: AccountId): Keypair {
         val chainsById = chainRegistry.chainsById()
         val multiChainEncryption = metaAccount.multiChainEncryptionFor(accountId, chainsById)!!
+        val isTronBased = metaAccount.tronAddress?.contentEquals(accountId) == true
+        val isBitcoinBased = metaAccount.bitcoinAddress?.contentEquals(accountId) == true
 
         return secretStoreV2.getKeypair(
             metaAccount = metaAccount,
             accountId = accountId,
             isEthereumBased = multiChainEncryption is MultiChainEncryption.Ethereum,
-            isBitcoinBased = metaAccount.bitcoinAddress?.contentEquals(accountId) == true
+            isTronBased = isTronBased,
+            isBitcoinBased = isBitcoinBased
         )
     }
 
@@ -161,11 +164,12 @@ class SecretsSigner(
         metaAccount: MetaAccount,
         accountId: AccountId,
         isEthereumBased: Boolean,
+        isTronBased: Boolean = false,
         isBitcoinBased: Boolean = false,
     ) = if (hasChainSecrets(metaAccount.id, accountId)) {
         getChainAccountKeypair(metaAccount.id, accountId)
     } else {
-        getMetaAccountKeypair(metaAccount.id, isEthereumBased, isBitcoinBased)
+        getMetaAccountKeypair(metaAccount.id, isEthereumBased, isTronBased, isBitcoinBased)
     }
 
     /**
@@ -175,6 +179,11 @@ class SecretsSigner(
         return when {
             substrateAccountId.contentEquals(accountId) -> substrateCryptoType?.let(MultiChainEncryption.Companion::substrateFrom)
             ethereumAccountId().contentEquals(accountId) -> MultiChainEncryption.Ethereum
+            // Tron and Bitcoin both reuse the exact same secp256k1 signing scheme as Ethereum - they just have
+            // their own accountId (different SLIP-44 derivation path), so neither matches ethereumAccountId()
+            // above and was falling through to the chainAccounts lookup, which doesn't cover them either ->
+            // null -> NPE on `!!`.
+            tronAddress?.contentEquals(accountId) == true -> MultiChainEncryption.Ethereum
             bitcoinAddress?.contentEquals(accountId) == true -> MultiChainEncryption.Ethereum
             else -> {
                 val chainAccount = chainAccounts.values.firstOrNull { it.accountId.contentEquals(accountId) } ?: return null

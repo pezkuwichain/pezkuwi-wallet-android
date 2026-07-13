@@ -75,6 +75,8 @@ interface WalletFeatureDependencies {
 
     val evmTransactionService: EvmTransactionService
 
+    val signerProvider: SignerProvider
+
     val chainAssetDao: ChainAssetDao
 
     val storageStorageSharedRequestsBuilderFactory: StorageSharedRequestsBuilderFactory

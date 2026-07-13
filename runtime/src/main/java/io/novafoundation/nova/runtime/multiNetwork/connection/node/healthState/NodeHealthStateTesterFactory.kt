@@ -27,6 +27,11 @@ class NodeHealthStateTesterFactory(
                 httpClient = httpClient
             )
 
+            chain.isTronBased -> TronNodeHealthStateTester(
+                node = node,
+                httpClient = httpClient
+            )
+
             chain.hasSubstrateRuntime -> SubstrateNodeHealthStateTester(
                 chain = chain,
                 socketService = socketServiceProvider.get(),

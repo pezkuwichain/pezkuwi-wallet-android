@@ -24,8 +24,16 @@ data class CloudBackup(
         val name: String,
         val type: Type,
         val chainAccounts: Set<ChainAccountInfo>,
-        // Nullable and defaulted so that Gson deserializing a backup written before Bitcoin support existed -
-        // which has no such field in its JSON at all - lands on null here rather than failing.
+        // All below are nullable and defaulted so that Gson deserializing a backup written before that
+        // particular chain family existed - which has no such field in its JSON at all - lands on null here
+        // rather than failing. Solana has no derivation anywhere in this codebase yet (no native support,
+        // unlike Tron/Bitcoin) - its fields are reserved now purely so that adding that support later never
+        // needs another silent-drop-prone trip through every call site that touches this schema, the way
+        // Tron/Bitcoin did when they were bolted onto a schema that only knew about substrate/ethereum.
+        val tronAddress: ByteArray? = null,
+        val tronPublicKey: ByteArray? = null,
+        val solanaAddress: ByteArray? = null,
+        val solanaPublicKey: ByteArray? = null,
         val bitcoinAddress: ByteArray? = null,
         val bitcoinPublicKey: ByteArray? = null,
     ) : Identifiable {
@@ -77,6 +85,10 @@ data class CloudBackup(
                 name == other.name &&
                 type == other.type &&
                 chainAccounts == other.chainAccounts &&
+                tronAddress.contentEquals(other.tronAddress) &&
+                tronPublicKey.contentEquals(other.tronPublicKey) &&
+                solanaAddress.contentEquals(other.solanaAddress) &&
+                solanaPublicKey.contentEquals(other.solanaPublicKey) &&
                 bitcoinAddress.contentEquals(other.bitcoinAddress) &&
                 bitcoinPublicKey.contentEquals(other.bitcoinPublicKey)
         }
@@ -91,6 +103,10 @@ data class CloudBackup(
             result = 31 * result + name.hashCode()
             result = 31 * result + type.hashCode()
             result = 31 * result + chainAccounts.hashCode()
+            result = 31 * result + (tronAddress?.contentHashCode() ?: 0)
+            result = 31 * result + (tronPublicKey?.contentHashCode() ?: 0)
+            result = 31 * result + (solanaAddress?.contentHashCode() ?: 0)
+            result = 31 * result + (solanaPublicKey?.contentHashCode() ?: 0)
             result = 31 * result + (bitcoinAddress?.contentHashCode() ?: 0)
             result = 31 * result + (bitcoinPublicKey?.contentHashCode() ?: 0)
             result = 31 * result + identifier.hashCode()
@@ -108,6 +124,10 @@ data class CloudBackup(
         val substrate: SubstrateSecrets?,
         val ethereum: EthereumSecrets?,
         val chainAccounts: List<ChainAccountSecrets>,
+        // See the matching comment on WalletPublicInfo: tron/bitcoin are fully wired end to end, solana is a
+        // schema-only reservation until native derivation for it exists.
+        val tron: TronSecrets? = null,
+        val solana: SolanaSecrets? = null,
         val bitcoin: BitcoinSecrets? = null,
     ) : Identifiable {
 
@@ -127,6 +147,8 @@ data class CloudBackup(
             if (substrate != other.substrate) return false
             if (ethereum != other.ethereum) return false
             if (chainAccounts != other.chainAccounts) return false
+            if (tron != other.tron) return false
+            if (solana != other.solana) return false
             if (bitcoin != other.bitcoin) return false
             return identifier == other.identifier
         }
@@ -137,6 +159,8 @@ data class CloudBackup(
             result = 31 * result + (substrate?.hashCode() ?: 0)
             result = 31 * result + (ethereum?.hashCode() ?: 0)
             result = 31 * result + chainAccounts.hashCode()
+            result = 31 * result + (tron?.hashCode() ?: 0)
+            result = 31 * result + (solana?.hashCode() ?: 0)
             result = 31 * result + (bitcoin?.hashCode() ?: 0)
             result = 31 * result + identifier.hashCode()
             return result
@@ -212,6 +236,17 @@ data class CloudBackup(
             val derivationPath: String?,
         )
 
+        data class TronSecrets(
+            val keypair: KeyPairSecrets,
+            val derivationPath: String?,
+        )
+
+        // Reserved shape for when native Solana derivation is added - unused until then, see the class-level comment.
+        data class SolanaSecrets(
+            val keypair: KeyPairSecrets,
+            val derivationPath: String?,
+        )
+
         data class BitcoinSecrets(
             val keypair: KeyPairSecrets,
             val derivationPath: String?,
@@ -250,5 +285,5 @@ data class CloudBackup(
 }
 
 fun CloudBackup.WalletPrivateInfo.isCompletelyEmpty(): Boolean {
-    return entropy == null && substrate == null && ethereum == null && bitcoin == null && chainAccounts.isEmpty()
+    return entropy == null && substrate == null && ethereum == null && tron == null && bitcoin == null && chainAccounts.isEmpty()
 }

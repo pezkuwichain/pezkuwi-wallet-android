@@ -156,24 +156,28 @@ val AccountSecrets.isChainAccountSecrets
 suspend fun SecretStoreV2.getMetaAccountKeypair(
     metaId: Long,
     isEthereum: Boolean,
+    isTron: Boolean = false,
     isBitcoin: Boolean = false,
 ): Keypair = withContext(Dispatchers.Default) {
     val secrets = getMetaAccountSecrets(metaId) ?: noMetaSecrets(metaId)
 
-    mapMetaAccountSecretsToKeypair(secrets, isEthereum, isBitcoin)
+    mapMetaAccountSecretsToKeypair(secrets, isEthereum, isTron, isBitcoin)
 }
 
 fun mapMetaAccountSecretsToKeypair(
     secrets: EncodableStruct<MetaAccountSecrets>,
     ethereum: Boolean,
+    tron: Boolean = false,
     bitcoin: Boolean = false,
 ): Keypair {
-    val keypairStruct = if (bitcoin) {
-        secrets[MetaAccountSecrets.BitcoinKeypair] ?: noBitcoinSecret()
-    } else if (ethereum) {
-        secrets[MetaAccountSecrets.EthereumKeypair] ?: noEthereumSecret()
-    } else {
-        secrets[MetaAccountSecrets.SubstrateKeypair]
+    // Tron and Bitcoin both reuse Ethereum's secp256k1 curve but derive their own keypair under a different
+    // SLIP-44 path - each must be checked before `ethereum`, not folded into it, or that account would get
+    // signed with the wrong (Ethereum) private key.
+    val keypairStruct = when {
+        tron -> secrets[MetaAccountSecrets.TronKeypair] ?: noTronSecret()
+        bitcoin -> secrets[MetaAccountSecrets.BitcoinKeypair] ?: noBitcoinSecret()
+        ethereum -> secrets[MetaAccountSecrets.EthereumKeypair] ?: noEthereumSecret()
+        else -> secrets[MetaAccountSecrets.SubstrateKeypair]
     }
 
     return mapKeypairStructToKeypair(keypairStruct)
@@ -206,6 +210,8 @@ private fun noChainSecrets(metaId: Long, accountId: ByteArray): Nothing {
 private fun noEthereumSecret(): Nothing = error("No ethereum keypair found")
 
 private fun noBitcoinSecret(): Nothing = error("No bitcoin keypair found")
+
+private fun noTronSecret(): Nothing = error("No tron keypair found")
 
 fun mapKeypairStructToKeypair(struct: EncodableStruct<KeyPairSchema>): Keypair {
     return Keypair(

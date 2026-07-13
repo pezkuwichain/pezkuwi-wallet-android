@@ -19,6 +19,7 @@ import io.novafoundation.nova.common.utils.formatNamed
 import io.novafoundation.nova.common.utils.isValidBitcoinAddress
 import io.novafoundation.nova.common.utils.removeHexPrefix
 import io.novafoundation.nova.common.utils.emptyTronAccountId
+import io.novafoundation.nova.common.utils.isValidTronAddress
 import io.novafoundation.nova.common.utils.substrateAccountId
 import io.novafoundation.nova.common.utils.toBitcoinAddress
 import io.novafoundation.nova.common.utils.toTronAddress
@@ -372,7 +373,13 @@ fun Chain.isValidAddress(address: String): Boolean {
     return runCatching {
         when {
             isBitcoinBased -> address.isValidBitcoinAddress()
+
+            // Tron addresses are Base58Check(0x41 ++ accountId), not SS58 or plain 0x-hex - neither of the two
+            // branches below would ever accept them, so this needs its own dedicated check.
+            isTronBased -> address.isValidTronAddress()
+
             isEthereumBased -> address.asEthereumAddress().isValid()
+
             else -> {
                 address.toAccountId() // verify supplied address can be converted to account id
 
@@ -492,6 +499,7 @@ object ChainGeneses {
 object ChainIds {
 
     const val ETHEREUM = "$EIP_155_PREFIX:1"
+    const val TRON = "tron:0x2b6653dc"
 
     const val MOONBEAM = ChainGeneses.MOONBEAM
     const val MOONRIVER = ChainGeneses.MOONRIVER
@@ -502,6 +510,33 @@ val Chain.Companion.Geneses
 
 val Chain.Companion.Ids
     get() = ChainIds
+
+/**
+ * A short, user-facing token-standard label for chains where disambiguating "which token standard is this"
+ * is actually useful (multiple ecosystems all issue their own USDT/USDC etc., so a bare chain name isn't
+ * always enough context). Deliberately NOT derived from [Chain.Asset.Type] (e.g. every Statemine-type chain
+ * would get the same label) - this is chain-specific by design, matching exactly which labels are
+ * recognizable/expected by users (PEZ-20, ERC-20, TRC-20), not a mechanical one-label-per-asset-type mapping.
+ */
+val Chain.assetStandardLabelOrNull: String?
+    get() = when {
+        genesisHash == Chain.Geneses.PEZKUWI_ASSET_HUB -> "PEZ-20"
+        id == Chain.Ids.ETHEREUM -> "ERC-20"
+        id == Chain.Ids.TRON -> "TRC-20"
+        else -> null
+    }
+
+/**
+ * Chain display name with its token-standard label appended where [assetStandardLabelOrNull] applies, e.g.
+ * "Ethereum (ERC-20)". Shared across every screen that lists the same token symbol once per chain (the
+ * Send/Receive/etc. network picker, the main balance list's per-token chain breakdown) - a bare chain name
+ * alone doesn't convey which issuance this is when multiple ecosystems share the same symbol.
+ */
+fun Chain.displayNameWithAssetStandard(): String {
+    val standardLabel = assetStandardLabelOrNull ?: return name
+
+    return "$name ($standardLabel)"
+}
 
 fun Chain.Asset.requireStatemine(): Type.Statemine {
     require(type is Type.Statemine)

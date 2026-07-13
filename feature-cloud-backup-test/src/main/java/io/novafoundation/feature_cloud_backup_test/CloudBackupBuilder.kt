@@ -7,6 +7,7 @@ import io.novafoundation.nova.feature_cloud_backup_api.domain.model.CloudBackup.
 import io.novafoundation.nova.feature_cloud_backup_api.domain.model.CloudBackup.WalletPrivateInfo.EthereumSecrets
 import io.novafoundation.nova.feature_cloud_backup_api.domain.model.CloudBackup.WalletPrivateInfo.KeyPairSecrets
 import io.novafoundation.nova.feature_cloud_backup_api.domain.model.CloudBackup.WalletPrivateInfo.SubstrateSecrets
+import io.novafoundation.nova.feature_cloud_backup_api.domain.model.CloudBackup.WalletPrivateInfo.TronSecrets
 import io.novafoundation.nova.feature_cloud_backup_api.domain.model.CloudBackup.WalletPublicInfo
 import io.novafoundation.nova.feature_cloud_backup_api.domain.model.CloudBackup.WalletPublicInfo.ChainAccountInfo
 import io.novafoundation.nova.feature_cloud_backup_api.domain.model.CloudBackup.WalletPublicInfo.ChainAccountInfo.ChainAccountCryptoType
@@ -99,6 +100,7 @@ class WalletPrivateInfoBuilder(
 
     private var substrate: SubstrateSecrets? = null
     private var ethereum: EthereumSecrets? = null
+    private var tron: TronSecrets? = null
 
     private val chainAccounts = mutableListOf<ChainAccountSecrets>()
 
@@ -114,6 +116,10 @@ class WalletPrivateInfoBuilder(
         ethereum = BackupEthereumSecretsBuilder().apply(builder).build()
     }
 
+    fun tron(builder: BackupTronSecretsBuilder.() -> Unit) {
+        tron = BackupTronSecretsBuilder().apply(builder).build()
+    }
+
     fun chainAccount(accountId: AccountId, builder: (BackupChainAccountSecretsBuilder.() -> Unit)? = null) {
         val element = BackupChainAccountSecretsBuilder(accountId).apply { builder?.invoke(this) }.build()
         chainAccounts.add(element)
@@ -126,6 +132,7 @@ class WalletPrivateInfoBuilder(
             substrate = substrate,
             ethereum = ethereum,
             chainAccounts = chainAccounts,
+            tron = tron,
         )
     }
 }
@@ -170,6 +177,25 @@ class BackupEthereumSecretsBuilder {
 
     fun build(): EthereumSecrets {
         return EthereumSecrets(requireNotNull(_keypair), _derivationPath)
+    }
+}
+
+@CloudBackupBuildDsl
+class BackupTronSecretsBuilder {
+
+    private var _keypair: KeyPairSecrets? = null
+    private var _derivationPath: String? = null
+
+    fun derivationPath(value: String?) {
+        _derivationPath = value
+    }
+
+    fun keypair(keypair: KeyPairSecrets) {
+        _keypair = keypair
+    }
+
+    fun build(): TronSecrets {
+        return TronSecrets(requireNotNull(_keypair), _derivationPath)
     }
 }
 
@@ -223,6 +249,8 @@ class WalletPublicInfoBuilder(
     private var _substrateAccountId: ByteArray? = null
     private var _ethereumPublicKey: ByteArray? = null
     private var _ethereumAddress: ByteArray? = null
+    private var _tronPublicKey: ByteArray? = null
+    private var _tronAddress: ByteArray? = null
     private var _name: String = ""
     private var _isSelected: Boolean = false
     private var _type: WalletPublicInfo.Type = WalletPublicInfo.Type.SECRETS
@@ -252,6 +280,14 @@ class WalletPublicInfoBuilder(
         _ethereumAddress = value
     }
 
+    fun tronPublicKey(value: ByteArray?) {
+        _tronPublicKey = value
+    }
+
+    fun tronAddress(value: ByteArray?) {
+        _tronAddress = value
+    }
+
     fun name(value: String) {
         _name = value
     }
@@ -274,7 +310,9 @@ class WalletPublicInfoBuilder(
             ethereumPublicKey = _ethereumPublicKey,
             name = _name,
             type = _type,
-            chainAccounts = chainAccounts.toSet()
+            chainAccounts = chainAccounts.toSet(),
+            tronAddress = _tronAddress,
+            tronPublicKey = _tronPublicKey,
         )
     }
 }
