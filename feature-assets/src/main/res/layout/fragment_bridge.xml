@@ -25,212 +25,51 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Pair Selector -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/bridgeFromLabel"
+                style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bridge_you_send"
+                android:textColor="@color/text_secondary" />
+
+            <io.novafoundation.nova.feature_assets.presentation.bridge.view.BridgeAssetInputView
+                android:id="@+id/bridgeFromCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_primary_list_item"
-                android:orientation="horizontal"
-                android:padding="4dp">
+                android:layout_marginTop="8dp" />
 
-                <TextView
-                    android:id="@+id/bridgePairDotHez"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_button_primary"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="DOT / HEZ"
-                    android:textColor="@color/text_primary"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/bridgePairUsdt"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="USDT"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
-
-            </LinearLayout>
-
-            <!-- Direction Toggle -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_primary_list_item"
-                android:orientation="horizontal"
-                android:padding="4dp">
-
-                <TextView
-                    android:id="@+id/bridgeDirectionLeft"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_button_primary"
-                    android:gravity="center"
-                    android:padding="12dp"
-                    android:text="DOT → HEZ"
-                    android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/bridgeDirectionRight"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="12dp"
-                    android:text="HEZ → DOT"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <!-- From Section -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:cardBackgroundColor="@color/block_background"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/bridgeFromLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bridge_you_send"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/bridgeFromAmount"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@null"
-                            android:hint="0.0"
-                            android:inputType="numberDecimal"
-                            android:textColor="@color/text_primary"
-                            android:textColorHint="@color/text_secondary"
-                            android:textSize="32sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/bridgeFromToken"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="DOT"
-                            android:textColor="@color/text_primary"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/bridgeFromBalance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        tools:text="Balance: 10.5 DOT" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Swap Icon -->
             <ImageView
+                android:id="@+id/bridgeFlipButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginVertical="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
-                android:src="@drawable/ic_bridge"
-                app:tint="@color/icon_secondary" />
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_flip_swap" />
 
-            <!-- To Section -->
-            <com.google.android.material.card.MaterialCardView
+            <TextView
+                android:id="@+id/bridgeToLabel"
+                style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/bridge_you_receive"
+                android:textColor="@color/text_secondary" />
+
+            <io.novafoundation.nova.feature_assets.presentation.bridge.view.BridgeAssetInputView
+                android:id="@+id/bridgeToCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/block_background"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/bridgeToLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bridge_you_receive"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/bridgeToAmount"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="0.0"
-                            android:textColor="@color/text_primary"
-                            android:textSize="32sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/bridgeToToken"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="HEZ"
-                            android:textColor="@color/text_primary"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
+                android:layout_marginTop="8dp" />
 
             <!-- Rate Info -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 app:cardBackgroundColor="@color/block_background"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
@@ -317,18 +156,14 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Warning for HEZ to DOT -->
-            <TextView
-                android:id="@+id/bridgeHezToDotWarning"
+            <!-- Warning for HEZ to DOT / USDT liquidity -->
+            <io.novafoundation.nova.common.view.AlertView
+                android:id="@+id/bridgeWarningAlert"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_warning"
-                android:padding="12dp"
-                android:text="@string/bridge_hez_to_dot_note"
-                android:textColor="@color/text_warning"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:alertMode="warning" />
 
         </LinearLayout>
 

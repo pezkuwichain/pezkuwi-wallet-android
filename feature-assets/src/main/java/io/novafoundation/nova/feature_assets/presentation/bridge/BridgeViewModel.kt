@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.novafoundation.nova.common.base.BaseViewModel
 import io.novafoundation.nova.common.resources.ResourceManager
+import io.novafoundation.nova.common.utils.images.Icon
 import io.novafoundation.nova.common.view.ButtonState
+import io.novafoundation.nova.feature_account_api.presenatation.chain.asIconOrFallback
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.send.amount.SendPayload
@@ -12,6 +14,7 @@ import io.novafoundation.nova.feature_wallet_api.presentation.model.AssetPayload
 import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.ext.addressOf
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
+import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -76,6 +79,15 @@ class BridgeViewModel(
     private val _warningText = MutableLiveData<String>()
     val warningText: LiveData<String> = _warningText
 
+    private val _fromCard = MutableLiveData<BridgeAssetCardUi>()
+    val fromCard: LiveData<BridgeAssetCardUi> = _fromCard
+
+    private val _toCard = MutableLiveData<BridgeAssetCardUi>()
+    val toCard: LiveData<BridgeAssetCardUi> = _toCard
+
+    private val _pairOptions = MutableLiveData<List<BridgePairUi>>(emptyList())
+    val pairOptions: LiveData<List<BridgePairUi>> = _pairOptions
+
     private var currentAmount: Double = 0.0
     private var dotToHezRate: Double = FALLBACK_RATE
     private var isHezToDotActive: Boolean = false
@@ -84,6 +96,8 @@ class BridgeViewModel(
     init {
         fetchExchangeRate()
         fetchBridgeStatus()
+        updateCards()
+        loadPairOptions()
     }
 
     fun setPair(newPair: BridgePair) {
@@ -97,6 +111,7 @@ class BridgeViewModel(
             updateUI()
             calculateOutput()
             updateWarningState()
+            updateCards()
         }
     }
 
@@ -111,6 +126,7 @@ class BridgeViewModel(
             updateUI()
             calculateOutput()
             updateWarningState()
+            updateCards()
         }
     }
 
@@ -125,6 +141,7 @@ class BridgeViewModel(
             updateUI()
             calculateOutput()
             updateWarningState()
+            updateCards()
         }
     }
 
@@ -322,4 +339,65 @@ class BridgeViewModel(
     fun refreshBridgeStatus() {
         fetchBridgeStatus()
     }
+
+    private fun updateCards() {
+        val dir = _direction.value ?: return
+
+        // Same chainId/assetId mapping already used by swapClicked() to resolve the origin side -
+        // mirrored here (plus its destination counterpart) purely to display logos/names, no new business rule.
+        val originChainId = when (dir) {
+            BridgeDirection.DOT_TO_HEZ, BridgeDirection.USDT_TO_WUSDT -> POLKADOT_ASSET_HUB_ID
+            BridgeDirection.HEZ_TO_DOT, BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_ASSET_HUB_ID
+        }
+        val destChainId = when (dir) {
+            BridgeDirection.DOT_TO_HEZ, BridgeDirection.USDT_TO_WUSDT -> PEZKUWI_ASSET_HUB_ID
+            BridgeDirection.HEZ_TO_DOT, BridgeDirection.WUSDT_TO_USDT -> POLKADOT_ASSET_HUB_ID
+        }
+        val originAssetId = when (dir) {
+            BridgeDirection.DOT_TO_HEZ, BridgeDirection.HEZ_TO_DOT -> UTILITY_ASSET_ID
+            BridgeDirection.USDT_TO_WUSDT -> POLKADOT_USDT_ASSET_ID
+            BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_USDT_ASSET_ID
+        }
+        val destAssetId = when (dir) {
+            BridgeDirection.DOT_TO_HEZ, BridgeDirection.HEZ_TO_DOT -> UTILITY_ASSET_ID
+            BridgeDirection.USDT_TO_WUSDT -> PEZKUWI_USDT_ASSET_ID
+            BridgeDirection.WUSDT_TO_USDT -> POLKADOT_USDT_ASSET_ID
+        }
+
+        launch {
+            _fromCard.value = cardUiFor(originChainId, originAssetId)
+            _toCard.value = cardUiFor(destChainId, destAssetId)
+        }
+    }
+
+    private fun loadPairOptions() {
+        launch {
+            val dotHezIcon = cardUiFor(POLKADOT_ASSET_HUB_ID, UTILITY_ASSET_ID).assetIcon
+            val usdtIcon = cardUiFor(POLKADOT_ASSET_HUB_ID, POLKADOT_USDT_ASSET_ID).assetIcon
+
+            _pairOptions.value = listOf(
+                BridgePairUi(BridgePair.DOT_HEZ, dotHezIcon, resourceManager.getString(R.string.bridge_pair_dot_hez)),
+                BridgePairUi(BridgePair.USDT, usdtIcon, resourceManager.getString(R.string.bridge_pair_usdt))
+            )
+        }
+    }
+
+    private suspend fun cardUiFor(chainId: String, assetId: Int): BridgeAssetCardUi {
+        val chain = chainRegistry.getChain(chainId)
+        val asset = chain.assetsById.getValue(assetId)
+
+        return BridgeAssetCardUi(
+            assetIcon = asset.icon.asIconOrFallback(),
+            chainIconUrl = chain.icon,
+            symbol = asset.symbol.value,
+            chainName = chain.name
+        )
+    }
 }
+
+data class BridgeAssetCardUi(
+    val assetIcon: Icon,
+    val chainIconUrl: String?,
+    val symbol: String,
+    val chainName: String
+)
