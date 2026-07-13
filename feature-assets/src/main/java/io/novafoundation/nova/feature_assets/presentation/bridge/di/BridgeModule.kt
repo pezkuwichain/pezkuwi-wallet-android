@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import io.novafoundation.nova.common.di.viewmodel.ViewModelKey
 import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
+import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.bridge.BridgeViewModel
@@ -22,9 +23,10 @@ class BridgeModule {
     fun provideViewModel(
         router: AssetsRouter,
         resourceManager: ResourceManager,
-        chainRegistry: ChainRegistry
+        chainRegistry: ChainRegistry,
+        assetIconProvider: AssetIconProvider
     ): ViewModel {
-        return BridgeViewModel(router, resourceManager, chainRegistry)
+        return BridgeViewModel(router, resourceManager, chainRegistry, assetIconProvider)
     }
 
     @Provides

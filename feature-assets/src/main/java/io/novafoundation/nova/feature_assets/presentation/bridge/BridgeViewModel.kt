@@ -3,16 +3,18 @@ package io.novafoundation.nova.feature_assets.presentation.bridge
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.novafoundation.nova.common.base.BaseViewModel
+import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.common.utils.images.Icon
 import io.novafoundation.nova.common.view.ButtonState
-import io.novafoundation.nova.feature_account_api.presenatation.chain.asIconOrFallback
+import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.send.amount.SendPayload
 import io.novafoundation.nova.feature_wallet_api.presentation.model.AssetPayload
 import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.ext.addressOf
+import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +28,8 @@ import java.net.URL
 class BridgeViewModel(
     private val router: AssetsRouter,
     private val resourceManager: ResourceManager,
-    private val chainRegistry: ChainRegistry
+    private val chainRegistry: ChainRegistry,
+    private val assetIconProvider: AssetIconProvider
 ) : BaseViewModel() {
 
     companion object {
@@ -386,10 +389,10 @@ class BridgeViewModel(
         val asset = chain.assetsById.getValue(assetId)
 
         return BridgeAssetCardUi(
-            assetIcon = asset.icon.asIconOrFallback(),
+            assetIcon = assetIconProvider.getAssetIconOrFallback(asset),
             chainIconUrl = chain.icon,
             symbol = asset.symbol.value,
-            chainName = chain.name
+            chainName = chain.displayNameWithAssetStandard()
         )
     }
 }
