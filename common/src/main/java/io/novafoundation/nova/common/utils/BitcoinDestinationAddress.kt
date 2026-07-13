@@ -51,6 +51,19 @@ fun String.decodeBitcoinDestination(): BitcoinDestination {
 fun String.isValidBitcoinDestinationAddress(): Boolean = runCatching { decodeBitcoinDestination() }.isSuccess
 
 /**
+ * The raw 20-byte hash underlying any destination type, with its type tag dropped - safe ONLY for consumers
+ * that treat it as an opaque identicon/display seed (e.g. `Chain.accountIdOf` and, downstream, address icon
+ * generation) and never feed it back into [toScriptPubKey] or re-encode it as an address. Real transaction
+ * construction must keep using [decodeBitcoinDestination]/[toScriptPubKey] directly, which keep the type.
+ */
+val BitcoinDestination.hash: ByteArray
+    get() = when (this) {
+        is BitcoinDestination.NativeSegwit -> witnessProgram
+        is BitcoinDestination.P2sh -> scriptHash
+        is BitcoinDestination.P2pkh -> pubKeyHash
+    }
+
+/**
  * @return the scriptPubKey a transaction output must use to actually pay this destination - P2SH/P2PKH have
  * different script shapes from this wallet's own P2WPKH (see [toP2wpkhScriptPubKey]), despite all three being a
  * "20-byte hash wrapped in a short script."

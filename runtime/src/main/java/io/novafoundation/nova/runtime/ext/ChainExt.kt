@@ -10,6 +10,8 @@ import io.novafoundation.nova.common.utils.TokenSymbol
 import io.novafoundation.nova.common.utils.Urls
 import io.novafoundation.nova.common.utils.asTokenSymbol
 import io.novafoundation.nova.common.utils.bitcoinAddressToAccountId
+import io.novafoundation.nova.common.utils.decodeBitcoinDestination
+import io.novafoundation.nova.common.utils.hash
 import io.novafoundation.nova.common.utils.bitcoinPublicKeyToAccountId
 import io.novafoundation.nova.common.utils.emptyBitcoinAccountId
 import io.novafoundation.nova.common.utils.emptyEthereumAccountId
@@ -303,7 +305,12 @@ fun ByteArray.toEthereumAddress(): String {
 fun Chain.accountIdOf(address: String): ByteArray {
     return when {
         isTronBased -> address.tronAddressToAccountId()
-        isBitcoinBased -> address.bitcoinAddressToAccountId()
+        // Falls back to decodeBitcoinDestination() for a valid P2SH/P2PKH address (real exchange withdrawal
+        // addresses were confirmed to be P2SH-only) - this wallet's own address stays native-SegWit-only, but a
+        // SEND destination legitimately isn't. Safe here ONLY because this generic accountId is used for
+        // opaque purposes (identicon generation, presence checks) elsewhere, never fed back into building a
+        // scriptPubKey - see BitcoinDestinationAddress.kt's [hash] doc.
+        isBitcoinBased -> runCatching { address.bitcoinAddressToAccountId() }.getOrElse { address.decodeBitcoinDestination().hash }
         isEthereumBased -> address.asEthereumAddress().toAccountId().value
         else -> address.toAccountId()
     }
