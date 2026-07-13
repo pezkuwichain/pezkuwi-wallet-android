@@ -131,8 +131,6 @@ interface WalletFeatureDependencies {
 
     fun accountRepository(): AccountRepository
 
-    fun signerProvider(): SignerProvider
-
     fun assetsDao(): AssetDao
 
     fun tokenDao(): TokenDao
