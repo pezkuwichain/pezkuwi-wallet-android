@@ -19,7 +19,6 @@ import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets
 import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.transfers.validations.sufficientTransferableBalanceToPayOriginFee
 import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.transfers.validations.validAddress
 import io.novafoundation.nova.feature_wallet_impl.domain.validaiton.recipientCanAcceptTransfer
-import io.novafoundation.nova.runtime.ext.accountIdOrDefault
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
 import kotlinx.coroutines.CoroutineScope
@@ -52,7 +51,7 @@ class BitcoinNativeAssetTransfers(
         return bitcoinTransactionService.calculateFee(
             chain = transfer.originChain,
             origin = transfer.sender.intoOrigin(),
-            recipient = transfer.originChain.accountIdOrDefault(transfer.recipient),
+            recipientAddress = transfer.recipient,
             amountSat = transfer.amountInPlanks
         )
     }
@@ -61,7 +60,7 @@ class BitcoinNativeAssetTransfers(
         return bitcoinTransactionService.transact(
             chain = transfer.originChain,
             origin = transfer.sender.intoOrigin(),
-            recipient = transfer.originChain.accountIdOrDefault(transfer.recipient),
+            recipientAddress = transfer.recipient,
             presetFee = transfer.fee.submissionFee,
             amountSat = transfer.amountInPlanks
         )
@@ -71,7 +70,7 @@ class BitcoinNativeAssetTransfers(
         return bitcoinTransactionService.transactAndAwaitExecution(
             chain = transfer.originChain,
             origin = transfer.sender.intoOrigin(),
-            recipient = transfer.originChain.accountIdOrDefault(transfer.recipient),
+            recipientAddress = transfer.recipient,
             presetFee = transfer.fee.submissionFee,
             amountSat = transfer.amountInPlanks
         )

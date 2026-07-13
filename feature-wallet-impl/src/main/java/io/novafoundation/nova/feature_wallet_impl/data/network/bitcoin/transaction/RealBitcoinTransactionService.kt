@@ -4,9 +4,11 @@ import io.novafoundation.nova.common.utils.BitcoinInput
 import io.novafoundation.nova.common.utils.BitcoinOutput
 import io.novafoundation.nova.common.utils.BitcoinTransaction
 import io.novafoundation.nova.common.utils.DerSignature
+import io.novafoundation.nova.common.utils.decodeBitcoinDestination
 import io.novafoundation.nova.common.utils.toBitcoinAddress
 import io.novafoundation.nova.common.utils.toEcdsaSignatureData
 import io.novafoundation.nova.common.utils.toP2wpkhScriptPubKey
+import io.novafoundation.nova.common.utils.toScriptPubKey
 import io.novafoundation.nova.feature_account_api.data.ethereum.transaction.TransactionOrigin
 import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicSubmission
 import io.novafoundation.nova.feature_account_api.data.extrinsic.SubmissionOrigin
@@ -43,10 +45,12 @@ private data class UtxoSelection(
 )
 
 /**
- * Builds, signs and broadcasts native SegWit (P2WPKH) Bitcoin transactions - UTXO selection and raw construction
- * happen entirely client-side (no server-assisted "createtransaction" the way TronGrid offers - mempool.space
- * only exposes UTXOs/fee-rate/broadcast, not transaction construction), using the hand-rolled protocol
- * primitives in [BitcoinTransaction]/[DerSignature]/`BitcoinAddress.kt` verified against BIP143/BIP173.
+ * Builds, signs and broadcasts Bitcoin transactions from this wallet's own native SegWit (P2WPKH) address - the
+ * recipient output, however, can be P2WPKH, P2SH or P2PKH (see `BitcoinDestinationAddress.kt`; a real exchange
+ * withdrawal address was confirmed live to be P2SH-only). UTXO selection and raw construction happen entirely
+ * client-side (no server-assisted "createtransaction" the way TronGrid offers - mempool.space only exposes
+ * UTXOs/fee-rate/broadcast, not transaction construction), using the hand-rolled protocol primitives in
+ * [BitcoinTransaction]/[DerSignature]/`BitcoinAddress.kt` verified against BIP143/BIP173.
  *
  * ## UTXO selection
  * Greedy largest-first over CONFIRMED UTXOs only (unconfirmed outputs are skipped - spending them risks the
@@ -74,7 +78,7 @@ class RealBitcoinTransactionService(
     private val bitcoinApi: BitcoinApi,
 ) : BitcoinTransactionService {
 
-    override suspend fun calculateFee(chain: Chain, origin: TransactionOrigin, recipient: AccountId, amountSat: BigInteger): Fee {
+    override suspend fun calculateFee(chain: Chain, origin: TransactionOrigin, recipientAddress: String, amountSat: BigInteger): Fee {
         val submittingMetaAccount = accountRepository.requireMetaAccountFor(origin, chain.id)
         val ownerAccountId = submittingMetaAccount.requireAccountIdIn(chain)
         val baseUrl = chain.requireMempoolSpaceBaseUrl()
@@ -91,7 +95,7 @@ class RealBitcoinTransactionService(
     override suspend fun transact(
         chain: Chain,
         origin: TransactionOrigin,
-        recipient: AccountId,
+        recipientAddress: String,
         presetFee: Fee?,
         amountSat: BigInteger
     ): Result<ExtrinsicSubmission> = runCatching {
@@ -102,6 +106,7 @@ class RealBitcoinTransactionService(
         }
         val baseUrl = chain.requireMempoolSpaceBaseUrl()
         val amountSatLong = amountSat.toLong()
+        val recipientScriptPubKey = recipientAddress.decodeBitcoinDestination().toScriptPubKey()
 
         val utxos = confirmedUtxos(baseUrl, ownerAccountId)
         val feeRate = bitcoinApi.fetchRecommendedFeeRateSatPerVbyte(baseUrl)
@@ -113,7 +118,7 @@ class RealBitcoinTransactionService(
         }
 
         val outputs = buildList {
-            add(BitcoinOutput(valueSat = amountSatLong, scriptPubKey = recipient.toP2wpkhScriptPubKey()))
+            add(BitcoinOutput(valueSat = amountSatLong, scriptPubKey = recipientScriptPubKey))
             if (selection.changeSat > 0) {
                 add(BitcoinOutput(valueSat = selection.changeSat, scriptPubKey = ownerAccountId.toP2wpkhScriptPubKey()))
             }
@@ -143,13 +148,13 @@ class RealBitcoinTransactionService(
     override suspend fun transactAndAwaitExecution(
         chain: Chain,
         origin: TransactionOrigin,
-        recipient: AccountId,
+        recipientAddress: String,
         presetFee: Fee?,
         amountSat: BigInteger
     ): Result<TransactionExecution> {
         // Broadcast acceptance is already a strong signal (same posture as Tron/EVM) - this sits outside the
         // primary send flow's critical path, which only ever calls transact().
-        return transact(chain, origin, recipient, presetFee, amountSat).map { TransactionExecution.Bitcoin(it.hash) }
+        return transact(chain, origin, recipientAddress, presetFee, amountSat).map { TransactionExecution.Bitcoin(it.hash) }
     }
 
     private suspend fun confirmedUtxos(baseUrl: String, ownerAccountId: AccountId): List<BitcoinUtxo> {

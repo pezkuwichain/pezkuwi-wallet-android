@@ -16,7 +16,7 @@ import io.novafoundation.nova.common.utils.emptyEthereumAccountId
 import io.novafoundation.nova.common.utils.emptySubstrateAccountId
 import io.novafoundation.nova.common.utils.findIsInstanceOrNull
 import io.novafoundation.nova.common.utils.formatNamed
-import io.novafoundation.nova.common.utils.isValidBitcoinAddress
+import io.novafoundation.nova.common.utils.isValidBitcoinDestinationAddress
 import io.novafoundation.nova.common.utils.removeHexPrefix
 import io.novafoundation.nova.common.utils.emptyTronAccountId
 import io.novafoundation.nova.common.utils.isValidTronAddress
@@ -372,7 +372,10 @@ fun Chain.multiAddressOf(accountId: ByteArray): MultiAddress {
 fun Chain.isValidAddress(address: String): Boolean {
     return runCatching {
         when {
-            isBitcoinBased -> address.isValidBitcoinAddress()
+            // Wider than isValidBitcoinAddress() (native SegWit only, used for this wallet's OWN address/accountId):
+            // a valid SEND destination can legitimately be P2SH/P2PKH too - confirmed live via a real exchange
+            // withdrawal address - see BitcoinDestinationAddress.kt.
+            isBitcoinBased -> address.isValidBitcoinDestinationAddress()
 
             // Tron addresses are Base58Check(0x41 ++ accountId), not SS58 or plain 0x-hex - neither of the two
             // branches below would ever accept them, so this needs its own dedicated check.

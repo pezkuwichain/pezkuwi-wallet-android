@@ -178,13 +178,9 @@ class AddressInputMixinProvider(
             systemCallExecutor.executeSystemCall(ScanQrCodeCall()).mapCatching {
                 val spec = specProvider.spec.first()
 
-                android.util.Log.e("QrDiag", "raw QR content: $it")
-
                 qrSharingFactory.create(spec::isValidAddress).decode(it).address
             }.onSuccess { address ->
                 inputFlow.value = address
-            }.onFailure {
-                android.util.Log.e("QrDiag", "decode failed", it)
             }.onSystemCallFailure {
                 errorDisplayer(resourceManager.getString(R.string.invoice_scan_error_no_info))
             }
