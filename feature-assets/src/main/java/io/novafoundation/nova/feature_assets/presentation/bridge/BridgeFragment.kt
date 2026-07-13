@@ -10,6 +10,7 @@ import io.novafoundation.nova.common.view.setState
 import io.novafoundation.nova.feature_assets.databinding.FragmentBridgeBinding
 import io.novafoundation.nova.feature_assets.di.AssetsFeatureApi
 import io.novafoundation.nova.feature_assets.di.AssetsFeatureComponent
+import io.novafoundation.nova.feature_wallet_api.presentation.mixin.amountChooser.MaxActionAvailability
 
 class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
 
@@ -48,6 +49,10 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
                 viewModel.setAmount(amount)
             }
         })
+
+        binder.bridgeFromMaxAmount.setMaxActionAvailability(
+            MaxActionAvailability.Available { viewModel.maxClicked() }
+        )
 
         // Swap button
         binder.bridgeSwapButton.setOnClickListener {
@@ -104,6 +109,18 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
             if (text.isNotEmpty()) {
                 binder.bridgeWarningAlert.setMessage(text)
             }
+        }
+
+        viewModel.maxAmountDisplay.observe { display ->
+            binder.bridgeFromMaxAmount.setMaxAmountDisplay(display)
+        }
+
+        viewModel.insufficientBalanceError.observe { error ->
+            binder.bridgeFromCard.setError(error)
+        }
+
+        viewModel.fillAmountEvent.observeEvent { amount ->
+            binder.bridgeFromCard.amountInput.setText(amount)
         }
     }
 }

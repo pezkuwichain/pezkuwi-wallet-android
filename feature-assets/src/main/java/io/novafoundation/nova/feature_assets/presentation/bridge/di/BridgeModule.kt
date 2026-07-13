@@ -10,6 +10,7 @@ import io.novafoundation.nova.common.di.viewmodel.ViewModelKey
 import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
 import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
+import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.bridge.BridgeViewModel
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
@@ -24,9 +25,10 @@ class BridgeModule {
         router: AssetsRouter,
         resourceManager: ResourceManager,
         chainRegistry: ChainRegistry,
-        assetIconProvider: AssetIconProvider
+        assetIconProvider: AssetIconProvider,
+        walletInteractor: WalletInteractor
     ): ViewModel {
-        return BridgeViewModel(router, resourceManager, chainRegistry, assetIconProvider)
+        return BridgeViewModel(router, resourceManager, chainRegistry, assetIconProvider, walletInteractor)
     }
 
     @Provides

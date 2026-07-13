@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import io.novafoundation.nova.common.base.BaseViewModel
 import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
+import io.novafoundation.nova.common.utils.Event
 import io.novafoundation.nova.common.utils.images.Icon
 import io.novafoundation.nova.common.view.ButtonState
 import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
+import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.send.amount.SendPayload
 import io.novafoundation.nova.feature_wallet_api.presentation.model.AssetPayload
@@ -18,6 +20,7 @@ import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -29,7 +32,8 @@ class BridgeViewModel(
     private val router: AssetsRouter,
     private val resourceManager: ResourceManager,
     private val chainRegistry: ChainRegistry,
-    private val assetIconProvider: AssetIconProvider
+    private val assetIconProvider: AssetIconProvider,
+    private val walletInteractor: WalletInteractor
 ) : BaseViewModel() {
 
     companion object {
@@ -90,10 +94,21 @@ class BridgeViewModel(
     private val _pairOptions = MutableLiveData<List<BridgePairUi>>(emptyList())
     val pairOptions: LiveData<List<BridgePairUi>> = _pairOptions
 
+    private val _maxAmountDisplay = MutableLiveData<String?>(null)
+    val maxAmountDisplay: LiveData<String?> = _maxAmountDisplay
+
+    private val _insufficientBalanceError = MutableLiveData<String?>(null)
+    val insufficientBalanceError: LiveData<String?> = _insufficientBalanceError
+
+    private val _fillAmountEvent = MutableLiveData<Event<String>>()
+    val fillAmountEvent: LiveData<Event<String>> = _fillAmountEvent
+
     private var currentAmount: Double = 0.0
     private var dotToHezRate: Double = FALLBACK_RATE
     private var isHezToDotActive: Boolean = false
     private var isWusdtToUsdtActive: Boolean = false
+    private var availableBalance: BigDecimal = BigDecimal.ZERO
+    private var balanceJob: Job? = null
 
     init {
         fetchExchangeRate()
@@ -150,7 +165,12 @@ class BridgeViewModel(
     fun setAmount(amount: Double) {
         currentAmount = amount
         calculateOutput()
+        updateInsufficientBalanceState()
         updateButtonState()
+    }
+
+    fun maxClicked() {
+        _fillAmountEvent.value = Event(availableBalance.stripTrailingZeros().toPlainString())
     }
 
     fun swapClicked() {
@@ -332,9 +352,18 @@ class BridgeViewModel(
         _buttonState.value = when {
             currentAmount <= 0 -> ButtonState.DISABLED
             currentAmount < minimum -> ButtonState.DISABLED
+            BigDecimal.valueOf(currentAmount) > availableBalance -> ButtonState.DISABLED
             dir == BridgeDirection.HEZ_TO_DOT && !isHezToDotActive -> ButtonState.DISABLED
             dir == BridgeDirection.WUSDT_TO_USDT && !isWusdtToUsdtActive -> ButtonState.DISABLED
             else -> ButtonState.NORMAL
+        }
+    }
+
+    private fun updateInsufficientBalanceState() {
+        _insufficientBalanceError.value = if (currentAmount > 0 && BigDecimal.valueOf(currentAmount) > availableBalance) {
+            resourceManager.getString(R.string.bridge_insufficient_balance)
+        } else {
+            null
         }
     }
 
@@ -369,6 +398,22 @@ class BridgeViewModel(
         launch {
             _fromCard.value = cardUiFor(originChainId, originAssetId)
             _toCard.value = cardUiFor(destChainId, destAssetId)
+        }
+
+        observeOriginBalance(originChainId, originAssetId)
+    }
+
+    private fun observeOriginBalance(chainId: String, assetId: Int) {
+        balanceJob?.cancel()
+        balanceJob = launch {
+            walletInteractor.assetFlow(chainId, assetId).collect { asset ->
+                availableBalance = asset.transferable
+                _maxAmountDisplay.postValue(
+                    "${availableBalance.setScale(6, RoundingMode.DOWN).stripTrailingZeros().toPlainString()} ${asset.token.configuration.symbol.value}"
+                )
+                updateInsufficientBalanceState()
+                updateButtonState()
+            }
         }
     }
 

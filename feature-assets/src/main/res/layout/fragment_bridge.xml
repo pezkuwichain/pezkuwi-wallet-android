@@ -25,13 +25,27 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:id="@+id/bridgeFromLabel"
-                style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/bridge_you_send"
-                android:textColor="@color/text_secondary" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/bridgeFromLabel"
+                    style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/bridge_you_send"
+                    android:textColor="@color/text_secondary" />
+
+                <io.novafoundation.nova.feature_wallet_api.presentation.view.amount.MaxAmountView
+                    android:id="@+id/bridgeFromMaxAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
             <io.novafoundation.nova.feature_assets.presentation.bridge.view.BridgeAssetInputView
                 android:id="@+id/bridgeFromCard"

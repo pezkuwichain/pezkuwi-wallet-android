@@ -11,7 +11,9 @@ import io.novafoundation.nova.common.utils.WithContextExtensions
 import io.novafoundation.nova.common.utils.images.asUrlIcon
 import io.novafoundation.nova.common.utils.images.setIconOrMakeGone
 import io.novafoundation.nova.common.utils.inflater
+import io.novafoundation.nova.common.utils.setVisible
 import io.novafoundation.nova.common.view.shape.getInputBackground
+import io.novafoundation.nova.common.view.shape.getInputBackgroundError
 import io.novafoundation.nova.feature_account_api.presenatation.chain.setTokenIcon
 import io.novafoundation.nova.feature_assets.databinding.ViewBridgeAssetInputBinding
 import io.novafoundation.nova.feature_assets.presentation.bridge.BridgeAssetCardUi
@@ -59,5 +61,16 @@ class BridgeAssetInputView @JvmOverloads constructor(
         binder.bridgeAssetInputToken.text = model.symbol
         binder.bridgeAssetInputSubtitle.text = model.chainName
         binder.bridgeAssetInputSubtitleImage.setIconOrMakeGone(model.chainIconUrl?.asUrlIcon(), imageLoader)
+    }
+
+    fun setError(message: String?) {
+        binder.bridgeAssetInputContainer.background = if (message != null) {
+            context.getInputBackgroundError()
+        } else {
+            context.getInputBackground()
+        }
+
+        binder.bridgeAssetInputError.text = message
+        binder.bridgeAssetInputError.setVisible(message != null)
     }
 }
