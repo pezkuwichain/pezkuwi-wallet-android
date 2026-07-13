@@ -257,6 +257,7 @@ class RealTronTransactionServiceTest {
             types = null,
             isEthereumBased = false,
             isTronBased = true,
+            isBitcoinBased = false,
             isTestNet = false,
             source = Chain.Source.DEFAULT,
             hasSubstrateRuntime = false,
