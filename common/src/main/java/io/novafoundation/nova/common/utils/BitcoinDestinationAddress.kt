@@ -33,12 +33,18 @@ fun String.decodeBitcoinDestination(): BitcoinDestination {
         }
     }
 
+    // Base58Check itself is chain-agnostic (see TronAddress.kt) - a Bitcoin legacy address is 1 version byte +
+    // 20-byte hash, same shape as Tron's own address, just a different version byte and no fixed prefix meaning.
     val decoded = Base58Check.decode(this)
+    require(decoded.size == 21) { "Not a valid Bitcoin legacy address: $this" }
 
-    return when (decoded.version) {
-        P2PKH_VERSION -> BitcoinDestination.P2pkh(decoded.payload)
-        P2SH_VERSION -> BitcoinDestination.P2sh(decoded.payload)
-        else -> error("Unsupported Bitcoin address version byte: ${decoded.version}")
+    val version = decoded[0].toInt() and 0xff
+    val hash = decoded.copyOfRange(1, decoded.size)
+
+    return when (version) {
+        P2PKH_VERSION -> BitcoinDestination.P2pkh(hash)
+        P2SH_VERSION -> BitcoinDestination.P2sh(hash)
+        else -> error("Unsupported Bitcoin address version byte: $version")
     }
 }
 
