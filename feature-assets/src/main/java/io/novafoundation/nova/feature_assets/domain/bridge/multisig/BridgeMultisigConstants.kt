@@ -20,11 +20,16 @@ object BridgeMultisigConstants {
 
     const val THRESHOLD = 3
 
-    /** Renewal is offered once the remaining allowance drops below this (6 decimals). */
-    const val RENEWAL_THRESHOLD = 3_000_000_000L // 3,000 wUSDT
+    /** Renewal is offered once the remaining allowance drops below this (6 decimals). Must match
+     *  pezbridge_bot_config.json's renewal_threshold and usdt-bridge's auto_pay_daily_cap sizing
+     *  server-side - all three signing channels (this app, pwap-web, PezbridgeBot's Telegram
+     *  alert) construct/check the SAME on-chain call, so a mismatch here doesn't just look
+     *  inconsistent, it computes a different call hash and can start a second, unrelated pending
+     *  multisig entry instead of contributing to the real one. */
+    const val RENEWAL_THRESHOLD = 40_000_000_000L // 40,000 wUSDT
 
     /** The standard amount a renewal tops the allowance back up to (6 decimals). */
-    const val TOPUP_AMOUNT = 10_000_000_000L // 10,000 wUSDT
+    const val TOPUP_AMOUNT = 200_000_000_000L // 200,000 wUSDT
 
     data class Signatory(val role: String, val address: String)
 
