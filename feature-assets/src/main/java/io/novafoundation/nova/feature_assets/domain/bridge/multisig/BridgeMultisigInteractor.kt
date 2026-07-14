@@ -11,7 +11,6 @@ import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicServic
 import io.novafoundation.nova.feature_account_api.data.extrinsic.execution.ExtrinsicExecutionResult
 import io.novafoundation.nova.feature_account_api.data.extrinsic.execution.requireOk
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
-import io.novafoundation.nova.feature_account_api.domain.model.accountIdIn
 import io.novafoundation.nova.feature_account_api.domain.multisig.intoCallHash
 import io.novafoundation.nova.runtime.di.REMOTE_STORAGE_SOURCE
 import io.novafoundation.nova.runtime.ext.ChainGeneses
@@ -116,7 +115,7 @@ class RealBridgeMultisigInteractor @Inject constructor(
             )
 
             call(multisigCall)
-        }.requireOk()
+        }.getOrThrow().requireOk()
     }
 
     private suspend fun queryRemainingAllowance(chain: Chain): BigInteger {

@@ -17,6 +17,7 @@ import io.novafoundation.nova.runtime.storage.source.query.api.converters.scaleE
 import io.novafoundation.nova.runtime.storage.source.query.api.storage2
 import io.novafoundation.nova.runtime.storage.source.query.api.storage3
 import io.novasama.substrate_sdk_android.runtime.metadata.RuntimeMetadata
+import io.novasama.substrate_sdk_android.runtime.metadata.module
 import io.novasama.substrate_sdk_android.runtime.metadata.module.Module
 import java.math.BigInteger
 

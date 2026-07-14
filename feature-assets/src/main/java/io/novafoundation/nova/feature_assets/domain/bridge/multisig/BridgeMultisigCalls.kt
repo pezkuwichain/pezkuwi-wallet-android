@@ -10,6 +10,7 @@ import io.novafoundation.nova.runtime.util.constructAccountLookupInstance
 import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
 import io.novasama.substrate_sdk_android.runtime.metadata.call
+import io.novasama.substrate_sdk_android.runtime.metadata.module
 import java.math.BigInteger
 
 /**
