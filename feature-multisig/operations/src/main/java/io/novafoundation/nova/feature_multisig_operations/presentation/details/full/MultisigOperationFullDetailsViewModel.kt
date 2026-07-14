@@ -114,8 +114,11 @@ class MultisigOperationFullDetailsViewModel(
 
     fun onDepositorClicked() = launchUnit {
         val chain = operationFlow.first().chain
-        depositorAccountModel.first().onLoaded {
-            externalActions.showAddressActions(it.address(), chain)
+        depositorAccountModel.first().onLoaded { accountModel ->
+            // Null for a not-yet-submitted operation (nobody has deposited yet) - the depositor
+            // row is hidden in that case (see showAccountWithLoading), so this click handler
+            // shouldn't be reachable, but guard it explicitly rather than assume.
+            accountModel?.let { externalActions.showAddressActions(it.address(), chain) }
         }
     }
 
