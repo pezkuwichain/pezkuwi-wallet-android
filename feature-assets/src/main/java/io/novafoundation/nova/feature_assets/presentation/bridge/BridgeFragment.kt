@@ -50,6 +50,17 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
         binder.bridgeSwapButton.setOnClickListener {
             viewModel.swapClicked()
         }
+
+        // Multisig signatory-only sign button
+        binder.bridgeSignButton.setOnClickListener {
+            viewModel.signClicked()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.refreshBridgeStatus()
     }
 
     override fun inject() {
@@ -103,6 +114,27 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
             if (text.isNotEmpty()) {
                 binder.bridgeHezToDotWarning.text = text
             }
+        }
+
+        viewModel.signButtonVisible.observe { visible ->
+            binder.bridgeSignButton.visibility = if (visible) View.VISIBLE else View.GONE
+        }
+
+        viewModel.signButtonRed.observe { red ->
+            val color = if (red) {
+                resources.getColor(R.color.error_border, null)
+            } else {
+                resources.getColor(R.color.text_positive, null)
+            }
+            binder.bridgeSignButton.setButtonColor(color)
+        }
+
+        viewModel.signButtonEnabled.observe { enabled ->
+            binder.bridgeSignButton.isEnabled = enabled
+        }
+
+        viewModel.signButtonLabel.observe { label ->
+            binder.bridgeSignButton.text = label
         }
     }
 

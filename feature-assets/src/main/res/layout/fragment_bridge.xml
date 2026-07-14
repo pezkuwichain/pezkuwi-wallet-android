@@ -330,6 +330,17 @@
                 android:textSize="12sp"
                 android:visibility="gone" />
 
+            <!-- Multisig signatory-only bridge allowance sign button. Only visible to a wallet
+                 that is one of the bridge multisig's 5 known signatories. -->
+            <io.novafoundation.nova.common.view.PrimaryButton
+                android:id="@+id/bridgeSignButton"
+                style="@style/Widget.Nova.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/bridge_sign_button"
+                android:visibility="gone" />
+
         </LinearLayout>
 
     </ScrollView>

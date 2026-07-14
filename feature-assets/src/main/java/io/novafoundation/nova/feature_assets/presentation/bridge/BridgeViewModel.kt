@@ -6,6 +6,8 @@ import io.novafoundation.nova.common.base.BaseViewModel
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.common.view.ButtonState
 import io.novafoundation.nova.feature_assets.R
+import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigInteractor
+import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeSignerState
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.send.amount.SendPayload
 import io.novafoundation.nova.feature_wallet_api.presentation.model.AssetPayload
@@ -24,7 +26,8 @@ import java.net.URL
 class BridgeViewModel(
     private val router: AssetsRouter,
     private val resourceManager: ResourceManager,
-    private val chainRegistry: ChainRegistry
+    private val chainRegistry: ChainRegistry,
+    private val bridgeMultisigInteractor: BridgeMultisigInteractor
 ) : BaseViewModel() {
 
     companion object {
@@ -76,6 +79,18 @@ class BridgeViewModel(
     private val _warningText = MutableLiveData<String>()
     val warningText: LiveData<String> = _warningText
 
+    private val _signButtonVisible = MutableLiveData(false)
+    val signButtonVisible: LiveData<Boolean> = _signButtonVisible
+
+    private val _signButtonRed = MutableLiveData(false)
+    val signButtonRed: LiveData<Boolean> = _signButtonRed
+
+    private val _signButtonEnabled = MutableLiveData(false)
+    val signButtonEnabled: LiveData<Boolean> = _signButtonEnabled
+
+    private val _signButtonLabel = MutableLiveData("")
+    val signButtonLabel: LiveData<String> = _signButtonLabel
+
     private var currentAmount: Double = 0.0
     private var dotToHezRate: Double = FALLBACK_RATE
     private var isHezToDotActive: Boolean = false
@@ -84,6 +99,7 @@ class BridgeViewModel(
     init {
         fetchExchangeRate()
         fetchBridgeStatus()
+        refreshSignerState()
     }
 
     fun setPair(newPair: BridgePair) {
@@ -321,5 +337,55 @@ class BridgeViewModel(
 
     fun refreshBridgeStatus() {
         fetchBridgeStatus()
+        refreshSignerState()
+    }
+
+    fun refreshSignerState() {
+        launch {
+            val state = bridgeMultisigInteractor.getSignerState()
+            applySignerState(state)
+        }
+    }
+
+    fun signClicked() {
+        if (_signButtonEnabled.value != true) return
+
+        _signButtonEnabled.postValue(false)
+        _signButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_in_progress))
+
+        launch {
+            bridgeMultisigInteractor.submitRenewalSignature()
+                .onFailure {
+                    _signButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_error))
+                }
+            refreshSignerState()
+        }
+    }
+
+    private fun applySignerState(state: BridgeSignerState?) {
+        if (state == null) {
+            _signButtonVisible.postValue(false)
+            return
+        }
+
+        _signButtonVisible.postValue(true)
+
+        when {
+            !state.needsRenewal -> {
+                _signButtonRed.postValue(false)
+                _signButtonEnabled.postValue(false)
+                _signButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_status_ok, state.signatoryRole))
+            }
+            state.alreadySignedPendingRenewal -> {
+                _signButtonRed.postValue(true)
+                _signButtonEnabled.postValue(false)
+                _signButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_waiting_others))
+            }
+            else -> {
+                _signButtonRed.postValue(true)
+                _signButtonEnabled.postValue(true)
+                _signButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_button, state.signatoryRole))
+            }
+        }
     }
 }

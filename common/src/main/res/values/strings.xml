@@ -371,6 +371,12 @@
     <string name="bridge_hez_to_dot_blocked">HEZ→DOT swaps are temporarily unavailable. Please try again when DOT liquidity is sufficient.</string>
     <string name="bridge_wusdt_to_usdt_blocked">USDT(Pez)→USDT(Pol) swaps are temporarily unavailable. Waiting for 1:1 liquidity to be established.</string>
 
+    <string name="bridge_sign_status_ok">Bridge allowance OK (%s)</string>
+    <string name="bridge_sign_button">Sign renewal (%s)</string>
+    <string name="bridge_sign_waiting_others">Signed — waiting for other signers</string>
+    <string name="bridge_sign_in_progress">Signing…</string>
+    <string name="bridge_sign_error">Signing failed, tap to retry</string>
+
     <string name="wallet_asset_buy_sell">Buy/Sell</string>
 
 
