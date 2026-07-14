@@ -68,6 +68,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -99,9 +100,15 @@ class MultisigOperationDetailsViewModel(
 
     val operationNotFoundAwaitableAction = actionAwaitableMixinFactory.confirmingAction<ConfirmationDialogInfo>()
 
-    private val operationFlow = multisigOperationsService.pendingOperationFlow(payload.operation.toOperationId())
-        .filterNotNull()
-        .shareInBackground()
+    // Populated only for the "first signer" deep-link case: a call that has no
+    // Multisig.Multisigs entry on chain yet, built directly from the deep link's callData
+    // instead of the chain-storage-driven sync service (see checkOperationAvailability()).
+    private val notYetSubmittedOperationFlow = MutableStateFlow<PendingMultisigOperation?>(null)
+
+    private val operationFlow = merge(
+        multisigOperationsService.pendingOperationFlow(payload.operation.toOperationId()).filterNotNull(),
+        notYetSubmittedOperationFlow.filterNotNull()
+    ).shareInBackground()
 
     private val isLastOperationFlow = flowOf {
         val operationsCount = multisigOperationsService.getPendingOperationsCount()
@@ -226,11 +233,26 @@ class MultisigOperationDetailsViewModel(
     }
 
     private fun checkOperationAvailability() = launchUnit {
-        val isOperationAvailable = interactor.isOperationAvailable(payload.operation.toOperationId())
+        val operationId = payload.operation.toOperationId()
+        val isOperationAvailable = interactor.isOperationAvailable(operationId)
 
-        if (!isOperationAvailable) {
-            showErrorAndCloseScreen()
+        if (isOperationAvailable) return@launchUnit
+
+        // Not on chain yet - only a real gap if this isn't the deep-link "first signer" case
+        // (no callData supplied means it really is an unknown/stale operation, same as before).
+        val notSubmittedCallData = payload.operation.notSubmittedCallData
+        if (notSubmittedCallData != null) {
+            val builtOperation = runCatching {
+                interactor.buildNotYetSubmittedOperation(operationId, notSubmittedCallData)
+            }.getOrNull()
+
+            if (builtOperation != null) {
+                notYetSubmittedOperationFlow.value = builtOperation
+                return@launchUnit
+            }
         }
+
+        showErrorAndCloseScreen()
     }
 
     fun enterCallDataClicked() {
@@ -251,8 +273,12 @@ class MultisigOperationDetailsViewModel(
     }
 
     private suspend fun PendingMultisigOperation.getDepositorName(): String {
-        val depositorAccount = withContext(Dispatchers.Default) { accountInteractor.findMetaAccount(chain, depositor.value) }
-        return depositorAccount?.name ?: chain.addressOf(depositor)
+        // Only called from actionClicked() when userAction() == CanReject, which never happens
+        // when depositor is null (a not-yet-submitted operation has nothing to reject) - fails
+        // loudly instead of silently if that invariant is ever violated.
+        val depositorId = checkNotNull(depositor) { "Cannot reject an operation with no depositor" }
+        val depositorAccount = withContext(Dispatchers.Default) { accountInteractor.findMetaAccount(chain, depositorId.value) }
+        return depositorAccount?.name ?: chain.addressOf(depositorId)
     }
 
     private suspend fun confirmReject(depositorName: String) = suspendCancellableCoroutine<Unit> {

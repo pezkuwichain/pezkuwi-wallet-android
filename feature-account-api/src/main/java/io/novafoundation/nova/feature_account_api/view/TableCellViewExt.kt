@@ -53,7 +53,7 @@ fun TableCellView.showWallet(walletModel: WalletModel) {
     walletModel.icon?.let(::setImage)
 }
 
-fun TableCellView.showAccountWithLoading(loadingState: ExtendedLoadingState<AccountModel>) {
+fun TableCellView.showAccountWithLoading(loadingState: ExtendedLoadingState<AccountModel?>) {
     showLoadingState(loadingState) {
         showAccount(it)
     }

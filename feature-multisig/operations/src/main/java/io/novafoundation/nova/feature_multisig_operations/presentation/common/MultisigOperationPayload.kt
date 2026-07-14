@@ -8,16 +8,26 @@ import kotlinx.parcelize.Parcelize
 class MultisigOperationPayload(
     val chainId: String,
     val metaId: Long,
-    val callHash: String
+    val callHash: String,
+    /**
+     * Call data for a call that may not exist on-chain yet (the "first signer" deep-link case -
+     * see `MultisigOperationDetailsDeepLinkHandler`). Null for the normal case where the details
+     * screen sources everything from the chain-storage-driven sync service.
+     */
+    val notSubmittedCallData: String? = null,
 ) : Parcelable {
     companion object;
 }
 
-fun MultisigOperationPayload.Companion.fromOperationId(operationId: PendingMultisigOperationId): MultisigOperationPayload {
+fun MultisigOperationPayload.Companion.fromOperationId(
+    operationId: PendingMultisigOperationId,
+    notSubmittedCallData: String? = null,
+): MultisigOperationPayload {
     return MultisigOperationPayload(
         chainId = operationId.chainId,
         metaId = operationId.metaId,
-        callHash = operationId.callHash
+        callHash = operationId.callHash,
+        notSubmittedCallData = notSubmittedCallData,
     )
 }
 

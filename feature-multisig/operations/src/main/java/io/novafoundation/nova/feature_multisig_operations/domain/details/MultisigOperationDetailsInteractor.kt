@@ -18,6 +18,7 @@ import io.novafoundation.nova.feature_account_api.data.multisig.composeMultisigC
 import io.novafoundation.nova.feature_account_api.data.multisig.model.MultisigAction
 import io.novafoundation.nova.feature_account_api.data.multisig.model.PendingMultisigOperation
 import io.novafoundation.nova.feature_account_api.data.multisig.model.PendingMultisigOperationId
+import io.novafoundation.nova.feature_account_api.data.multisig.model.notYetSubmitted
 import io.novafoundation.nova.feature_account_api.data.multisig.model.userAction
 import io.novafoundation.nova.feature_account_api.data.multisig.repository.MultisigOperationLocalCallRepository
 import io.novafoundation.nova.feature_account_api.domain.interfaces.AccountRepository
@@ -37,10 +38,12 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
 import io.novafoundation.nova.runtime.multiNetwork.getRuntime
 import io.novasama.substrate_sdk_android.extensions.toHexString
+import io.novasama.substrate_sdk_android.runtime.definitions.types.fromHex
 import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
 import io.novasama.substrate_sdk_android.runtime.extrinsic.builder.ExtrinsicBuilder
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 interface MultisigOperationDetailsInteractor {
 
@@ -67,6 +70,14 @@ interface MultisigOperationDetailsInteractor {
     suspend fun callDataAsString(call: GenericCall.Instance, chainId: ChainId): String
 
     suspend fun isOperationAvailable(operationId: PendingMultisigOperationId): Boolean
+
+    /**
+     * Builds a [PendingMultisigOperation] for a call that has never been submitted on-chain yet
+     * (no `Multisig.Multisigs` entry exists) - the "first signer" deep-link case. [callDataHex]
+     * must decode to a call whose hash matches [operationId]'s `callHash`; this is verified here
+     * rather than trusted blindly, since [callDataHex] ultimately comes from a URL.
+     */
+    suspend fun buildNotYetSubmittedOperation(operationId: PendingMultisigOperationId, callDataHex: String): PendingMultisigOperation
 }
 
 private const val SKIP_REJECT_CONFIRMATION_KEY = "SKIP_REJECT_CONFIRMATION_KEY"
@@ -116,6 +127,30 @@ class RealMultisigOperationDetailsInteractor @Inject constructor(
         val metaAccount = accountRepository.getMetaAccount(operationId.metaId)
         val callHash = operationId.callHash.intoCallHash()
         return multisigDetailsRepository.hasMultisigOperation(chain, metaAccount.requireAccountIdKeyIn(chain), callHash)
+    }
+
+    override suspend fun buildNotYetSubmittedOperation(
+        operationId: PendingMultisigOperationId,
+        callDataHex: String
+    ): PendingMultisigOperation {
+        val chain = chainRegistry.getChain(operationId.chainId)
+        val metaAccount = accountRepository.getMetaAccount(operationId.metaId) as MultisigMetaAccount
+        val runtime = chainRegistry.getRuntime(chain.id)
+
+        val call = GenericCall.fromHex(runtime, callDataHex)
+        val computedHash = call.callHash(runtime)
+        val expectedHash = operationId.callHash.intoCallHash()
+        require(computedHash.contentEquals(expectedHash.value)) {
+            "Call data does not match this operation: decoded hash does not equal the expected call hash"
+        }
+
+        return PendingMultisigOperation.notYetSubmitted(
+            multisigMetaAccount = metaAccount,
+            call = call,
+            callHash = expectedHash,
+            chain = chain,
+            timestamp = System.currentTimeMillis().milliseconds
+        )
     }
 
     override suspend fun estimateActionFee(operation: PendingMultisigOperation): Fee? {
@@ -223,10 +258,18 @@ class RealMultisigOperationDetailsInteractor @Inject constructor(
 
     private suspend fun ExtrinsicBuilder.reject(operation: PendingMultisigOperation) {
         val selectedAccount = accountRepository.getSelectedMetaAccount() as MultisigMetaAccount
+        // cancel_as_multi can only ever cancel an operation that already exists on-chain (you
+        // can't cancel something nobody has proposed yet) - userAction() already never returns
+        // CanReject for a not-yet-submitted operation (its depositor is null), so this should be
+        // unreachable in practice; checkNotNull fails loudly instead of silently misencoding a
+        // null timepoint if that invariant is ever violated.
+        val timePoint = checkNotNull(operation.timePoint) {
+            "Cannot reject an operation that has not been submitted on-chain yet"
+        }
 
         val approveCall = runtime.composeMultisigCancelAsMulti(
             multisigMetaAccount = selectedAccount,
-            maybeTimePoint = operation.timePoint,
+            maybeTimePoint = timePoint,
             callHash = operation.callHash
         )
 
