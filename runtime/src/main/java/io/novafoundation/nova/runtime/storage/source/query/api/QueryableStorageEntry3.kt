@@ -13,6 +13,9 @@ typealias QueryableStorageBinder3<K1, K2, K3, V> = (dynamicInstance: Any, key1: 
 interface QueryableStorageEntry3<I1, I2, I3, T : Any> {
 
     context(StorageQueryContext)
+    suspend fun query(argument1: I1, argument2: I2, argument3: I3): T?
+
+    context(StorageQueryContext)
     suspend fun entries(keys: List<Triple<I1, I2, I3>>): Map<Triple<I1, I2, I3>, T>
 
     context(StorageQueryContext)
@@ -31,6 +34,16 @@ internal class RealQueryableStorageEntry3<I1, I2, I3, T : Any>(
     private val key2FromInternalConverter: QueryableStorageKeyFromInternalBinder<I2>? = null,
     private val key3FromInternalConverter: QueryableStorageKeyFromInternalBinder<I3>? = null,
 ) : QueryableStorageEntry3<I1, I2, I3, T> {
+
+    context(StorageQueryContext)
+    override suspend fun query(argument1: I1, argument2: I2, argument3: I3): T? {
+        return storageEntry.query(
+            convertKey1ToInternal(argument1),
+            convertKey2ToInternal(argument2),
+            convertKey3ToInternal(argument3),
+            binding = { decoded -> decoded?.let { binding(it, argument1, argument2, argument3) } }
+        )
+    }
 
     context(StorageQueryContext)
     override suspend fun entries(keys: List<Triple<I1, I2, I3>>): Map<Triple<I1, I2, I3>, T> {
