@@ -34,6 +34,14 @@ import kotlinx.coroutines.withContext
  */
 const val TRON_DEFAULT_DERIVATION_PATH = "//44//195//0/0/0"
 
+/**
+ * BIP84 purpose (native SegWit), SLIP-44 coin type 0 (Bitcoin). Deliberately `//84//...`, not `//44//...` -
+ * this app only supports native SegWit (bech32 `bc1q...`) addresses, not legacy/P2SH-SegWit, so the derivation
+ * path signals that choice the same way real Bitcoin wallets do. Not user-configurable yet - always derived at
+ * this fixed path (single address, no HD address-index rotation).
+ */
+const val BITCOIN_DEFAULT_DERIVATION_PATH = "//84//0//0/0/0"
+
 class AccountSecretsFactory(
     private val JsonDecoder: JsonDecoder
 ) {
@@ -131,6 +139,7 @@ class AccountSecretsFactory(
         ethereumDerivationPath: String?,
         accountSource: AccountSource,
         tronDerivationPath: String? = TRON_DEFAULT_DERIVATION_PATH,
+        bitcoinDerivationPath: String? = BITCOIN_DEFAULT_DERIVATION_PATH,
     ): Result<MetaAccountSecrets> = withContext(Dispatchers.Default) {
         val (substrateSecrets, substrateCryptoType) = chainAccountSecrets(
             derivationPath = substrateDerivationPath,
@@ -157,6 +166,16 @@ class AccountSecretsFactory(
             Bip32EcdsaKeypairFactory.generate(seed = seed, junctions = decodedTronDerivationPath?.junctions.orEmpty())
         }
 
+        // Bitcoin (native SegWit) also reuses the exact same secp256k1/BIP32 keypair generation as Ethereum/Tron -
+        // only the SLIP-44 coin type (0) and BIP84 purpose differ. See BITCOIN_DEFAULT_DERIVATION_PATH's doc.
+        val bitcoinKeypair = accountSource.castOrNull<AccountSource.Mnemonic>()?.let {
+            val decodedBitcoinDerivationPath = decodeDerivationPath(bitcoinDerivationPath, ethereum = true)
+
+            val seed = deriveSeed(it.mnemonic, password = decodedBitcoinDerivationPath?.password, ethereum = true).seed
+
+            Bip32EcdsaKeypairFactory.generate(seed = seed, junctions = decodedBitcoinDerivationPath?.junctions.orEmpty())
+        }
+
         val secrets = MetaAccountSecrets(
             entropy = substrateSecrets[ChainAccountSecrets.Entropy],
             substrateSeed = substrateSecrets[ChainAccountSecrets.Seed],
@@ -165,7 +184,9 @@ class AccountSecretsFactory(
             ethereumKeypair = ethereumKeypair,
             ethereumDerivationPath = ethereumDerivationPath,
             tronKeypair = tronKeypair,
-            tronDerivationPath = tronDerivationPath
+            tronDerivationPath = tronDerivationPath,
+            bitcoinKeypair = bitcoinKeypair,
+            bitcoinDerivationPath = bitcoinDerivationPath,
         )
 
         Result(secrets = secrets, cryptoType = substrateCryptoType)

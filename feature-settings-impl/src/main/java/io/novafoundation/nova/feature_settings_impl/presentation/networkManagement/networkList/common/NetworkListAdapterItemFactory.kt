@@ -61,6 +61,12 @@ class RealNetworkListAdapterItemFactory(
     private fun getConnectingState(network: NetworkState): ConnectionStateModel? {
         if (network.chain.isDisabled) return null
 
+        // Tron chains never get a ChainConnection/SocketService (TronGrid is a plain REST API, not
+        // WSS JSON-RPC - see ChainRegistry.registerConnection()), so connectionState is always the
+        // Disconnected default here, never Connected. Treat that as "nothing to show" rather than
+        // falling into the generic "Connecting" state below, which would otherwise spin forever.
+        if (network.chain.isTronBased) return null
+
         return when (network.connectionState) {
             is SocketStateMachine.State.Connected -> null
 

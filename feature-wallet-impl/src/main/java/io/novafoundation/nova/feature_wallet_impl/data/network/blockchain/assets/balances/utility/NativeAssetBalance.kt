@@ -151,6 +151,17 @@ class NativeAssetBalance(
         }
     }
 
+    // Setup/subscription failures are allowed to propagate rather than being swallowed into emptyFlow()/NoCause:
+    // the caller, FullSyncPaymentUpdater.syncAsset(), wraps this whole call in a single retryWhen boundary meant
+    // to catch and retry exactly these failures. Swallowing here would make that retry boundary never trigger.
+    //
+    // NOTE (2026-07-09): a prior attempt switched this to the typed remoteStorage.subscribe { metadata.system
+    // .account... } DSL, on the theory that it would fix HEZ silently never syncing on Pezkuwi Asset Hub (see
+    // git history). That attempt made things categorically worse - all assets across all 3 Pezkuwi chains
+    // stopped syncing, with logs showing what looked like cross-chain key contamination on the shared
+    // connection. Reverted back to the raw subscriptionBuilder.subscribe(key) form here, which is not broken
+    // for any OTHER native asset on any OTHER chain - only Pezkuwi Asset Hub's HEZ specifically. That narrower
+    // bug is still open; do not re-attempt the DSL swap without first understanding why it caused contamination.
     override suspend fun startSyncingBalance(
         chain: Chain,
         chainAsset: Chain.Asset,
@@ -160,13 +171,7 @@ class NativeAssetBalance(
     ): Flow<BalanceSyncUpdate> {
         val runtime = chainRegistry.getRuntime(chain.id)
 
-        val key = try {
-            runtime.metadata.system().storage("Account").storageKey(runtime, accountId)
-        } catch (e: Exception) {
-            Log.e(LOG_TAG, "Failed to construct account storage key: ${e.message} in ${chain.name}")
-
-            return emptyFlow()
-        }
+        val key = runtime.metadata.system().storage("Account").storageKey(runtime, accountId)
 
         return subscriptionBuilder.subscribe(key)
             .map { change ->
@@ -178,10 +183,6 @@ class NativeAssetBalance(
                 } else {
                     BalanceSyncUpdate.NoCause
                 }
-            }
-            .catch { error ->
-                Log.e(LOG_TAG, "Balance sync failed for ${chainAsset.symbol} on ${chain.name}: ${error.message}")
-                emit(BalanceSyncUpdate.NoCause)
             }
     }
 

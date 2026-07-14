@@ -355,6 +355,8 @@
 
     <!-- Bridge Screen -->
     <string name="bridge_title">DOT ↔ HEZ Bridge</string>
+    <string name="bridge_pair_dot_hez">HEZ ⇄ DOT</string>
+    <string name="bridge_pair_usdt">USDT ⇄ USDT.p</string>
     <string name="bridge_you_send">You send</string>
     <string name="bridge_you_receive">You receive (estimated)</string>
     <string name="bridge_exchange_rate">Exchange rate</string>

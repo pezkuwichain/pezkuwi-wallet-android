@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bridgeAssetInputContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:background="@color/input_background">
+
+        <ImageView
+            android:id="@+id/bridgeAssetInputImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_token_container"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_token_dot_colored" />
+
+        <ImageView
+            android:id="@+id/bridgeAssetInputSubtitleImage"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/bridgeAssetInputSubtitle"
+            app:layout_constraintStart_toEndOf="@+id/bridgeAssetInputImageBarrier"
+            app:layout_constraintTop_toTopOf="@+id/bridgeAssetInputSubtitle"
+            tools:src="@drawable/ic_pezkuwi_logo" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/bridgeAssetInputImageBarrier"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:barrierDirection="end"
+            app:barrierMargin="12dp"
+            app:constraint_referenced_ids="bridgeAssetInputImage" />
+
+        <TextView
+            android:id="@+id/bridgeAssetInputToken"
+            style="@style/TextAppearance.NovaFoundation.SemiBold.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:includeFontPadding="false"
+            android:textColor="@color/text_primary"
+            app:layout_constraintBottom_toTopOf="@+id/bridgeAssetInputSubtitle"
+            app:layout_constraintStart_toEndOf="@id/bridgeAssetInputImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="DOT" />
+
+        <TextView
+            android:id="@+id/bridgeAssetInputSubtitle"
+            style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:includeFontPadding="false"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bridgeAssetInputSubtitleImage"
+            app:layout_constraintTop_toBottomOf="@+id/bridgeAssetInputToken"
+            tools:text="Polkadot Asset Hub" />
+
+        <ImageView
+            android:id="@+id/bridgeAssetInputChevron"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_chevron_right"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/bridgeAssetInputToken"
+            app:layout_constraintStart_toEndOf="@+id/bridgeAssetInputToken"
+            app:layout_constraintTop_toTopOf="@+id/bridgeAssetInputToken"
+            app:tint="@color/icon_primary" />
+
+        <EditText
+            android:id="@+id/bridgeAssetInputField"
+            style="@style/TextAppearance.NovaFoundation.Regular.Title2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:background="@null"
+            android:gravity="end"
+            android:hint="0"
+            android:inputType="numberDecimal"
+            android:paddingTop="10dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="10dp"
+            android:saveEnabled="false"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/hint_text"
+            android:textCursorDrawable="@null"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/bridgeAssetInputChevron"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="4.508614" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/bridgeAssetInputError"
+        style="@style/TextAppearance.NovaFoundation.Regular.Caption1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_negative"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bridgeAssetInputContainer" />
+
+</merge>

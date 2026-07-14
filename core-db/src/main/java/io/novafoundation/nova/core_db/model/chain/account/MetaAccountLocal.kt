@@ -39,6 +39,8 @@ class MetaAccountLocal(
     val typeExtras: SerializedJson?,
     val tronPublicKey: ByteArray? = null,
     val tronAddress: ByteArray? = null,
+    val bitcoinPublicKey: ByteArray? = null,
+    val bitcoinAddress: ByteArray? = null,
 ) {
 
     enum class Status {
@@ -59,6 +61,9 @@ class MetaAccountLocal(
             const val TRON_PUBKEY = "tronPublicKey"
             const val TRON_ADDRESS = "tronAddress"
 
+            const val BITCOIN_PUBKEY = "bitcoinPublicKey"
+            const val BITCOIN_ADDRESS = "bitcoinAddress"
+
             const val NAME = "name"
             const val IS_SELECTED = "isSelected"
             const val POSITION = "position"
@@ -74,6 +79,62 @@ class MetaAccountLocal(
     fun addEvmAccount(
         ethereumPublicKey: ByteArray,
         ethereumAddress: ByteArray,
+    ): MetaAccountLocal {
+        return MetaAccountLocal(
+            substratePublicKey = substratePublicKey,
+            substrateCryptoType = substrateCryptoType,
+            substrateAccountId = substrateAccountId,
+            ethereumPublicKey = ethereumPublicKey,
+            ethereumAddress = ethereumAddress,
+            name = name,
+            parentMetaId = parentMetaId,
+            isSelected = isSelected,
+            position = position,
+            type = type,
+            status = status,
+            globallyUniqueId = globallyUniqueId,
+            typeExtras = typeExtras,
+            tronPublicKey = tronPublicKey,
+            tronAddress = tronAddress,
+            bitcoinPublicKey = bitcoinPublicKey,
+            bitcoinAddress = bitcoinAddress,
+        ).also {
+            it.id = id
+        }
+    }
+
+    // We do not use copy as we need explicitly set id
+    fun addBitcoinAccount(
+        bitcoinPublicKey: ByteArray,
+        bitcoinAddress: ByteArray,
+    ): MetaAccountLocal {
+        return MetaAccountLocal(
+            substratePublicKey = substratePublicKey,
+            substrateCryptoType = substrateCryptoType,
+            substrateAccountId = substrateAccountId,
+            ethereumPublicKey = ethereumPublicKey,
+            ethereumAddress = ethereumAddress,
+            name = name,
+            parentMetaId = parentMetaId,
+            isSelected = isSelected,
+            position = position,
+            type = type,
+            status = status,
+            globallyUniqueId = globallyUniqueId,
+            typeExtras = typeExtras,
+            tronPublicKey = tronPublicKey,
+            tronAddress = tronAddress,
+            bitcoinPublicKey = bitcoinPublicKey,
+            bitcoinAddress = bitcoinAddress,
+        ).also {
+            it.id = id
+        }
+    }
+
+    // We do not use copy as we need explicitly set id
+    fun addTronAccount(
+        tronPublicKey: ByteArray,
+        tronAddress: ByteArray,
     ): MetaAccountLocal {
         return MetaAccountLocal(
             substratePublicKey = substratePublicKey,
@@ -109,6 +170,8 @@ class MetaAccountLocal(
         if (!ethereumAddress.contentEquals(other.ethereumAddress)) return false
         if (!tronPublicKey.contentEquals(other.tronPublicKey)) return false
         if (!tronAddress.contentEquals(other.tronAddress)) return false
+        if (!bitcoinPublicKey.contentEquals(other.bitcoinPublicKey)) return false
+        if (!bitcoinAddress.contentEquals(other.bitcoinAddress)) return false
         if (name != other.name) return false
         if (parentMetaId != other.parentMetaId) return false
         if (isSelected != other.isSelected) return false
@@ -130,6 +193,8 @@ class MetaAccountLocal(
         result = 31 * result + (ethereumAddress?.contentHashCode() ?: 0)
         result = 31 * result + (tronPublicKey?.contentHashCode() ?: 0)
         result = 31 * result + (tronAddress?.contentHashCode() ?: 0)
+        result = 31 * result + (bitcoinPublicKey?.contentHashCode() ?: 0)
+        result = 31 * result + (bitcoinAddress?.contentHashCode() ?: 0)
         result = 31 * result + name.hashCode()
         result = 31 * result + (parentMetaId?.hashCode() ?: 0)
         result = 31 * result + isSelected.hashCode()

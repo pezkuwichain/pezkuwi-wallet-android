@@ -9,13 +9,21 @@ import io.novafoundation.nova.common.utils.Modules
 import io.novafoundation.nova.common.utils.TokenSymbol
 import io.novafoundation.nova.common.utils.Urls
 import io.novafoundation.nova.common.utils.asTokenSymbol
+import io.novafoundation.nova.common.utils.bitcoinAddressToAccountId
+import io.novafoundation.nova.common.utils.decodeBitcoinDestination
+import io.novafoundation.nova.common.utils.hash
+import io.novafoundation.nova.common.utils.bitcoinPublicKeyToAccountId
+import io.novafoundation.nova.common.utils.emptyBitcoinAccountId
 import io.novafoundation.nova.common.utils.emptyEthereumAccountId
 import io.novafoundation.nova.common.utils.emptySubstrateAccountId
 import io.novafoundation.nova.common.utils.findIsInstanceOrNull
 import io.novafoundation.nova.common.utils.formatNamed
+import io.novafoundation.nova.common.utils.isValidBitcoinDestinationAddress
 import io.novafoundation.nova.common.utils.removeHexPrefix
 import io.novafoundation.nova.common.utils.emptyTronAccountId
+import io.novafoundation.nova.common.utils.isValidTronAddress
 import io.novafoundation.nova.common.utils.substrateAccountId
+import io.novafoundation.nova.common.utils.toBitcoinAddress
 import io.novafoundation.nova.common.utils.toTronAddress
 import io.novafoundation.nova.common.utils.tronAddressToAccountId
 import io.novafoundation.nova.common.utils.tronPublicKeyToAccountId
@@ -272,6 +280,7 @@ fun Chain.requireGenesisHash() = requireNotNull(genesisHash)
 fun Chain.addressOf(accountId: ByteArray): String {
     return when {
         isTronBased -> accountId.toTronAddress()
+        isBitcoinBased -> accountId.toBitcoinAddress()
         isEthereumBased -> accountId.toEthereumAddress()
         else -> accountId.toAddress(addressPrefix.toShort())
     }
@@ -282,7 +291,7 @@ fun Chain.addressOf(accountId: AccountIdKey): String {
 }
 
 fun Chain.legacyAddressOfOrNull(accountId: ByteArray): String? {
-    return if (isEthereumBased || isTronBased) {
+    return if (isEthereumBased || isTronBased || isBitcoinBased) {
         null
     } else {
         legacyAddressPrefix?.let { accountId.toAddress(it.toShort()) }
@@ -296,6 +305,12 @@ fun ByteArray.toEthereumAddress(): String {
 fun Chain.accountIdOf(address: String): ByteArray {
     return when {
         isTronBased -> address.tronAddressToAccountId()
+        // Falls back to decodeBitcoinDestination() for a valid P2SH/P2PKH address (real exchange withdrawal
+        // addresses were confirmed to be P2SH-only) - this wallet's own address stays native-SegWit-only, but a
+        // SEND destination legitimately isn't. Safe here ONLY because this generic accountId is used for
+        // opaque purposes (identicon generation, presence checks) elsewhere, never fed back into building a
+        // scriptPubKey - see BitcoinDestinationAddress.kt's [hash] doc.
+        isBitcoinBased -> runCatching { address.bitcoinAddressToAccountId() }.getOrElse { address.decodeBitcoinDestination().hash }
         isEthereumBased -> address.asEthereumAddress().toAccountId().value
         else -> address.toAccountId()
     }
@@ -329,6 +344,7 @@ fun Chain.accountIdOrNull(address: String): ByteArray? {
 
 fun Chain.emptyAccountId() = when {
     isTronBased -> emptyTronAccountId()
+    isBitcoinBased -> emptyBitcoinAccountId()
     isEthereumBased -> emptyEthereumAccountId()
     else -> emptySubstrateAccountId()
 }
@@ -342,6 +358,7 @@ fun Chain.accountIdOrDefault(maybeAddress: String): ByteArray {
 fun Chain.accountIdOf(publicKey: ByteArray): ByteArray {
     return when {
         isTronBased -> publicKey.tronPublicKeyToAccountId()
+        isBitcoinBased -> publicKey.bitcoinPublicKeyToAccountId()
         isEthereumBased -> publicKey.asEthereumPublicKey().toAccountId().value
         else -> publicKey.substrateAccountId()
     }
@@ -361,13 +378,24 @@ fun Chain.multiAddressOf(accountId: ByteArray): MultiAddress {
 
 fun Chain.isValidAddress(address: String): Boolean {
     return runCatching {
-        if (isEthereumBased) {
-            address.asEthereumAddress().isValid()
-        } else {
-            address.toAccountId() // verify supplied address can be converted to account id
+        when {
+            // Wider than isValidBitcoinAddress() (native SegWit only, used for this wallet's OWN address/accountId):
+            // a valid SEND destination can legitimately be P2SH/P2PKH too - confirmed live via a real exchange
+            // withdrawal address - see BitcoinDestinationAddress.kt.
+            isBitcoinBased -> address.isValidBitcoinDestinationAddress()
 
-            addressPrefix.toShort() == address.addressPrefix() ||
-                legacyAddressPrefix?.toShort() == address.addressPrefix()
+            // Tron addresses are Base58Check(0x41 ++ accountId), not SS58 or plain 0x-hex - neither of the two
+            // branches below would ever accept them, so this needs its own dedicated check.
+            isTronBased -> address.isValidTronAddress()
+
+            isEthereumBased -> address.asEthereumAddress().isValid()
+
+            else -> {
+                address.toAccountId() // verify supplied address can be converted to account id
+
+                addressPrefix.toShort() == address.addressPrefix() ||
+                    legacyAddressPrefix?.toShort() == address.addressPrefix()
+            }
         }
     }.getOrDefault(false)
 }
@@ -481,6 +509,7 @@ object ChainGeneses {
 object ChainIds {
 
     const val ETHEREUM = "$EIP_155_PREFIX:1"
+    const val TRON = "tron:0x2b6653dc"
 
     const val MOONBEAM = ChainGeneses.MOONBEAM
     const val MOONRIVER = ChainGeneses.MOONRIVER
@@ -491,6 +520,33 @@ val Chain.Companion.Geneses
 
 val Chain.Companion.Ids
     get() = ChainIds
+
+/**
+ * A short, user-facing token-standard label for chains where disambiguating "which token standard is this"
+ * is actually useful (multiple ecosystems all issue their own USDT/USDC etc., so a bare chain name isn't
+ * always enough context). Deliberately NOT derived from [Chain.Asset.Type] (e.g. every Statemine-type chain
+ * would get the same label) - this is chain-specific by design, matching exactly which labels are
+ * recognizable/expected by users (PEZ-20, ERC-20, TRC-20), not a mechanical one-label-per-asset-type mapping.
+ */
+val Chain.assetStandardLabelOrNull: String?
+    get() = when {
+        genesisHash == Chain.Geneses.PEZKUWI_ASSET_HUB -> "PEZ-20"
+        id == Chain.Ids.ETHEREUM -> "ERC-20"
+        id == Chain.Ids.TRON -> "TRC-20"
+        else -> null
+    }
+
+/**
+ * Chain display name with its token-standard label appended where [assetStandardLabelOrNull] applies, e.g.
+ * "Ethereum (ERC-20)". Shared across every screen that lists the same token symbol once per chain (the
+ * Send/Receive/etc. network picker, the main balance list's per-token chain breakdown) - a bare chain name
+ * alone doesn't convey which issuance this is when multiple ecosystems share the same symbol.
+ */
+fun Chain.displayNameWithAssetStandard(): String {
+    val standardLabel = assetStandardLabelOrNull ?: return name
+
+    return "$name ($standardLabel)"
+}
 
 fun Chain.Asset.requireStatemine(): Type.Statemine {
     require(type is Type.Statemine)
@@ -546,6 +602,18 @@ fun Chain.requireTronGridBaseUrl(): String {
 
     return requireNotNull(nodes.nodes.minByOrNull { it.orderId }?.unformattedUrl) {
         "No TronGrid node configured for chain $id"
+    }
+}
+
+/**
+ * The mempool.space-style REST API base url for a Bitcoin-based chain - same rationale as [requireTronGridBaseUrl]:
+ * Bitcoin has no JSON-RPC/WS node concept at all, so the configured `nodes` entry directly *is* the REST API base url.
+ */
+fun Chain.requireMempoolSpaceBaseUrl(): String {
+    require(isBitcoinBased) { "Chain $id is not Bitcoin-based" }
+
+    return requireNotNull(nodes.nodes.minByOrNull { it.orderId }?.unformattedUrl) {
+        "No mempool.space-style node configured for chain $id"
     }
 }
 
@@ -614,6 +682,7 @@ val Chain.Asset.onChainAssetId: String?
         is Type.EvmNative -> null
         is Type.Trc20 -> this.type.contractAddress
         Type.TronNative -> null
+        Type.BitcoinNative -> null
         Type.Unsupported -> error("Unsupported assetId type: ${this.type::class.simpleName}")
     }
 

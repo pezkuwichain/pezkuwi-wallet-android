@@ -25,14 +25,14 @@ suspend fun SecretStoreV2.getAccountSecrets(
 
 fun AccountSecrets.keypair(chain: Chain): Keypair {
     return fold(
-        left = { mapMetaAccountSecretsToKeypair(it, ethereum = chain.isEthereumBased) },
+        left = { mapMetaAccountSecretsToKeypair(it, ethereum = chain.isEthereumBased, bitcoin = chain.isBitcoinBased) },
         right = { mapChainAccountSecretsToKeypair(it) }
     )
 }
 
 fun AccountSecrets.derivationPath(chain: Chain): String? {
     return fold(
-        left = { mapMetaAccountSecretsToDerivationPath(it, ethereum = chain.isEthereumBased) },
+        left = { mapMetaAccountSecretsToDerivationPath(it, ethereum = chain.isEthereumBased, bitcoin = chain.isBitcoinBased) },
         right = { it[ChainAccountSecrets.DerivationPath] }
     )
 }

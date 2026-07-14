@@ -58,6 +58,7 @@ fun chainOf(
     isTestNet = false,
     isEthereumBased = false,
     isTronBased = false,
+    isBitcoinBased = false,
     hasCrowdloans = false,
     additional = "",
     governance = "governance",

@@ -8,10 +8,12 @@ class MultiChainQrSharingFactory {
 
     fun create(addressValidator: (String) -> Boolean): QrSharing {
         val substrateFormat = SubstrateQrFormat()
+        val bitcoinUriFormat = BitcoinUriQrFormat(addressValidator)
         val onlyAddressFormat = AddressQrFormat(addressValidator)
 
         val formats = listOf(
             substrateFormat,
+            bitcoinUriFormat,
             onlyAddressFormat
         )
 

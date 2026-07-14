@@ -69,6 +69,8 @@ fun mapChainAssetTypeToRaw(type: Chain.Asset.Type): Pair<String, Map<String, Any
         ASSET_EQUILIBRIUM_ON_CHAIN_ID to type.id.toString()
     )
 
+    Chain.Asset.Type.BitcoinNative -> ASSET_BITCOIN_NATIVE to null
+
     Chain.Asset.Type.Unsupported -> ASSET_UNSUPPORTED to null
 }
 
@@ -128,6 +130,7 @@ fun mapChainToLocal(chain: Chain, gson: Gson): ChainLocal {
         legacyPrefix = chain.legacyAddressPrefix,
         isEthereumBased = chain.isEthereumBased,
         isTronBased = chain.isTronBased,
+        isBitcoinBased = chain.isBitcoinBased,
         isTestNet = chain.isTestNet,
         hasSubstrateRuntime = chain.hasSubstrateRuntime,
         pushSupport = chain.pushSupport,

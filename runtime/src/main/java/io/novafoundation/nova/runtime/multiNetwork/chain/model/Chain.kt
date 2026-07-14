@@ -33,6 +33,7 @@ data class Chain(
     val types: Types?,
     val isEthereumBased: Boolean,
     val isTronBased: Boolean,
+    val isBitcoinBased: Boolean,
     val isTestNet: Boolean,
     val source: Source,
     val hasSubstrateRuntime: Boolean,
@@ -137,6 +138,12 @@ data class Chain(
             data class Trc20(
                 val contractAddress: String
             ) : Type()
+
+            /**
+             * Native BTC balance on a Bitcoin-based chain.
+             * Balance is fetched from a mempool.space-style REST API rather than JSON-RPC.
+             */
+            object BitcoinNative : Type()
 
             object Unsupported : Type()
         }

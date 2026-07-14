@@ -28,6 +28,9 @@ object MetaAccountSecrets : Schema<MetaAccountSecrets>() {
 
     val TronKeypair by schema(KeyPairSchema).optional()
     val TronDerivationPath by string().optional()
+
+    val BitcoinKeypair by schema(KeyPairSchema).optional()
+    val BitcoinDerivationPath by string().optional()
 }
 
 object ChainAccountSecrets : Schema<ChainAccountSecrets>() {
@@ -47,6 +50,8 @@ fun MetaAccountSecrets(
     ethereumDerivationPath: String? = null,
     tronKeypair: Keypair? = null,
     tronDerivationPath: String? = null,
+    bitcoinKeypair: Keypair? = null,
+    bitcoinDerivationPath: String? = null,
 ): EncodableStruct<MetaAccountSecrets> = MetaAccountSecrets { secrets ->
     secrets[Entropy] = entropy
     secrets[SubstrateSeed] = substrateSeed
@@ -75,6 +80,15 @@ fun MetaAccountSecrets(
         }
     }
     secrets[TronDerivationPath] = tronDerivationPath
+
+    secrets[BitcoinKeypair] = bitcoinKeypair?.let {
+        KeyPairSchema { keypair ->
+            keypair[PublicKey] = it.publicKey
+            keypair[PrivateKey] = it.privateKey
+            keypair[Nonce] = null // bitcoin uses secp256k1 (like ethereum/tron), so nonce is always null
+        }
+    }
+    secrets[BitcoinDerivationPath] = bitcoinDerivationPath
 }
 
 fun ChainAccountSecrets(
@@ -103,6 +117,9 @@ val EncodableStruct<MetaAccountSecrets>.ethereumDerivationPath
 val EncodableStruct<MetaAccountSecrets>.tronDerivationPath
     get() = get(MetaAccountSecrets.TronDerivationPath)
 
+val EncodableStruct<MetaAccountSecrets>.bitcoinDerivationPath
+    get() = get(MetaAccountSecrets.BitcoinDerivationPath)
+
 val EncodableStruct<MetaAccountSecrets>.entropy
     get() = get(MetaAccountSecrets.Entropy)
 
@@ -117,6 +134,9 @@ val EncodableStruct<MetaAccountSecrets>.ethereumKeypair
 
 val EncodableStruct<MetaAccountSecrets>.tronKeypair
     get() = get(MetaAccountSecrets.TronKeypair)
+
+val EncodableStruct<MetaAccountSecrets>.bitcoinKeypair
+    get() = get(MetaAccountSecrets.BitcoinKeypair)
 
 val EncodableStruct<ChainAccountSecrets>.derivationPath
     get() = get(ChainAccountSecrets.DerivationPath)

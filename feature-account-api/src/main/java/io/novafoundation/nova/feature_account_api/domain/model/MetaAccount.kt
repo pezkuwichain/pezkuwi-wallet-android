@@ -52,6 +52,10 @@ interface LightMetaAccount {
      */
     val tronAddress: ByteArray?
     val tronPublicKey: ByteArray?
+
+    /** Bitcoin account id (HASH160 of the compressed pubkey - see [io.novafoundation.nova.common.utils.hash160]). */
+    val bitcoinAddress: ByteArray?
+    val bitcoinPublicKey: ByteArray?
     val isSelected: Boolean
     val name: String
     val type: Type
@@ -90,6 +94,8 @@ fun LightMetaAccount(
     parentMetaId: Long?,
     tronAddress: ByteArray? = null,
     tronPublicKey: ByteArray? = null,
+    bitcoinAddress: ByteArray? = null,
+    bitcoinPublicKey: ByteArray? = null,
 ) = object : LightMetaAccount {
     override val id: Long = id
     override val globallyUniqueId: String = globallyUniqueId
@@ -100,6 +106,8 @@ fun LightMetaAccount(
     override val ethereumPublicKey: ByteArray? = ethereumPublicKey
     override val tronAddress: ByteArray? = tronAddress
     override val tronPublicKey: ByteArray? = tronPublicKey
+    override val bitcoinAddress: ByteArray? = bitcoinAddress
+    override val bitcoinPublicKey: ByteArray? = bitcoinPublicKey
     override val isSelected: Boolean = isSelected
     override val name: String = name
     override val type: LightMetaAccount.Type = type

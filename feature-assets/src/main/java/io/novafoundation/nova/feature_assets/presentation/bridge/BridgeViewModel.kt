@@ -3,9 +3,14 @@ package io.novafoundation.nova.feature_assets.presentation.bridge
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.novafoundation.nova.common.base.BaseViewModel
+import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
+import io.novafoundation.nova.common.utils.Event
+import io.novafoundation.nova.common.utils.images.Icon
 import io.novafoundation.nova.common.view.ButtonState
+import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
+import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeSignerState
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
@@ -13,9 +18,11 @@ import io.novafoundation.nova.feature_assets.presentation.send.amount.SendPayloa
 import io.novafoundation.nova.feature_wallet_api.presentation.model.AssetPayload
 import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.ext.addressOf
+import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -27,6 +34,8 @@ class BridgeViewModel(
     private val router: AssetsRouter,
     private val resourceManager: ResourceManager,
     private val chainRegistry: ChainRegistry,
+    private val assetIconProvider: AssetIconProvider,
+    private val walletInteractor: WalletInteractor,
     private val bridgeMultisigInteractor: BridgeMultisigInteractor
 ) : BaseViewModel() {
 
@@ -91,15 +100,37 @@ class BridgeViewModel(
     private val _signButtonLabel = MutableLiveData("")
     val signButtonLabel: LiveData<String> = _signButtonLabel
 
+    private val _fromCard = MutableLiveData<BridgeAssetCardUi>()
+    val fromCard: LiveData<BridgeAssetCardUi> = _fromCard
+
+    private val _toCard = MutableLiveData<BridgeAssetCardUi>()
+    val toCard: LiveData<BridgeAssetCardUi> = _toCard
+
+    private val _pairOptions = MutableLiveData<List<BridgePairUi>>(emptyList())
+    val pairOptions: LiveData<List<BridgePairUi>> = _pairOptions
+
+    private val _maxAmountDisplay = MutableLiveData<String?>(null)
+    val maxAmountDisplay: LiveData<String?> = _maxAmountDisplay
+
+    private val _insufficientBalanceError = MutableLiveData<String?>(null)
+    val insufficientBalanceError: LiveData<String?> = _insufficientBalanceError
+
+    private val _fillAmountEvent = MutableLiveData<Event<String>>()
+    val fillAmountEvent: LiveData<Event<String>> = _fillAmountEvent
+
     private var currentAmount: Double = 0.0
     private var dotToHezRate: Double = FALLBACK_RATE
     private var isHezToDotActive: Boolean = false
     private var isWusdtToUsdtActive: Boolean = false
+    private var availableBalance: BigDecimal = BigDecimal.ZERO
+    private var balanceJob: Job? = null
 
     init {
         fetchExchangeRate()
         fetchBridgeStatus()
         refreshSignerState()
+        updateCards()
+        loadPairOptions()
     }
 
     fun setPair(newPair: BridgePair) {
@@ -113,6 +144,7 @@ class BridgeViewModel(
             updateUI()
             calculateOutput()
             updateWarningState()
+            updateCards()
         }
     }
 
@@ -127,6 +159,7 @@ class BridgeViewModel(
             updateUI()
             calculateOutput()
             updateWarningState()
+            updateCards()
         }
     }
 
@@ -141,13 +174,19 @@ class BridgeViewModel(
             updateUI()
             calculateOutput()
             updateWarningState()
+            updateCards()
         }
     }
 
     fun setAmount(amount: Double) {
         currentAmount = amount
         calculateOutput()
+        updateInsufficientBalanceState()
         updateButtonState()
+    }
+
+    fun maxClicked() {
+        _fillAmountEvent.value = Event(availableBalance.stripTrailingZeros().toPlainString())
     }
 
     fun swapClicked() {
@@ -329,9 +368,18 @@ class BridgeViewModel(
         _buttonState.value = when {
             currentAmount <= 0 -> ButtonState.DISABLED
             currentAmount < minimum -> ButtonState.DISABLED
+            BigDecimal.valueOf(currentAmount) > availableBalance -> ButtonState.DISABLED
             dir == BridgeDirection.HEZ_TO_DOT && !isHezToDotActive -> ButtonState.DISABLED
             dir == BridgeDirection.WUSDT_TO_USDT && !isWusdtToUsdtActive -> ButtonState.DISABLED
             else -> ButtonState.NORMAL
+        }
+    }
+
+    private fun updateInsufficientBalanceState() {
+        _insufficientBalanceError.value = if (currentAmount > 0 && BigDecimal.valueOf(currentAmount) > availableBalance) {
+            resourceManager.getString(R.string.bridge_insufficient_balance)
+        } else {
+            null
         }
     }
 
@@ -388,4 +436,81 @@ class BridgeViewModel(
             }
         }
     }
+
+    private fun updateCards() {
+        val dir = _direction.value ?: return
+
+        // Same chainId/assetId mapping already used by swapClicked() to resolve the origin side -
+        // mirrored here (plus its destination counterpart) purely to display logos/names, no new business rule.
+        val originChainId = when (dir) {
+            BridgeDirection.DOT_TO_HEZ, BridgeDirection.USDT_TO_WUSDT -> POLKADOT_ASSET_HUB_ID
+            BridgeDirection.HEZ_TO_DOT, BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_ASSET_HUB_ID
+        }
+        val destChainId = when (dir) {
+            BridgeDirection.DOT_TO_HEZ, BridgeDirection.USDT_TO_WUSDT -> PEZKUWI_ASSET_HUB_ID
+            BridgeDirection.HEZ_TO_DOT, BridgeDirection.WUSDT_TO_USDT -> POLKADOT_ASSET_HUB_ID
+        }
+        val originAssetId = when (dir) {
+            BridgeDirection.DOT_TO_HEZ, BridgeDirection.HEZ_TO_DOT -> UTILITY_ASSET_ID
+            BridgeDirection.USDT_TO_WUSDT -> POLKADOT_USDT_ASSET_ID
+            BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_USDT_ASSET_ID
+        }
+        val destAssetId = when (dir) {
+            BridgeDirection.DOT_TO_HEZ, BridgeDirection.HEZ_TO_DOT -> UTILITY_ASSET_ID
+            BridgeDirection.USDT_TO_WUSDT -> PEZKUWI_USDT_ASSET_ID
+            BridgeDirection.WUSDT_TO_USDT -> POLKADOT_USDT_ASSET_ID
+        }
+
+        launch {
+            _fromCard.value = cardUiFor(originChainId, originAssetId)
+            _toCard.value = cardUiFor(destChainId, destAssetId)
+        }
+
+        observeOriginBalance(originChainId, originAssetId)
+    }
+
+    private fun observeOriginBalance(chainId: String, assetId: Int) {
+        balanceJob?.cancel()
+        balanceJob = launch {
+            walletInteractor.assetFlow(chainId, assetId).collect { asset ->
+                availableBalance = asset.transferable
+                _maxAmountDisplay.postValue(
+                    "${availableBalance.setScale(6, RoundingMode.DOWN).stripTrailingZeros().toPlainString()} ${asset.token.configuration.symbol.value}"
+                )
+                updateInsufficientBalanceState()
+                updateButtonState()
+            }
+        }
+    }
+
+    private fun loadPairOptions() {
+        launch {
+            val dotHezIcon = cardUiFor(POLKADOT_ASSET_HUB_ID, UTILITY_ASSET_ID).assetIcon
+            val usdtIcon = cardUiFor(POLKADOT_ASSET_HUB_ID, POLKADOT_USDT_ASSET_ID).assetIcon
+
+            _pairOptions.value = listOf(
+                BridgePairUi(BridgePair.DOT_HEZ, dotHezIcon, resourceManager.getString(R.string.bridge_pair_dot_hez)),
+                BridgePairUi(BridgePair.USDT, usdtIcon, resourceManager.getString(R.string.bridge_pair_usdt))
+            )
+        }
+    }
+
+    private suspend fun cardUiFor(chainId: String, assetId: Int): BridgeAssetCardUi {
+        val chain = chainRegistry.getChain(chainId)
+        val asset = chain.assetsById.getValue(assetId)
+
+        return BridgeAssetCardUi(
+            assetIcon = assetIconProvider.getAssetIconOrFallback(asset),
+            chainIconUrl = chain.icon,
+            symbol = asset.symbol.value,
+            chainName = chain.displayNameWithAssetStandard()
+        )
+    }
 }
+
+data class BridgeAssetCardUi(
+    val assetIcon: Icon,
+    val chainIconUrl: String?,
+    val symbol: String,
+    val chainName: String
+)

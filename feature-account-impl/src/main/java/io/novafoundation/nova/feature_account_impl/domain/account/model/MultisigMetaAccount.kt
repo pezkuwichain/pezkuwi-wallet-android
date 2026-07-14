@@ -30,6 +30,8 @@ class RealMultisigMetaAccount(
     parentMetaId: Long?,
     tronAddress: ByteArray? = null,
     tronPublicKey: ByteArray? = null,
+    bitcoinAddress: ByteArray? = null,
+    bitcoinPublicKey: ByteArray? = null,
 ) : DefaultMetaAccount(
     id = id,
     globallyUniqueId = globallyUniqueId,
@@ -45,7 +47,9 @@ class RealMultisigMetaAccount(
     chainAccounts = chainAccounts,
     parentMetaId = parentMetaId,
     tronAddress = tronAddress,
-    tronPublicKey = tronPublicKey
+    tronPublicKey = tronPublicKey,
+    bitcoinAddress = bitcoinAddress,
+    bitcoinPublicKey = bitcoinPublicKey
 ),
     MultisigMetaAccount {
 

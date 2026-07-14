@@ -45,6 +45,18 @@ class TronAddressTest {
     }
 
     @Test
+    fun `toTronHexAddress should produce the known hex form`() {
+        val accountId = knownTronAddressHex.fromHex().copyOfRange(1, 21)
+
+        assertEquals(knownTronAddressHex, accountId.toTronHexAddress())
+    }
+
+    @Test
+    fun `tronAddressToHexAddress should produce the known hex form directly from a Base58 address`() {
+        assertEquals(knownTronAddressHex, knownTronAddress.tronAddressToHexAddress())
+    }
+
+    @Test
     fun `isValidTronAddress should accept known good address`() {
         assertTrue(knownTronAddress.isValidTronAddress())
     }

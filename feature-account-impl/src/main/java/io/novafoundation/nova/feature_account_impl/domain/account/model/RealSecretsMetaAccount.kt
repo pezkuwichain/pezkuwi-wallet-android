@@ -25,6 +25,8 @@ class RealSecretsMetaAccount(
     parentMetaId: Long?,
     tronAddress: ByteArray? = null,
     tronPublicKey: ByteArray? = null,
+    bitcoinAddress: ByteArray? = null,
+    bitcoinPublicKey: ByteArray? = null,
 ) : DefaultMetaAccount(
     id = id,
     globallyUniqueId = globallyUniqueId,
@@ -40,7 +42,9 @@ class RealSecretsMetaAccount(
     chainAccounts = chainAccounts,
     parentMetaId = parentMetaId,
     tronAddress = tronAddress,
-    tronPublicKey = tronPublicKey
+    tronPublicKey = tronPublicKey,
+    bitcoinAddress = bitcoinAddress,
+    bitcoinPublicKey = bitcoinPublicKey
 ),
     SecretsMetaAccount {
 
@@ -49,7 +53,10 @@ class RealSecretsMetaAccount(
             hasChainAccountIn(chain.id) -> {
                 val cryptoType = chainAccounts.getValue(chain.id).cryptoType ?: return null
 
-                if (chain.isEthereumBased) {
+                // Tron and Bitcoin both reuse the same secp256k1 keypair/signing as Ethereum - see
+                // RealTronTransactionService/RealBitcoinTransactionService's use of
+                // Signer.sign(MultiChainEncryption.Ethereum, ...).
+                if (chain.isEthereumBased || chain.isTronBased || chain.isBitcoinBased) {
                     MultiChainEncryption.Ethereum
                 } else {
                     MultiChainEncryption.substrateFrom(cryptoType)
@@ -57,6 +64,10 @@ class RealSecretsMetaAccount(
             }
 
             chain.isEthereumBased -> MultiChainEncryption.Ethereum
+
+            chain.isTronBased -> MultiChainEncryption.Ethereum
+
+            chain.isBitcoinBased -> MultiChainEncryption.Ethereum
 
             else -> substrateCryptoType?.let(MultiChainEncryption.Companion::substrateFrom)
         }

@@ -8,9 +8,11 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import io.novafoundation.nova.common.di.viewmodel.ViewModelKey
 import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
+import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicService
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
+import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.RealBridgeMultisigInteractor
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
@@ -40,9 +42,11 @@ class BridgeModule {
         router: AssetsRouter,
         resourceManager: ResourceManager,
         chainRegistry: ChainRegistry,
+        assetIconProvider: AssetIconProvider,
+        walletInteractor: WalletInteractor,
         bridgeMultisigInteractor: BridgeMultisigInteractor
     ): ViewModel {
-        return BridgeViewModel(router, resourceManager, chainRegistry, bridgeMultisigInteractor)
+        return BridgeViewModel(router, resourceManager, chainRegistry, assetIconProvider, walletInteractor, bridgeMultisigInteractor)
     }
 
     @Provides

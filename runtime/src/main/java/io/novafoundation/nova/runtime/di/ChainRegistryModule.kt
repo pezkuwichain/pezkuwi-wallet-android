@@ -37,7 +37,9 @@ import io.novafoundation.nova.runtime.multiNetwork.runtime.types.BaseTypeSynchro
 import io.novafoundation.nova.runtime.multiNetwork.runtime.types.TypesFetcher
 import io.novasama.substrate_sdk_android.wsrpc.SocketService
 import kotlinx.coroutines.flow.MutableStateFlow
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
 import org.web3j.protocol.http.HttpService
 import javax.inject.Provider
 
@@ -160,12 +162,18 @@ class ChainRegistryModule {
         socketProvider: Provider<SocketService>,
         bulkRetriever: BulkRetriever,
         connectionSecrets: ConnectionSecrets,
-        web3ApiFactory: Web3ApiFactory
+        web3ApiFactory: Web3ApiFactory,
     ) = NodeHealthStateTesterFactory(
         socketProvider,
         connectionSecrets,
         bulkRetriever,
-        web3ApiFactory
+        web3ApiFactory,
+        // A short-lived, minimally-configured client is enough for a health-check ping - unlike Web3ApiFactory's
+        // client, this never needs to survive/reuse connections across a long-lived RPC session.
+        OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .build()
     )
 
     @Provides
