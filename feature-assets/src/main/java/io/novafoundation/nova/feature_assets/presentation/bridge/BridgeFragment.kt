@@ -36,8 +36,8 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
         // One-tap direction flip - replaces the old segmented direction buttons
         binder.bridgeFlipButton.setOnClickListener {
             when (viewModel.direction.value) {
-                BridgeDirection.DOT_TO_HEZ, BridgeDirection.USDT_TO_WUSDT -> viewModel.setDirectionRight()
-                BridgeDirection.HEZ_TO_DOT, BridgeDirection.WUSDT_TO_USDT -> viewModel.setDirectionLeft()
+                BridgeDirection.USDT_TO_WUSDT -> viewModel.setDirectionRight()
+                BridgeDirection.WUSDT_TO_USDT -> viewModel.setDirectionLeft()
                 null -> Unit
             }
         }
@@ -160,13 +160,10 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
 }
 
 enum class BridgePair {
-    DOT_HEZ,
     USDT
 }
 
 enum class BridgeDirection {
-    DOT_TO_HEZ,
-    HEZ_TO_DOT,
     USDT_TO_WUSDT,
     WUSDT_TO_USDT
 }

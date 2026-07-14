@@ -113,7 +113,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
-                            tools:text="1 DOT = 3.00 HEZ" />
+                            tools:text="1:1 (fee 0.1%)" />
 
                     </LinearLayout>
 
@@ -162,7 +162,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
-                            tools:text="0.1 DOT" />
+                            tools:text="1.0 USDT" />
 
                     </LinearLayout>
 
@@ -170,7 +170,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Warning for HEZ to DOT / USDT liquidity -->
+            <!-- Warning for USDT liquidity -->
             <io.novafoundation.nova.common.view.AlertView
                 android:id="@+id/bridgeWarningAlert"
                 android:layout_width="match_parent"

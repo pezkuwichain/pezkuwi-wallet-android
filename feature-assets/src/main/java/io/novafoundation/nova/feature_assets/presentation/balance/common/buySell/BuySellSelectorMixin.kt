@@ -75,7 +75,6 @@ class RealBuySellSelectorMixin(
     private suspend fun openAllAssetsSelector() = BuySellSelectorMixin.SelectorPayload(
         buyItem(enabled = true) { router.openBuyFlow() },
         sellItem(enabled = buySellRestrictionCheckMixin.isAllowed()) { router.openSellFlow() },
-        bridgeItem(enabled = true) { router.openBridgeFlow() },
         bridgeUsdtItem(enabled = true) { router.openBridgeFlow() }
     )
 
@@ -113,16 +112,6 @@ class RealBuySellSelectorMixin(
             R.string.wallet_asset_sell_tokens,
             if (enabled) R.color.text_primary else R.color.button_text_inactive,
             if (enabled) action else sellErrorAction()
-        )
-    }
-
-    private fun bridgeItem(enabled: Boolean, action: () -> Unit): ListSelectorMixin.Item {
-        return ListSelectorMixin.Item(
-            R.drawable.ic_bridge,
-            if (enabled) R.color.icon_primary else R.color.icon_inactive,
-            R.string.wallet_asset_bridge,
-            if (enabled) R.color.text_primary else R.color.button_text_inactive,
-            action
         )
     }
 
