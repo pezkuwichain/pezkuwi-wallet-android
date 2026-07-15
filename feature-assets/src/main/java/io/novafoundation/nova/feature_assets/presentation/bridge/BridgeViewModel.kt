@@ -9,19 +9,25 @@ import io.novafoundation.nova.common.utils.Event
 import io.novafoundation.nova.common.utils.images.Icon
 import io.novafoundation.nova.common.view.ButtonState
 import io.novafoundation.nova.common.view.ExecutionTimerView
+import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
+import io.novafoundation.nova.feature_account_api.data.fee.FeePaymentCurrency
 import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigConstants
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeSignerState
+import io.novafoundation.nova.feature_assets.domain.send.SendInteractor
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
-import io.novafoundation.nova.feature_assets.presentation.send.amount.SendPayload
-import io.novafoundation.nova.feature_wallet_api.presentation.model.AssetPayload
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.tranfers.WeightedAssetTransfer
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.tranfers.buildAssetTransfer
+import io.novafoundation.nova.feature_wallet_api.domain.SendUseCase
 import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.ext.addressOf
 import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
+import io.novafoundation.nova.runtime.multiNetwork.ChainWithAsset
+import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
@@ -45,7 +51,10 @@ class BridgeViewModel(
     private val chainRegistry: ChainRegistry,
     private val assetIconProvider: AssetIconProvider,
     private val walletInteractor: WalletInteractor,
-    private val bridgeMultisigInteractor: BridgeMultisigInteractor
+    private val bridgeMultisigInteractor: BridgeMultisigInteractor,
+    private val sendInteractor: SendInteractor,
+    private val sendUseCase: SendUseCase,
+    private val selectedAccountUseCase: SelectedAccountUseCase
 ) : BaseViewModel() {
 
     companion object {
@@ -76,6 +85,10 @@ class BridgeViewModel(
         /** How long to actively watch the destination balance before admitting we can't confirm
          *  completion yet - not a claim about how long the bridge itself actually takes. */
         val DEPOSIT_WAIT_TIMEOUT = 90.seconds
+
+        /** Cosmetic only - the real completion signal is the awaited dispatch result, which can
+         *  arrive before or after this visually elapses (same as the swap screen's own timer). */
+        val SUBMIT_WAIT_TIMEOUT = 30.seconds
     }
 
     private val _pair = MutableLiveData(BridgePair.USDT)
@@ -235,16 +248,91 @@ class BridgeViewModel(
 
         launch {
             val chain = chainRegistry.getChain(chainId)
+            val chainAsset = chain.assetsById.getValue(assetId)
             val accountId = BRIDGE_ADDRESS_GENERIC.toAccountId()
             val bridgeAddress = chain.addressOf(accountId)
 
-            val assetPayload = AssetPayload(chainId, assetId)
-            val sendPayload = SendPayload.SpecifiedOrigin(assetPayload)
-
-            router.openSend(sendPayload, bridgeAddress, currentAmount)
-
-            observeDepositCompletion(destChainId, destAssetId, expectedAmount)
+            submitBridgeTransfer(chain, chainAsset, bridgeAddress, expectedAmount, destChainId, destAssetId)
         }
+    }
+
+    /** Submits the bridge deposit as a plain on-chain transfer and ACTUALLY AWAITS the real
+     *  dispatch result - replacing the previous router.openSend(...) hand-off to the generic Send
+     *  flow, whose confirm screen only submits (fire-and-forget) and pops back to this screen
+     *  immediately, regardless of whether the transaction actually succeeded. A real user hit
+     *  exactly that: "tapped confirm, the screen just closed like it succeeded" while the funds
+     *  never arrived. This mirrors the same real submit-and-await pattern the app's own Swap
+     *  execution screen already uses (SendUseCase.performOnChainTransferAndAwaitExecution, backed
+     *  by ExtrinsicService.submitExtrinsicAndAwaitExecution - a genuine on-chain dispatch result,
+     *  not a UI guess) instead of the shallow SendInteractor.performTransfer path.
+     *
+     *  Two honest phases, each backed by a real signal:
+     *  1. Submit + await the ORIGIN chain transfer's own dispatch result (seconds, via the real
+     *     extrinsic execution API) - Success/Error here reflect what actually happened on-chain.
+     *  2. Only once that's confirmed, wait for the DESTINATION balance to actually increase (the
+     *     bridge's own off-chain relay step, which has no callback this wallet can observe
+     *     directly - balance-delta is the most honest signal available for that specific step).
+     */
+    private suspend fun submitBridgeTransfer(
+        chain: Chain,
+        chainAsset: Chain.Asset,
+        bridgeAddress: String,
+        amount: Double,
+        destChainId: String,
+        destAssetId: Int
+    ) {
+        _depositWaitLabelVisible.postValue(true)
+        _depositWaitState.postValue(ExecutionTimerView.State.CountdownTimer(SUBMIT_WAIT_TIMEOUT))
+
+        val chainWithAsset = ChainWithAsset(chain, chainAsset)
+        val bigDecimalAmount = BigDecimal.valueOf(amount)
+
+        val submissionResult = runCatching {
+            val metaAccount = selectedAccountUseCase.getSelectedMetaAccount()
+
+            val assetTransfer = buildAssetTransfer(
+                metaAccount = metaAccount,
+                feePaymentCurrency = FeePaymentCurrency.Native,
+                origin = chainWithAsset,
+                destination = chainWithAsset, // plain on-chain transfer, not a cross-chain route
+                amount = bigDecimalAmount,
+                transferringMaxAmount = false,
+                address = bridgeAddress,
+            )
+
+            val fee = sendInteractor.getFee(assetTransfer, viewModelScope)
+
+            val weightedTransfer = WeightedAssetTransfer(
+                sender = metaAccount,
+                recipient = bridgeAddress,
+                originChain = chain,
+                destinationChain = chain,
+                destinationChainAsset = chainAsset,
+                originChainAsset = chainAsset,
+                amount = bigDecimalAmount,
+                feePaymentCurrency = FeePaymentCurrency.Native,
+                fee = fee.originFee,
+                transferringMaxAmount = false,
+            )
+
+            sendUseCase.performOnChainTransferAndAwaitExecution(weightedTransfer, fee.originFee.submissionFee, viewModelScope)
+                .getOrThrow()
+        }
+
+        submissionResult.fold(
+            onSuccess = {
+                // Real on-chain dispatch confirmed on the origin chain - now (and only now) wait
+                // for the bridge to actually credit the destination.
+                observeDepositCompletion(destChainId, destAssetId, amount)
+            },
+            onFailure = { e ->
+                _depositWaitState.postValue(ExecutionTimerView.State.Error)
+                _depositWaitLabelVisible.postValue(false)
+                _showWarning.postValue(true)
+                _warningBlocked.postValue(true)
+                _warningText.postValue(e.message ?: resourceManager.getString(R.string.bridge_deposit_pending_message))
+            }
+        )
     }
 
     /** Watches the DESTINATION balance for a real increase after a swap is submitted, rather than
