@@ -322,6 +322,13 @@ class BridgeViewModel(
 
         submissionResult.fold(
             onSuccess = {
+                // The origin transfer already happened - clear the stale entered amount so the
+                // live balance-vs-amount check (updateInsufficientBalanceState/updateButtonState)
+                // doesn't flag the now-lower post-transfer balance against an amount that was
+                // already spent. Without this, a real successful transfer and a false "insufficient
+                // balance" error appear side by side, which reads as if something failed twice.
+                _fillAmountEvent.postValue(Event("0"))
+
                 // Real on-chain dispatch confirmed on the origin chain - now (and only now) wait
                 // for the bridge to actually credit the destination.
                 observeDepositCompletion(destChainId, destAssetId, amount)
