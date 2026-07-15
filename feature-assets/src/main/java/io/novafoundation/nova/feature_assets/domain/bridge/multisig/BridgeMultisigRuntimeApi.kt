@@ -48,6 +48,18 @@ val BridgeAssetsApi.approvalAmount: QueryableStorageEntry3<BigInteger, AccountId
         key3FromInternalConverter = AccountIdKey.scaleDecoder,
     )
 
+/** `Assets.Account(asset_id, account) -> AssetAccount { balance, ... }` - only `balance` needed.
+ *  Used to check a custody account's real held amount (e.g. the multisig's real USDT reserve on
+ *  Polkadot Asset Hub), not the connected wallet's own balance. */
+context(StorageQueryContext)
+val BridgeAssetsApi.assetBalance: QueryableStorageEntry2<BigInteger, AccountIdKey, BigInteger>
+    get() = storage2(
+        name = "Account",
+        binding = { decoded, _, _ -> bindNumber(decoded.castToStruct()["balance"]) },
+        key2ToInternalConverter = AccountIdKey.scaleEncoder,
+        key2FromInternalConverter = AccountIdKey.scaleDecoder,
+    )
+
 @JvmInline
 value class BridgeMultisigApi(override val module: Module) : QueryableModule
 

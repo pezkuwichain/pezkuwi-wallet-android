@@ -364,7 +364,7 @@
     <string name="bridge_insufficient_balance">Insufficient balance</string>
     <string name="bridge_below_minimum">Amount below minimum</string>
     <string name="bridge_enter_amount">Enter amount</string>
-    <string name="bridge_wusdt_to_usdt_blocked">USDT(Pez)→USDT(Pol) swaps are temporarily unavailable. Waiting for 1:1 liquidity to be established.</string>
+    <string name="bridge_wusdt_to_usdt_blocked">This amount exceeds the bridge\'s current available reserve (%s USDT). Try a smaller amount.</string>
 
     <string name="bridge_sign_status_ok">Bridge allowance OK (%s)</string>
     <string name="bridge_sign_button">Sign renewal (%s)</string>

@@ -253,7 +253,7 @@ Sizin için en iyi seçeneği bulmak amacıyla tekliflerini karşılaştırın.<
     <string name="bridge_enter_amount">Tutar girin</string>
     <string name="bridge_hez_to_dot_warning">HEZ → DOT yönü manuel işlenir, 24 saate kadar sürebilir.</string>
     <string name="bridge_hez_to_dot_blocked">HEZ → DOT yönü şu anda devre dışı.</string>
-    <string name="bridge_wusdt_to_usdt_blocked">USDT(Pez) → USDT(Pol) yönü şu anda devre dışı.</string>
+    <string name="bridge_wusdt_to_usdt_blocked">Bu tutar köprünün mevcut rezervini (%s USDT) aşıyor. Daha küçük bir tutar deneyin.</string>
     <string name="wallet_asset_buy_sell">Al/Sat</string>
     <string name="account_ledger_import_start_step_otg">Telefon ayarlarınızda %s</string>
     <string name="account_ledger_import_start_step_otg_highlighted">OTG\'yi etkinleştir</string>

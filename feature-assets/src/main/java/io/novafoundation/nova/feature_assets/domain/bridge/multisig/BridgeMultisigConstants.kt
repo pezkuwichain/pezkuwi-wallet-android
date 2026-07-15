@@ -14,8 +14,15 @@ package io.novafoundation.nova.feature_assets.domain.bridge.multisig
 object BridgeMultisigConstants {
 
     const val WUSDT_ASSET_ID = 1000
+    const val POLKADOT_USDT_ASSET_ID = 1
 
     const val MULTISIG_ADDRESS = "5GvwxmCDp3PC33KHoeWSgj3S7ocE7nzk1jiCCZMPSDBFeNcj"
+    /** Same multisig account, Polkadot Asset Hub SS58 encoding - where the real USDT backing
+     *  wUSDT withdrawals actually sits. Used to check a specific withdrawal amount against the
+     *  real reserve (see BridgeMultisigInteractor.getPolkadotUsdtReserve) instead of the old
+     *  dead-external-service boolean check this replaced (217.77.6.126:3030/status belonged to
+     *  the legacy bridge bot, stopped this same session - see res/validators-tiki.md). */
+    const val MULTISIG_ADDRESS_POLKADOT = "15sF76THfpefUaKomHZSpssayRbsp6Yt6ESgMrLjzJCmpe66"
     const val AUTOMATION_KEY_ADDRESS = "5GQu4PFUb1f3MTJ7i7c1CtLgDk3TVvpSW1VbQCRmfkMoC8cM"
 
     const val THRESHOLD = 3

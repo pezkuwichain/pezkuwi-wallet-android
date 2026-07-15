@@ -21,14 +21,10 @@ import io.novafoundation.nova.runtime.ext.addressOf
 import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.net.URL
 
 /**
  * DOT<->HEZ used to be a second pair here, retired 2026-07 in favor of the multisig-custodied
@@ -60,7 +56,8 @@ class BridgeViewModel(
         const val FEE_PERCENT = 0.001
         const val MIN_USDT = 1.0
 
-        const val BRIDGE_STATUS_API = "http://217.77.6.126:3030/status"
+        // USDT has 6 decimals on both Polkadot and Pezkuwi Asset Hub.
+        val USDT_DECIMALS_DIVISOR: BigDecimal = BigDecimal.TEN.pow(6)
     }
 
     private val _pair = MutableLiveData(BridgePair.USDT)
@@ -121,12 +118,15 @@ class BridgeViewModel(
     val fillAmountEvent: LiveData<Event<String>> = _fillAmountEvent
 
     private var currentAmount: Double = 0.0
-    private var isWusdtToUsdtActive: Boolean = false
+    /** Real USDT the multisig actually holds on Polkadot Asset Hub - see
+     *  BridgeMultisigInteractor.getPolkadotUsdtReserve for why this replaced a dead external
+     *  status check that always reported "inactive" regardless of the real reserve. */
+    private var polkadotUsdtReserve: BigDecimal = BigDecimal.ZERO
     private var availableBalance: BigDecimal = BigDecimal.ZERO
     private var balanceJob: Job? = null
 
     init {
-        fetchBridgeStatus()
+        fetchReserveStatus()
         refreshSignerState()
         updateCards()
         loadPairOptions()
@@ -171,7 +171,7 @@ class BridgeViewModel(
         currentAmount = amount
         calculateOutput()
         updateInsufficientBalanceState()
-        updateButtonState()
+        updateWarningState() // re-check the entered amount against the cached reserve
     }
 
     fun maxClicked() {
@@ -208,27 +208,15 @@ class BridgeViewModel(
         router.back()
     }
 
-    private fun fetchBridgeStatus() {
+    private fun fetchReserveStatus() {
         launch {
-            try {
-                isWusdtToUsdtActive = withContext(Dispatchers.IO) {
-                    fetchStatusFromApi()
-                }
-                updateWarningState()
+            polkadotUsdtReserve = try {
+                val raw = bridgeMultisigInteractor.getPolkadotUsdtReserve()
+                BigDecimal(raw).divide(USDT_DECIMALS_DIVISOR)
             } catch (e: Exception) {
-                isWusdtToUsdtActive = false
-                updateWarningState()
+                BigDecimal.ZERO
             }
-        }
-    }
-
-    private fun fetchStatusFromApi(): Boolean {
-        return try {
-            val response = URL(BRIDGE_STATUS_API).readText()
-            val json = JSONObject(response)
-            json.optBoolean("wusdtToUsdtActive", false)
-        } catch (e: Exception) {
-            false
+            updateWarningState()
         }
     }
 
@@ -237,14 +225,20 @@ class BridgeViewModel(
 
         when (dir) {
             BridgeDirection.WUSDT_TO_USDT -> {
-                _showWarning.postValue(true)
-                if (!isWusdtToUsdtActive) {
+                val requested = BigDecimal.valueOf(currentAmount)
+                val exceedsReserve = currentAmount > 0 && requested > polkadotUsdtReserve
+                _showWarning.postValue(exceedsReserve)
+                if (exceedsReserve) {
                     _warningBlocked.postValue(true)
-                    _warningText.postValue(resourceManager.getString(R.string.bridge_wusdt_to_usdt_blocked))
+                    _warningText.postValue(
+                        resourceManager.getString(
+                            R.string.bridge_wusdt_to_usdt_blocked,
+                            polkadotUsdtReserve.setScale(2, RoundingMode.DOWN).stripTrailingZeros().toPlainString()
+                        )
+                    )
                 } else {
                     _warningBlocked.postValue(false)
                     _warningText.postValue("")
-                    _showWarning.postValue(false)
                 }
             }
             else -> {
@@ -274,11 +268,12 @@ class BridgeViewModel(
     private fun updateButtonState() {
         val dir = _direction.value ?: return
 
+        val requested = BigDecimal.valueOf(currentAmount)
         _buttonState.value = when {
             currentAmount <= 0 -> ButtonState.DISABLED
             currentAmount < MIN_USDT -> ButtonState.DISABLED
-            BigDecimal.valueOf(currentAmount) > availableBalance -> ButtonState.DISABLED
-            dir == BridgeDirection.WUSDT_TO_USDT && !isWusdtToUsdtActive -> ButtonState.DISABLED
+            requested > availableBalance -> ButtonState.DISABLED
+            dir == BridgeDirection.WUSDT_TO_USDT && requested > polkadotUsdtReserve -> ButtonState.DISABLED
             else -> ButtonState.NORMAL
         }
     }
@@ -292,7 +287,7 @@ class BridgeViewModel(
     }
 
     fun refreshBridgeStatus() {
-        fetchBridgeStatus()
+        fetchReserveStatus()
         refreshSignerState()
     }
 

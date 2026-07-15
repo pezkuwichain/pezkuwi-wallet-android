@@ -38,6 +38,14 @@ interface BridgeMultisigInteractor {
     suspend fun getSignerState(): BridgeSignerState?
 
     suspend fun submitRenewalSignature(): Result<ExtrinsicExecutionResult>
+
+    /** Real USDT (base units) the multisig actually holds on Polkadot Asset Hub right now - the
+     *  true backing for wUSDT->USDT withdrawals. Replaces the old wusdtToUsdtActive boolean
+     *  fetched from the legacy bridge bot's :3030/status endpoint, which this session stopped
+     *  (see res/validators-tiki.md) - that made the old check always report "inactive"
+     *  regardless of real reserve. A specific withdrawal should be allowed whenever it's covered
+     *  by this real balance, not gated on an unrelated dead service or on total supply parity. */
+    suspend fun getPolkadotUsdtReserve(): BigInteger
 }
 
 @FeatureScope
@@ -116,6 +124,18 @@ class RealBridgeMultisigInteractor @Inject constructor(
 
             call(multisigCall)
         }.getOrThrow().requireOk()
+    }
+
+    override suspend fun getPolkadotUsdtReserve(): BigInteger {
+        val polkadotChain = chainRegistry.getChain(ChainGeneses.POLKADOT_ASSET_HUB)
+        val multisigAccountId = BridgeMultisigConstants.MULTISIG_ADDRESS_POLKADOT.toAccountId().intoKey()
+
+        return storageDataSource.query(polkadotChain.id) {
+            runtime.metadata.bridgeAssets().assetBalance.query(
+                BridgeMultisigConstants.POLKADOT_USDT_ASSET_ID.toBigInteger(),
+                multisigAccountId,
+            )
+        } ?: BigInteger.ZERO
     }
 
     private suspend fun queryRemainingAllowance(chain: Chain): BigInteger {
