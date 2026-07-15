@@ -11,6 +11,7 @@ import io.novafoundation.nova.common.view.ButtonState
 import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
+import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigConstants
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeSignerState
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
@@ -44,7 +45,16 @@ class BridgeViewModel(
 ) : BaseViewModel() {
 
     companion object {
-        private const val BRIDGE_ADDRESS_GENERIC = "5C5CW7xDmiXtCgfUCbKFF4ViJuCJJQpDZqWQ1mSTjehGzE3p"
+        /** The real 3-of-5 multisig custody account (generic SS58, prefix 42) - swaps must be
+         *  sent here, not to any single-key address, so usdt-bridge's listener (which only
+         *  watches this account on both chains) actually detects them. This constant used to be
+         *  a leftover pre-migration value (the retired single-key legacy bot's own address,
+         *  "5C5CW7xDmiXtCgfUCbKFF4ViJuCJJQpDZqWQ1mSTjehGzE3p") that nobody updated when the
+         *  custody model changed - confirmed live: a real user swap sent there landed at that
+         *  dead address (1.0 USDT, recovered via the still-intact legacy seed) and was never
+         *  detected by anything. See BridgeMultisigConstants.MULTISIG_ADDRESS for the same
+         *  address used by the signer-renewal flow on this same screen. */
+        private const val BRIDGE_ADDRESS_GENERIC = BridgeMultisigConstants.MULTISIG_ADDRESS
 
         val POLKADOT_ASSET_HUB_ID = ChainGeneses.POLKADOT_ASSET_HUB
         val PEZKUWI_ASSET_HUB_ID = ChainGeneses.PEZKUWI_ASSET_HUB
