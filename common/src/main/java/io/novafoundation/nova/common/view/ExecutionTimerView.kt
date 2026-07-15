@@ -1,4 +1,4 @@
-package io.novafoundation.nova.feature_swap_impl.presentation.execution
+package io.novafoundation.nova.common.view
 
 import android.content.Context
 import android.os.CountDownTimer
@@ -14,13 +14,13 @@ import android.view.animation.RotateAnimation
 import android.widget.TextSwitcher
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import io.novafoundation.nova.common.R
+import io.novafoundation.nova.common.databinding.ViewExecutionTimerBinding
 import io.novafoundation.nova.common.utils.WithContextExtensions
 import io.novafoundation.nova.common.utils.inflater
 import io.novafoundation.nova.common.utils.makeGone
 import io.novafoundation.nova.common.utils.makeVisible
 import io.novafoundation.nova.common.utils.setTextColorRes
-import io.novafoundation.nova.feature_swap_impl.R
-import io.novafoundation.nova.feature_swap_impl.databinding.ViewExecutionTimerBinding
 import kotlin.math.cos
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -28,6 +28,13 @@ import kotlin.time.Duration.Companion.milliseconds
 private const val SECOND_MILLIS = 1000L
 private const val HIDE_SCALE = 0.7f
 
+/**
+ * Reusable circular countdown/result indicator - originally swap-execution-only
+ * (feature_swap_impl.presentation.execution), moved here since it has no swap-specific coupling
+ * beyond a Duration input, so other features (e.g. the Bridge screen) can show the same
+ * waiting/success/error UX instead of leaving the user with no feedback after submitting an
+ * operation that takes real time to confirm.
+ */
 class ExecutionTimerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

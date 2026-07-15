@@ -8,6 +8,7 @@ import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.common.utils.Event
 import io.novafoundation.nova.common.utils.images.Icon
 import io.novafoundation.nova.common.view.ButtonState
+import io.novafoundation.nova.common.view.ExecutionTimerView
 import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
@@ -23,9 +24,12 @@ import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import java.math.BigDecimal
 import java.math.RoundingMode
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * DOT<->HEZ used to be a second pair here, retired 2026-07 in favor of the multisig-custodied
@@ -68,6 +72,10 @@ class BridgeViewModel(
 
         // USDT has 6 decimals on both Polkadot and Pezkuwi Asset Hub.
         val USDT_DECIMALS_DIVISOR: BigDecimal = BigDecimal.TEN.pow(6)
+
+        /** How long to actively watch the destination balance before admitting we can't confirm
+         *  completion yet - not a claim about how long the bridge itself actually takes. */
+        val DEPOSIT_WAIT_TIMEOUT = 90.seconds
     }
 
     private val _pair = MutableLiveData(BridgePair.USDT)
@@ -108,6 +116,16 @@ class BridgeViewModel(
 
     private val _signButtonLabel = MutableLiveData("")
     val signButtonLabel: LiveData<String> = _signButtonLabel
+
+    /** Null = hidden. Driven by an actual destination-balance observation after Swap is tapped -
+     *  never just a cosmetic countdown that reports "done" regardless of whether funds arrived. */
+    private val _depositWaitState = MutableLiveData<ExecutionTimerView.State?>(null)
+    val depositWaitState: LiveData<ExecutionTimerView.State?> = _depositWaitState
+
+    private val _depositWaitLabelVisible = MutableLiveData(false)
+    val depositWaitLabelVisible: LiveData<Boolean> = _depositWaitLabelVisible
+
+    private var depositWaitJob: Job? = null
 
     private val _fromCard = MutableLiveData<BridgeAssetCardUi>()
     val fromCard: LiveData<BridgeAssetCardUi> = _fromCard
@@ -193,17 +211,29 @@ class BridgeViewModel(
         val dir = _direction.value ?: return
         if (currentAmount <= 0) return
 
+        val chainId = when (dir) {
+            BridgeDirection.USDT_TO_WUSDT -> POLKADOT_ASSET_HUB_ID
+            BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_ASSET_HUB_ID
+        }
+
+        val assetId = when (dir) {
+            BridgeDirection.USDT_TO_WUSDT -> POLKADOT_USDT_ASSET_ID
+            BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_USDT_ASSET_ID
+        }
+
+        val destChainId = when (dir) {
+            BridgeDirection.USDT_TO_WUSDT -> PEZKUWI_ASSET_HUB_ID
+            BridgeDirection.WUSDT_TO_USDT -> POLKADOT_ASSET_HUB_ID
+        }
+
+        val destAssetId = when (dir) {
+            BridgeDirection.USDT_TO_WUSDT -> PEZKUWI_USDT_ASSET_ID
+            BridgeDirection.WUSDT_TO_USDT -> POLKADOT_USDT_ASSET_ID
+        }
+
+        val expectedAmount = currentAmount
+
         launch {
-            val chainId = when (dir) {
-                BridgeDirection.USDT_TO_WUSDT -> POLKADOT_ASSET_HUB_ID
-                BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_ASSET_HUB_ID
-            }
-
-            val assetId = when (dir) {
-                BridgeDirection.USDT_TO_WUSDT -> POLKADOT_USDT_ASSET_ID
-                BridgeDirection.WUSDT_TO_USDT -> PEZKUWI_USDT_ASSET_ID
-            }
-
             val chain = chainRegistry.getChain(chainId)
             val accountId = BRIDGE_ADDRESS_GENERIC.toAccountId()
             val bridgeAddress = chain.addressOf(accountId)
@@ -212,6 +242,49 @@ class BridgeViewModel(
             val sendPayload = SendPayload.SpecifiedOrigin(assetPayload)
 
             router.openSend(sendPayload, bridgeAddress, currentAmount)
+
+            observeDepositCompletion(destChainId, destAssetId, expectedAmount)
+        }
+    }
+
+    /** Watches the DESTINATION balance for a real increase after a swap is submitted, rather than
+     *  a cosmetic timer that reports "done" regardless of whether funds actually arrived - there is
+     *  no completion callback from the generic Send flow this screen delegates to (it just pops
+     *  back to the previous screen on success), so balance-delta is the only honest signal
+     *  available. Bounded to a reasonable wait; if it elapses without a confirmed increase, this
+     *  says so plainly rather than implying success or failure it can't actually confirm - the
+     *  swap may just need manual 3-of-5 review, which can take longer.
+     */
+    private fun observeDepositCompletion(destChainId: String, destAssetId: Int, expectedAmount: Double) {
+        depositWaitJob?.cancel()
+        depositWaitJob = launch {
+            val balanceBefore = try {
+                walletInteractor.assetFlow(destChainId, destAssetId).first().transferable
+            } catch (e: Exception) {
+                return@launch // Can't observe reliably - don't show a misleading progress state.
+            }
+
+            _depositWaitLabelVisible.postValue(true)
+            _depositWaitState.postValue(ExecutionTimerView.State.CountdownTimer(DEPOSIT_WAIT_TIMEOUT))
+
+            val minExpectedIncrease = BigDecimal.valueOf(expectedAmount * (1 - FEE_PERCENT * 2)) // fee + rounding slack
+
+            val confirmed = withTimeoutOrNull(DEPOSIT_WAIT_TIMEOUT.inWholeMilliseconds) {
+                walletInteractor.assetFlow(destChainId, destAssetId)
+                    .first { it.transferable - balanceBefore >= minExpectedIncrease }
+            } != null
+
+            if (confirmed) {
+                _depositWaitState.postValue(ExecutionTimerView.State.Success)
+            } else {
+                // Not a failure - just not confirmed within the wait window. Hide the timer and
+                // say so plainly instead of showing a false success or a false error icon.
+                _depositWaitState.postValue(null)
+                _depositWaitLabelVisible.postValue(false)
+                _warningBlocked.postValue(false)
+                _showWarning.postValue(true)
+                _warningText.postValue(resourceManager.getString(R.string.bridge_deposit_pending_message))
+            }
         }
     }
 
