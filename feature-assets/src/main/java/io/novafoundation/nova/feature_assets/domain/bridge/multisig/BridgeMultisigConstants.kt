@@ -17,6 +17,7 @@ object BridgeMultisigConstants {
     const val POLKADOT_USDT_ASSET_ID = 1
 
     const val MULTISIG_ADDRESS = "5GvwxmCDp3PC33KHoeWSgj3S7ocE7nzk1jiCCZMPSDBFeNcj"
+
     /** Same multisig account, Polkadot Asset Hub SS58 encoding - where the real USDT backing
      *  wUSDT withdrawals actually sits. Used to check a specific withdrawal amount against the
      *  real reserve (see BridgeMultisigInteractor.getPolkadotUsdtReserve) instead of the old
