@@ -15,10 +15,8 @@ import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAcco
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.RealBridgeMultisigInteractor
-import io.novafoundation.nova.feature_assets.domain.send.SendInteractor
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.bridge.BridgeViewModel
-import io.novafoundation.nova.feature_wallet_api.domain.SendUseCase
 import io.novafoundation.nova.runtime.di.REMOTE_STORAGE_SOURCE
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.storage.source.StorageDataSource
@@ -47,9 +45,6 @@ class BridgeModule {
         assetIconProvider: AssetIconProvider,
         walletInteractor: WalletInteractor,
         bridgeMultisigInteractor: BridgeMultisigInteractor,
-        sendInteractor: SendInteractor,
-        sendUseCase: SendUseCase,
-        selectedAccountUseCase: SelectedAccountUseCase
     ): ViewModel {
         return BridgeViewModel(
             router,
@@ -58,9 +53,6 @@ class BridgeModule {
             assetIconProvider,
             walletInteractor,
             bridgeMultisigInteractor,
-            sendInteractor,
-            sendUseCase,
-            selectedAccountUseCase
         )
     }
 

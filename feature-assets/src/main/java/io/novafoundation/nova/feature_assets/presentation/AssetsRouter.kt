@@ -1,6 +1,7 @@
 package io.novafoundation.nova.feature_assets.presentation
 
 import android.os.Bundle
+import io.novafoundation.nova.feature_assets.presentation.bridge.execution.BridgeExecutionPayload
 import io.novafoundation.nova.feature_assets.presentation.flow.network.NetworkFlowPayload
 import io.novafoundation.nova.feature_assets.presentation.model.OperationParcelizeModel
 import io.novafoundation.nova.feature_assets.presentation.send.TransferDraft
@@ -26,6 +27,8 @@ interface AssetsRouter {
     fun openSend(payload: SendPayload, initialRecipientAddress: String? = null, initialAmount: Double? = null)
 
     fun openConfirmTransfer(transferDraft: TransferDraft)
+
+    fun openBridgeExecution(payload: BridgeExecutionPayload)
 
     fun openTransferDetail(transaction: OperationParcelizeModel.Transfer)
 

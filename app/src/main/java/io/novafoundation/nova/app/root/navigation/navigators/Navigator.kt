@@ -57,6 +57,8 @@ import io.novafoundation.nova.feature_ahm_impl.presentation.migrationDetails.Cha
 import io.novafoundation.nova.feature_ahm_impl.presentation.migrationDetails.ChainMigrationDetailsPayload
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.balance.detail.BalanceDetailFragment
+import io.novafoundation.nova.feature_assets.presentation.bridge.execution.BridgeExecutionFragment
+import io.novafoundation.nova.feature_assets.presentation.bridge.execution.BridgeExecutionPayload
 import io.novafoundation.nova.feature_assets.presentation.flow.network.NetworkFlowFragment
 import io.novafoundation.nova.feature_assets.presentation.flow.network.NetworkFlowPayload
 import io.novafoundation.nova.feature_assets.presentation.model.OperationParcelizeModel
@@ -300,6 +302,14 @@ class Navigator(
         val bundle = ConfirmSendFragment.getBundle(transferDraft)
 
         navigationBuilder().action(R.id.action_chooseAmountFragment_to_confirmTransferFragment)
+            .setArgs(bundle)
+            .navigateInFirstAttachedContext()
+    }
+
+    override fun openBridgeExecution(payload: BridgeExecutionPayload) {
+        val bundle = BridgeExecutionFragment.getBundle(payload)
+
+        navigationBuilder().action(R.id.action_bridge_to_execution)
             .setArgs(bundle)
             .navigateInFirstAttachedContext()
     }

@@ -190,28 +190,6 @@
                 android:text="@string/bridge_sign_button"
                 android:visibility="gone" />
 
-            <!-- Deposit-wait progress: shown after tapping Swap, while we actively watch the
-                 destination balance for a real confirmed increase - not a cosmetic timer that
-                 completes regardless of whether funds actually arrived. Same reusable component
-                 already used for swap execution (common.view.ExecutionTimerView). -->
-            <TextView
-                android:id="@+id/bridgeDepositWaitLabel"
-                style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:gravity="center"
-                android:text="@string/bridge_deposit_wait_label"
-                android:textColor="@color/text_secondary"
-                android:visibility="gone" />
-
-            <io.novafoundation.nova.common.view.ExecutionTimerView
-                android:id="@+id/bridgeExecutionTimer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:visibility="gone" />
-
         </LinearLayout>
 
     </ScrollView>

@@ -71,6 +71,7 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
         super.onResume()
 
         viewModel.refreshBridgeStatus()
+        viewModel.resetAmount()
     }
 
     override fun inject() {
@@ -155,19 +156,6 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
 
         viewModel.fillAmountEvent.observeEvent { amount ->
             binder.bridgeFromCard.amountInput.setText(amount)
-        }
-
-        viewModel.depositWaitLabelVisible.observe { visible ->
-            binder.bridgeDepositWaitLabel.visibility = if (visible) View.VISIBLE else View.GONE
-        }
-
-        viewModel.depositWaitState.observe { state ->
-            if (state == null) {
-                binder.bridgeExecutionTimer.visibility = View.GONE
-            } else {
-                binder.bridgeExecutionTimer.visibility = View.VISIBLE
-                binder.bridgeExecutionTimer.setState(state)
-            }
         }
     }
 }

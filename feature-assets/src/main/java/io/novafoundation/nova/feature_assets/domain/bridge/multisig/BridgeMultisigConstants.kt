@@ -14,7 +14,15 @@ package io.novafoundation.nova.feature_assets.domain.bridge.multisig
 object BridgeMultisigConstants {
 
     const val WUSDT_ASSET_ID = 1000
-    const val POLKADOT_USDT_ASSET_ID = 1
+
+    /** The real on-chain Assets pallet id for USDT on Polkadot Asset Hub - NOT the wallet's own
+     *  internal chains.json ordinal (also confusingly "1" there; the real id lives under that
+     *  entry's `typeExtras.assetId`). This constant is used for a raw runtime storage query
+     *  (getPolkadotUsdtReserve), which bypasses the wallet's Chain.Asset abstraction entirely, so
+     *  it needs the real protocol id. Querying "1" always returned an empty/zero balance - the
+     *  multisig has never held anything at that id - which made the wUSDT->USDT reserve check
+     *  report 0 permanently regardless of the multisig's real (and growing) USDT holdings. */
+    const val POLKADOT_USDT_ASSET_ID = 1984
 
     const val MULTISIG_ADDRESS = "5GvwxmCDp3PC33KHoeWSgj3S7ocE7nzk1jiCCZMPSDBFeNcj"
 

@@ -372,8 +372,11 @@
     <string name="bridge_sign_in_progress">Signing…</string>
     <string name="bridge_sign_error">Signing failed, tap to retry</string>
 
-    <string name="bridge_deposit_wait_label">Waiting for confirmation on Pezkuwi Asset Hub…</string>
+    <string name="bridge_deposit_success_label">Bridge complete — funds delivered</string>
     <string name="bridge_deposit_pending_message">Still processing - this can take longer if it needs manual multisig review. Check back in a few minutes.</string>
+
+    <string name="bridge_execution_submitting_label">Submitting transfer…</string>
+    <string name="bridge_execution_waiting_destination_label">Waiting for confirmation on %s…</string>
 
     <string name="wallet_asset_buy_sell">Buy/Sell</string>
 
