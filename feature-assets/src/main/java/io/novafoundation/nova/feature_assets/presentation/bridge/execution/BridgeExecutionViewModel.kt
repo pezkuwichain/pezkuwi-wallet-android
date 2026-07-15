@@ -18,6 +18,7 @@ import io.novafoundation.nova.feature_wallet_api.domain.SendUseCase
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.ChainWithAsset
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import java.math.BigDecimal
 import kotlin.time.Duration.Companion.seconds
