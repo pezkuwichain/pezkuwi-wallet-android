@@ -128,6 +128,7 @@ class BridgeViewModel(
     val fillAmountEvent: LiveData<Event<String>> = _fillAmountEvent
 
     private var currentAmount: Double = 0.0
+
     /** Real USDT the multisig actually holds on Polkadot Asset Hub - see
      *  BridgeMultisigInteractor.getPolkadotUsdtReserve for why this replaced a dead external
      *  status check that always reported "inactive" regardless of the real reserve. */
