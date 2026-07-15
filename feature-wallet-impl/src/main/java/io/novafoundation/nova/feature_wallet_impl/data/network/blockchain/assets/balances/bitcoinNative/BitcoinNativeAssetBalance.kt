@@ -59,8 +59,9 @@ class BitcoinNativeAssetBalance(
         chainAsset: Chain.Asset,
         accountId: AccountId,
     ): Flow<TransferableBalanceUpdatePoint> {
-        // Not on the critical sync path (mirrors TronNativeAssetBalance/EvmNativeAssetBalance) - out of scope for Phase 4.
-        TODO("Not yet implemented")
+        // Only ever invoked from RealCrossChainTransactor (XCM arrival detection), which is Substrate-only -
+        // Bitcoin can never be an XCM cross-chain destination, so this is intentionally never reachable.
+        throw UnsupportedOperationException("Bitcoin does not support XCM-style balance update points")
     }
 
     override suspend fun startSyncingBalance(

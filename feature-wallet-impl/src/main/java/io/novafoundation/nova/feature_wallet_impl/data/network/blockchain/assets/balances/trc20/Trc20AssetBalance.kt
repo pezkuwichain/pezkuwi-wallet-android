@@ -62,8 +62,9 @@ class Trc20AssetBalance(
         chainAsset: Chain.Asset,
         accountId: AccountId,
     ): Flow<TransferableBalanceUpdatePoint> {
-        // Not on the critical sync path (mirrors EvmNativeAssetBalance) - out of scope for Phase 1 read-only support.
-        TODO("Not yet implemented")
+        // Only ever invoked from RealCrossChainTransactor (XCM arrival detection), which is Substrate-only -
+        // Tron/TRC20 can never be an XCM cross-chain destination, so this is intentionally never reachable.
+        throw UnsupportedOperationException("TRC20 does not support XCM-style balance update points")
     }
 
     override suspend fun startSyncingBalance(

@@ -63,7 +63,10 @@ class EvmNativeAssetBalance(
         chainAsset: Chain.Asset,
         accountId: AccountId,
     ): Flow<TransferableBalanceUpdatePoint> {
-        TODO("Not yet implemented")
+        // Only ever invoked from RealCrossChainTransactor (XCM arrival detection), which is Substrate-only -
+        // an EVM chain's native asset can never be an XCM cross-chain destination, so this is intentionally
+        // never reachable.
+        throw UnsupportedOperationException("EVM native assets do not support XCM-style balance update points")
     }
 
     override suspend fun startSyncingBalance(

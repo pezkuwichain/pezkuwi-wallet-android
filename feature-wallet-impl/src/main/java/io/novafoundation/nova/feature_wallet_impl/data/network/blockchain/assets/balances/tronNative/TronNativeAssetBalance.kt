@@ -59,9 +59,9 @@ class TronNativeAssetBalance(
         chainAsset: Chain.Asset,
         accountId: AccountId,
     ): Flow<TransferableBalanceUpdatePoint> {
-        // Not on the critical sync path (mirrors EvmNativeAssetBalance, which also leaves this unimplemented) -
-        // out of scope for Phase 1 read-only support.
-        TODO("Not yet implemented")
+        // Only ever invoked from RealCrossChainTransactor (XCM arrival detection), which is Substrate-only -
+        // Tron can never be an XCM cross-chain destination, so this is intentionally never reachable.
+        throw UnsupportedOperationException("Tron does not support XCM-style balance update points")
     }
 
     override suspend fun startSyncingBalance(
