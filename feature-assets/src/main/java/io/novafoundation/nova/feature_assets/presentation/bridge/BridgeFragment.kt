@@ -61,9 +61,17 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
             viewModel.swapClicked()
         }
 
-        // Multisig signatory-only sign button
+        // Multisig signatory-only sign buttons, one per leg
         binder.bridgeSignButton.setOnClickListener {
             viewModel.signClicked()
+        }
+
+        binder.bridgePolkadotSignButton.setOnClickListener {
+            viewModel.polkadotSignClicked()
+        }
+
+        binder.bridgeConsentCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.consentCheckboxToggled(isChecked)
         }
     }
 
@@ -144,6 +152,37 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
 
         viewModel.signButtonLabel.observe { label ->
             binder.bridgeSignButton.text = label
+        }
+
+        viewModel.polkadotSignButtonVisible.observe { visible ->
+            binder.bridgePolkadotSignButton.visibility = if (visible) View.VISIBLE else View.GONE
+        }
+
+        viewModel.polkadotSignButtonRed.observe { red ->
+            val color = if (red) {
+                resources.getColor(R.color.error_border, null)
+            } else {
+                resources.getColor(R.color.text_positive, null)
+            }
+            binder.bridgePolkadotSignButton.setButtonColor(color)
+        }
+
+        viewModel.polkadotSignButtonEnabled.observe { enabled ->
+            binder.bridgePolkadotSignButton.isEnabled = enabled
+        }
+
+        viewModel.polkadotSignButtonLabel.observe { label ->
+            binder.bridgePolkadotSignButton.text = label
+        }
+
+        viewModel.consentRequired.observe { required ->
+            binder.bridgeConsentCheckbox.visibility = if (required) View.VISIBLE else View.GONE
+        }
+
+        viewModel.consentChecked.observe { checked ->
+            if (binder.bridgeConsentCheckbox.isChecked != checked) {
+                binder.bridgeConsentCheckbox.setChecked(checked)
+            }
         }
 
         viewModel.maxAmountDisplay.observe { display ->

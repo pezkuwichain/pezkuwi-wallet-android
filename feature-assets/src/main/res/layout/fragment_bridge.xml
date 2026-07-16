@@ -170,7 +170,9 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Warning for USDT liquidity -->
+            <!-- Warning for USDT liquidity, or the consent message when the amount exceeds the
+                 automation key's current approval (resolvable by 3-of-5 review, unlike the
+                 reserve case above which isn't - see BridgeViewModel.updateWarningState). -->
             <io.novafoundation.nova.common.view.AlertView
                 android:id="@+id/bridgeWarningAlert"
                 android:layout_width="match_parent"
@@ -179,14 +181,36 @@
                 android:visibility="gone"
                 app:alertMode="warning" />
 
-            <!-- Multisig signatory-only bridge allowance sign button. Only visible to a wallet
-                 that is one of the bridge multisig's 5 known signatories. -->
+            <!-- Only shown alongside the consent message above (consentRequired) - explicit
+                 opt-in required before the Swap button re-enables, never enabled by default. -->
+            <io.novafoundation.nova.common.view.WarningCheckBox
+                android:id="@+id/bridgeConsentCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:icon="@drawable/ic_warning_filled"
+                android:text="@string/bridge_consent_checkbox_label"
+                android:visibility="gone"
+                app:iconTint="@color/icon_warning" />
+
+            <!-- Multisig signatory-only bridge allowance sign buttons. Only visible to a wallet
+                 that is one of the bridge multisig's 5 known signatories - one row per leg, since
+                 a signatory may need to renew one chain's approval without the other. -->
             <io.novafoundation.nova.common.view.PrimaryButton
                 android:id="@+id/bridgeSignButton"
                 style="@style/Widget.Nova.Button.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/bridge_sign_button"
+                android:visibility="gone" />
+
+            <io.novafoundation.nova.common.view.PrimaryButton
+                android:id="@+id/bridgePolkadotSignButton"
+                style="@style/Widget.Nova.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/bridge_sign_button"
                 android:visibility="gone" />
 

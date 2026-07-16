@@ -39,6 +39,14 @@ interface BridgeMultisigInteractor {
 
     suspend fun submitRenewalSignature(): Result<ExtrinsicExecutionResult>
 
+    /** Same as getSignerState/submitRenewalSignature but for the automation key's real-USDT
+     *  spending approval on Polkadot Asset Hub - the leg that gates wUSDT->USDT withdrawal
+     *  auto-pay. Confirmed on-chain (2026-07-16) this approval has never been granted at all, so
+     *  needsRenewal is currently always true for every signatory until the first renewal signs. */
+    suspend fun getPolkadotSignerState(): BridgeSignerState?
+
+    suspend fun submitPolkadotRenewalSignature(): Result<ExtrinsicExecutionResult>
+
     /** Real USDT (base units) the multisig actually holds on Polkadot Asset Hub right now - the
      *  true backing for wUSDT->USDT withdrawals. Replaces the old wusdtToUsdtActive boolean
      *  fetched from the legacy bridge bot's :3030/status endpoint, which this session stopped
@@ -46,6 +54,18 @@ interface BridgeMultisigInteractor {
      *  regardless of real reserve. A specific withdrawal should be allowed whenever it's covered
      *  by this real balance, not gated on an unrelated dead service or on total supply parity. */
     suspend fun getPolkadotUsdtReserve(): BigInteger
+
+    /** Real remaining amount (base units) the automation key is currently approved to auto-pay
+     *  out of the multisig's own wUSDT on Pezkuwi Asset Hub - the deterministic on-chain fact
+     *  that decides whether a USDT->wUSDT deposit CAN possibly auto-pay (bounded further by the
+     *  backend's own daily cap, which isn't visible from the wallet - this is a necessary, not
+     *  sufficient, condition for auto-pay). Available to any wallet, not just signatories, since
+     *  it drives the Bridge screen's pre-submit consent gate for everyone. */
+    suspend fun getWusdtRemainingAllowance(): BigInteger
+
+    /** Same as getWusdtRemainingAllowance but for the automation key's real USDT approval on
+     *  Polkadot Asset Hub - gates wUSDT->USDT withdrawal auto-pay. */
+    suspend fun getPolkadotUsdtRemainingAllowance(): BigInteger
 }
 
 @FeatureScope
@@ -58,6 +78,69 @@ class RealBridgeMultisigInteractor @Inject constructor(
 
     override suspend fun getSignerState(): BridgeSignerState? {
         val chain = chainRegistry.getChain(ChainGeneses.PEZKUWI_ASSET_HUB)
+        return getSignerStateFor(
+            chain = chain,
+            assetId = BridgeMultisigConstants.WUSDT_ASSET_ID,
+            automationKeyAddress = BridgeMultisigConstants.AUTOMATION_KEY_ADDRESS,
+            renewalThreshold = BridgeMultisigConstants.RENEWAL_THRESHOLD,
+        )
+    }
+
+    override suspend fun submitRenewalSignature(): Result<ExtrinsicExecutionResult> = submitRenewalSignatureFor(
+        chain = chainRegistry.getChain(ChainGeneses.PEZKUWI_ASSET_HUB),
+        assetId = BridgeMultisigConstants.WUSDT_ASSET_ID,
+        automationKeyAddress = BridgeMultisigConstants.AUTOMATION_KEY_ADDRESS,
+        topupAmount = BridgeMultisigConstants.TOPUP_AMOUNT,
+    )
+
+    override suspend fun getPolkadotSignerState(): BridgeSignerState? {
+        val chain = chainRegistry.getChain(ChainGeneses.POLKADOT_ASSET_HUB)
+        return getSignerStateFor(
+            chain = chain,
+            assetId = BridgeMultisigConstants.POLKADOT_USDT_ASSET_ID,
+            automationKeyAddress = BridgeMultisigConstants.AUTOMATION_KEY_ADDRESS_POLKADOT,
+            renewalThreshold = BridgeMultisigConstants.POLKADOT_RENEWAL_THRESHOLD,
+        )
+    }
+
+    override suspend fun submitPolkadotRenewalSignature(): Result<ExtrinsicExecutionResult> = submitRenewalSignatureFor(
+        chain = chainRegistry.getChain(ChainGeneses.POLKADOT_ASSET_HUB),
+        assetId = BridgeMultisigConstants.POLKADOT_USDT_ASSET_ID,
+        automationKeyAddress = BridgeMultisigConstants.AUTOMATION_KEY_ADDRESS_POLKADOT,
+        topupAmount = BridgeMultisigConstants.POLKADOT_TOPUP_AMOUNT,
+    )
+
+    override suspend fun getPolkadotUsdtReserve(): BigInteger {
+        val polkadotChain = chainRegistry.getChain(ChainGeneses.POLKADOT_ASSET_HUB)
+        val multisigAccountId = BridgeMultisigConstants.MULTISIG_ADDRESS_POLKADOT.toAccountId().intoKey()
+
+        return storageDataSource.query(polkadotChain.id) {
+            runtime.metadata.bridgeAssets().assetBalance.query(
+                BridgeMultisigConstants.POLKADOT_USDT_ASSET_ID.toBigInteger(),
+                multisigAccountId,
+            )
+        } ?: BigInteger.ZERO
+    }
+
+    override suspend fun getWusdtRemainingAllowance(): BigInteger {
+        val chain = chainRegistry.getChain(ChainGeneses.PEZKUWI_ASSET_HUB)
+        return queryRemainingAllowance(chain, BridgeMultisigConstants.WUSDT_ASSET_ID, BridgeMultisigConstants.AUTOMATION_KEY_ADDRESS)
+    }
+
+    override suspend fun getPolkadotUsdtRemainingAllowance(): BigInteger {
+        val chain = chainRegistry.getChain(ChainGeneses.POLKADOT_ASSET_HUB)
+        return queryRemainingAllowance(chain, BridgeMultisigConstants.POLKADOT_USDT_ASSET_ID, BridgeMultisigConstants.AUTOMATION_KEY_ADDRESS_POLKADOT)
+    }
+
+    /** Shared by both legs - the only differences between the wUSDT (Pezkuwi) and USDT (Polkadot)
+     *  renewal flows are which chain/asset/automation-key-address/threshold to use, the actual
+     *  on-chain call shape (Assets.approve_transfer wrapped in Multisig.as_multi) is identical. */
+    private suspend fun getSignerStateFor(
+        chain: Chain,
+        assetId: Int,
+        automationKeyAddress: String,
+        renewalThreshold: Long,
+    ): BridgeSignerState? {
         val metaAccount = selectedAccountUseCase.getSelectedMetaAccount()
         val myAccountId = metaAccount.accountIdIn(chain)?.intoKey() ?: return null
 
@@ -65,13 +148,13 @@ class RealBridgeMultisigInteractor @Inject constructor(
             it.address.toAccountId().intoKey() == myAccountId
         } ?: return null
 
-        val remaining = queryRemainingAllowance(chain)
-        val needsRenewal = remaining < BigInteger.valueOf(BridgeMultisigConstants.RENEWAL_THRESHOLD)
+        val remaining = queryRemainingAllowance(chain, assetId, automationKeyAddress)
+        val needsRenewal = remaining < BigInteger.valueOf(renewalThreshold)
 
         var alreadySigned = false
         var approvalsSoFar = 0
         if (needsRenewal) {
-            val pending = queryPendingRenewal(chain)
+            val pending = queryPendingRenewal(chain, assetId, automationKeyAddress)
             if (pending != null) {
                 approvalsSoFar = pending.approvals.size
                 alreadySigned = pending.approvals.contains(myAccountId)
@@ -87,11 +170,15 @@ class RealBridgeMultisigInteractor @Inject constructor(
         )
     }
 
-    override suspend fun submitRenewalSignature(): Result<ExtrinsicExecutionResult> = runCatching {
-        val chain = chainRegistry.getChain(ChainGeneses.PEZKUWI_ASSET_HUB)
+    private suspend fun submitRenewalSignatureFor(
+        chain: Chain,
+        assetId: Int,
+        automationKeyAddress: String,
+        topupAmount: Long,
+    ): Result<ExtrinsicExecutionResult> = runCatching {
         val metaAccount = selectedAccountUseCase.getSelectedMetaAccount()
         val myAccountId = requireNotNull(metaAccount.accountIdIn(chain)?.intoKey()) {
-            "Selected account has no address on Pezkuwi Asset Hub"
+            "Selected account has no address on ${chain.name}"
         }
 
         val otherSignatories = BridgeMultisigConstants.SIGNATORIES
@@ -99,7 +186,7 @@ class RealBridgeMultisigInteractor @Inject constructor(
             .filter { it != myAccountId }
             .sortedBy { it.toHexWithPrefix() }
 
-        val pending = queryPendingRenewal(chain)
+        val pending = queryPendingRenewal(chain, assetId, automationKeyAddress)
         check(pending == null || !pending.approvals.contains(myAccountId)) {
             "Already signed this renewal - waiting for other signers"
         }
@@ -109,9 +196,9 @@ class RealBridgeMultisigInteractor @Inject constructor(
             origin = TransactionOrigin.WalletWithId(metaAccount.id)
         ) {
             val approveTransferCall = runtime.composeAssetsApproveTransfer(
-                assetId = BridgeMultisigConstants.WUSDT_ASSET_ID,
-                delegate = BridgeMultisigConstants.AUTOMATION_KEY_ADDRESS.toAccountId().intoKey(),
-                amount = BigInteger.valueOf(BridgeMultisigConstants.TOPUP_AMOUNT),
+                assetId = assetId,
+                delegate = automationKeyAddress.toAccountId().intoKey(),
+                amount = BigInteger.valueOf(topupAmount),
             )
 
             val multisigCall = runtime.composeBridgeMultisigAsMulti(
@@ -126,47 +213,49 @@ class RealBridgeMultisigInteractor @Inject constructor(
         }.getOrThrow().requireOk()
     }
 
-    override suspend fun getPolkadotUsdtReserve(): BigInteger {
-        val polkadotChain = chainRegistry.getChain(ChainGeneses.POLKADOT_ASSET_HUB)
-        val multisigAccountId = BridgeMultisigConstants.MULTISIG_ADDRESS_POLKADOT.toAccountId().intoKey()
-
-        return storageDataSource.query(polkadotChain.id) {
-            runtime.metadata.bridgeAssets().assetBalance.query(
-                BridgeMultisigConstants.POLKADOT_USDT_ASSET_ID.toBigInteger(),
-                multisigAccountId,
-            )
-        } ?: BigInteger.ZERO
-    }
-
-    private suspend fun queryRemainingAllowance(chain: Chain): BigInteger {
-        val multisigAccountId = BridgeMultisigConstants.MULTISIG_ADDRESS.toAccountId().intoKey()
-        val delegateAccountId = BridgeMultisigConstants.AUTOMATION_KEY_ADDRESS.toAccountId().intoKey()
+    private suspend fun queryRemainingAllowance(chain: Chain, assetId: Int, automationKeyAddress: String): BigInteger {
+        val multisigAccountId = multisigAddressFor(chain).toAccountId().intoKey()
+        val delegateAccountId = automationKeyAddress.toAccountId().intoKey()
 
         return storageDataSource.query(chain.id) {
             runtime.metadata.bridgeAssets().approvalAmount.query(
-                BridgeMultisigConstants.WUSDT_ASSET_ID.toBigInteger(),
+                assetId.toBigInteger(),
                 multisigAccountId,
                 delegateAccountId,
             )
         } ?: BigInteger.ZERO
     }
 
-    private suspend fun queryPendingRenewal(chain: Chain): BridgeOnChainMultisig? {
-        val multisigAccountId = BridgeMultisigConstants.MULTISIG_ADDRESS.toAccountId().intoKey()
-        val callHash = renewalCallHash(chain)
+    private suspend fun queryPendingRenewal(chain: Chain, assetId: Int, automationKeyAddress: String): BridgeOnChainMultisig? {
+        val multisigAccountId = multisigAddressFor(chain).toAccountId().intoKey()
+        val callHash = renewalCallHash(chain, assetId, automationKeyAddress)
 
         return storageDataSource.query(chain.id) {
             runtime.metadata.bridgeMultisig().multisigs.query(multisigAccountId, callHash)
         }
     }
 
-    private suspend fun renewalCallHash(chain: Chain): AccountIdKey {
+    private suspend fun renewalCallHash(chain: Chain, assetId: Int, automationKeyAddress: String): AccountIdKey {
+        val topupAmount = if (chain.id == ChainGeneses.POLKADOT_ASSET_HUB) {
+            BridgeMultisigConstants.POLKADOT_TOPUP_AMOUNT
+        } else {
+            BridgeMultisigConstants.TOPUP_AMOUNT
+        }
+
         val runtime = chainRegistry.getRuntime(chain.id)
         val call = runtime.composeAssetsApproveTransfer(
-            assetId = BridgeMultisigConstants.WUSDT_ASSET_ID,
-            delegate = BridgeMultisigConstants.AUTOMATION_KEY_ADDRESS.toAccountId().intoKey(),
-            amount = BigInteger.valueOf(BridgeMultisigConstants.TOPUP_AMOUNT),
+            assetId = assetId,
+            delegate = automationKeyAddress.toAccountId().intoKey(),
+            amount = BigInteger.valueOf(topupAmount),
         )
         return call.callHash(runtime).intoCallHash()
+    }
+
+    private fun multisigAddressFor(chain: Chain): String {
+        return if (chain.id == ChainGeneses.POLKADOT_ASSET_HUB) {
+            BridgeMultisigConstants.MULTISIG_ADDRESS_POLKADOT
+        } else {
+            BridgeMultisigConstants.MULTISIG_ADDRESS
+        }
     }
 }

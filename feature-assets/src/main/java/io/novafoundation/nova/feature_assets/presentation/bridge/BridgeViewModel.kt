@@ -115,6 +115,22 @@ class BridgeViewModel(
     private val _signButtonLabel = MutableLiveData("")
     val signButtonLabel: LiveData<String> = _signButtonLabel
 
+    /** Same as the sign* set above but for the automation key's Polkadot-side USDT approval -
+     *  see BridgeMultisigInteractor.getPolkadotSignerState for why this is currently always
+     *  offered (approval has never been granted at all). A separate row rather than merging with
+     *  the wUSDT one since a signatory may need to renew one leg without the other. */
+    private val _polkadotSignButtonVisible = MutableLiveData(false)
+    val polkadotSignButtonVisible: LiveData<Boolean> = _polkadotSignButtonVisible
+
+    private val _polkadotSignButtonRed = MutableLiveData(false)
+    val polkadotSignButtonRed: LiveData<Boolean> = _polkadotSignButtonRed
+
+    private val _polkadotSignButtonEnabled = MutableLiveData(false)
+    val polkadotSignButtonEnabled: LiveData<Boolean> = _polkadotSignButtonEnabled
+
+    private val _polkadotSignButtonLabel = MutableLiveData("")
+    val polkadotSignButtonLabel: LiveData<String> = _polkadotSignButtonLabel
+
     private val _fromCard = MutableLiveData<BridgeAssetCardUi>()
     val fromCard: LiveData<BridgeAssetCardUi> = _fromCard
 
@@ -133,12 +149,38 @@ class BridgeViewModel(
     private val _fillAmountEvent = MutableLiveData<Event<String>>()
     val fillAmountEvent: LiveData<Event<String>> = _fillAmountEvent
 
+    /** True when the entered amount exceeds the automation key's current on-chain approval for
+     *  this direction - real funds exist and the transfer WILL succeed, it just won't auto-pay
+     *  and needs 3-of-5 signatory review. Distinct from showWarning/warningBlocked (which cover
+     *  the harder "not enough real reserve at all" case, unresolvable by any signature) - this
+     *  one is resolvable, so the UI offers an explicit opt-in instead of a flat block. */
+    private val _consentRequired = MutableLiveData(false)
+    val consentRequired: LiveData<Boolean> = _consentRequired
+
+    private val _consentChecked = MutableLiveData(false)
+    val consentChecked: LiveData<Boolean> = _consentChecked
+
+    fun consentCheckboxToggled(checked: Boolean) {
+        _consentChecked.value = checked
+        updateButtonState()
+    }
+
     private var currentAmount: Double = 0.0
 
     /** Real USDT the multisig actually holds on Polkadot Asset Hub - see
      *  BridgeMultisigInteractor.getPolkadotUsdtReserve for why this replaced a dead external
      *  status check that always reported "inactive" regardless of the real reserve. */
     private var polkadotUsdtReserve: BigDecimal = BigDecimal.ZERO
+
+    /** Remaining on-chain approval (BridgeMultisigInteractor.getWusdtRemainingAllowance /
+     *  getPolkadotUsdtRemainingAllowance), one per leg - the deterministic fact that decides
+     *  whether a given amount can possibly auto-pay in that direction, independent of the real
+     *  reserve check above (a withdrawal can be under-reserved AND under-approved at once; those
+     *  are checked in priority order in updateWarningState, since only the reserve one is truly
+     *  unresolvable). */
+    private var wusdtRemainingAllowance: BigDecimal = BigDecimal.ZERO
+    private var polkadotUsdtRemainingAllowance: BigDecimal = BigDecimal.ZERO
+
     private var availableBalance: BigDecimal = BigDecimal.ZERO
     private var balanceJob: Job? = null
 
@@ -155,6 +197,7 @@ class BridgeViewModel(
             _pair.value = newPair
             // Reset direction to left (forward) when switching pair
             _direction.value = BridgeDirection.USDT_TO_WUSDT
+            _consentChecked.value = false
             updateUI()
             calculateOutput()
             updateWarningState()
@@ -166,6 +209,7 @@ class BridgeViewModel(
         val newDir = BridgeDirection.USDT_TO_WUSDT
         if (_direction.value != newDir) {
             _direction.value = newDir
+            _consentChecked.value = false
             updateUI()
             calculateOutput()
             updateWarningState()
@@ -177,6 +221,7 @@ class BridgeViewModel(
         val newDir = BridgeDirection.WUSDT_TO_USDT
         if (_direction.value != newDir) {
             _direction.value = newDir
+            _consentChecked.value = false
             updateUI()
             calculateOutput()
             updateWarningState()
@@ -186,9 +231,12 @@ class BridgeViewModel(
 
     fun setAmount(amount: Double) {
         currentAmount = amount
+        // A consent already given was for whatever amount was entered at the time - changing the
+        // amount means re-confirming, not silently carrying an old opt-in over to a new one.
+        _consentChecked.value = false
         calculateOutput()
         updateInsufficientBalanceState()
-        updateWarningState() // re-check the entered amount against the cached reserve
+        updateWarningState() // re-check the entered amount against the cached reserve/allowance
     }
 
     fun maxClicked() {
@@ -202,6 +250,7 @@ class BridgeViewModel(
      *  different screens: there is no "just submitted" moment on this screen anymore). */
     fun resetAmount() {
         currentAmount = 0.0
+        _consentChecked.value = false
         _fillAmountEvent.value = Event("")
         calculateOutput()
         updateInsufficientBalanceState()
@@ -223,6 +272,15 @@ class BridgeViewModel(
             return
         }
         if (dir == BridgeDirection.WUSDT_TO_USDT && requested > polkadotUsdtReserve) {
+            updateWarningState()
+            return
+        }
+
+        val relevantAllowance = when (dir) {
+            BridgeDirection.USDT_TO_WUSDT -> wusdtRemainingAllowance
+            BridgeDirection.WUSDT_TO_USDT -> polkadotUsdtRemainingAllowance
+        }
+        if (requested > relevantAllowance && _consentChecked.value != true) {
             updateWarningState()
             return
         }
@@ -279,35 +337,63 @@ class BridgeViewModel(
             } catch (e: Exception) {
                 BigDecimal.ZERO
             }
+            wusdtRemainingAllowance = try {
+                BigDecimal(bridgeMultisigInteractor.getWusdtRemainingAllowance()).divide(USDT_DECIMALS_DIVISOR)
+            } catch (e: Exception) {
+                BigDecimal.ZERO
+            }
+            polkadotUsdtRemainingAllowance = try {
+                BigDecimal(bridgeMultisigInteractor.getPolkadotUsdtRemainingAllowance()).divide(USDT_DECIMALS_DIVISOR)
+            } catch (e: Exception) {
+                BigDecimal.ZERO
+            }
             updateWarningState()
         }
     }
 
+    /** Two independent, differently-resolvable "no" conditions, checked in priority order - never
+     *  collapsed into one generic warning:
+     *  1. Real reserve exceeded (withdrawal direction only) - the bridge doesn't hold enough real
+     *     USDT on Polkadot Asset Hub. No signature can fix this; a hard block.
+     *  2. Automation-key approval exceeded (either direction) - funds exist, the automation key
+     *     just isn't currently approved to move that much without 3-of-5 review. Resolvable, so
+     *     this is an opt-in consent gate (see consentRequired/consentChecked), not a hard block. */
     private fun updateWarningState() {
         val dir = _direction.value ?: return
+        val requested = BigDecimal.valueOf(currentAmount)
 
-        when (dir) {
-            BridgeDirection.WUSDT_TO_USDT -> {
-                val requested = BigDecimal.valueOf(currentAmount)
-                val exceedsReserve = currentAmount > 0 && requested > polkadotUsdtReserve
-                _showWarning.postValue(exceedsReserve)
-                if (exceedsReserve) {
-                    _warningBlocked.postValue(true)
-                    _warningText.postValue(
-                        resourceManager.getString(
-                            R.string.bridge_wusdt_to_usdt_blocked,
-                            polkadotUsdtReserve.setScale(2, RoundingMode.DOWN).stripTrailingZeros().toPlainString()
-                        )
-                    )
-                } else {
-                    _warningBlocked.postValue(false)
-                    _warningText.postValue("")
-                }
-            }
-            else -> {
-                _showWarning.postValue(false)
-            }
+        val reserveExceeded = dir == BridgeDirection.WUSDT_TO_USDT && currentAmount > 0 && requested > polkadotUsdtReserve
+
+        if (reserveExceeded) {
+            _consentRequired.postValue(false)
+            _showWarning.postValue(true)
+            _warningBlocked.postValue(true)
+            _warningText.postValue(
+                resourceManager.getString(
+                    R.string.bridge_wusdt_to_usdt_blocked,
+                    polkadotUsdtReserve.setScale(2, RoundingMode.DOWN).stripTrailingZeros().toPlainString()
+                )
+            )
+            updateButtonState()
+            return
         }
+
+        val relevantAllowance = when (dir) {
+            BridgeDirection.USDT_TO_WUSDT -> wusdtRemainingAllowance
+            BridgeDirection.WUSDT_TO_USDT -> polkadotUsdtRemainingAllowance
+        }
+        val needsConsent = currentAmount > 0 && requested > relevantAllowance
+
+        _consentRequired.postValue(needsConsent)
+        if (needsConsent) {
+            _showWarning.postValue(true)
+            _warningBlocked.postValue(false)
+            _warningText.postValue(resourceManager.getString(R.string.bridge_consent_required_message))
+        } else {
+            _showWarning.postValue(false)
+            _warningText.postValue("")
+        }
+
         updateButtonState()
     }
 
@@ -332,11 +418,19 @@ class BridgeViewModel(
         val dir = _direction.value ?: return
 
         val requested = BigDecimal.valueOf(currentAmount)
+        val reserveExceeded = dir == BridgeDirection.WUSDT_TO_USDT && requested > polkadotUsdtReserve
+        val relevantAllowance = when (dir) {
+            BridgeDirection.USDT_TO_WUSDT -> wusdtRemainingAllowance
+            BridgeDirection.WUSDT_TO_USDT -> polkadotUsdtRemainingAllowance
+        }
+        val consentSatisfied = requested <= relevantAllowance || _consentChecked.value == true
+
         _buttonState.value = when {
             currentAmount <= 0 -> ButtonState.DISABLED
             currentAmount < MIN_USDT -> ButtonState.DISABLED
             requested > availableBalance -> ButtonState.DISABLED
-            dir == BridgeDirection.WUSDT_TO_USDT && requested > polkadotUsdtReserve -> ButtonState.DISABLED
+            reserveExceeded -> ButtonState.DISABLED
+            !consentSatisfied -> ButtonState.DISABLED
             else -> ButtonState.NORMAL
         }
     }
@@ -357,7 +451,11 @@ class BridgeViewModel(
     fun refreshSignerState() {
         launch {
             val state = bridgeMultisigInteractor.getSignerState()
-            applySignerState(state)
+            applySignerState(state, _signButtonVisible, _signButtonRed, _signButtonEnabled, _signButtonLabel)
+        }
+        launch {
+            val state = bridgeMultisigInteractor.getPolkadotSignerState()
+            applySignerState(state, _polkadotSignButtonVisible, _polkadotSignButtonRed, _polkadotSignButtonEnabled, _polkadotSignButtonLabel)
         }
     }
 
@@ -376,29 +474,50 @@ class BridgeViewModel(
         }
     }
 
-    private fun applySignerState(state: BridgeSignerState?) {
+    fun polkadotSignClicked() {
+        if (_polkadotSignButtonEnabled.value != true) return
+
+        _polkadotSignButtonEnabled.postValue(false)
+        _polkadotSignButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_in_progress))
+
+        launch {
+            bridgeMultisigInteractor.submitPolkadotRenewalSignature()
+                .onFailure {
+                    _polkadotSignButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_error))
+                }
+            refreshSignerState()
+        }
+    }
+
+    private fun applySignerState(
+        state: BridgeSignerState?,
+        visible: MutableLiveData<Boolean>,
+        red: MutableLiveData<Boolean>,
+        enabled: MutableLiveData<Boolean>,
+        label: MutableLiveData<String>,
+    ) {
         if (state == null) {
-            _signButtonVisible.postValue(false)
+            visible.postValue(false)
             return
         }
 
-        _signButtonVisible.postValue(true)
+        visible.postValue(true)
 
         when {
             !state.needsRenewal -> {
-                _signButtonRed.postValue(false)
-                _signButtonEnabled.postValue(false)
-                _signButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_status_ok, state.signatoryRole))
+                red.postValue(false)
+                enabled.postValue(false)
+                label.postValue(resourceManager.getString(R.string.bridge_sign_status_ok, state.signatoryRole))
             }
             state.alreadySignedPendingRenewal -> {
-                _signButtonRed.postValue(true)
-                _signButtonEnabled.postValue(false)
-                _signButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_waiting_others))
+                red.postValue(true)
+                enabled.postValue(false)
+                label.postValue(resourceManager.getString(R.string.bridge_sign_waiting_others))
             }
             else -> {
-                _signButtonRed.postValue(true)
-                _signButtonEnabled.postValue(true)
-                _signButtonLabel.postValue(resourceManager.getString(R.string.bridge_sign_button, state.signatoryRole))
+                red.postValue(true)
+                enabled.postValue(true)
+                label.postValue(resourceManager.getString(R.string.bridge_sign_button, state.signatoryRole))
             }
         }
     }

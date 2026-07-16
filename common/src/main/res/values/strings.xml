@@ -365,6 +365,8 @@
     <string name="bridge_below_minimum">Amount below minimum</string>
     <string name="bridge_enter_amount">Enter amount</string>
     <string name="bridge_wusdt_to_usdt_blocked">This amount exceeds the bridge\'s current available reserve (%s USDT). Try a smaller amount.</string>
+    <string name="bridge_consent_required_message">This amount exceeds the automatic payout limit and needs approval from 3 of the bridge\'s 5 signatories - typically resolved within about 2 hours. You can reach them at t.me/pezkuwidestek in the meantime.</string>
+    <string name="bridge_consent_checkbox_label">I understand this may take time to complete and want to proceed</string>
 
     <string name="bridge_sign_status_ok">Bridge allowance OK (%s)</string>
     <string name="bridge_sign_button">Sign renewal (%s)</string>

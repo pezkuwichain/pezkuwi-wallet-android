@@ -34,6 +34,14 @@ object BridgeMultisigConstants {
     const val MULTISIG_ADDRESS_POLKADOT = "15sF76THfpefUaKomHZSpssayRbsp6Yt6ESgMrLjzJCmpe66"
     const val AUTOMATION_KEY_ADDRESS = "5GQu4PFUb1f3MTJ7i7c1CtLgDk3TVvpSW1VbQCRmfkMoC8cM"
 
+    /** Same automation key, Polkadot Asset Hub SS58 encoding - needed to query/renew its real
+     *  spending approval on that chain (BridgeMultisigInteractor.getPolkadotUsdtRemainingAllowance
+     *  / submitPolkadotRenewalSignature). Confirmed on-chain (2026-07-16): unlike the Pezkuwi/
+     *  wUSDT side, this approval has never been granted at all - every wUSDT->USDT withdrawal
+     *  falls back to manual 3-of-5 review until the signatories grant one via the renewal flow
+     *  below, same as they did for the wUSDT side. */
+    const val AUTOMATION_KEY_ADDRESS_POLKADOT = "15MCCiWYSnvWnzJdfkf1M3Aq5N37CENaaWE5ZVR8DqPKNcVj"
+
     const val THRESHOLD = 3
 
     /** Renewal is offered once the remaining allowance drops below this (6 decimals). Must match
@@ -46,6 +54,15 @@ object BridgeMultisigConstants {
 
     /** The standard amount a renewal tops the allowance back up to (6 decimals). */
     const val TOPUP_AMOUNT = 200_000_000_000L // 200,000 wUSDT
+
+    /** Same 40,000/200,000 (20%) ratio as the wUSDT side, mirrored for the Polkadot/real-USDT
+     *  leg for the exact same reason: catch a draining allowance and renew it before users ever
+     *  hit the "needs manual review" consent gate, rather than only reacting after the fact. The
+     *  ceiling being far above the multisig's current real Polkadot reserve is intentional and
+     *  harmless - transfer_approved is still bounded by the real on-chain balance underneath, an
+     *  approval is unused headroom, not a promise of funds (see getPolkadotUsdtReserve). */
+    const val POLKADOT_RENEWAL_THRESHOLD = 40_000_000_000L // 40,000 USDT
+    const val POLKADOT_TOPUP_AMOUNT = 200_000_000_000L // 200,000 USDT
 
     data class Signatory(val role: String, val address: String)
 
