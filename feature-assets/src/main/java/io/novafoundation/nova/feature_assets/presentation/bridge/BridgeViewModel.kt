@@ -69,7 +69,6 @@ class BridgeViewModel(
         const val POLKADOT_USDT_ASSET_ID = 1 // assetId in chains.json for Polkadot AH
         const val PEZKUWI_USDT_ASSET_ID = 1000 // assetId in chains.json for Pezkuwi AH
 
-        const val FEE_PERCENT = 0.001
         const val MIN_USDT = 1.0
 
         // USDT has 6 decimals on both Polkadot and Pezkuwi Asset Hub.
@@ -409,7 +408,7 @@ class BridgeViewModel(
     }
 
     private fun calculateOutput() {
-        val netOutput = currentAmount * (1 - FEE_PERCENT) // 1:1, fee-adjusted
+        val netOutput = currentAmount * (1 - BridgeMultisigConstants.FEE_PERCENT) // 1:1, fee-adjusted
 
         _outputAmount.value = if (netOutput > 0) {
             BigDecimal(netOutput).setScale(6, RoundingMode.DOWN).stripTrailingZeros().toPlainString()

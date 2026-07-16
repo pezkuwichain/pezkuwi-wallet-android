@@ -12,6 +12,7 @@ import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAcco
 import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
+import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigConstants
 import io.novafoundation.nova.feature_assets.domain.send.SendInteractor
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.bridge.BridgeAssetCardUi
@@ -57,8 +58,6 @@ class BridgeExecutionViewModel(
         /** How long to actively watch the destination balance before admitting we can't confirm
          *  completion yet - not a claim about how long the bridge itself actually takes. */
         val DEPOSIT_WAIT_TIMEOUT = 90.seconds
-
-        const val FEE_PERCENT = 0.001
     }
 
     private val _state = MutableLiveData<BridgeExecutionState>(BridgeExecutionState.SubmittingOrigin)
@@ -98,6 +97,15 @@ class BridgeExecutionViewModel(
         router.back()
     }
 
+    /** Only meaningful from OriginFailed - the origin transfer never left the wallet (nothing to
+     *  reverse), so retrying is just re-running submit() from scratch, matching what the user
+     *  already confirmed on the input screen. Mirrors SwapExecutionViewModel.retryClicked(). */
+    fun retryClicked() {
+        launch {
+            submit()
+        }
+    }
+
     private suspend fun loadCards() {
         val originChain = chainRegistry.getChain(payload.originChainId)
         val destChain = chainRegistry.getChain(payload.destChainId)
@@ -107,7 +115,7 @@ class BridgeExecutionViewModel(
 
         _fromAmountText.postValue(BigDecimal.valueOf(payload.amount).stripTrailingZeros().toPlainString())
 
-        val netOutput = payload.amount * (1 - FEE_PERCENT)
+        val netOutput = payload.amount * (1 - BridgeMultisigConstants.FEE_PERCENT)
         _toAmountText.postValue(BigDecimal(netOutput).setScale(6, RoundingMode.DOWN).stripTrailingZeros().toPlainString())
     }
 
@@ -211,7 +219,7 @@ class BridgeExecutionViewModel(
         _label.postValue(resourceManager.getString(R.string.bridge_execution_waiting_destination_label, destChainName))
         _timerState.postValue(ExecutionTimerView.State.CountdownTimer(DEPOSIT_WAIT_TIMEOUT))
 
-        val minExpectedIncrease = BigDecimal.valueOf(payload.amount * (1 - FEE_PERCENT * 2)) // fee + rounding slack
+        val minExpectedIncrease = BigDecimal.valueOf(payload.amount * (1 - BridgeMultisigConstants.FEE_PERCENT * 2)) // fee + rounding slack
 
         val confirmed = withTimeoutOrNull(DEPOSIT_WAIT_TIMEOUT.inWholeMilliseconds) {
             walletInteractor.assetFlow(payload.destChainId, payload.destAssetId)

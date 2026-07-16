@@ -33,8 +33,6 @@ class BridgeExecutionFragment : BaseFragment<BridgeExecutionViewModel, FragmentB
 
         binder.bridgeExecutionToolbar.setHomeButtonVisibility(false)
 
-        binder.bridgeExecutionDoneButton.setOnClickListener { viewModel.doneClicked() }
-
         binder.bridgeExecutionFromCard.setEditable(false)
         binder.bridgeExecutionToCard.setEditable(false)
     }
@@ -93,20 +91,32 @@ class BridgeExecutionFragment : BaseFragment<BridgeExecutionViewModel, FragmentB
         // Single source of truth for the alert banner - only OriginFailed (error) and
         // DestinationPendingReview (warning) show it, everything else keeps it hidden. Avoids the
         // old screen's problem of several independent LiveData all touching the same view.
+        //
+        // Also the single source of truth for the action button's label/click target: only
+        // OriginFailed offers a real retry (the origin transfer never left the wallet, so
+        // re-running submit() from scratch is safe and matches SwapExecutionFragment's
+        // "Try again" pattern) - every other resolved state means something already happened
+        // on-chain, so the button can only ever mean "Done".
         viewModel.state.observe { state ->
             when (state) {
                 is BridgeExecutionState.OriginFailed -> {
                     binder.bridgeExecutionPendingReviewAlert.visibility = View.VISIBLE
                     binder.bridgeExecutionPendingReviewAlert.setStylePreset(AlertView.StylePreset.ERROR)
                     binder.bridgeExecutionPendingReviewAlert.setMessage(state.message)
+                    binder.bridgeExecutionDoneButton.setText(R.string.common_try_again)
+                    binder.bridgeExecutionDoneButton.setOnClickListener { viewModel.retryClicked() }
                 }
                 BridgeExecutionState.DestinationPendingReview, BridgeExecutionState.AwaitingManualReview -> {
                     binder.bridgeExecutionPendingReviewAlert.visibility = View.VISIBLE
                     binder.bridgeExecutionPendingReviewAlert.setStylePreset(AlertView.StylePreset.WARNING)
                     binder.bridgeExecutionPendingReviewAlert.setMessage(getString(R.string.bridge_deposit_pending_message))
+                    binder.bridgeExecutionDoneButton.setText(R.string.common_done)
+                    binder.bridgeExecutionDoneButton.setOnClickListener { viewModel.doneClicked() }
                 }
                 else -> {
                     binder.bridgeExecutionPendingReviewAlert.visibility = View.GONE
+                    binder.bridgeExecutionDoneButton.setText(R.string.common_done)
+                    binder.bridgeExecutionDoneButton.setOnClickListener { viewModel.doneClicked() }
                 }
             }
         }

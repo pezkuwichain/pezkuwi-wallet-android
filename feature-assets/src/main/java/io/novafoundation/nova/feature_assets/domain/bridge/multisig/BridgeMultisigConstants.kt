@@ -44,6 +44,11 @@ object BridgeMultisigConstants {
 
     const val THRESHOLD = 3
 
+    /** Single source of truth for the bridge fee - was previously duplicated as separate literals
+     *  in BridgeViewModel and BridgeExecutionViewModel, both computing the same 1:1-minus-fee
+     *  output. Must match usdt-bridge's own `fee_basis_points` (10 = 0.1%) server-side. */
+    const val FEE_PERCENT = 0.001
+
     /** Hard per-transaction ceiling the automation key may ever execute on its own, regardless of
      *  how much on-chain approval remains - must match usdt-bridge's own `max_single_tx`
      *  (default_max_single_tx() in bridge_config.json). A single withdrawal/deposit above this is
