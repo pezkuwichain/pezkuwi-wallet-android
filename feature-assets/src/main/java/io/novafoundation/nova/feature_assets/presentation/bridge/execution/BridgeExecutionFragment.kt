@@ -28,6 +28,9 @@ class BridgeExecutionFragment : BaseFragment<BridgeExecutionViewModel, FragmentB
         binder.bridgeExecutionToolbar.setHomeButtonListener { viewModel.doneClicked() }
 
         binder.bridgeExecutionDoneButton.setOnClickListener { viewModel.doneClicked() }
+
+        binder.bridgeExecutionFromCard.setEditable(false)
+        binder.bridgeExecutionToCard.setEditable(false)
     }
 
     override fun inject() {
@@ -58,6 +61,27 @@ class BridgeExecutionFragment : BaseFragment<BridgeExecutionViewModel, FragmentB
 
         viewModel.doneButtonVisible.observe { visible ->
             binder.bridgeExecutionDoneButton.visibility = if (visible) View.VISIBLE else View.GONE
+            // "Do not close the app!" only makes sense while something is genuinely still in
+            // flight - doneButtonVisible becomes true exactly once the operation has resolved
+            // (success, pending review, or failure), so its inverse is the same signal without a
+            // separate LiveData to keep in sync.
+            binder.bridgeExecutionDoNotClose.visibility = if (visible) View.GONE else View.VISIBLE
+        }
+
+        viewModel.fromCard.observe { model ->
+            binder.bridgeExecutionFromCard.setModel(model)
+        }
+
+        viewModel.toCard.observe { model ->
+            binder.bridgeExecutionToCard.setModel(model)
+        }
+
+        viewModel.fromAmountText.observe { text ->
+            binder.bridgeExecutionFromCard.setAmountText(text)
+        }
+
+        viewModel.toAmountText.observe { text ->
+            binder.bridgeExecutionToCard.setAmountText(text)
         }
 
         // Single source of truth for the alert banner - only OriginFailed (error) and

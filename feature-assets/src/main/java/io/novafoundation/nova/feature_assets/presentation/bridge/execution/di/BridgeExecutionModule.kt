@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import io.novafoundation.nova.common.di.viewmodel.ViewModelKey
 import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
+import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
@@ -28,6 +29,7 @@ class BridgeExecutionModule {
         payload: BridgeExecutionPayload,
         resourceManager: ResourceManager,
         chainRegistry: ChainRegistry,
+        assetIconProvider: AssetIconProvider,
         walletInteractor: WalletInteractor,
         sendInteractor: SendInteractor,
         sendUseCase: SendUseCase,
@@ -38,6 +40,7 @@ class BridgeExecutionModule {
             payload,
             resourceManager,
             chainRegistry,
+            assetIconProvider,
             walletInteractor,
             sendInteractor,
             sendUseCase,

@@ -4,23 +4,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import io.novafoundation.nova.common.base.BaseViewModel
+import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.common.view.ExecutionTimerView
 import io.novafoundation.nova.feature_account_api.data.fee.FeePaymentCurrency
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
+import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.send.SendInteractor
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
+import io.novafoundation.nova.feature_assets.presentation.bridge.BridgeAssetCardUi
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.tranfers.WeightedAssetTransfer
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.tranfers.buildAssetTransfer
 import io.novafoundation.nova.feature_wallet_api.domain.SendUseCase
+import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.ChainWithAsset
+import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import java.math.BigDecimal
+import java.math.RoundingMode
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -35,6 +41,7 @@ class BridgeExecutionViewModel(
     private val payload: BridgeExecutionPayload,
     private val resourceManager: ResourceManager,
     private val chainRegistry: ChainRegistry,
+    private val assetIconProvider: AssetIconProvider,
     private val walletInteractor: WalletInteractor,
     private val sendInteractor: SendInteractor,
     private val sendUseCase: SendUseCase,
@@ -66,7 +73,22 @@ class BridgeExecutionViewModel(
     private val _doneButtonVisible = MutableLiveData(false)
     val doneButtonVisible: LiveData<Boolean> = _doneButtonVisible
 
+    private val _fromCard = MutableLiveData<BridgeAssetCardUi>()
+    val fromCard: LiveData<BridgeAssetCardUi> = _fromCard
+
+    private val _toCard = MutableLiveData<BridgeAssetCardUi>()
+    val toCard: LiveData<BridgeAssetCardUi> = _toCard
+
+    private val _fromAmountText = MutableLiveData("")
+    val fromAmountText: LiveData<String> = _fromAmountText
+
+    private val _toAmountText = MutableLiveData("")
+    val toAmountText: LiveData<String> = _toAmountText
+
     init {
+        launch {
+            loadCards()
+        }
         launch {
             submit()
         }
@@ -74,6 +96,30 @@ class BridgeExecutionViewModel(
 
     fun doneClicked() {
         router.back()
+    }
+
+    private suspend fun loadCards() {
+        val originChain = chainRegistry.getChain(payload.originChainId)
+        val destChain = chainRegistry.getChain(payload.destChainId)
+
+        _fromCard.postValue(cardUiFor(originChain, payload.originAssetId))
+        _toCard.postValue(cardUiFor(destChain, payload.destAssetId))
+
+        _fromAmountText.postValue(BigDecimal.valueOf(payload.amount).stripTrailingZeros().toPlainString())
+
+        val netOutput = payload.amount * (1 - FEE_PERCENT)
+        _toAmountText.postValue(BigDecimal(netOutput).setScale(6, RoundingMode.DOWN).stripTrailingZeros().toPlainString())
+    }
+
+    private suspend fun cardUiFor(chain: Chain, assetId: Int): BridgeAssetCardUi {
+        val asset = chain.assetsById.getValue(assetId)
+
+        return BridgeAssetCardUi(
+            assetIcon = assetIconProvider.getAssetIconOrFallback(asset),
+            chainIconUrl = chain.icon,
+            symbol = asset.symbol.value,
+            chainName = chain.displayNameWithAssetStandard()
+        )
     }
 
     private suspend fun submit() {
