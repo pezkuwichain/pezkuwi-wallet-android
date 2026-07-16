@@ -165,7 +165,20 @@ class BridgeExecutionViewModel(
         }
 
         submissionResult.fold(
-            onSuccess = { observeDepositCompletion() },
+            onSuccess = {
+                if (payload.expectManualReview) {
+                    // Already known, before this screen was even reached, that this amount can't
+                    // auto-pay (see BridgeExecutionPayload.expectManualReview) - watching the
+                    // destination balance for up to DEPOSIT_WAIT_TIMEOUT would just be a slower,
+                    // falsely-hopeful way of arriving at the same place. Say so immediately.
+                    _state.postValue(BridgeExecutionState.AwaitingManualReview)
+                    _label.postValue(resourceManager.getString(R.string.bridge_deposit_pending_message))
+                    _timerState.postValue(null)
+                    _doneButtonVisible.postValue(true)
+                } else {
+                    observeDepositCompletion()
+                }
+            },
             onFailure = { e ->
                 _state.postValue(BridgeExecutionState.OriginFailed(e.message ?: resourceManager.getString(R.string.bridge_deposit_pending_message)))
                 _timerState.postValue(ExecutionTimerView.State.Error)

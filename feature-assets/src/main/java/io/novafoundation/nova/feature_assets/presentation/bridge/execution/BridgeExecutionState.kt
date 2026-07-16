@@ -22,6 +22,14 @@ sealed class BridgeExecutionState {
      *  available. */
     object WaitingForDestination : BridgeExecutionState()
 
+    /** Origin transfer confirmed on-chain, and BridgeViewModel already predicted (before this
+     *  screen was even reached - see BridgeExecutionPayload.expectManualReview) that this amount
+     *  cannot auto-pay and needs 3-of-5 signatory review. Shown immediately rather than only
+     *  after a balance-watch timeout, since watching for a fast destination credit that's already
+     *  known not to be coming would just be a slower way to arrive at the same DestinationPendingReview
+     *  message. */
+    object AwaitingManualReview : BridgeExecutionState()
+
     /** Destination balance increase actually observed within the wait window. */
     object DestinationConfirmed : BridgeExecutionState()
 

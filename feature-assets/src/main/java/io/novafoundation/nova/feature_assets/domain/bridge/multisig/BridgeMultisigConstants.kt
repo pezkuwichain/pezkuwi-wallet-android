@@ -44,6 +44,14 @@ object BridgeMultisigConstants {
 
     const val THRESHOLD = 3
 
+    /** Hard per-transaction ceiling the automation key may ever execute on its own, regardless of
+     *  how much on-chain approval remains - must match usdt-bridge's own `max_single_tx`
+     *  (default_max_single_tx() in bridge_config.json). A single withdrawal/deposit above this is
+     *  ALWAYS queued for manual 3-of-5 review even right after a fresh renewal (200,000 wUSDT/USDT
+     *  topup), so checking the remaining allowance alone is not sufficient to predict "will this
+     *  auto-pay" - both checks are needed (see BridgeViewModel.updateWarningState). */
+    const val MAX_SINGLE_TX = 50_000_000_000L // 50,000 USDT (6 decimals)
+
     /** Renewal is offered once the remaining allowance drops below this (6 decimals). Must match
      *  pezbridge_bot_config.json's renewal_threshold and usdt-bridge's auto_pay_daily_cap sizing
      *  server-side - all three signing channels (this app, pwap-web, PezbridgeBot's Telegram

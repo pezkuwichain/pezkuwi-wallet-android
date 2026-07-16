@@ -25,7 +25,13 @@ class BridgeExecutionFragment : BaseFragment<BridgeExecutionViewModel, FragmentB
     override fun createBinding() = FragmentBridgeExecutionBinding.inflate(layoutInflater)
 
     override fun initViews() {
-        binder.bridgeExecutionToolbar.setHomeButtonListener { viewModel.doneClicked() }
+        // Matches SwapExecutionFragment: a bridge transfer is in flight for the whole lifetime of
+        // this screen, so the only way out is the dedicated Done button once it becomes visible -
+        // neither the hardware back button nor the toolbar's home arrow should be able to
+        // navigate away mid-submission.
+        onBackPressed { /* suppress back presses */ }
+
+        binder.bridgeExecutionToolbar.setHomeButtonVisibility(false)
 
         binder.bridgeExecutionDoneButton.setOnClickListener { viewModel.doneClicked() }
 
@@ -94,7 +100,7 @@ class BridgeExecutionFragment : BaseFragment<BridgeExecutionViewModel, FragmentB
                     binder.bridgeExecutionPendingReviewAlert.setStylePreset(AlertView.StylePreset.ERROR)
                     binder.bridgeExecutionPendingReviewAlert.setMessage(state.message)
                 }
-                BridgeExecutionState.DestinationPendingReview -> {
+                BridgeExecutionState.DestinationPendingReview, BridgeExecutionState.AwaitingManualReview -> {
                     binder.bridgeExecutionPendingReviewAlert.visibility = View.VISIBLE
                     binder.bridgeExecutionPendingReviewAlert.setStylePreset(AlertView.StylePreset.WARNING)
                     binder.bridgeExecutionPendingReviewAlert.setMessage(getString(R.string.bridge_deposit_pending_message))

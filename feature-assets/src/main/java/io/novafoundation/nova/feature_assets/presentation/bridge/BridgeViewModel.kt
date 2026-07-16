@@ -276,11 +276,8 @@ class BridgeViewModel(
             return
         }
 
-        val relevantAllowance = when (dir) {
-            BridgeDirection.USDT_TO_WUSDT -> wusdtRemainingAllowance
-            BridgeDirection.WUSDT_TO_USDT -> polkadotUsdtRemainingAllowance
-        }
-        if (requested > relevantAllowance && _consentChecked.value != true) {
+        val expectManualReview = exceedsAutoPayBounds(dir, requested)
+        if (expectManualReview && _consentChecked.value != true) {
             updateWarningState()
             return
         }
@@ -320,6 +317,7 @@ class BridgeViewModel(
                     amount = amount,
                     destChainId = destChainId,
                     destAssetId = destAssetId,
+                    expectManualReview = expectManualReview,
                 )
             )
         }
@@ -357,7 +355,12 @@ class BridgeViewModel(
      *     USDT on Polkadot Asset Hub. No signature can fix this; a hard block.
      *  2. Automation-key approval exceeded (either direction) - funds exist, the automation key
      *     just isn't currently approved to move that much without 3-of-5 review. Resolvable, so
-     *     this is an opt-in consent gate (see consentRequired/consentChecked), not a hard block. */
+     *     this is an opt-in consent gate (see consentRequired/consentChecked), not a hard block.
+     *
+     *  Consent is also required above MAX_SINGLE_TX regardless of the remaining allowance - a
+     *  fresh renewal tops the allowance up to 200,000 but usdt-bridge's own hard per-tx cap
+     *  (50,000) still forces manual review for anything above it, so checking only the allowance
+     *  would wrongly predict "fast" for a large single swap. */
     private fun updateWarningState() {
         val dir = _direction.value ?: return
         val requested = BigDecimal.valueOf(currentAmount)
@@ -378,11 +381,7 @@ class BridgeViewModel(
             return
         }
 
-        val relevantAllowance = when (dir) {
-            BridgeDirection.USDT_TO_WUSDT -> wusdtRemainingAllowance
-            BridgeDirection.WUSDT_TO_USDT -> polkadotUsdtRemainingAllowance
-        }
-        val needsConsent = currentAmount > 0 && requested > relevantAllowance
+        val needsConsent = currentAmount > 0 && exceedsAutoPayBounds(dir, requested)
 
         _consentRequired.postValue(needsConsent)
         if (needsConsent) {
@@ -395,6 +394,18 @@ class BridgeViewModel(
         }
 
         updateButtonState()
+    }
+
+    /** Shared by updateWarningState/updateButtonState/swapClicked so all three ever agree on the
+     *  same prediction - see updateWarningState's doc comment for why both the on-chain allowance
+     *  AND the hard per-tx cap need checking, not just the allowance. */
+    private fun exceedsAutoPayBounds(dir: BridgeDirection, requested: BigDecimal): Boolean {
+        val relevantAllowance = when (dir) {
+            BridgeDirection.USDT_TO_WUSDT -> wusdtRemainingAllowance
+            BridgeDirection.WUSDT_TO_USDT -> polkadotUsdtRemainingAllowance
+        }
+        val maxSingleTx = BigDecimal.valueOf(BridgeMultisigConstants.MAX_SINGLE_TX).divide(USDT_DECIMALS_DIVISOR)
+        return requested > relevantAllowance || requested > maxSingleTx
     }
 
     private fun calculateOutput() {
@@ -419,11 +430,7 @@ class BridgeViewModel(
 
         val requested = BigDecimal.valueOf(currentAmount)
         val reserveExceeded = dir == BridgeDirection.WUSDT_TO_USDT && requested > polkadotUsdtReserve
-        val relevantAllowance = when (dir) {
-            BridgeDirection.USDT_TO_WUSDT -> wusdtRemainingAllowance
-            BridgeDirection.WUSDT_TO_USDT -> polkadotUsdtRemainingAllowance
-        }
-        val consentSatisfied = requested <= relevantAllowance || _consentChecked.value == true
+        val consentSatisfied = !exceedsAutoPayBounds(dir, requested) || _consentChecked.value == true
 
         _buttonState.value = when {
             currentAmount <= 0 -> ButtonState.DISABLED
