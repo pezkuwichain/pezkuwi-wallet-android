@@ -285,5 +285,8 @@ data class CloudBackup(
 }
 
 fun CloudBackup.WalletPrivateInfo.isCompletelyEmpty(): Boolean {
-    return entropy == null && substrate == null && ethereum == null && tron == null && bitcoin == null && chainAccounts.isEmpty()
+    // `solana` was missing here already (found while wiring Solana into RealLocalAccountsCloudBackupFacade) -
+    // without it, a wallet whose only secrets were Solana would have been wrongly treated as "completely empty"
+    // and silently dropped from the backup.
+    return entropy == null && substrate == null && ethereum == null && tron == null && bitcoin == null && solana == null && chainAccounts.isEmpty()
 }

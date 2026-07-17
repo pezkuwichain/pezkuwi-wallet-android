@@ -1,7 +1,6 @@
 package io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration
 
 import android.util.Log
-import io.novafoundation.nova.common.data.secrets.v2.ChainAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.MetaAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
 import io.novafoundation.nova.common.data.secrets.v2.bitcoinDerivationPath
@@ -11,43 +10,46 @@ import io.novafoundation.nova.common.data.secrets.v2.ethereumDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.ethereumKeypair
 import io.novafoundation.nova.common.data.secrets.v2.mapKeypairStructToKeypair
 import io.novafoundation.nova.common.data.secrets.v2.seed
-import io.novafoundation.nova.common.data.secrets.v2.solanaDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.solanaKeypair
 import io.novafoundation.nova.common.data.secrets.v2.substrateDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.substrateKeypair
 import io.novafoundation.nova.common.data.secrets.v2.tronDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.tronKeypair
-import io.novafoundation.nova.common.utils.bitcoinPublicKeyToAccountId
+import io.novafoundation.nova.common.utils.Bip32Ed25519KeypairFactory
 import io.novafoundation.nova.core_db.dao.MetaAccountDao
 import io.novafoundation.nova.core_db.dao.updateMetaAccount
 import io.novafoundation.nova.core_db.model.chain.account.MetaAccountLocal
-import io.novafoundation.nova.feature_account_impl.data.secrets.AccountSecretsFactory
-import io.novafoundation.nova.feature_account_impl.data.secrets.BITCOIN_DEFAULT_DERIVATION_PATH
+import io.novafoundation.nova.feature_account_impl.data.secrets.SOLANA_DEFAULT_DERIVATION_PATH
+import io.novafoundation.nova.feature_account_impl.data.secrets.SOLANA_DEFAULT_DERIVATION_PATH_SEGMENTS
 import io.novasama.substrate_sdk_android.encrypt.mnemonic.MnemonicCreator
+import io.novasama.substrate_sdk_android.encrypt.seed.bip39.Bip39SeedFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-private const val TAG = "BitcoinAddressBackfill"
+private const val TAG = "SolanaAddressBackfill"
 
 /**
- * Idempotent, per-account backfill for accounts that don't yet have a Bitcoin keypair - mirrors
- * [TronAddressBackfillMigration]'s exact design (see that class for the full rationale): any account created
- * before Bitcoin support existed has no `MetaAccountSecrets.BitcoinKeypair`/`meta_accounts.bitcoinAddress` yet,
- * and this fills it in from the account's own mnemonic without requiring re-import.
+ * Idempotent, per-account backfill for accounts that don't yet have a Solana keypair - mirrors
+ * [TronAddressBackfillMigration]/[BitcoinAddressBackfillMigration]'s exact design (see those classes for the
+ * full rationale). Deliberately has NO "have I already run once" flag, for the same stuck-flag reason.
  *
- * Deliberately has NO "have I already run once" flag, for the same reason as the Tron migration: a one-shot
- * flag that gets set even when backfill legitimately still didn't produce a key (e.g. a since-fixed bug kept
- * re-losing it) would permanently strand that account. This is cheap to call for an account that doesn't need
- * it, so it just runs unconditionally on every app start.
+ * Only touches accounts that are `Type.SECRETS` and still hold their `Entropy` in [SecretStoreV2] - same
+ * restriction as the Tron/Bitcoin migrations.
  *
- * Only touches accounts that are `Type.SECRETS` (mnemonic-derived) and still hold their `Entropy` in
- * [SecretStoreV2] - same restriction as the Tron migration, for the same reason (watch-only/Ledger/Json/
- * multisig/proxied accounts and raw-seed imports never had a Bitcoin-capable mnemonic to derive from).
+ * Unlike Tron/Bitcoin (which reuse [io.novafoundation.nova.feature_account_impl.data.secrets.AccountSecretsFactory.chainAccountSecrets]
+ * with `isEthereum = true`, since both are secp256k1/BIP32), Solana is Ed25519/SLIP-0010 - a different curve and
+ * derivation scheme entirely - so this derives the seed directly via [Bip39SeedFactory.deriveSeed] (the exact
+ * same chain-agnostic BIP39 seed step Tron/Bitcoin/Ethereum all use) and feeds it to [Bip32Ed25519KeypairFactory]
+ * at [SOLANA_DEFAULT_DERIVATION_PATH_SEGMENTS], the same call `AccountSecretsFactory.metaAccountSecrets()` makes
+ * for a fresh account - so a backfilled account ends up with byte-for-byte the same Solana address it would
+ * have gotten had it been created today.
+ *
+ * Carries every other chain-family field (substrate/ethereum/tron/bitcoin) forward unchanged when rewriting
+ * secrets - dropping any of them here would silently wipe an already-backfilled sibling key on retry.
  */
-class BitcoinAddressBackfillMigration(
+class SolanaAddressBackfillMigration(
     private val secretStoreV2: SecretStoreV2,
     private val metaAccountDao: MetaAccountDao,
-    private val accountSecretsFactory: AccountSecretsFactory,
 ) {
 
     suspend fun migrate() = withContext(Dispatchers.Default) {
@@ -76,27 +78,17 @@ class BitcoinAddressBackfillMigration(
             Log.d(TAG, "metaId=${account.id}: no entropy (raw-seed import, not a mnemonic) - skipping")
             return
         }
-        if (secrets.bitcoinKeypair != null) {
-            Log.d(TAG, "metaId=${account.id}: already has a BitcoinKeypair - skipping")
-            return
-        }
-        val substrateCryptoType = account.substrateCryptoType
-        if (substrateCryptoType == null) {
-            Log.d(TAG, "metaId=${account.id}: substrateCryptoType is null - skipping")
+        if (secrets.solanaKeypair != null) {
+            Log.d(TAG, "metaId=${account.id}: already has a SolanaKeypair - skipping")
             return
         }
 
-        Log.d(TAG, "metaId=${account.id}: deriving Bitcoin keypair")
+        Log.d(TAG, "metaId=${account.id}: deriving Solana keypair")
 
         val mnemonic = MnemonicCreator.fromEntropy(entropy).words
+        val bip39Seed = Bip39SeedFactory.deriveSeed(mnemonic, null).seed
 
-        val bitcoinChainSecrets = accountSecretsFactory.chainAccountSecrets(
-            derivationPath = BITCOIN_DEFAULT_DERIVATION_PATH,
-            accountSource = AccountSecretsFactory.AccountSource.Mnemonic(substrateCryptoType, mnemonic),
-            isEthereum = true
-        ).secrets
-
-        val bitcoinKeypair = mapKeypairStructToKeypair(bitcoinChainSecrets[ChainAccountSecrets.Keypair])
+        val solanaKeypair = Bip32Ed25519KeypairFactory.generate(bip39Seed, SOLANA_DEFAULT_DERIVATION_PATH_SEGMENTS)
 
         val updatedSecrets = MetaAccountSecrets(
             substrateKeyPair = mapKeypairStructToKeypair(secrets.substrateKeypair),
@@ -107,19 +99,17 @@ class BitcoinAddressBackfillMigration(
             ethereumDerivationPath = secrets.ethereumDerivationPath,
             tronKeypair = secrets.tronKeypair?.let(::mapKeypairStructToKeypair),
             tronDerivationPath = secrets.tronDerivationPath,
-            bitcoinKeypair = bitcoinKeypair,
-            bitcoinDerivationPath = BITCOIN_DEFAULT_DERIVATION_PATH,
-            // Must carry this forward unchanged - dropping it would silently wipe an already-backfilled
-            // Solana keypair, since this migration re-runs unconditionally on every app start (see class doc).
-            solanaKeypair = secrets.solanaKeypair?.let(::mapKeypairStructToKeypair),
-            solanaDerivationPath = secrets.solanaDerivationPath,
+            bitcoinKeypair = secrets.bitcoinKeypair?.let(::mapKeypairStructToKeypair),
+            bitcoinDerivationPath = secrets.bitcoinDerivationPath,
+            solanaKeypair = solanaKeypair,
+            solanaDerivationPath = SOLANA_DEFAULT_DERIVATION_PATH
         )
 
         secretStoreV2.putMetaAccountSecrets(account.id, updatedSecrets)
 
-        val bitcoinAccountId = bitcoinKeypair.publicKey.bitcoinPublicKeyToAccountId()
-        metaAccountDao.updateMetaAccount(account.id) { it.addBitcoinAccount(bitcoinKeypair.publicKey, bitcoinAccountId) }
+        // Solana's accountId IS the public key itself - see SolanaAddress.kt's doc.
+        metaAccountDao.updateMetaAccount(account.id) { it.addSolanaAccount(solanaKeypair.publicKey, solanaKeypair.publicKey) }
 
-        Log.d(TAG, "metaId=${account.id}: backfilled successfully, bitcoinAddress set (${bitcoinAccountId.size} bytes)")
+        Log.d(TAG, "metaId=${account.id}: backfilled successfully, solanaAddress set (${solanaKeypair.publicKey.size} bytes)")
     }
 }

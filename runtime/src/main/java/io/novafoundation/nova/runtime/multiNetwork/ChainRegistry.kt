@@ -249,7 +249,7 @@ class ChainRegistry(
         // ChainConnection's SocketService can only speak the latter, so attempting to set one up here would
         // hang indefinitely instead of failing fast. Balance/transfer operations for both go through their
         // own dedicated REST API clients, independent of this connection pool.
-        if (chain.isTronBased || chain.isBitcoinBased) return null
+        if (chain.isTronBased || chain.isBitcoinBased || chain.isSolanaBased) return null
 
         val connection = connectionPool.setupConnection(chain)
 

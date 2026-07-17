@@ -17,6 +17,8 @@ import io.novafoundation.nova.common.data.secrets.v2.nonce
 import io.novafoundation.nova.common.data.secrets.v2.privateKey
 import io.novafoundation.nova.common.data.secrets.v2.publicKey
 import io.novafoundation.nova.common.data.secrets.v2.seed
+import io.novafoundation.nova.common.data.secrets.v2.solanaDerivationPath
+import io.novafoundation.nova.common.data.secrets.v2.solanaKeypair
 import io.novafoundation.nova.common.data.secrets.v2.substrateDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.substrateKeypair
 import io.novafoundation.nova.common.data.secrets.v2.tronDerivationPath
@@ -96,6 +98,7 @@ class RealLocalAccountsCloudBackupFacade(
             chainAccounts = emptyList(),
             bitcoin = baseSecrets.getBitcoinBackupSecrets(),
             tron = baseSecrets.getTronBackupSecrets(),
+            solana = baseSecrets.getSolanaBackupSecrets(),
         )
 
         return CloudBackup(
@@ -365,6 +368,7 @@ class RealLocalAccountsCloudBackupFacade(
             chainAccounts = chainAccountsFromChainSecrets + chainAccountFromAdditionalSecrets,
             bitcoin = baseSecrets.getBitcoinBackupSecrets(),
             tron = baseSecrets.getTronBackupSecrets(),
+            solana = baseSecrets.getSolanaBackupSecrets(),
         )
     }
 
@@ -478,7 +482,9 @@ class RealLocalAccountsCloudBackupFacade(
             bitcoinKeypair = bitcoin?.keypair?.toLocalKeyPair(),
             bitcoinDerivationPath = bitcoin?.derivationPath,
             tronKeypair = tron?.keypair?.toLocalKeyPair(),
-            tronDerivationPath = tron?.derivationPath
+            tronDerivationPath = tron?.derivationPath,
+            solanaKeypair = solana?.keypair?.toLocalKeyPair(),
+            solanaDerivationPath = solana?.derivationPath
         )
     }
 
@@ -506,6 +512,15 @@ class RealLocalAccountsCloudBackupFacade(
         return CloudBackup.WalletPrivateInfo.TronSecrets(
             keypair = tronKeypair?.toBackupKeypairSecrets() ?: return null,
             derivationPath = tronDerivationPath
+        )
+    }
+
+    private fun EncodableStruct<MetaAccountSecrets>?.getSolanaBackupSecrets(): CloudBackup.WalletPrivateInfo.SolanaSecrets? {
+        if (this == null) return null
+
+        return CloudBackup.WalletPrivateInfo.SolanaSecrets(
+            keypair = solanaKeypair?.toBackupKeypairSecrets() ?: return null,
+            derivationPath = solanaDerivationPath
         )
     }
 
@@ -555,6 +570,8 @@ class RealLocalAccountsCloudBackupFacade(
             bitcoinPublicKey = metaAccount.bitcoinPublicKey,
             tronAddress = metaAccount.tronAddress,
             tronPublicKey = metaAccount.tronPublicKey,
+            solanaAddress = metaAccount.solanaAddress,
+            solanaPublicKey = metaAccount.solanaPublicKey,
         )
     }
 
@@ -581,6 +598,8 @@ class RealLocalAccountsCloudBackupFacade(
             bitcoinPublicKey = bitcoinPublicKey,
             tronAddress = tronAddress,
             tronPublicKey = tronPublicKey,
+            solanaAddress = solanaAddress,
+            solanaPublicKey = solanaPublicKey,
         ).also {
             if (localIdOverwrite != null) {
                 it.id = localIdOverwrite

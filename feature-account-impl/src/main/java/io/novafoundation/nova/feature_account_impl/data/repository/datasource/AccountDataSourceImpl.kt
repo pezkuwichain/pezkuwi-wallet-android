@@ -31,6 +31,7 @@ import io.novafoundation.nova.feature_account_impl.data.mappers.mapMetaAccountTy
 import io.novafoundation.nova.feature_account_impl.data.mappers.mapMetaAccountWithBalanceFromLocal
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.AccountDataMigration
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.BitcoinAddressBackfillMigration
+import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.SolanaAddressBackfillMigration
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.TronAddressBackfillMigration
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.model.ChainAccountInsertionData
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.model.MetaAccountInsertionData
@@ -68,11 +69,12 @@ class AccountDataSourceImpl(
     accountDataMigration: AccountDataMigration,
     tronAddressBackfillMigration: TronAddressBackfillMigration,
     bitcoinAddressBackfillMigration: BitcoinAddressBackfillMigration,
+    solanaAddressBackfillMigration: SolanaAddressBackfillMigration,
 ) : AccountDataSource, SecretStoreV1 by secretStoreV1 {
 
     init {
-        // Run sequentially in one coroutine, not as independent launches - the Tron/Bitcoin backfills read
-        // accounts/secrets that the legacy migration may still be in the middle of writing for very old
+        // Run sequentially in one coroutine, not as independent launches - the Tron/Bitcoin/Solana backfills
+        // read accounts/secrets that the legacy migration may still be in the middle of writing for very old
         // (pre-MetaAccount) installs, and separate GlobalScope.launch calls give no ordering guarantee
         // relative to each other.
         async {
@@ -89,6 +91,10 @@ class AccountDataSourceImpl(
             Log.d("AccountDataSourceImpl", "about to run bitcoinAddressBackfillMigration")
 
             bitcoinAddressBackfillMigration.migrate()
+
+            Log.d("AccountDataSourceImpl", "about to run solanaAddressBackfillMigration")
+
+            solanaAddressBackfillMigration.migrate()
 
             Log.d("AccountDataSourceImpl", "migrations block done")
 

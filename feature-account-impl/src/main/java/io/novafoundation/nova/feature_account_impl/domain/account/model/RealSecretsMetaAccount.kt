@@ -27,6 +27,8 @@ class RealSecretsMetaAccount(
     tronPublicKey: ByteArray? = null,
     bitcoinAddress: ByteArray? = null,
     bitcoinPublicKey: ByteArray? = null,
+    solanaAddress: ByteArray? = null,
+    solanaPublicKey: ByteArray? = null,
 ) : DefaultMetaAccount(
     id = id,
     globallyUniqueId = globallyUniqueId,
@@ -44,7 +46,9 @@ class RealSecretsMetaAccount(
     tronAddress = tronAddress,
     tronPublicKey = tronPublicKey,
     bitcoinAddress = bitcoinAddress,
-    bitcoinPublicKey = bitcoinPublicKey
+    bitcoinPublicKey = bitcoinPublicKey,
+    solanaAddress = solanaAddress,
+    solanaPublicKey = solanaPublicKey
 ),
     SecretsMetaAccount {
 
@@ -55,9 +59,16 @@ class RealSecretsMetaAccount(
 
                 // Tron and Bitcoin both reuse the same secp256k1 keypair/signing as Ethereum - see
                 // RealTronTransactionService/RealBitcoinTransactionService's use of
-                // Signer.sign(MultiChainEncryption.Ethereum, ...).
+                // Signer.sign(MultiChainEncryption.Ethereum, ...). Solana is Ed25519, not
+                // secp256k1, so it can't join that group - it reuses MultiChainEncryption.Substrate
+                // (EncryptionType.ED25519) instead, the exact same code path Substrate's own
+                // ed25519 accounts already use (Signer.signEd25519 doesn't care which chain family
+                // the keypair belongs to, only that it's a raw Ed25519 keypair - confirmed by
+                // reading substrate-sdk-android's Signer.kt directly).
                 if (chain.isEthereumBased || chain.isTronBased || chain.isBitcoinBased) {
                     MultiChainEncryption.Ethereum
+                } else if (chain.isSolanaBased) {
+                    MultiChainEncryption.substrateFrom(CryptoType.ED25519)
                 } else {
                     MultiChainEncryption.substrateFrom(cryptoType)
                 }
@@ -68,6 +79,8 @@ class RealSecretsMetaAccount(
             chain.isTronBased -> MultiChainEncryption.Ethereum
 
             chain.isBitcoinBased -> MultiChainEncryption.Ethereum
+
+            chain.isSolanaBased -> MultiChainEncryption.substrateFrom(CryptoType.ED25519)
 
             else -> substrateCryptoType?.let(MultiChainEncryption.Companion::substrateFrom)
         }

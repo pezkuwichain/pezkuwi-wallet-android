@@ -126,6 +126,7 @@ class CustomChainFactory(
             isEthereumBased = isEthereumBased,
             isTronBased = false,
             isBitcoinBased = false,
+            isSolanaBased = false,
             isTestNet = prefilledChain?.isTestNet.orFalse(),
             source = Chain.Source.CUSTOM,
             hasSubstrateRuntime = hasSubstrateRuntime,

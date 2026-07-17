@@ -158,10 +158,11 @@ suspend fun SecretStoreV2.getMetaAccountKeypair(
     isEthereum: Boolean,
     isTron: Boolean = false,
     isBitcoin: Boolean = false,
+    isSolana: Boolean = false,
 ): Keypair = withContext(Dispatchers.Default) {
     val secrets = getMetaAccountSecrets(metaId) ?: noMetaSecrets(metaId)
 
-    mapMetaAccountSecretsToKeypair(secrets, isEthereum, isTron, isBitcoin)
+    mapMetaAccountSecretsToKeypair(secrets, isEthereum, isTron, isBitcoin, isSolana)
 }
 
 fun mapMetaAccountSecretsToKeypair(
@@ -169,13 +170,16 @@ fun mapMetaAccountSecretsToKeypair(
     ethereum: Boolean,
     tron: Boolean = false,
     bitcoin: Boolean = false,
+    solana: Boolean = false,
 ): Keypair {
     // Tron and Bitcoin both reuse Ethereum's secp256k1 curve but derive their own keypair under a different
     // SLIP-44 path - each must be checked before `ethereum`, not folded into it, or that account would get
-    // signed with the wrong (Ethereum) private key.
+    // signed with the wrong (Ethereum) private key. Solana is Ed25519 (not secp256k1 at all) but the same
+    // "check before ethereum" reasoning applies - it's still its own distinct keypair.
     val keypairStruct = when {
         tron -> secrets[MetaAccountSecrets.TronKeypair] ?: noTronSecret()
         bitcoin -> secrets[MetaAccountSecrets.BitcoinKeypair] ?: noBitcoinSecret()
+        solana -> secrets[MetaAccountSecrets.SolanaKeypair] ?: noSolanaSecret()
         ethereum -> secrets[MetaAccountSecrets.EthereumKeypair] ?: noEthereumSecret()
         else -> secrets[MetaAccountSecrets.SubstrateKeypair]
     }
@@ -212,6 +216,8 @@ private fun noEthereumSecret(): Nothing = error("No ethereum keypair found")
 private fun noBitcoinSecret(): Nothing = error("No bitcoin keypair found")
 
 private fun noTronSecret(): Nothing = error("No tron keypair found")
+
+private fun noSolanaSecret(): Nothing = error("No solana keypair found")
 
 fun mapKeypairStructToKeypair(struct: EncodableStruct<KeyPairSchema>): Keypair {
     return Keypair(

@@ -4,11 +4,15 @@ import android.util.Log
 import io.novafoundation.nova.common.data.secrets.v2.ChainAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.MetaAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
+import io.novafoundation.nova.common.data.secrets.v2.bitcoinDerivationPath
+import io.novafoundation.nova.common.data.secrets.v2.bitcoinKeypair
 import io.novafoundation.nova.common.data.secrets.v2.entropy
 import io.novafoundation.nova.common.data.secrets.v2.ethereumDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.ethereumKeypair
 import io.novafoundation.nova.common.data.secrets.v2.mapKeypairStructToKeypair
 import io.novafoundation.nova.common.data.secrets.v2.seed
+import io.novafoundation.nova.common.data.secrets.v2.solanaDerivationPath
+import io.novafoundation.nova.common.data.secrets.v2.solanaKeypair
 import io.novafoundation.nova.common.data.secrets.v2.substrateDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.substrateKeypair
 import io.novafoundation.nova.common.data.secrets.v2.tronKeypair
@@ -115,7 +119,14 @@ class TronAddressBackfillMigration(
             ethereumKeypair = secrets.ethereumKeypair?.let(::mapKeypairStructToKeypair),
             ethereumDerivationPath = secrets.ethereumDerivationPath,
             tronKeypair = tronKeypair,
-            tronDerivationPath = TRON_DEFAULT_DERIVATION_PATH
+            tronDerivationPath = TRON_DEFAULT_DERIVATION_PATH,
+            // Must carry these forward unchanged - dropping them would silently wipe an
+            // already-backfilled sibling keypair, since this migration re-runs unconditionally
+            // on every app start (see class doc).
+            bitcoinKeypair = secrets.bitcoinKeypair?.let(::mapKeypairStructToKeypair),
+            bitcoinDerivationPath = secrets.bitcoinDerivationPath,
+            solanaKeypair = secrets.solanaKeypair?.let(::mapKeypairStructToKeypair),
+            solanaDerivationPath = secrets.solanaDerivationPath,
         )
 
         secretStoreV2.putMetaAccountSecrets(account.id, updatedSecrets)

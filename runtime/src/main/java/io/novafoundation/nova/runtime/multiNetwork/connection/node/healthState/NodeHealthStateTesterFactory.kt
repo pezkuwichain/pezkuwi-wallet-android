@@ -32,6 +32,11 @@ class NodeHealthStateTesterFactory(
                 httpClient = httpClient
             )
 
+            chain.isSolanaBased -> SolanaNodeHealthStateTester(
+                node = node,
+                httpClient = httpClient
+            )
+
             chain.hasSubstrateRuntime -> SubstrateNodeHealthStateTester(
                 chain = chain,
                 socketService = socketServiceProvider.get(),

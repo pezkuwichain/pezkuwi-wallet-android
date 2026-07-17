@@ -7,6 +7,7 @@ import io.novafoundation.nova.common.data.secrets.v2.getChainAccountKeypair
 import io.novafoundation.nova.common.data.secrets.v2.getMetaAccountKeypair
 import io.novafoundation.nova.common.data.secrets.v2.seed
 import io.novafoundation.nova.common.di.scope.FeatureScope
+import io.novafoundation.nova.core.model.CryptoType
 import io.novafoundation.nova.common.sequrity.TwoFactorVerificationResult
 import io.novafoundation.nova.common.sequrity.TwoFactorVerificationService
 import io.novafoundation.nova.feature_account_api.data.signer.SigningContext
@@ -144,13 +145,15 @@ class SecretsSigner(
         val multiChainEncryption = metaAccount.multiChainEncryptionFor(accountId, chainsById)!!
         val isTronBased = metaAccount.tronAddress?.contentEquals(accountId) == true
         val isBitcoinBased = metaAccount.bitcoinAddress?.contentEquals(accountId) == true
+        val isSolanaBased = metaAccount.solanaAddress?.contentEquals(accountId) == true
 
         return secretStoreV2.getKeypair(
             metaAccount = metaAccount,
             accountId = accountId,
             isEthereumBased = multiChainEncryption is MultiChainEncryption.Ethereum,
             isTronBased = isTronBased,
-            isBitcoinBased = isBitcoinBased
+            isBitcoinBased = isBitcoinBased,
+            isSolanaBased = isSolanaBased
         )
     }
 
@@ -166,10 +169,11 @@ class SecretsSigner(
         isEthereumBased: Boolean,
         isTronBased: Boolean = false,
         isBitcoinBased: Boolean = false,
+        isSolanaBased: Boolean = false,
     ) = if (hasChainSecrets(metaAccount.id, accountId)) {
         getChainAccountKeypair(metaAccount.id, accountId)
     } else {
-        getMetaAccountKeypair(metaAccount.id, isEthereumBased, isTronBased, isBitcoinBased)
+        getMetaAccountKeypair(metaAccount.id, isEthereumBased, isTronBased, isBitcoinBased, isSolanaBased)
     }
 
     /**
@@ -185,6 +189,10 @@ class SecretsSigner(
             // null -> NPE on `!!`.
             tronAddress?.contentEquals(accountId) == true -> MultiChainEncryption.Ethereum
             bitcoinAddress?.contentEquals(accountId) == true -> MultiChainEncryption.Ethereum
+            // Solana is Ed25519, not secp256k1, so it doesn't join the Tron/Bitcoin group above -
+            // it reuses the same MultiChainEncryption.Substrate(ED25519) path Substrate's own
+            // ed25519 accounts use (see RealSecretsMetaAccount.multiChainEncryptionIn).
+            solanaAddress?.contentEquals(accountId) == true -> MultiChainEncryption.substrateFrom(CryptoType.ED25519)
             else -> {
                 val chainAccount = chainAccounts.values.firstOrNull { it.accountId.contentEquals(accountId) } ?: return null
                 val cryptoType = chainAccount.cryptoType ?: return null

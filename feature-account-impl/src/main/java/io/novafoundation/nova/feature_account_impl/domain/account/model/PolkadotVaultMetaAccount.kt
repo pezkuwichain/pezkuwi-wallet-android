@@ -24,6 +24,8 @@ class PolkadotVaultMetaAccount(
     tronPublicKey: ByteArray? = null,
     bitcoinAddress: ByteArray? = null,
     bitcoinPublicKey: ByteArray? = null,
+    solanaAddress: ByteArray? = null,
+    solanaPublicKey: ByteArray? = null,
 ) : DefaultMetaAccount(
     id = id,
     globallyUniqueId = globallyUniqueId,
@@ -41,7 +43,9 @@ class PolkadotVaultMetaAccount(
     tronAddress = tronAddress,
     tronPublicKey = tronPublicKey,
     bitcoinAddress = bitcoinAddress,
-    bitcoinPublicKey = bitcoinPublicKey
+    bitcoinPublicKey = bitcoinPublicKey,
+    solanaAddress = solanaAddress,
+    solanaPublicKey = solanaPublicKey
 ) {
 
     override suspend fun supportsAddingChainAccount(chain: Chain): Boolean {

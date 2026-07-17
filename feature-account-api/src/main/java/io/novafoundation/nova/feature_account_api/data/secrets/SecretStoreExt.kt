@@ -25,7 +25,18 @@ suspend fun SecretStoreV2.getAccountSecrets(
 
 fun AccountSecrets.keypair(chain: Chain): Keypair {
     return fold(
-        left = { mapMetaAccountSecretsToKeypair(it, ethereum = chain.isEthereumBased, bitcoin = chain.isBitcoinBased) },
+        // `tron` was missing here already (found while adding `solana`) - without it, exporting a
+        // Tron account's private key from this call site would have silently returned the wrong
+        // (Ethereum) keypair instead of the Tron-specific one. Fixed alongside, not a separate change.
+        left = {
+            mapMetaAccountSecretsToKeypair(
+                it,
+                ethereum = chain.isEthereumBased,
+                tron = chain.isTronBased,
+                bitcoin = chain.isBitcoinBased,
+                solana = chain.isSolanaBased,
+            )
+        },
         right = { mapChainAccountSecretsToKeypair(it) }
     )
 }

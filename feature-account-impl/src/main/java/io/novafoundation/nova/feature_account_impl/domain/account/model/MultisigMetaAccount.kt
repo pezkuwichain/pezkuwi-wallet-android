@@ -32,6 +32,8 @@ class RealMultisigMetaAccount(
     tronPublicKey: ByteArray? = null,
     bitcoinAddress: ByteArray? = null,
     bitcoinPublicKey: ByteArray? = null,
+    solanaAddress: ByteArray? = null,
+    solanaPublicKey: ByteArray? = null,
 ) : DefaultMetaAccount(
     id = id,
     globallyUniqueId = globallyUniqueId,
@@ -49,7 +51,9 @@ class RealMultisigMetaAccount(
     tronAddress = tronAddress,
     tronPublicKey = tronPublicKey,
     bitcoinAddress = bitcoinAddress,
-    bitcoinPublicKey = bitcoinPublicKey
+    bitcoinPublicKey = bitcoinPublicKey,
+    solanaAddress = solanaAddress,
+    solanaPublicKey = solanaPublicKey
 ),
     MultisigMetaAccount {
 

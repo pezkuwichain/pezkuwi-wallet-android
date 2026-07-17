@@ -281,6 +281,7 @@ fun Chain.addressOf(accountId: ByteArray): String {
     return when {
         isTronBased -> accountId.toTronAddress()
         isBitcoinBased -> accountId.toBitcoinAddress()
+        isSolanaBased -> accountId.toSolanaAddress()
         isEthereumBased -> accountId.toEthereumAddress()
         else -> accountId.toAddress(addressPrefix.toShort())
     }
@@ -291,7 +292,7 @@ fun Chain.addressOf(accountId: AccountIdKey): String {
 }
 
 fun Chain.legacyAddressOfOrNull(accountId: ByteArray): String? {
-    return if (isEthereumBased || isTronBased || isBitcoinBased) {
+    return if (isEthereumBased || isTronBased || isBitcoinBased || isSolanaBased) {
         null
     } else {
         legacyAddressPrefix?.let { accountId.toAddress(it.toShort()) }
@@ -311,6 +312,7 @@ fun Chain.accountIdOf(address: String): ByteArray {
         // opaque purposes (identicon generation, presence checks) elsewhere, never fed back into building a
         // scriptPubKey - see BitcoinDestinationAddress.kt's [hash] doc.
         isBitcoinBased -> runCatching { address.bitcoinAddressToAccountId() }.getOrElse { address.decodeBitcoinDestination().hash }
+        isSolanaBased -> address.solanaAddressToAccountId()
         isEthereumBased -> address.asEthereumAddress().toAccountId().value
         else -> address.toAccountId()
     }
@@ -345,6 +347,7 @@ fun Chain.accountIdOrNull(address: String): ByteArray? {
 fun Chain.emptyAccountId() = when {
     isTronBased -> emptyTronAccountId()
     isBitcoinBased -> emptyBitcoinAccountId()
+    isSolanaBased -> emptySolanaAccountId()
     isEthereumBased -> emptyEthereumAccountId()
     else -> emptySubstrateAccountId()
 }
@@ -359,6 +362,9 @@ fun Chain.accountIdOf(publicKey: ByteArray): ByteArray {
     return when {
         isTronBased -> publicKey.tronPublicKeyToAccountId()
         isBitcoinBased -> publicKey.bitcoinPublicKeyToAccountId()
+        // Solana's account id IS the raw public key itself - no separate hash-based derivation
+        // the way Ethereum/Tron/Bitcoin have (see SolanaAddress.kt's file-level doc).
+        isSolanaBased -> publicKey
         isEthereumBased -> publicKey.asEthereumPublicKey().toAccountId().value
         else -> publicKey.substrateAccountId()
     }
@@ -387,6 +393,8 @@ fun Chain.isValidAddress(address: String): Boolean {
             // Tron addresses are Base58Check(0x41 ++ accountId), not SS58 or plain 0x-hex - neither of the two
             // branches below would ever accept them, so this needs its own dedicated check.
             isTronBased -> address.isValidTronAddress()
+
+            isSolanaBased -> address.isValidSolanaAddress()
 
             isEthereumBased -> address.asEthereumAddress().isValid()
 
@@ -617,6 +625,19 @@ fun Chain.requireMempoolSpaceBaseUrl(): String {
     }
 }
 
+/**
+ * The Solana JSON-RPC base url for a Solana-based chain - same rationale as [requireTronGridBaseUrl]/
+ * [requireMempoolSpaceBaseUrl]: Solana has its own JSON-RPC (getBalance/getLatestBlockhash/sendTransaction),
+ * unrelated to the Substrate/EVM `nodes` WSS concept, so the configured `nodes` entry directly *is* this base url.
+ */
+fun Chain.requireSolanaRpcBaseUrl(): String {
+    require(isSolanaBased) { "Chain $id is not Solana-based" }
+
+    return requireNotNull(nodes.nodes.minByOrNull { it.orderId }?.unformattedUrl) {
+        "No Solana RPC node configured for chain $id"
+    }
+}
+
 fun Chain.Asset.requireEquilibrium(): Type.Equilibrium {
     require(type is Type.Equilibrium)
 
@@ -683,6 +704,7 @@ val Chain.Asset.onChainAssetId: String?
         is Type.Trc20 -> this.type.contractAddress
         Type.TronNative -> null
         Type.BitcoinNative -> null
+        Type.SolanaNative -> null
         Type.Unsupported -> error("Unsupported assetId type: ${this.type::class.simpleName}")
     }
 

@@ -33,6 +33,7 @@ class RealSecretsMetaAccountLocalFactory : SecretsMetaAccountLocalFactory {
         val ethereumPublicKey = secrets[MetaAccountSecrets.EthereumKeypair]?.get(KeyPairSchema.PublicKey)
         val tronPublicKey = secrets[MetaAccountSecrets.TronKeypair]?.get(KeyPairSchema.PublicKey)
         val bitcoinPublicKey = secrets[MetaAccountSecrets.BitcoinKeypair]?.get(KeyPairSchema.PublicKey)
+        val solanaPublicKey = secrets[MetaAccountSecrets.SolanaKeypair]?.get(KeyPairSchema.PublicKey)
 
         return MetaAccountLocal(
             substratePublicKey = substratePublicKey,
@@ -55,7 +56,10 @@ class RealSecretsMetaAccountLocalFactory : SecretsMetaAccountLocalFactory {
             // substrate-sdk-android's own source: ECDSAUtils.derivePublicKey -> compressedPublicKeyFromPrivate),
             // which is exactly the format both BIP143 (P2WPKH) and bitcoinPublicKeyToAccountId() require - no
             // extra compression/decompression step needed here, unlike Ethereum's uncompressed-key derivation.
-            bitcoinAddress = bitcoinPublicKey?.bitcoinPublicKeyToAccountId()
+            bitcoinAddress = bitcoinPublicKey?.bitcoinPublicKeyToAccountId(),
+            // Solana's accountId IS the public key itself, no hash/transform step - see SolanaAddress.kt's doc.
+            solanaPublicKey = solanaPublicKey,
+            solanaAddress = solanaPublicKey
         )
     }
 }

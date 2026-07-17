@@ -105,6 +105,7 @@ import io.novafoundation.nova.feature_account_impl.data.repository.datasource.Re
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.SecretsMetaAccountLocalFactory
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.AccountDataMigration
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.BitcoinAddressBackfillMigration
+import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.SolanaAddressBackfillMigration
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.TronAddressBackfillMigration
 import io.novafoundation.nova.feature_account_impl.data.secrets.AccountSecretsFactory
 import io.novafoundation.nova.feature_account_impl.data.signer.signingContext.SigningContextFactory
@@ -410,6 +411,7 @@ class AccountFeatureModule {
         secretStoreV2: SecretStoreV2,
         accountMappers: AccountMappers,
         bitcoinAddressBackfillMigration: BitcoinAddressBackfillMigration,
+        solanaAddressBackfillMigration: SolanaAddressBackfillMigration,
     ): AccountDataSource {
         return AccountDataSourceImpl(
             preferences,
@@ -422,7 +424,8 @@ class AccountFeatureModule {
             secretStoreV1,
             accountDataMigration,
             tronAddressBackfillMigration,
-            bitcoinAddressBackfillMigration
+            bitcoinAddressBackfillMigration,
+            solanaAddressBackfillMigration
         )
     }
 
@@ -434,6 +437,15 @@ class AccountFeatureModule {
         accountSecretsFactory: AccountSecretsFactory,
     ): BitcoinAddressBackfillMigration {
         return BitcoinAddressBackfillMigration(secretStoreV2, metaAccountDao, accountSecretsFactory)
+    }
+
+    @Provides
+    @FeatureScope
+    fun provideSolanaAddressBackfillMigration(
+        secretStoreV2: SecretStoreV2,
+        metaAccountDao: MetaAccountDao,
+    ): SolanaAddressBackfillMigration {
+        return SolanaAddressBackfillMigration(secretStoreV2, metaAccountDao)
     }
 
     @Provides

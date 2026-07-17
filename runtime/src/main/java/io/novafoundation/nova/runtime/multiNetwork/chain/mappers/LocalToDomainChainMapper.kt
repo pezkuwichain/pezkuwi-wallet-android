@@ -97,6 +97,8 @@ private fun mapChainAssetTypeFromRaw(type: String?, typeExtras: Map<String, Any?
 
         ASSET_BITCOIN_NATIVE -> Chain.Asset.Type.BitcoinNative
 
+        ASSET_SOLANA_NATIVE -> Chain.Asset.Type.SolanaNative
+
         else -> Chain.Asset.Type.Unsupported
     }
 }
@@ -279,6 +281,7 @@ fun mapChainLocalToChain(
             isEthereumBased = isEthereumBased,
             isTronBased = isTronBased,
             isBitcoinBased = isBitcoinBased,
+            isSolanaBased = isSolanaBased,
             isTestNet = isTestNet,
             hasCrowdloans = hasCrowdloans,
             pushSupport = pushSupport,

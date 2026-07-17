@@ -26,6 +26,8 @@ open class DefaultMetaAccount(
     override val tronPublicKey: ByteArray? = null,
     override val bitcoinAddress: ByteArray? = null,
     override val bitcoinPublicKey: ByteArray? = null,
+    override val solanaAddress: ByteArray? = null,
+    override val solanaPublicKey: ByteArray? = null,
 ) : MetaAccount {
 
     override suspend fun supportsAddingChainAccount(chain: Chain): Boolean {
@@ -37,6 +39,7 @@ open class DefaultMetaAccount(
             hasChainAccountIn(chain.id) -> true
             chain.isTronBased -> tronAddress != null
             chain.isBitcoinBased -> bitcoinAddress != null
+            chain.isSolanaBased -> solanaAddress != null
             chain.isEthereumBased -> ethereumAddress != null
             else -> substrateAccountId != null
         }
@@ -47,6 +50,7 @@ open class DefaultMetaAccount(
             hasChainAccountIn(chain.id) -> chainAccounts.getValue(chain.id).accountId
             chain.isTronBased -> tronAddress
             chain.isBitcoinBased -> bitcoinAddress
+            chain.isSolanaBased -> solanaAddress
             chain.isEthereumBased -> ethereumAddress
             else -> substrateAccountId
         }
@@ -57,6 +61,7 @@ open class DefaultMetaAccount(
             hasChainAccountIn(chain.id) -> chainAccounts.getValue(chain.id).publicKey
             chain.isTronBased -> tronPublicKey
             chain.isBitcoinBased -> bitcoinPublicKey
+            chain.isSolanaBased -> solanaPublicKey
             chain.isEthereumBased -> ethereumPublicKey
             else -> substratePublicKey
         }
