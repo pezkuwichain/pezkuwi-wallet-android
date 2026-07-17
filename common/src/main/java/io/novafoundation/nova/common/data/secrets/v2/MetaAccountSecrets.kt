@@ -1,18 +1,14 @@
 package io.novafoundation.nova.common.data.secrets.v2
 
 import io.emeraldpay.polkaj.scale.ScaleCodecReader
-import io.emeraldpay.polkaj.scale.ScaleCodecWriter
 import io.novafoundation.nova.common.utils.invoke
 import io.novasama.substrate_sdk_android.encrypt.keypair.Keypair
 import io.novasama.substrate_sdk_android.encrypt.keypair.substrate.Sr25519Keypair
+import io.novasama.substrate_sdk_android.extensions.fromHex
 import io.novasama.substrate_sdk_android.scale.EncodableStruct
+import io.novasama.substrate_sdk_android.scale.Field
 import io.novasama.substrate_sdk_android.scale.Schema
 import io.novasama.substrate_sdk_android.scale.byteArray
-import io.novasama.substrate_sdk_android.scale.custom
-import io.novasama.substrate_sdk_android.scale.dataType.DataType
-import io.novasama.substrate_sdk_android.scale.dataType.optional
-import io.novasama.substrate_sdk_android.scale.dataType.scalable
-import io.novasama.substrate_sdk_android.scale.dataType.string as stringDataType
 import io.novasama.substrate_sdk_android.scale.schema
 import io.novasama.substrate_sdk_android.scale.string
 
@@ -21,33 +17,6 @@ object KeyPairSchema : Schema<KeyPairSchema>() {
     val PublicKey by byteArray()
 
     val Nonce by byteArray().optional()
-}
-
-/**
- * [io.novasama.substrate_sdk_android.scale.dataType.optional]'ın `read()`'i, arabellek (stored blob) bu alan
- * eklenmeden ÖNCE yazılmış eski verilerde tükendiğinde - yani alan gerçekten "yok" demek istediğinde - zarifçe
- * null dönmek yerine çöküyor (`reader.readBoolean()` EOF'ta istisna fırlatıyor, yakalama yok). Bu, Tron/Bitcoin
- * eklenirken de aynı riskti; muhtemelen şans eseri (byte hizalaması tesadüfen tutmuş) hiç yüzeye çıkmamıştı -
- * Solana'nın 2 yeni alanı arabelleği gerçekten aştırdı ve gerçek cihazda "Cannot read 412 of 412" ile çöktü
- * (secrets okunan HER yerde: bakiye senkronu, backup ekranı, vs).
- *
- * Yazma tarafı [optional]'ın kendisiyle byte-byte aynı kalır - sadece okuma, bu alanın zaten taşıması gereken
- * anlamı (eskiden hiç yazılmamışsa = yok = null) gerçekten sağlar, kütüphanenin eksik bıraktığı yerde.
- */
-private class SafeOptional<T>(private val dataType: DataType<T>) : DataType<T?>() {
-    override fun read(reader: ScaleCodecReader): T? {
-        return try {
-            optional(dataType).read(reader)
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    override fun write(writer: ScaleCodecWriter, value: T?) {
-        optional(dataType).write(writer, value)
-    }
-
-    override fun conformsType(value: Any?) = value == null || dataType.conformsType(value)
 }
 
 object MetaAccountSecrets : Schema<MetaAccountSecrets>() {
@@ -60,18 +29,80 @@ object MetaAccountSecrets : Schema<MetaAccountSecrets>() {
     val EthereumKeypair by schema(KeyPairSchema).optional()
     val EthereumDerivationPath by string().optional()
 
-    // Tron/Bitcoin/Solana are every chain-family added after the original Substrate+Ethereum schema - each is a
-    // trailing addition an old, pre-existing stored blob may simply not have any bytes for at all. custom()
-    // + SafeOptional (not the bare `.optional()` used above) makes reading such a blob correctly yield null for
-    // all of them, instead of crashing on the first one whose bytes don't exist - see SafeOptional's doc.
-    val TronKeypair by custom(SafeOptional(scalable(KeyPairSchema)))
-    val TronDerivationPath by custom(SafeOptional(stringDataType))
+    val TronKeypair by schema(KeyPairSchema).optional()
+    val TronDerivationPath by string().optional()
 
-    val BitcoinKeypair by custom(SafeOptional(scalable(KeyPairSchema)))
-    val BitcoinDerivationPath by custom(SafeOptional(stringDataType))
+    val BitcoinKeypair by schema(KeyPairSchema).optional()
+    val BitcoinDerivationPath by string().optional()
 
-    val SolanaKeypair by custom(SafeOptional(scalable(KeyPairSchema)))
-    val SolanaDerivationPath by custom(SafeOptional(stringDataType))
+    val SolanaKeypair by schema(KeyPairSchema).optional()
+    val SolanaDerivationPath by string().optional()
+}
+
+/**
+ * `MetaAccountSecrets.read(hex)` (`Schema.read`'in kendisi) bir stored blob'u bu şemadaki TÜM alanları sırayla
+ * okuyarak parse eder - herhangi bir alan arabellekte hiç yoksa (o alan eklenmeden ÖNCE yazılmış eski bir
+ * hesapsa) `optional<T>.read()` zarifçe null dönmek yerine çöker (`reader.readBoolean()` EOF'ta istisna
+ * fırlatıyor, kütüphanede hiç yakalama yok). Bu, gerçek cihazda backup ekranı açılırken doğrulandı: bu hesabın
+ * verisi Solana alanları eklenmeden önce yazılmıştı, okuma "Cannot read 412 of 412" ile çöktü - ve Solana
+ * migration'ının KENDİSİ de her çalışmada aynı çökmeyi kendi try/catch'inde sessizce yutuyordu (solanaAddress'in
+ * hiç yazılamamasının, yani SOL'ün hiç görünmemesinin gerçek nedeni buydu). Tron/Bitcoin eklenirken de birebir
+ * aynı riskli desen kullanılmıştı - muhtemelen şans eseri (eski blob'larda tesadüfi byte hizalaması) hiç yüzeye
+ * çıkmamıştı.
+ *
+ * Denenen ilk düzeltme (alan bazında özel bir DataType sarmalayıcısı) YANLIŞ çıktı: `EncodableStruct.get()`
+ * (kütüphanenin kendi `ScaleStruct.kt`'si) bir alan null olduğunda sadece `field.dataType is optional<*>` ise
+ * null döner - `optional`'ın kendisi `final` bir sınıf, alt sınıflanamaz, ve genel bir `DataType` sarmalayıcısı
+ * bu kontrolden geçemeyip AYNI çökmeyi okuma yerine erişim anında tekrar üretiyordu (gerçek CI testleri bunu
+ * yakaladı).
+ *
+ * Doğru çözüm: şemayı (yukarıda) TAMAMEN orijinal haliyle bırak - `optional<T>` her zaman kütüphanenin kendi
+ * sınıfı olsun ki `get()` doğru çalışsın - ve okumayı kendi elimizle, alan alan, arabelleğin nerede tükendiğini
+ * yakalayarak yap. `EncodableStruct.set()`'i hiç ÇAĞIRMAMAK (bir alanı okumaya çalışmamak) `get()`'in zaten
+ * doğru olan "değer yok + optional -> null" davranışını tetikler - kütüphaneyi değil, kendi okuma sırasını
+ * genişletiyoruz.
+ */
+fun readMetaAccountSecrets(hex: String): EncodableStruct<MetaAccountSecrets> {
+    return try {
+        MetaAccountSecrets.read(hex)
+    } catch (e: Exception) {
+        readMetaAccountSecretsTolerant(hex)
+    }
+}
+
+private fun readMetaAccountSecretsTolerant(hex: String): EncodableStruct<MetaAccountSecrets> {
+    val reader = ScaleCodecReader(hex.fromHex())
+    val struct = EncodableStruct(MetaAccountSecrets)
+
+    // Once one field's bytes don't exist, the reader's position is meaningless for everything after it too -
+    // every field from that point on must be left unset (not attempted), same as it being absent gets treated
+    // by EncodableStruct.get() for every already-real `.optional()` field above.
+    var truncated = false
+
+    fun <T> trySet(field: Field<T>) {
+        if (truncated) return
+
+        try {
+            struct[field] = field.dataType.read(reader)
+        } catch (e: Exception) {
+            truncated = true
+        }
+    }
+
+    trySet(MetaAccountSecrets.Entropy)
+    trySet(MetaAccountSecrets.SubstrateSeed)
+    trySet(MetaAccountSecrets.SubstrateKeypair)
+    trySet(MetaAccountSecrets.SubstrateDerivationPath)
+    trySet(MetaAccountSecrets.EthereumKeypair)
+    trySet(MetaAccountSecrets.EthereumDerivationPath)
+    trySet(MetaAccountSecrets.TronKeypair)
+    trySet(MetaAccountSecrets.TronDerivationPath)
+    trySet(MetaAccountSecrets.BitcoinKeypair)
+    trySet(MetaAccountSecrets.BitcoinDerivationPath)
+    trySet(MetaAccountSecrets.SolanaKeypair)
+    trySet(MetaAccountSecrets.SolanaDerivationPath)
+
+    return struct
 }
 
 object ChainAccountSecrets : Schema<ChainAccountSecrets>() {
