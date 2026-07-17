@@ -1,4 +1,4 @@
-package io.novafoundation.nova.feature_assets.presentation.balance.list.model
+package io.novafoundation.nova.feature_assets.presentation.bridge
 
 import io.novafoundation.nova.feature_account_api.data.multisig.model.PendingMultisigOperationId
 import io.novafoundation.nova.feature_account_api.presenatation.chain.ChainUi

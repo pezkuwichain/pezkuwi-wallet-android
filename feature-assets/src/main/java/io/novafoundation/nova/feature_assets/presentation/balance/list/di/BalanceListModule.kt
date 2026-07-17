@@ -13,7 +13,6 @@ import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
 import io.novafoundation.nova.common.domain.usecase.MaskingModeUseCase
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.feature_account_api.data.multisig.MultisigPendingOperationsService
-import io.novafoundation.nova.feature_multisig_operations.presentation.callFormatting.MultisigCallFormatter
 import io.novafoundation.nova.feature_account_api.domain.interfaces.AccountRepository
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
 import io.novafoundation.nova.feature_assets.data.repository.PezkuwiDashboardRepository
@@ -123,7 +122,6 @@ class BalanceListModule {
         amountFormatter: AmountFormatter,
         buySellSelectorMixinFactory: BuySellSelectorMixinFactory,
         multisigPendingOperationsService: MultisigPendingOperationsService,
-        multisigCallFormatter: MultisigCallFormatter,
         novaCardRestrictionCheckMixin: NovaCardRestrictionCheckMixin,
         maskableValueFormatterProvider: MaskableValueFormatterProvider,
         maskingModeUseCase: MaskingModeUseCase,
@@ -150,7 +148,6 @@ class BalanceListModule {
             maskableValueFormatterProvider = maskableValueFormatterProvider,
             buySellSelectorMixinFactory = buySellSelectorMixinFactory,
             multisigPendingOperationsService = multisigPendingOperationsService,
-            multisigCallFormatter = multisigCallFormatter,
             novaCardRestrictionCheckMixin = novaCardRestrictionCheckMixin,
             maskingModeUseCase = maskingModeUseCase,
             fiatFormatter = fiatFormatter,

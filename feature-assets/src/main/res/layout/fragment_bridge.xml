@@ -214,6 +214,26 @@
                 android:text="@string/bridge_sign_button"
                 android:visibility="gone" />
 
+            <!-- Pending multisig operations awaiting this signatory's own approval (someone
+                 else's swap, not this wallet's own renewal above) - one row per operation,
+                 populated dynamically, see BridgeViewModel.pendingSignatures. -->
+            <TextView
+                android:id="@+id/bridgePendingSignaturesTitle"
+                style="@style/TextAppearance.NovaFoundation.SemiBold.Caption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/pending_signatures_title"
+                android:textColor="@color/text_secondary"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/bridgePendingSignaturesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="vertical" />
+
         </LinearLayout>
 
     </ScrollView>

@@ -6,8 +6,17 @@ import io.novafoundation.nova.common.base.BaseViewModel
 import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.common.utils.Event
+import io.novafoundation.nova.common.utils.formatting.format
 import io.novafoundation.nova.common.utils.images.Icon
 import io.novafoundation.nova.common.view.ButtonState
+import io.novafoundation.nova.feature_account_api.data.mappers.mapChainToUi
+import io.novafoundation.nova.feature_account_api.data.multisig.MultisigPendingOperationsService
+import io.novafoundation.nova.feature_account_api.data.multisig.model.MultisigAction
+import io.novafoundation.nova.feature_account_api.data.multisig.model.PendingMultisigOperation
+import io.novafoundation.nova.feature_account_api.data.multisig.model.userAction
+import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
+import io.novafoundation.nova.feature_account_api.domain.model.MetaAccount
+import io.novafoundation.nova.feature_account_api.domain.model.requireAccountIdKeyIn
 import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
@@ -16,12 +25,17 @@ import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultis
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeSignerState
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.bridge.execution.BridgeExecutionPayload
+import io.novafoundation.nova.feature_multisig_operations.presentation.callFormatting.MultisigCallFormatter
+import io.novafoundation.nova.feature_multisig_operations.presentation.common.MultisigOperationPayload
+import io.novafoundation.nova.feature_multisig_operations.presentation.common.fromOperationId
+import io.novafoundation.nova.feature_multisig_operations.presentation.details.general.MultisigOperationDetailsPayload
 import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.ext.addressOf
 import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -48,6 +62,9 @@ class BridgeViewModel(
     private val assetIconProvider: AssetIconProvider,
     private val walletInteractor: WalletInteractor,
     private val bridgeMultisigInteractor: BridgeMultisigInteractor,
+    private val multisigPendingOperationsService: MultisigPendingOperationsService,
+    private val multisigCallFormatter: MultisigCallFormatter,
+    private val selectedAccountUseCase: SelectedAccountUseCase,
 ) : BaseViewModel() {
 
     companion object {
@@ -129,6 +146,15 @@ class BridgeViewModel(
 
     private val _polkadotSignButtonLabel = MutableLiveData("")
     val polkadotSignButtonLabel: LiveData<String> = _polkadotSignButtonLabel
+
+    /** Multisig operations (any of them - not just bridge swaps, since a signatory of this bridge
+     *  account may also be a signatory of other multisig accounts) still awaiting this wallet's
+     *  own approval - shown below the renewal sign buttons above so a signatory doesn't have to
+     *  separately navigate to the pending-operations list to find and sign a swap someone else
+     *  submitted (see the "Sign" buttons above, which renew this wallet's own on-chain allowance -
+     *  this is a different, complementary concern: approving *other people's* pending calls). */
+    private val _pendingSignatures = MutableLiveData<List<PendingSignatureModel>>(emptyList())
+    val pendingSignatures: LiveData<List<PendingSignatureModel>> = _pendingSignatures
 
     private val _fromCard = MutableLiveData<BridgeAssetCardUi>()
     val fromCard: LiveData<BridgeAssetCardUi> = _fromCard
@@ -452,6 +478,38 @@ class BridgeViewModel(
     fun refreshBridgeStatus() {
         fetchReserveStatus()
         refreshSignerState()
+        refreshPendingSignatures()
+    }
+
+    fun refreshPendingSignatures() {
+        launch {
+            val account = selectedAccountUseCase.getSelectedMetaAccount()
+
+            val models = multisigPendingOperationsService.pendingOperations().first()
+                .filter { it.userAction() is MultisigAction.CanApprove }
+                .map { it.toPendingSignatureUi(account) }
+
+            _pendingSignatures.postValue(models)
+        }
+    }
+
+    fun pendingSignatureSignClicked(model: PendingSignatureModel) {
+        val operationPayload = MultisigOperationPayload.fromOperationId(model.id)
+        router.openMultisigOperationDetails(MultisigOperationDetailsPayload(operationPayload))
+    }
+
+    private suspend fun PendingMultisigOperation.toPendingSignatureUi(selectedAccount: MetaAccount): PendingSignatureModel {
+        val initialOrigin = selectedAccount.requireAccountIdKeyIn(chain)
+        val formattedCall = multisigCallFormatter.formatPreview(call, initialOrigin, chain)
+
+        return PendingSignatureModel(
+            id = operationId,
+            chain = mapChainToUi(chain),
+            title = formattedCall.title,
+            subtitle = formattedCall.subtitle,
+            primaryValue = formattedCall.primaryValue,
+            progress = resourceManager.getString(R.string.multisig_operations_progress, approvals.size.format(), threshold.format())
+        )
     }
 
     fun refreshSignerState() {

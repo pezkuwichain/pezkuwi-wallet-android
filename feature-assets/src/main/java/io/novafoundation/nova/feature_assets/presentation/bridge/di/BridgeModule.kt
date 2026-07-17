@@ -11,12 +11,14 @@ import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
 import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.resources.ResourceManager
 import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicService
+import io.novafoundation.nova.feature_account_api.data.multisig.MultisigPendingOperationsService
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.RealBridgeMultisigInteractor
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.bridge.BridgeViewModel
+import io.novafoundation.nova.feature_multisig_operations.presentation.callFormatting.MultisigCallFormatter
 import io.novafoundation.nova.runtime.di.REMOTE_STORAGE_SOURCE
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.storage.source.StorageDataSource
@@ -45,6 +47,9 @@ class BridgeModule {
         assetIconProvider: AssetIconProvider,
         walletInteractor: WalletInteractor,
         bridgeMultisigInteractor: BridgeMultisigInteractor,
+        multisigPendingOperationsService: MultisigPendingOperationsService,
+        multisigCallFormatter: MultisigCallFormatter,
+        selectedAccountUseCase: SelectedAccountUseCase,
     ): ViewModel {
         return BridgeViewModel(
             router,
@@ -53,6 +58,9 @@ class BridgeModule {
             assetIconProvider,
             walletInteractor,
             bridgeMultisigInteractor,
+            multisigPendingOperationsService,
+            multisigCallFormatter,
+            selectedAccountUseCase,
         )
     }
 

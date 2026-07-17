@@ -3,18 +3,26 @@ package io.novafoundation.nova.feature_assets.presentation.bridge
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import coil.ImageLoader
 import io.novafoundation.nova.common.base.BaseFragment
 import io.novafoundation.nova.common.di.FeatureUtils
+import io.novafoundation.nova.common.utils.inflater
 import io.novafoundation.nova.common.utils.setVisible
 import io.novafoundation.nova.common.view.AlertView
 import io.novafoundation.nova.common.view.setState
+import io.novafoundation.nova.feature_account_api.presenatation.chain.loadChainIcon
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.databinding.FragmentBridgeBinding
+import io.novafoundation.nova.feature_assets.databinding.ItemPendingSignatureRowBinding
 import io.novafoundation.nova.feature_assets.di.AssetsFeatureApi
 import io.novafoundation.nova.feature_assets.di.AssetsFeatureComponent
 import io.novafoundation.nova.feature_wallet_api.presentation.mixin.amountChooser.MaxActionAvailability
+import javax.inject.Inject
 
 class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
 
     override fun createBinding() = FragmentBridgeBinding.inflate(layoutInflater)
 
@@ -195,6 +203,34 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
 
         viewModel.fillAmountEvent.observeEvent { amount ->
             binder.bridgeFromCard.amountInput.setText(amount)
+        }
+
+        viewModel.pendingSignatures.observe { models ->
+            bindPendingSignatures(models)
+        }
+    }
+
+    private fun bindPendingSignatures(models: List<PendingSignatureModel>) {
+        val visibility = if (models.isEmpty()) View.GONE else View.VISIBLE
+        binder.bridgePendingSignaturesTitle.visibility = visibility
+        binder.bridgePendingSignaturesContainer.visibility = visibility
+
+        val container = binder.bridgePendingSignaturesContainer
+        container.removeAllViews()
+
+        models.forEach { model ->
+            val rowBinding = ItemPendingSignatureRowBinding.inflate(container.inflater(), container, false)
+
+            rowBinding.pendingSignatureChainIcon.loadChainIcon(model.chain.icon, imageLoader)
+            // primaryValue (e.g. "100K USDT") is the amount - the whole point of this row - so it
+            // takes the prominent title line; the call's own title/action name ("Transfer") isn't
+            // shown at all here, only the destination (subtitle) is, to keep the row to two lines.
+            rowBinding.pendingSignatureTitle.text = model.primaryValue ?: model.title
+            rowBinding.pendingSignatureSubtitle.text = listOfNotNull(model.subtitle, model.chain.name, model.progress)
+                .joinToString(separator = " • ")
+            rowBinding.pendingSignatureSignButton.setOnClickListener { viewModel.pendingSignatureSignClicked(model) }
+
+            container.addView(rowBinding.root)
         }
     }
 }
