@@ -258,6 +258,7 @@ class RealTronTransactionServiceTest {
             isEthereumBased = false,
             isTronBased = true,
             isBitcoinBased = false,
+            isSolanaBased = false,
             isTestNet = false,
             source = Chain.Source.DEFAULT,
             hasSubstrateRuntime = false,

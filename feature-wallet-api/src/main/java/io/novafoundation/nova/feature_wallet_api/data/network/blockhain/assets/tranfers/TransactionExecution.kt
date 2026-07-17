@@ -12,4 +12,6 @@ sealed interface TransactionExecution {
     class Bitcoin(val hash: String) : TransactionExecution
 
     class Tron(val hash: String) : TransactionExecution
+
+    class Solana(val hash: String) : TransactionExecution
 }

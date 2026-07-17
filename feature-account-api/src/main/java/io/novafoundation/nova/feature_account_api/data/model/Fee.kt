@@ -88,6 +88,18 @@ class TronFee(
     override val asset: Chain.Asset
 ) : Fee
 
+/**
+ * Fee for a Solana transaction, denominated in lamports, always paid in native SOL regardless of which asset is
+ * being sent (Solana has no separate "gas token" concept, same as Tron). [amount] is `getFeeForMessage`'s
+ * authoritative, exact answer for this specific compiled message (not an estimate the way Bitcoin's vsize-based
+ * fee is) - see `RealSolanaTransactionService`.
+ */
+class SolanaFee(
+    override val amount: BigInteger,
+    override val submissionOrigin: SubmissionOrigin,
+    override val asset: Chain.Asset
+) : Fee
+
 class SubstrateFeeBase(
     override val amount: BigInteger,
     override val asset: Chain.Asset
