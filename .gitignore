@@ -38,3 +38,12 @@ package-lock.json
 
 # Local build version counter
 version.properties
+
+# Scratch/working notes (plans, checklists, tender/audit drafts, etc.) - these belong in the AI assistant's
+# own scratchpad, never in the repo itself (docs/PACKAGE_STRUCTURE_REBRAND.md was exactly this: a never-executed
+# 2026-01 planning draft that sat here for months as dead weight). Real, maintained docs (BRAND.md, README.md,
+# ARCHITECTURE.md, docs/*) are unaffected - this only catches the *_NOTES/*_SCRATCH/*_DRAFT naming pattern.
+*_NOTES.md
+*_SCRATCH.md
+*_DRAFT.md
+*_WORKING.md
