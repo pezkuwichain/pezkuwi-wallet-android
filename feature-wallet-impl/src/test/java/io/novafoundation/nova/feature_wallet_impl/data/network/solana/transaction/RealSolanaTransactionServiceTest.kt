@@ -72,8 +72,8 @@ class RealSolanaTransactionServiceTest {
 
     private lateinit var subject: RealSolanaTransactionService
 
-    private val senderPublicKey = "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5".fromHex()
-    private val recipientPublicKey = "c8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b3".fromHex()
+    private val senderPublicKey = "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c".fromHex()
+    private val recipientPublicKey = "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394".fromHex()
     private val recipientAddress = Base58.encode(recipientPublicKey)
     private val recentBlockhash = ByteArray(32)
     private val lamports = 123456789L

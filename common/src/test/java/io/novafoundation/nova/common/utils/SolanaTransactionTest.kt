@@ -14,15 +14,15 @@ class SolanaTransactionTest {
      * fixed vector, not a real network value). This test asserts our hand-rolled message builder produces the
      * exact same bytes solders did for the identical inputs.
      */
-    private val senderPublicKey = "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5".fromHex()
-    private val recipientPublicKey = "c8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b3".fromHex()
+    private val senderPublicKey = "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c".fromHex()
+    private val recipientPublicKey = "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394".fromHex()
     private val recentBlockhash = ByteArray(32)
     private val lamports = 123456789L
 
-    private val expectedMessageHex = "010001038a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5" +
-        "c8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b39400000000000000000000000000000000" +
-        "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" +
-        "1020200010c0200000015cd5b0700000000"
+    private val expectedMessageHex = "010001038a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c813" +
+        "9770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b39400000000000000" +
+        "000000000000000000000000000000000000000000000000000000000000000000000000000" +
+        "00000000000000000000000000000000000000001020200010c0200000015cd5b0700000000"
 
     @Test
     fun `buildTransferMessage should match the independently-built solders reference vector`() {
