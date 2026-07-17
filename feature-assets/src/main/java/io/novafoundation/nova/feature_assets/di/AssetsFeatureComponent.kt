@@ -53,6 +53,7 @@ import io.novafoundation.nova.feature_crowdloan_api.di.CrowdloanFeatureApi
 import io.novafoundation.nova.feature_currency_api.di.CurrencyFeatureApi
 import io.novafoundation.nova.feature_deep_linking.di.DeepLinkingFeatureApi
 import io.novafoundation.nova.feature_gift_api.di.GiftFeatureApi
+import io.novafoundation.nova.feature_multisig_operations.di.MultisigOperationsFeatureApi
 import io.novafoundation.nova.feature_nft_api.NftFeatureApi
 import io.novafoundation.nova.feature_staking_api.di.StakingFeatureApi
 import io.novafoundation.nova.feature_swap_api.di.SwapFeatureApi
@@ -175,7 +176,8 @@ interface AssetsFeatureComponent : AssetsFeatureApi {
             BannersFeatureApi::class,
             DeepLinkingFeatureApi::class,
             ChainMigrationFeatureApi::class,
-            GiftFeatureApi::class
+            GiftFeatureApi::class,
+            MultisigOperationsFeatureApi::class
         ]
     )
     interface AssetsFeatureDependenciesComponent : AssetsFeatureDependencies

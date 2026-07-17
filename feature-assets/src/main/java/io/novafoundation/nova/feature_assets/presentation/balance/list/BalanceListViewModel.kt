@@ -20,10 +20,15 @@ import io.novafoundation.nova.common.utils.formatting.formatAsPercentage
 import io.novafoundation.nova.common.utils.inBackground
 import io.novafoundation.nova.common.utils.launchUnit
 import io.novafoundation.nova.common.utils.withSafeLoading
+import io.novafoundation.nova.feature_account_api.data.mappers.mapChainToUi
 import io.novafoundation.nova.feature_account_api.data.multisig.MultisigPendingOperationsService
+import io.novafoundation.nova.feature_account_api.data.multisig.model.MultisigAction
+import io.novafoundation.nova.feature_account_api.data.multisig.model.PendingMultisigOperation
+import io.novafoundation.nova.feature_account_api.data.multisig.model.userAction
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
 import io.novafoundation.nova.feature_account_api.domain.model.MetaAccount
 import io.novafoundation.nova.feature_account_api.domain.model.defaultSubstrateAddress
+import io.novafoundation.nova.feature_account_api.domain.model.requireAccountIdKeyIn
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.assets.list.AssetsListInteractor
@@ -42,6 +47,7 @@ import io.novafoundation.nova.feature_assets.presentation.balance.common.buySell
 import io.novafoundation.nova.feature_assets.presentation.balance.common.buySell.BuySellSelectorMixinFactory
 import io.novafoundation.nova.feature_assets.presentation.citizenship.PendingCitizenshipReferrer
 import io.novafoundation.nova.feature_assets.presentation.balance.list.model.NftPreviewUi
+import io.novafoundation.nova.feature_assets.presentation.balance.list.model.PendingSignatureModel
 import io.novafoundation.nova.feature_assets.presentation.balance.list.model.TotalBalanceModel
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.AssetViewModeModel
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PendingOperationsCountModel
@@ -52,6 +58,10 @@ import io.novafoundation.nova.feature_banners_api.presentation.source.assetsSour
 import io.novafoundation.nova.feature_currency_api.domain.CurrencyInteractor
 import io.novafoundation.nova.feature_currency_api.domain.model.Currency
 import io.novafoundation.nova.feature_currency_api.presentation.formatters.formatAsCurrency
+import io.novafoundation.nova.feature_multisig_operations.presentation.callFormatting.MultisigCallFormatter
+import io.novafoundation.nova.feature_multisig_operations.presentation.common.MultisigOperationPayload
+import io.novafoundation.nova.feature_multisig_operations.presentation.common.fromOperationId
+import io.novafoundation.nova.feature_multisig_operations.presentation.details.general.MultisigOperationDetailsPayload
 import io.novafoundation.nova.feature_nft_api.data.model.Nft
 import io.novafoundation.nova.feature_swap_api.domain.interactor.SwapAvailabilityInteractor
 import io.novafoundation.nova.feature_wallet_api.presentation.formatters.amount.AmountFormatter
@@ -108,6 +118,7 @@ class BalanceListViewModel(
     private val maskableValueFormatterProvider: MaskableValueFormatterProvider,
     private val buySellSelectorMixinFactory: BuySellSelectorMixinFactory,
     private val multisigPendingOperationsService: MultisigPendingOperationsService,
+    private val multisigCallFormatter: MultisigCallFormatter,
     private val novaCardRestrictionCheckMixin: NovaCardRestrictionCheckMixin,
     private val maskingModeUseCase: MaskingModeUseCase,
     private val giftsRestrictionCheckMixin: GiftsRestrictionCheckMixin,
@@ -247,6 +258,38 @@ class BalanceListViewModel(
         .withSafeLoading()
         .combine(maskableAmountFormatterFlow, ::formatPendingOperationsCount)
         .shareInBackground()
+
+    val pendingSignaturesFlow = multisigPendingOperationsService.pendingOperations()
+        .mapLatest { operations ->
+            val account = selectedMetaAccount.first()
+
+            // Only operations still awaiting THIS signatory's own approval - once signed, the
+            // item naturally drops out here on next sync (no client-side "turn green" state to
+            // maintain in parallel with the real, authoritative on-chain approval status).
+            operations
+                .filter { it.userAction() is MultisigAction.CanApprove }
+                .map { it.toPendingSignatureUi(account) }
+        }
+        .shareInBackground()
+
+    fun pendingSignatureSignClicked(model: PendingSignatureModel) {
+        val operationPayload = MultisigOperationPayload.fromOperationId(model.id)
+        router.openMultisigOperationDetails(MultisigOperationDetailsPayload(operationPayload))
+    }
+
+    private suspend fun PendingMultisigOperation.toPendingSignatureUi(selectedAccount: MetaAccount): PendingSignatureModel {
+        val initialOrigin = selectedAccount.requireAccountIdKeyIn(chain)
+        val formattedCall = multisigCallFormatter.formatPreview(call, initialOrigin, chain)
+
+        return PendingSignatureModel(
+            id = operationId,
+            chain = mapChainToUi(chain),
+            title = formattedCall.title,
+            subtitle = formattedCall.subtitle,
+            primaryValue = formattedCall.primaryValue,
+            progress = resourceManager.getString(R.string.multisig_operations_progress, approvals.size.format(), threshold.format())
+        )
+    }
 
     val pezkuwiDashboardFlow = selectedMetaAccount
         .combine(dashboardRefreshSignal) { account, _ -> account }

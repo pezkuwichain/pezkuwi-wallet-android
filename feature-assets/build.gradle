@@ -48,6 +48,7 @@ dependencies {
     implementation project(':feature-deep-linking')
     implementation project(':feature-ahm-api')
     implementation project(':feature-gift-api')
+    implementation project(':feature-multisig:operations')
 
     implementation kotlinDep
 

@@ -2778,6 +2778,9 @@
     <string name="pezkuwi_dashboard_tracking_success">Score tracking started!</string>
     <string name="pezkuwi_dashboard_kurds_title">Hejmara Kurd Le Cihane</string>
 
+    <string name="pending_signatures_title">Pending Signatures</string>
+    <string name="pending_signatures_sign">Sign</string>
+
     <!-- Citizenship Application -->
     <string name="citizenship_title">Citizenship Application</string>
     <string name="citizenship_name">Full Name</string>

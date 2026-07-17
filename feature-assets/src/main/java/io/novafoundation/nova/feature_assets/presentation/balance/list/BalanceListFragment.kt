@@ -36,6 +36,9 @@ import android.content.Intent
 import android.widget.Toast
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PezkuwiDashboardAdapter
 import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PezkuwiDashboardHolder
+import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PendingSignaturesAdapter
+import io.novafoundation.nova.feature_assets.presentation.balance.list.view.PendingSignaturesHolder
+import io.novafoundation.nova.feature_assets.presentation.balance.list.model.PendingSignatureModel
 import io.novafoundation.nova.feature_assets.presentation.citizenship.CitizenshipBottomSheet
 import io.novafoundation.nova.feature_banners_api.presentation.BannerHolder
 import io.novafoundation.nova.feature_banners_api.presentation.PromotionBannerAdapter
@@ -49,6 +52,7 @@ class BalanceListFragment :
     AssetsHeaderAdapter.Handler,
     ManageAssetsAdapter.Handler,
     PezkuwiDashboardAdapter.Handler,
+    PendingSignaturesAdapter.Handler,
     CitizenshipBottomSheet.CitizenshipDismissListener {
 
     override fun createBinding() = FragmentBalanceListBinding.inflate(layoutInflater)
@@ -64,6 +68,10 @@ class BalanceListFragment :
 
     private val pezkuwiDashboardAdapter by lazy(LazyThreadSafetyMode.NONE) {
         PezkuwiDashboardAdapter(this)
+    }
+
+    private val pendingSignaturesAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        PendingSignaturesAdapter(imageLoader, this)
     }
 
     private val bannerAdapter: PromotionBannerAdapter by lazy(LazyThreadSafetyMode.NONE) {
@@ -86,7 +94,15 @@ class BalanceListFragment :
     }
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
-        ConcatAdapter(headerAdapter, pezkuwiDashboardAdapter, bannerAdapter, manageAssetsAdapter, emptyAssetsPlaceholder, assetsAdapter)
+        ConcatAdapter(
+            headerAdapter,
+            pezkuwiDashboardAdapter,
+            pendingSignaturesAdapter,
+            bannerAdapter,
+            manageAssetsAdapter,
+            emptyAssetsPlaceholder,
+            assetsAdapter
+        )
     }
 
     override fun applyInsets(rootView: View) {
@@ -141,6 +157,11 @@ class BalanceListFragment :
             } else {
                 pezkuwiDashboardAdapter.show(false)
             }
+        }
+
+        viewModel.pendingSignaturesFlow.observe { models ->
+            pendingSignaturesAdapter.setModels(models)
+            pendingSignaturesAdapter.show(models.isNotEmpty())
         }
 
         viewModel.bannersMixin.bindWithAdapter(bannerAdapter) {
@@ -301,6 +322,10 @@ class BalanceListFragment :
         viewModel.startTrackingClicked()
     }
 
+    override fun onSignClicked(model: PendingSignatureModel) {
+        viewModel.pendingSignatureSignClicked(model)
+    }
+
     private fun setupRecyclerViewSpacing() {
         binder.balanceListAssets.addSpaceItemDecoration {
             add(SpaceBetween(AssetsHeaderHolder, PezkuwiDashboardHolder, spaceDp = 8))
@@ -309,6 +334,11 @@ class BalanceListFragment :
             add(SpaceBetween(AssetsHeaderHolder, BannerHolder, spaceDp = 4))
             add(SpaceBetween(BannerHolder, ManageAssetsHolder, spaceDp = 4))
             add(SpaceBetween(AssetsHeaderHolder, ManageAssetsHolder, spaceDp = 24))
+
+            add(SpaceBetween(AssetsHeaderHolder, PendingSignaturesHolder, spaceDp = 8))
+            add(SpaceBetween(PezkuwiDashboardHolder, PendingSignaturesHolder, spaceDp = 8))
+            add(SpaceBetween(PendingSignaturesHolder, BannerHolder, spaceDp = 4))
+            add(SpaceBetween(PendingSignaturesHolder, ManageAssetsHolder, spaceDp = 24))
         }
     }
 
