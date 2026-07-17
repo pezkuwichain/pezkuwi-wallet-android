@@ -78,6 +78,16 @@
 -dontwarn org.bouncycastle.**
 
 # ============================================================
+# EdDSA (net.i2p.crypto:eddsa, pulled in transitively by substrate-sdk-android)
+# ============================================================
+# Signer.kt/SignatureVerifier.kt look up this JCA provider by name at runtime
+# (Signature.getInstance(..., "EdDSA")) - every Ed25519 signature (all Solana
+# transactions, and any Substrate account using CryptoType.ED25519) goes
+# through this provider, so its classes must survive obfuscation intact.
+-keep class net.i2p.crypto.eddsa.** { *; }
+-dontwarn net.i2p.crypto.eddsa.**
+
+# ============================================================
 # Native JNI Bindings (Rust)
 # ============================================================
 # SR25519 signing - keep the native methods and the class
