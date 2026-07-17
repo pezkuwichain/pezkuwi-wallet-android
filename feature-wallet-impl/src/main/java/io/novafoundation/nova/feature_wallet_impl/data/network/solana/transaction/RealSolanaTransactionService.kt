@@ -20,7 +20,6 @@ import io.novafoundation.nova.feature_wallet_impl.data.network.solana.SolanaApi
 import io.novafoundation.nova.runtime.ext.commissionAsset
 import io.novafoundation.nova.runtime.ext.requireSolanaRpcBaseUrl
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
-import io.novasama.substrate_sdk_android.runtime.AccountId
 import io.novasama.substrate_sdk_android.runtime.extrinsic.signer.SignerPayloadRaw
 import java.math.BigInteger
 

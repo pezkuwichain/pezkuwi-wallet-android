@@ -20,10 +20,14 @@ import io.novafoundation.nova.common.utils.findIsInstanceOrNull
 import io.novafoundation.nova.common.utils.formatNamed
 import io.novafoundation.nova.common.utils.isValidBitcoinDestinationAddress
 import io.novafoundation.nova.common.utils.removeHexPrefix
+import io.novafoundation.nova.common.utils.emptySolanaAccountId
 import io.novafoundation.nova.common.utils.emptyTronAccountId
+import io.novafoundation.nova.common.utils.isValidSolanaAddress
 import io.novafoundation.nova.common.utils.isValidTronAddress
+import io.novafoundation.nova.common.utils.solanaAddressToAccountId
 import io.novafoundation.nova.common.utils.substrateAccountId
 import io.novafoundation.nova.common.utils.toBitcoinAddress
+import io.novafoundation.nova.common.utils.toSolanaAddress
 import io.novafoundation.nova.common.utils.toTronAddress
 import io.novafoundation.nova.common.utils.tronAddressToAccountId
 import io.novafoundation.nova.common.utils.tronPublicKeyToAccountId
