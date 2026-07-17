@@ -11,7 +11,6 @@ import io.novafoundation.nova.feature_assets.presentation.tokens.add.enterInfo.A
 import io.novafoundation.nova.feature_assets.presentation.tokens.manage.chain.ManageChainTokensPayload
 import io.novafoundation.nova.feature_assets.presentation.trade.webInterface.TradeWebPayload
 import io.novafoundation.nova.feature_assets.presentation.transaction.filter.TransactionHistoryFilterPayload
-import io.novafoundation.nova.feature_multisig_operations.presentation.details.general.MultisigOperationDetailsPayload
 import io.novafoundation.nova.feature_swap_api.presentation.model.SwapSettingsPayload
 import io.novafoundation.nova.feature_wallet_api.presentation.model.AssetPayload
 
@@ -120,8 +119,6 @@ interface AssetsRouter {
     fun finishTopUp()
 
     fun openPendingMultisigOperations()
-
-    fun openMultisigOperationDetails(payload: MultisigOperationDetailsPayload)
 
     fun openAssetDetailsFromDeepLink(payload: AssetPayload)
 

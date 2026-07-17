@@ -222,12 +222,8 @@ class BridgeFragment : BaseFragment<BridgeViewModel, FragmentBridgeBinding>() {
             val rowBinding = ItemPendingSignatureRowBinding.inflate(container.inflater(), container, false)
 
             rowBinding.pendingSignatureChainIcon.loadChainIcon(model.chain.icon, imageLoader)
-            // primaryValue (e.g. "100K USDT") is the amount - the whole point of this row - so it
-            // takes the prominent title line; the call's own title/action name ("Transfer") isn't
-            // shown at all here, only the destination (subtitle) is, to keep the row to two lines.
-            rowBinding.pendingSignatureTitle.text = model.primaryValue ?: model.title
-            rowBinding.pendingSignatureSubtitle.text = listOfNotNull(model.subtitle, model.chain.name, model.progress)
-                .joinToString(separator = " • ")
+            rowBinding.pendingSignatureTitle.text = model.amountText
+            rowBinding.pendingSignatureSubtitle.text = "${model.destinationText} • ${model.chain.name} • ${model.progress}"
             rowBinding.pendingSignatureSignButton.setOnClickListener { viewModel.pendingSignatureSignClicked(model) }
 
             container.addView(rowBinding.root)

@@ -108,8 +108,6 @@ import io.novafoundation.nova.feature_ledger_impl.presentation.account.addChain.
 import io.novafoundation.nova.feature_ledger_impl.presentation.account.common.selectLedger.SelectLedgerPayload
 import io.novafoundation.nova.feature_multisig_operations.presentation.created.MultisigCreatedBottomSheet
 import io.novafoundation.nova.feature_multisig_operations.presentation.created.MultisigCreatedPayload
-import io.novafoundation.nova.feature_multisig_operations.presentation.details.general.MultisigOperationDetailsFragment
-import io.novafoundation.nova.feature_multisig_operations.presentation.details.general.MultisigOperationDetailsPayload
 import io.novafoundation.nova.feature_onboarding_impl.OnboardingRouter
 import io.novafoundation.nova.feature_onboarding_impl.presentation.welcome.WelcomeFragment
 import io.novafoundation.nova.feature_swap_api.presentation.model.SwapSettingsPayload
@@ -982,12 +980,6 @@ class Navigator(
 
     override fun openPendingMultisigOperations() {
         navigationBuilder().action(R.id.action_mainFragment_to_multisigPendingOperationsFlow)
-            .navigateInFirstAttachedContext()
-    }
-
-    override fun openMultisigOperationDetails(payload: MultisigOperationDetailsPayload) {
-        navigationBuilder().action(R.id.action_multisigOperationDetailsFragment)
-            .setArgs(MultisigOperationDetailsFragment.createPayload(payload))
             .navigateInFirstAttachedContext()
     }
 

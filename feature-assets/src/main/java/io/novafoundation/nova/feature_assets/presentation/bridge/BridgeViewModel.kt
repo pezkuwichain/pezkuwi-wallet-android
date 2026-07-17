@@ -10,35 +10,28 @@ import io.novafoundation.nova.common.utils.formatting.format
 import io.novafoundation.nova.common.utils.images.Icon
 import io.novafoundation.nova.common.view.ButtonState
 import io.novafoundation.nova.feature_account_api.data.mappers.mapChainToUi
-import io.novafoundation.nova.feature_account_api.data.multisig.MultisigPendingOperationsService
-import io.novafoundation.nova.feature_account_api.data.multisig.model.MultisigAction
-import io.novafoundation.nova.feature_account_api.data.multisig.model.PendingMultisigOperation
-import io.novafoundation.nova.feature_account_api.data.multisig.model.userAction
-import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
-import io.novafoundation.nova.feature_account_api.domain.model.MetaAccount
-import io.novafoundation.nova.feature_account_api.domain.model.requireAccountIdKeyIn
 import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigConstants
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeMultisigInteractor
 import io.novafoundation.nova.feature_assets.domain.bridge.multisig.BridgeSignerState
+import io.novafoundation.nova.feature_assets.domain.bridge.multisig.PendingBridgeApproval
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.bridge.execution.BridgeExecutionPayload
-import io.novafoundation.nova.feature_multisig_operations.presentation.callFormatting.MultisigCallFormatter
-import io.novafoundation.nova.feature_multisig_operations.presentation.common.MultisigOperationPayload
-import io.novafoundation.nova.feature_multisig_operations.presentation.common.fromOperationId
-import io.novafoundation.nova.feature_multisig_operations.presentation.details.general.MultisigOperationDetailsPayload
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.AssetSourceRegistry
+import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.tranfers.tryParseTransfer
+import io.novafoundation.nova.feature_wallet_api.domain.model.amountFromPlanks
 import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.ext.addressOf
 import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.NumberFormat
 
 /**
  * DOT<->HEZ used to be a second pair here, retired 2026-07 in favor of the multisig-custodied
@@ -62,9 +55,7 @@ class BridgeViewModel(
     private val assetIconProvider: AssetIconProvider,
     private val walletInteractor: WalletInteractor,
     private val bridgeMultisigInteractor: BridgeMultisigInteractor,
-    private val multisigPendingOperationsService: MultisigPendingOperationsService,
-    private val multisigCallFormatter: MultisigCallFormatter,
-    private val selectedAccountUseCase: SelectedAccountUseCase,
+    private val assetSourceRegistry: AssetSourceRegistry,
 ) : BaseViewModel() {
 
     companion object {
@@ -483,32 +474,50 @@ class BridgeViewModel(
 
     fun refreshPendingSignatures() {
         launch {
-            val account = selectedAccountUseCase.getSelectedMetaAccount()
-
-            val models = multisigPendingOperationsService.pendingOperations().first()
-                .filter { it.userAction() is MultisigAction.CanApprove }
-                .map { it.toPendingSignatureUi(account) }
+            val models = bridgeMultisigInteractor.getPendingApprovals()
+                .mapNotNull { it.toPendingSignatureUiOrNull() }
 
             _pendingSignatures.postValue(models)
         }
     }
 
+    private var pendingApprovalSubmission: Job? = null
+
     fun pendingSignatureSignClicked(model: PendingSignatureModel) {
-        val operationPayload = MultisigOperationPayload.fromOperationId(model.id)
-        router.openMultisigOperationDetails(MultisigOperationDetailsPayload(operationPayload))
+        if (pendingApprovalSubmission?.isActive == true) return
+
+        pendingApprovalSubmission = launch {
+            bridgeMultisigInteractor.submitApproval(model.approval)
+                .onFailure { showError(it.message ?: resourceManager.getString(R.string.bridge_sign_error)) }
+
+            refreshPendingSignatures()
+        }
     }
 
-    private suspend fun PendingMultisigOperation.toPendingSignatureUi(selectedAccount: MetaAccount): PendingSignatureModel {
-        val initialOrigin = selectedAccount.requireAccountIdKeyIn(chain)
-        val formattedCall = multisigCallFormatter.formatPreview(call, initialOrigin, chain)
+    /** Null whenever the call's actual content couldn't be recovered or isn't a plain transfer
+     *  this screen knows how to preview - never shown/approvable in that case (see
+     *  BridgeMultisigInteractor.submitApproval's own refusal to blind-sign for why this isn't
+     *  just a display-only gap: an unparseable row would have no safe "Sign" action anyway). */
+    private suspend fun PendingBridgeApproval.toPendingSignatureUiOrNull(): PendingSignatureModel? {
+        val call = call ?: return null
+
+        val assetId = if (chain.id == ChainGeneses.POLKADOT_ASSET_HUB) {
+            BridgeMultisigConstants.POLKADOT_USDT_ASSET_ID
+        } else {
+            BridgeMultisigConstants.WUSDT_ASSET_ID
+        }
+        val asset = chain.assetsById[assetId] ?: return null
+        val parsed = assetSourceRegistry.sourceFor(asset).transfers.tryParseTransfer(call, chain) ?: return null
+
+        val decimalAmount = asset.amountFromPlanks(parsed.amount.amount)
+        val amountText = "${NumberFormat.getNumberInstance().format(decimalAmount)} ${asset.symbol.value}"
 
         return PendingSignatureModel(
-            id = operationId,
+            approval = this,
             chain = mapChainToUi(chain),
-            title = formattedCall.title,
-            subtitle = formattedCall.subtitle,
-            primaryValue = formattedCall.primaryValue,
-            progress = resourceManager.getString(R.string.multisig_operations_progress, approvals.size.format(), threshold.format())
+            amountText = amountText,
+            destinationText = chain.addressOf(parsed.destination),
+            progress = resourceManager.getString(R.string.multisig_operations_progress, approvalsCount.format(), BridgeMultisigConstants.THRESHOLD.format())
         )
     }
 

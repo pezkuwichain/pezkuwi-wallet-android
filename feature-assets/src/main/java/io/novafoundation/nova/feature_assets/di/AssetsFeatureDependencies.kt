@@ -5,6 +5,7 @@ import coil.ImageLoader
 import com.google.gson.Gson
 import io.novafoundation.nova.common.address.AddressIconGenerator
 import io.novafoundation.nova.common.address.format.EthereumAddressFormat
+import io.novafoundation.nova.common.data.config.GlobalConfigDataSource
 import io.novafoundation.nova.common.data.memory.ComputationalCache
 import io.novafoundation.nova.common.data.network.AppLinksProvider
 import io.novafoundation.nova.common.data.network.HttpExceptionHandler
@@ -99,7 +100,6 @@ import io.novafoundation.nova.feature_account_api.data.fee.capability.CustomFeeC
 import io.novafoundation.nova.feature_ahm_api.domain.ChainMigrationInfoUseCase
 import io.novafoundation.nova.feature_gift_api.domain.GiftsAccountSupportedUseCase
 import io.novafoundation.nova.feature_gift_api.domain.AvailableGiftAssetsUseCase
-import io.novafoundation.nova.feature_multisig_operations.presentation.callFormatting.MultisigCallFormatter
 import io.novafoundation.nova.feature_wallet_api.domain.SendUseCase
 import io.novafoundation.nova.feature_wallet_api.presentation.mixin.amountChooser.AmountChooserMixin
 import io.novafoundation.nova.feature_wallet_api.presentation.mixin.fee.FeeLoaderMixin
@@ -241,8 +241,6 @@ interface AssetsFeatureDependencies {
 
     val multisigPendingOperationsService: MultisigPendingOperationsService
 
-    val multisigCallFormatter: MultisigCallFormatter
-
     val automaticInteractionGate: AutomaticInteractionGate
 
     val linkBuilderFactory: LinkBuilderFactory
@@ -318,6 +316,8 @@ interface AssetsFeatureDependencies {
     fun addressDisplayUseCase(): AddressDisplayUseCase
 
     fun chainRegistry(): ChainRegistry
+
+    fun globalConfigDataSource(): GlobalConfigDataSource
 
     @Named(REMOTE_STORAGE_SOURCE)
     fun remoteStorageSource(): StorageDataSource
