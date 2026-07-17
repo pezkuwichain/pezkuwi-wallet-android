@@ -1,11 +1,18 @@
 package io.novafoundation.nova.common.data.secrets.v2
 
+import io.emeraldpay.polkaj.scale.ScaleCodecReader
+import io.emeraldpay.polkaj.scale.ScaleCodecWriter
 import io.novafoundation.nova.common.utils.invoke
 import io.novasama.substrate_sdk_android.encrypt.keypair.Keypair
 import io.novasama.substrate_sdk_android.encrypt.keypair.substrate.Sr25519Keypair
 import io.novasama.substrate_sdk_android.scale.EncodableStruct
 import io.novasama.substrate_sdk_android.scale.Schema
 import io.novasama.substrate_sdk_android.scale.byteArray
+import io.novasama.substrate_sdk_android.scale.custom
+import io.novasama.substrate_sdk_android.scale.dataType.DataType
+import io.novasama.substrate_sdk_android.scale.dataType.optional
+import io.novasama.substrate_sdk_android.scale.dataType.scalable
+import io.novasama.substrate_sdk_android.scale.dataType.string as stringDataType
 import io.novasama.substrate_sdk_android.scale.schema
 import io.novasama.substrate_sdk_android.scale.string
 
@@ -14,6 +21,33 @@ object KeyPairSchema : Schema<KeyPairSchema>() {
     val PublicKey by byteArray()
 
     val Nonce by byteArray().optional()
+}
+
+/**
+ * [io.novasama.substrate_sdk_android.scale.dataType.optional]'ın `read()`'i, arabellek (stored blob) bu alan
+ * eklenmeden ÖNCE yazılmış eski verilerde tükendiğinde - yani alan gerçekten "yok" demek istediğinde - zarifçe
+ * null dönmek yerine çöküyor (`reader.readBoolean()` EOF'ta istisna fırlatıyor, yakalama yok). Bu, Tron/Bitcoin
+ * eklenirken de aynı riskti; muhtemelen şans eseri (byte hizalaması tesadüfen tutmuş) hiç yüzeye çıkmamıştı -
+ * Solana'nın 2 yeni alanı arabelleği gerçekten aştırdı ve gerçek cihazda "Cannot read 412 of 412" ile çöktü
+ * (secrets okunan HER yerde: bakiye senkronu, backup ekranı, vs).
+ *
+ * Yazma tarafı [optional]'ın kendisiyle byte-byte aynı kalır - sadece okuma, bu alanın zaten taşıması gereken
+ * anlamı (eskiden hiç yazılmamışsa = yok = null) gerçekten sağlar, kütüphanenin eksik bıraktığı yerde.
+ */
+private class SafeOptional<T>(private val dataType: DataType<T>) : DataType<T?>() {
+    override fun read(reader: ScaleCodecReader): T? {
+        return try {
+            optional(dataType).read(reader)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    override fun write(writer: ScaleCodecWriter, value: T?) {
+        optional(dataType).write(writer, value)
+    }
+
+    override fun conformsType(value: Any?) = value == null || dataType.conformsType(value)
 }
 
 object MetaAccountSecrets : Schema<MetaAccountSecrets>() {
@@ -26,14 +60,18 @@ object MetaAccountSecrets : Schema<MetaAccountSecrets>() {
     val EthereumKeypair by schema(KeyPairSchema).optional()
     val EthereumDerivationPath by string().optional()
 
-    val TronKeypair by schema(KeyPairSchema).optional()
-    val TronDerivationPath by string().optional()
+    // Tron/Bitcoin/Solana are every chain-family added after the original Substrate+Ethereum schema - each is a
+    // trailing addition an old, pre-existing stored blob may simply not have any bytes for at all. custom()
+    // + SafeOptional (not the bare `.optional()` used above) makes reading such a blob correctly yield null for
+    // all of them, instead of crashing on the first one whose bytes don't exist - see SafeOptional's doc.
+    val TronKeypair by custom(SafeOptional(scalable(KeyPairSchema)))
+    val TronDerivationPath by custom(SafeOptional(stringDataType))
 
-    val BitcoinKeypair by schema(KeyPairSchema).optional()
-    val BitcoinDerivationPath by string().optional()
+    val BitcoinKeypair by custom(SafeOptional(scalable(KeyPairSchema)))
+    val BitcoinDerivationPath by custom(SafeOptional(stringDataType))
 
-    val SolanaKeypair by schema(KeyPairSchema).optional()
-    val SolanaDerivationPath by string().optional()
+    val SolanaKeypair by custom(SafeOptional(scalable(KeyPairSchema)))
+    val SolanaDerivationPath by custom(SafeOptional(stringDataType))
 }
 
 object ChainAccountSecrets : Schema<ChainAccountSecrets>() {
