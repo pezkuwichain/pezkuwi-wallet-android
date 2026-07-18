@@ -174,7 +174,9 @@ class RealBridgeMultisigInteractor @Inject constructor(
             ChainGeneses.PEZKUWI_ASSET_HUB to BridgeMultisigConstants.MULTISIG_ADDRESS,
             ChainGeneses.POLKADOT_ASSET_HUB to BridgeMultisigConstants.MULTISIG_ADDRESS_POLKADOT,
         ).flatMap { (chainGenesis, multisigAddress) ->
-            runCatching { getPendingApprovalsFor(chainGenesis, multisigAddress, metaAccount) }.getOrElse { emptyList() }
+            runCatching { getPendingApprovalsFor(chainGenesis, multisigAddress, metaAccount) }
+                .onFailure { android.util.Log.e("BridgeDebug", "getPendingApprovalsFor($chainGenesis) threw", it) }
+                .getOrElse { emptyList() }
         }
     }
 
@@ -184,11 +186,14 @@ class RealBridgeMultisigInteractor @Inject constructor(
         metaAccount: MetaAccount,
     ): List<PendingBridgeApproval> {
         val chain = chainRegistry.getChain(chainGenesis)
-        val myAccountId = metaAccount.accountIdIn(chain)?.intoKey() ?: return emptyList()
+        val myAccountId = metaAccount.accountIdIn(chain)?.intoKey()
+        android.util.Log.e("BridgeDebug", "chain=$chainGenesis myAccountId=${myAccountId?.toHexWithPrefix()}")
+        if (myAccountId == null) return emptyList()
 
         // Only the 5 known bridge signatories can ever have anything to approve here - same gate
         // as getSignerStateFor, matching how the rest of this screen already scopes itself.
         val isKnownSignatory = BridgeMultisigConstants.SIGNATORIES.any { it.address.toAccountId().intoKey() == myAccountId }
+        android.util.Log.e("BridgeDebug", "isKnownSignatory=$isKnownSignatory")
         if (!isKnownSignatory) return emptyList()
 
         val multisigAccountId = multisigAddress.toAccountId().intoKey()
@@ -196,17 +201,21 @@ class RealBridgeMultisigInteractor @Inject constructor(
         val keys = storageDataSource.query(chain.id) {
             runtime.metadata.bridgeMultisig().multisigs.keys(multisigAccountId)
         }
+        android.util.Log.e("BridgeDebug", "keys.size=${keys.size}")
         if (keys.isEmpty()) return emptyList()
 
         val entries = storageDataSource.query(chain.id) {
             runtime.metadata.bridgeMultisig().multisigs.entries(keys)
         }
+        android.util.Log.e("BridgeDebug", "entries.size=${entries.size}")
 
         val notYetApprovedByMe = entries.filterNot { (_, onChainMultisig) -> myAccountId in onChainMultisig.approvals }
+        android.util.Log.e("BridgeDebug", "notYetApprovedByMe.size=${notYetApprovedByMe.size}")
         if (notYetApprovedByMe.isEmpty()) return emptyList()
 
         val callHashes = notYetApprovedByMe.keys.map { it.second }
         val callDataByHash = fetchCallData(chain, multisigAccountId, callHashes)
+        android.util.Log.e("BridgeDebug", "callDataByHash=${callDataByHash.mapValues { it.value != null }}")
 
         return notYetApprovedByMe.map { (key, onChainMultisig) ->
             val callHash = key.second
@@ -227,16 +236,25 @@ class RealBridgeMultisigInteractor @Inject constructor(
     ): Map<CallHash, GenericCall.Instance?> {
         return runCatching {
             val globalConfig = globalConfigDataSource.getGlobalConfig()
+            android.util.Log.e("BridgeDebug", "multisigsApiUrl=${globalConfig.multisigsApiUrl}")
             val request = BridgeOffChainCallDataRequest(multisigAccountId, callHashes, chain.id)
             val response = bridgeMultisigOperationsApi.getCallDatas(globalConfig.multisigsApiUrl, request)
+            android.util.Log.e("BridgeDebug", "response nodes=${response.data.multisigOperations.nodes.size}")
             val runtime = chainRegistry.getRuntime(chain.id)
 
             response.data.multisigOperations.nodes.mapNotNull { node ->
                 val hash = CallHash.fromHexOrNull(node.callHash) ?: return@mapNotNull null
-                val call = node.callData?.let { GenericCall.fromHexOrNull(runtime, it) }
+                val call = node.callData?.let {
+                    runCatching { GenericCall.fromHexOrNull(runtime, it) }
+                        .onFailure { e -> android.util.Log.e("BridgeDebug", "GenericCall decode failed for $it", e) }
+                        .getOrNull()
+                }
+                android.util.Log.e("BridgeDebug", "hash=$hash callData=${node.callData} decodedCall=${call != null}")
                 hash to call
             }.toMap()
-        }.getOrElse { emptyMap() }
+        }
+            .onFailure { android.util.Log.e("BridgeDebug", "fetchCallData threw", it) }
+            .getOrElse { emptyMap() }
     }
 
     override suspend fun submitApproval(approval: PendingBridgeApproval): Result<ExtrinsicExecutionResult> = runCatching {

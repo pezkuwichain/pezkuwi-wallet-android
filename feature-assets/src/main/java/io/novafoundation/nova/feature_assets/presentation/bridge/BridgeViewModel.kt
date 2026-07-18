@@ -474,8 +474,10 @@ class BridgeViewModel(
 
     fun refreshPendingSignatures() {
         launch {
-            val models = bridgeMultisigInteractor.getPendingApprovals()
-                .mapNotNull { it.toPendingSignatureUiOrNull() }
+            val approvals = bridgeMultisigInteractor.getPendingApprovals()
+            android.util.Log.e("BridgeDebug", "refreshPendingSignatures: approvals.size=${approvals.size}")
+            val models = approvals.mapNotNull { it.toPendingSignatureUiOrNull() }
+            android.util.Log.e("BridgeDebug", "refreshPendingSignatures: models.size=${models.size}")
 
             _pendingSignatures.postValue(models)
         }
@@ -499,15 +501,24 @@ class BridgeViewModel(
      *  BridgeMultisigInteractor.submitApproval's own refusal to blind-sign for why this isn't
      *  just a display-only gap: an unparseable row would have no safe "Sign" action anyway). */
     private suspend fun PendingBridgeApproval.toPendingSignatureUiOrNull(): PendingSignatureModel? {
-        val call = call ?: return null
+        val call = call ?: run {
+            android.util.Log.e("BridgeDebug", "toPendingSignatureUiOrNull: call is null for hash=$callHash")
+            return null
+        }
 
         val assetId = if (chain.id == ChainGeneses.POLKADOT_ASSET_HUB) {
             BridgeMultisigConstants.POLKADOT_USDT_ASSET_ID
         } else {
             BridgeMultisigConstants.WUSDT_ASSET_ID
         }
-        val asset = chain.assetsById[assetId] ?: return null
-        val parsed = assetSourceRegistry.sourceFor(asset).transfers.tryParseTransfer(call, chain) ?: return null
+        val asset = chain.assetsById[assetId] ?: run {
+            android.util.Log.e("BridgeDebug", "toPendingSignatureUiOrNull: asset $assetId not found on ${chain.name}")
+            return null
+        }
+        val parsed = assetSourceRegistry.sourceFor(asset).transfers.tryParseTransfer(call, chain) ?: run {
+            android.util.Log.e("BridgeDebug", "toPendingSignatureUiOrNull: tryParseTransfer returned null, call=$call")
+            return null
+        }
 
         val decimalAmount = asset.amountFromPlanks(parsed.amount.amount)
         val amountText = "${NumberFormat.getNumberInstance().format(decimalAmount)} ${asset.symbol.value}"
