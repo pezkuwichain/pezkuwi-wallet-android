@@ -2777,6 +2777,7 @@
     <string name="pezkuwi_dashboard_start_tracking">Start Tracking</string>
     <string name="pezkuwi_dashboard_tracking_success">Score tracking started!</string>
     <string name="pezkuwi_dashboard_kurds_title">Hejmara Kurd Le Cihane</string>
+    <string name="pezkuwi_dashboard_mining_simulation_title">Mining Simulation</string>
 
     <string name="pending_signatures_title">Pending Signatures</string>
     <string name="pending_signatures_sign">Sign</string>

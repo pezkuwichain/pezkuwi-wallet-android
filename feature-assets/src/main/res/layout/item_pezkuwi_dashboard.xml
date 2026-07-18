@@ -130,6 +130,63 @@
                         android:text="@string/pezkuwi_dashboard_kurds_title"
                         android:textColor="#7AFFFFFF"
                         android:textSize="10sp" />
+
+                    <!-- Mining Simulation: cosmetic, client-side-only preview of a trust-score-weighted
+                         emission share (see MiningSimulationFormula) - fills the empty space this
+                         right-side column otherwise leaves below the citizen-count stat. -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pezkuwi_dashboard_mining_simulation_title"
+                                android:textColor="#7AFFFFFF"
+                                android:textSize="10sp" />
+
+                            <ImageView
+                                android:id="@+id/pezkuwiDashboardMiningInfoButton"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="4dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:src="@drawable/ic_telegram" />
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:id="@+id/pezkuwiDashboardMiningSquare"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_pezkuwi_mining_square"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <TextView
+                                android:id="@+id/pezkuwiDashboardMiningCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:paddingHorizontal="4dp"
+                                android:textColor="@android:color/white"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <ImageView

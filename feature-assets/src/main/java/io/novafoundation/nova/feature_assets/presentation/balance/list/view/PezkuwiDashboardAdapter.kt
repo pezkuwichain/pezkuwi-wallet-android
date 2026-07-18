@@ -14,6 +14,7 @@ import io.novafoundation.nova.common.utils.inflater
 import io.novafoundation.nova.common.utils.recyclerView.WithViewType
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.databinding.ItemPezkuwiDashboardBinding
+import io.novafoundation.nova.feature_assets.presentation.balance.list.model.MiningSimulationModel
 import io.novafoundation.nova.feature_assets.presentation.balance.list.model.PezkuwiDashboardModel
 import io.novafoundation.nova.feature_assets.presentation.citizenship.CitizenshipStatus
 
@@ -26,10 +27,13 @@ class PezkuwiDashboardAdapter(
         fun onSignClicked()
         fun onShareReferralClicked()
         fun onStartTrackingClicked()
+        fun onMiningSquareClicked()
+        fun onMiningInfoClicked()
     }
 
     private var model: PezkuwiDashboardModel? = null
     private var trackingLoading: Boolean = false
+    private var miningModel: MiningSimulationModel? = null
 
     // Survives ViewHolder recycling (scroll) within the process, but not process restart —
     // resets to collapsed (false) whenever the app is freshly opened, by design.
@@ -45,6 +49,11 @@ class PezkuwiDashboardAdapter(
         notifyChangedIfShown()
     }
 
+    fun setMiningModel(model: MiningSimulationModel) {
+        this.miningModel = model
+        notifyChangedIfShown()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PezkuwiDashboardHolder {
         val binding = ItemPezkuwiDashboardBinding.inflate(parent.inflater(), parent, false)
         return PezkuwiDashboardHolder(binding, handler) { expanded -> isExpanded = expanded }
@@ -52,6 +61,7 @@ class PezkuwiDashboardAdapter(
 
     override fun onBindViewHolder(holder: PezkuwiDashboardHolder, position: Int) {
         model?.let { holder.bind(it, trackingLoading, isExpanded) }
+        miningModel?.let { holder.bindMining(it) }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -77,6 +87,9 @@ class PezkuwiDashboardHolder(
 
         binder.pezkuwiDashboardCollapsedBar.setOnClickListener { setExpanded(true) }
         binder.pezkuwiDashboardCollapseButton.setOnClickListener { setExpanded(false) }
+
+        binder.pezkuwiDashboardMiningSquare.setOnClickListener { handler.onMiningSquareClicked() }
+        binder.pezkuwiDashboardMiningInfoButton.setOnClickListener { handler.onMiningInfoClicked() }
     }
 
     private fun setExpanded(expanded: Boolean) {
@@ -84,6 +97,13 @@ class PezkuwiDashboardHolder(
         binder.pezkuwiDashboardCollapsedBar.visibility = if (expanded) View.GONE else View.VISIBLE
         binder.pezkuwiDashboardExpandedContent.visibility = if (expanded) View.VISIBLE else View.GONE
         onExpandedChanged(expanded)
+    }
+
+    fun bindMining(model: MiningSimulationModel) {
+        binder.pezkuwiDashboardMiningCount.text = model.diamondsText
+
+        val color = if (model.isActive) Color.parseColor("#FDB813") else Color.parseColor("#E2231A")
+        binder.pezkuwiDashboardMiningSquare.background.mutate().setTint(color)
     }
 
     fun bind(model: PezkuwiDashboardModel, trackingLoading: Boolean = false, isExpanded: Boolean = false) {
