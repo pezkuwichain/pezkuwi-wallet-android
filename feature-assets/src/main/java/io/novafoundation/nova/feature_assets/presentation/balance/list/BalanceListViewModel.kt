@@ -322,7 +322,7 @@ class BalanceListViewModel(
     }
 
     fun miningInfoClicked() {
-        showBrowser("https://t.me/DKSKurdistanBot")
+        showBrowser("https://t.me/+DUWJ8wtt5qI4Njgy")
     }
 
     init {
