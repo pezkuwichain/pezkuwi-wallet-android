@@ -25,7 +25,9 @@ import io.novafoundation.nova.feature_wallet_api.domain.model.amountFromPlanks
 import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.ext.addressOf
 import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
+import io.novafoundation.nova.runtime.ext.findAssetByStatemineAssetId
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
+import io.novafoundation.nova.runtime.multiNetwork.getRuntime
 import io.novasama.substrate_sdk_android.ss58.SS58Encoder.toAccountId
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -474,10 +476,8 @@ class BridgeViewModel(
 
     fun refreshPendingSignatures() {
         launch {
-            val approvals = bridgeMultisigInteractor.getPendingApprovals()
-            android.util.Log.e("BridgeDebug", "refreshPendingSignatures: approvals.size=${approvals.size}")
-            val models = approvals.mapNotNull { it.toPendingSignatureUiOrNull() }
-            android.util.Log.e("BridgeDebug", "refreshPendingSignatures: models.size=${models.size}")
+            val models = bridgeMultisigInteractor.getPendingApprovals()
+                .mapNotNull { it.toPendingSignatureUiOrNull() }
 
             _pendingSignatures.postValue(models)
         }
@@ -501,24 +501,19 @@ class BridgeViewModel(
      *  BridgeMultisigInteractor.submitApproval's own refusal to blind-sign for why this isn't
      *  just a display-only gap: an unparseable row would have no safe "Sign" action anyway). */
     private suspend fun PendingBridgeApproval.toPendingSignatureUiOrNull(): PendingSignatureModel? {
-        val call = call ?: run {
-            android.util.Log.e("BridgeDebug", "toPendingSignatureUiOrNull: call is null for hash=$callHash")
-            return null
-        }
+        val call = call ?: return null
 
-        val assetId = if (chain.id == ChainGeneses.POLKADOT_ASSET_HUB) {
+        // These constants are the raw on-chain pallet_assets id (e.g. 1984 on Polkadot Asset Hub) -
+        // NOT this app's own local Chain.Asset.id (chain.assetsById is keyed by the latter, which
+        // can differ, so it must be resolved via the Statemine-id reverse lookup, not indexed directly).
+        val onChainAssetId = if (chain.id == ChainGeneses.POLKADOT_ASSET_HUB) {
             BridgeMultisigConstants.POLKADOT_USDT_ASSET_ID
         } else {
             BridgeMultisigConstants.WUSDT_ASSET_ID
         }
-        val asset = chain.assetsById[assetId] ?: run {
-            android.util.Log.e("BridgeDebug", "toPendingSignatureUiOrNull: asset $assetId not found on ${chain.name}")
-            return null
-        }
-        val parsed = assetSourceRegistry.sourceFor(asset).transfers.tryParseTransfer(call, chain) ?: run {
-            android.util.Log.e("BridgeDebug", "toPendingSignatureUiOrNull: tryParseTransfer returned null, call=$call")
-            return null
-        }
+        val runtime = chainRegistry.getRuntime(chain.id)
+        val asset = chain.findAssetByStatemineAssetId(runtime, onChainAssetId.toBigInteger()) ?: return null
+        val parsed = assetSourceRegistry.sourceFor(asset).transfers.tryParseTransfer(call, chain) ?: return null
 
         val decimalAmount = asset.amountFromPlanks(parsed.amount.amount)
         val amountText = "${NumberFormat.getNumberInstance().format(decimalAmount)} ${asset.symbol.value}"
