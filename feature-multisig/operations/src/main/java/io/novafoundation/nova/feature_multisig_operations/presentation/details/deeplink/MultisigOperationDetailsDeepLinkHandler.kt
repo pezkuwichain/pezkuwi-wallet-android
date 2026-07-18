@@ -41,11 +41,15 @@ class MultisigOperationDetailsDeepLinkHandler(
     override suspend fun matches(data: Uri): Boolean {
         val path = data.path ?: return false
 
-        return path.startsWith(MultisigOperationDeepLinkConfigurator.PREFIX)
+        val result = path.startsWith(MultisigOperationDeepLinkConfigurator.PREFIX)
+        android.util.Log.e("DeepLinkDebug", "matches: path=$path result=$result")
+        return result
     }
 
     override suspend fun handleDeepLink(data: Uri): Result<Unit> = runCatching {
+        android.util.Log.e("DeepLinkDebug", "handleDeepLink: start, awaiting interaction gate...")
         automaticInteractionGate.awaitInteractionAllowed()
+        android.util.Log.e("DeepLinkDebug", "handleDeepLink: interaction gate passed")
 
         val chainId = data.getChainId()
         val chain = chainRegistry.getChain(chainId)
@@ -55,11 +59,13 @@ class MultisigOperationDetailsDeepLinkHandler(
         val callHash = data.getCallHash() ?: error("Call hash not found")
         val callData = data.getCallData(chainId)
         val operationState = data.getOperationState()
+        android.util.Log.e("DeepLinkDebug", "parsed params ok, chainId=$chainId operationState=$operationState")
 
         val multisigMetaAccount = accountRepository.getActiveMetaAccounts()
             .filterIsInstance<MultisigMetaAccount>()
             .firstOrNull { it.accountIdKeyIn(chain) == multisigAccount && it.signatoryAccountId == signatoryAccount }
             ?: error("Multisig account not found")
+        android.util.Log.e("DeepLinkDebug", "found multisigMetaAccount id=${multisigMetaAccount.id}")
 
         accountRepository.selectMetaAccount(multisigMetaAccount.id)
 
