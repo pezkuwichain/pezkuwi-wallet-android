@@ -2778,6 +2778,8 @@
     <string name="pezkuwi_dashboard_tracking_success">Score tracking started!</string>
     <string name="pezkuwi_dashboard_kurds_title">Hejmara Kurd Le Cihane</string>
     <string name="pezkuwi_dashboard_mining_simulation_title">Mining Simulation</string>
+    <string name="pezkuwi_dashboard_mining_airdrop_label">PEZ Airdrop</string>
+    <string name="pezkuwi_dashboard_mining_needs_trust_score">Trust score must be greater than 0 for mining to start</string>
 
     <string name="pending_signatures_title">Pending Signatures</string>
     <string name="pending_signatures_sign">Sign</string>

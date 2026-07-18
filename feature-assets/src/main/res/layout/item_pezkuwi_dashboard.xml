@@ -166,6 +166,15 @@
                                 android:src="@drawable/ic_telegram" />
                         </LinearLayout>
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/pezkuwi_dashboard_mining_airdrop_label"
+                            android:textColor="#FDB813"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
                         <FrameLayout
                             android:id="@+id/pezkuwiDashboardMiningSquare"
                             android:layout_width="64dp"

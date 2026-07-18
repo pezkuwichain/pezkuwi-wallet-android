@@ -316,6 +316,11 @@ class BalanceListViewModel(
             if (alreadyActive) return@launch
 
             val trustScore = pezkuwiDashboardFlow.first()?.trustScoreRaw ?: BigInteger.ZERO
+            if (trustScore <= BigInteger.ZERO) {
+                showError(resourceManager.getString(R.string.pezkuwi_dashboard_mining_needs_trust_score))
+                return@launch
+            }
+
             miningSimulationRepository.activate(metaAccount.id, trustScore, now)
             miningRefreshSignal.value++
         }
