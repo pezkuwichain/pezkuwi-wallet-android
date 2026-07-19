@@ -225,11 +225,8 @@ class RootViewModel(
     }
 
     fun handleDeepLink(data: Uri) {
-        android.util.Log.e("DeepLinkDebug", "RootViewModel.handleDeepLink: raw=$data scheme=${data.scheme} authority=${data.authority} path=${data.path}")
         launch {
-            val result = deepLinkHandler.handleDeepLink(data)
-            android.util.Log.e("DeepLinkDebug", "RootViewModel.handleDeepLink: result=$result exceptionOrNull=${result.exceptionOrNull()}")
-            result
+            deepLinkHandler.handleDeepLink(data)
                 .onFailureInstance<DeepLinkHandlingException, Unit> {
                     val errorMessage = formatDeepLinkHandlingException(resourceManager, it)
                     showError(errorMessage)

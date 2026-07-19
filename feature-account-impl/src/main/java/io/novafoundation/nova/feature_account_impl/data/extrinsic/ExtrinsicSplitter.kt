@@ -8,6 +8,7 @@ import io.novafoundation.nova.feature_account_api.data.signer.SigningContext
 import io.novafoundation.nova.common.utils.min
 import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicSplitter
 import io.novafoundation.nova.feature_account_api.data.extrinsic.SplitCalls
+import io.novafoundation.nova.runtime.ext.isPezkuwiChain
 import io.novafoundation.nova.runtime.ext.requireGenesisHash
 import io.novafoundation.nova.runtime.extrinsic.CustomTransactionExtensions
 import io.novafoundation.nova.runtime.extrinsic.extensions.PezkuwiCheckImmortal
@@ -142,30 +143,19 @@ internal class RealExtrinsicSplitter @Inject constructor(
     ): SendableExtrinsic {
         val genesisHash = chain.requireGenesisHash().fromHex()
 
-        val isPezkuwi = runtime.metadata.extrinsic.signedExtensions.any { it.id == "AuthorizeCall" }
-        android.util.Log.e(
-            "ExtrinsicDebug",
-            "wrapInFakeExtrinsic: chain=${chain.name} isPezkuwi=$isPezkuwi " +
-                "signedExtensionIds=${runtime.metadata.extrinsic.signedExtensions.map { it.id }}"
-        )
-
         val builder = ExtrinsicBuilder(
             runtime = runtime,
             extrinsicVersion = ExtrinsicVersion.V4,
             batchMode = BatchMode.BATCH,
         ).apply {
-            // Use custom CheckMortality for Pezkuwi chains to avoid DictEnum type lookup issues
-            if (isPezkuwi) {
-                android.util.Log.e("ExtrinsicDebug", "using PezkuwiCheckImmortal")
+            // Use custom CheckMortality for Pezkuwi chains to avoid DictEnum type lookup issues.
+            // Gated on chain identity (not signed-extension presence): both Pezkuwi and Polkadot
+            // Asset Hub declare "AuthorizeCall", so that alone can't tell the chains apart, and
+            // PezkuwiCheckImmortal's raw DictEnum value fails Polkadot's own Era type codec.
+            if (chain.isPezkuwiChain) {
                 setTransactionExtension(PezkuwiCheckImmortal(genesisHash))
             } else {
-                android.util.Log.e("ExtrinsicDebug", "using standard CheckMortality(Era.Immortal)")
-                runCatching {
-                    setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
-                }.onFailure { e ->
-                    android.util.Log.e("ExtrinsicDebug", "standard CheckMortality setTransactionExtension threw", e)
-                    throw e
-                }
+                setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
             }
             setTransactionExtension(CheckGenesis(chain.requireGenesisHash().fromHex()))
             setTransactionExtension(ChargeTransactionPayment(BigInteger.ZERO))
@@ -181,8 +171,6 @@ internal class RealExtrinsicSplitter @Inject constructor(
             signer.setSignerDataForFee(signingContext)
         }
 
-        return runCatching { builder.buildExtrinsic() }
-            .onFailure { e -> android.util.Log.e("ExtrinsicDebug", "buildExtrinsic threw", e) }
-            .getOrThrow()
+        return builder.buildExtrinsic()
     }
 }

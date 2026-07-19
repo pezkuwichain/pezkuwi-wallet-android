@@ -847,6 +847,14 @@
             app:popUpTo="@id/balanceDetailFragment"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_balanceDetailFragment_to_bridgeFlow"
+            app:destination="@id/bridgeFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
     </fragment>
 
     <fragment

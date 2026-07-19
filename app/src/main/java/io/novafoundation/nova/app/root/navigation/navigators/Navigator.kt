@@ -444,7 +444,9 @@ class Navigator(
     }
 
     override fun openBridgeFlow() {
-        navigationBuilder().action(R.id.action_mainFragment_to_bridgeFlow)
+        navigationBuilder().cases()
+            .addCase(R.id.mainFragment, R.id.action_mainFragment_to_bridgeFlow)
+            .addCase(R.id.balanceDetailFragment, R.id.action_balanceDetailFragment_to_bridgeFlow)
             .navigateInFirstAttachedContext()
     }
 
