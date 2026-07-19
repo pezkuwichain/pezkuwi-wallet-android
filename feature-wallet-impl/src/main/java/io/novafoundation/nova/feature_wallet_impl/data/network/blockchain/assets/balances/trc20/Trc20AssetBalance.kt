@@ -10,7 +10,6 @@ import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.b
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.balances.model.TransferableBalanceUpdatePoint
 import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets.balances.tronNative.pollingBalanceFlow
 import io.novafoundation.nova.feature_wallet_impl.data.network.tron.TronGridApi
-import io.novafoundation.nova.runtime.ext.addressOf
 import io.novafoundation.nova.runtime.ext.requireTronGridBaseUrl
 import io.novafoundation.nova.runtime.ext.requireTrc20
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
@@ -21,9 +20,9 @@ import kotlinx.coroutines.flow.map
 import java.math.BigInteger
 
 /**
- * TRC-20 token balance on a Tron-based chain. Read-only (Phase 1): fetches via TronGrid's REST API (the same
- * `/v1/accounts/{address}` endpoint used for native TRX - TronGrid returns both in one response) and polls for
- * updates. No transfer/history support here - see `TronAssetsModule`.
+ * TRC-20 token balance on a Tron-based chain. Read-only (Phase 1): fetches via an on-chain `balanceOf` contract
+ * call (see [TronGridApi.fetchTrc20Balance] for why this can't reuse the `/v1/accounts` endpoint that native
+ * TRX balance reads from) and polls for updates. No transfer/history support here - see `TronAssetsModule`.
  */
 class Trc20AssetBalance(
     private val assetCache: AssetCache,
@@ -52,9 +51,8 @@ class Trc20AssetBalance(
 
     override suspend fun queryAccountBalance(chain: Chain, chainAsset: Chain.Asset, accountId: AccountId): ChainAssetBalance {
         val contractAddress = chainAsset.requireTrc20().contractAddress
-        val address = chain.addressOf(accountId)
 
-        val balance = tronGridApi.fetchTrc20Balance(chain.requireTronGridBaseUrl(), address, contractAddress)
+        val balance = tronGridApi.fetchTrc20Balance(chain.requireTronGridBaseUrl(), accountId, contractAddress)
 
         return ChainAssetBalance.fromFree(chainAsset, balance)
     }
@@ -64,8 +62,9 @@ class Trc20AssetBalance(
         chainAsset: Chain.Asset,
         accountId: AccountId,
     ): Flow<TransferableBalanceUpdatePoint> {
-        // Not on the critical sync path (mirrors EvmNativeAssetBalance) - out of scope for Phase 1 read-only support.
-        TODO("Not yet implemented")
+        // Only ever invoked from RealCrossChainTransactor (XCM arrival detection), which is Substrate-only -
+        // Tron/TRC20 can never be an XCM cross-chain destination, so this is intentionally never reachable.
+        throw UnsupportedOperationException("TRC20 does not support XCM-style balance update points")
     }
 
     override suspend fun startSyncingBalance(
@@ -77,9 +76,8 @@ class Trc20AssetBalance(
     ): Flow<BalanceSyncUpdate> {
         val contractAddress = chainAsset.requireTrc20().contractAddress
         val baseUrl = chain.requireTronGridBaseUrl()
-        val address = chain.addressOf(accountId)
 
-        return pollingBalanceFlow { tronGridApi.fetchTrc20Balance(baseUrl, address, contractAddress) }
+        return pollingBalanceFlow { tronGridApi.fetchTrc20Balance(baseUrl, accountId, contractAddress) }
             .map { balance ->
                 assetCache.updateNonLockableAsset(metaAccount.id, chainAsset, balance)
 

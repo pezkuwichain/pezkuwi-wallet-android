@@ -27,7 +27,10 @@ import io.novafoundation.nova.feature_account_api.domain.model.defaultSubstrateA
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.assets.list.AssetsListInteractor
+import io.novafoundation.nova.feature_assets.domain.dashboard.MiningSimulationFormula
+import io.novafoundation.nova.feature_assets.domain.dashboard.MiningSimulationRepository
 import io.novafoundation.nova.feature_assets.domain.dashboard.PezkuwiDashboardInteractor
+import io.novafoundation.nova.feature_assets.presentation.balance.list.model.MiningSimulationModel
 import io.novafoundation.nova.feature_assets.presentation.balance.list.model.PezkuwiDashboardModel
 import io.novafoundation.nova.feature_assets.domain.assets.list.NftPreviews
 import io.novafoundation.nova.feature_assets.domain.breakdown.BalanceBreakdown
@@ -74,18 +77,22 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novasama.substrate_sdk_android.runtime.extrinsic.call
 import java.text.NumberFormat
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import java.math.BigInteger
 import kotlin.time.Duration.Companion.seconds
 
 private typealias SyncAction = suspend (MetaAccount) -> Unit
@@ -113,7 +120,8 @@ class BalanceListViewModel(
     private val giftsRestrictionCheckMixin: GiftsRestrictionCheckMixin,
     private val pezkuwiDashboardInteractor: PezkuwiDashboardInteractor,
     private val extrinsicService: ExtrinsicService,
-    private val chainRegistry: ChainRegistry
+    private val chainRegistry: ChainRegistry,
+    private val miningSimulationRepository: MiningSimulationRepository
 ) : BaseViewModel(), Browserable.Presentation by Browserable() {
 
     private val maskableAmountFormatterFlow = maskableValueFormatterProvider.provideFormatter()
@@ -138,6 +146,11 @@ class BalanceListViewModel(
     val trackingLoading: LiveData<Boolean> = _trackingLoading
 
     private val dashboardRefreshSignal = MutableStateFlow(0)
+
+    private val diamondFormatter = NumberFormat.getNumberInstance().apply {
+        minimumFractionDigits = 2
+        maximumFractionDigits = 2
+    }
 
     val bannersMixin = promotionBannersMixinFactory.create(bannerSourceFactory.assetsSource(), viewModelScope)
 
@@ -256,6 +269,7 @@ class BalanceListViewModel(
                     PezkuwiDashboardModel(
                         roles = data.roles,
                         trustScore = data.trustScore.toString(),
+                        trustScoreRaw = data.trustScore,
                         welatiCount = NumberFormat.getIntegerInstance().format(data.welatiCount),
                         citizenshipStatus = data.citizenshipStatus,
                         isTrackingScore = data.isTrackingScore
@@ -264,6 +278,57 @@ class BalanceListViewModel(
                 .getOrNull()
         }
         .shareInBackground()
+
+    private val miningRefreshSignal = MutableStateFlow(0)
+
+    private val miningTicker = flow {
+        while (true) {
+            emit(Unit)
+            delay(60_000L)
+        }
+    }.onStart { emit(Unit) }
+
+    val miningSimulationFlow = combine(
+        pezkuwiDashboardFlow,
+        selectedMetaAccount,
+        miningTicker,
+        miningRefreshSignal
+    ) { dashboard, metaAccount, _, _ ->
+        val trustScore = dashboard?.trustScoreRaw ?: BigInteger.ZERO
+        val now = System.currentTimeMillis()
+        val state = miningSimulationRepository.getState(metaAccount.id, now)
+        val diamonds = MiningSimulationFormula.diamondsWithinEra(state.baseDiamonds, state.sessionActivatedAt, trustScore, now)
+
+        MiningSimulationModel(
+            diamondsText = diamondFormatter.format(diamonds),
+            isActive = MiningSimulationFormula.isSessionActive(state.sessionActivatedAt, now)
+        )
+    }.shareInBackground()
+
+    fun miningSquareClicked() {
+        launch {
+            val metaAccount = selectedMetaAccount.first()
+            val now = System.currentTimeMillis()
+            val alreadyActive = MiningSimulationFormula.isSessionActive(
+                miningSimulationRepository.getState(metaAccount.id, now).sessionActivatedAt,
+                now
+            )
+            if (alreadyActive) return@launch
+
+            val trustScore = pezkuwiDashboardFlow.first()?.trustScoreRaw ?: BigInteger.ZERO
+            if (trustScore <= BigInteger.ZERO) {
+                showError(resourceManager.getString(R.string.pezkuwi_dashboard_mining_needs_trust_score))
+                return@launch
+            }
+
+            miningSimulationRepository.activate(metaAccount.id, trustScore, now)
+            miningRefreshSignal.value++
+        }
+    }
+
+    fun miningInfoClicked() {
+        showBrowser("https://t.me/+DUWJ8wtt5qI4Njgy")
+    }
 
     init {
         selectedCurrency

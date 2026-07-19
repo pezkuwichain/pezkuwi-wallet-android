@@ -67,7 +67,14 @@ class MultisigOperationDetailsDeepLinkHandler(
             null,
             MultisigOperationDeepLinkData.State.Active -> {
                 val operationIdentifier = PendingMultisigOperationId.create(multisigMetaAccount, chain, callHash.removeHexPrefix())
-                val operationPayload = MultisigOperationPayload.fromOperationId(operationIdentifier)
+                // Threaded through so the details screen can build a synthetic operation for a
+                // call that hasn't been submitted on-chain yet (the first-signer case) - it used
+                // to be decoded here only to format Executed/Rejected dialog text, then silently
+                // dropped for the Active case that would actually need it.
+                val operationPayload = MultisigOperationPayload.fromOperationId(
+                    operationIdentifier,
+                    notSubmittedCallData = data.getRawCallData()
+                )
                 router.openMultisigOperationDetails(
                     MultisigOperationDetailsPayload(
                         operationPayload,
@@ -116,5 +123,9 @@ class MultisigOperationDetailsDeepLinkHandler(
         val callDataString = getQueryParameter(MultisigOperationDeepLinkConfigurator.CALL_DATA_PARAM) ?: return null
         val runtime = chainRegistry.getRuntime(chainId)
         return GenericCall.fromHex(runtime, callDataString)
+    }
+
+    private fun Uri.getRawCallData(): String? {
+        return getQueryParameter(MultisigOperationDeepLinkConfigurator.CALL_DATA_PARAM)
     }
 }

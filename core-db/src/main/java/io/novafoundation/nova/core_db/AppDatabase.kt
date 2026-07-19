@@ -94,6 +94,8 @@ import io.novafoundation.nova.core_db.migrations.AddStakingTypeToTotalRewards_44
 import io.novafoundation.nova.core_db.migrations.AddSwapOption_48_49
 import io.novafoundation.nova.core_db.migrations.AddTransactionVersionToRuntime_50_51
 import io.novafoundation.nova.core_db.migrations.AddTransferApisTable_29_30
+import io.novafoundation.nova.core_db.migrations.AddBitcoinSupport_74_75
+import io.novafoundation.nova.core_db.migrations.AddSolanaSupport_75_76
 import io.novafoundation.nova.core_db.migrations.AddTronSupport_73_74
 import io.novafoundation.nova.core_db.migrations.AddTypeExtrasToMetaAccount_68_69
 import io.novafoundation.nova.core_db.migrations.AddVersioningToGovernanceDapps_32_33
@@ -167,7 +169,7 @@ import io.novafoundation.nova.core_db.model.operation.SwapTypeLocal
 import io.novafoundation.nova.core_db.model.operation.TransferTypeLocal
 
 @Database(
-    version = 74,
+    version = 76,
     entities = [
         AccountLocal::class,
         NodeLocal::class,
@@ -273,6 +275,8 @@ abstract class AppDatabase : RoomDatabase() {
                     .addMigrations(AddTypeExtrasToMetaAccount_68_69, AddMultisigCalls_69_70, AddMultisigSupportFlag_70_71)
                     .addMigrations(AddGifts_71_72, AddFieldsToContributions)
                     .addMigrations(AddTronSupport_73_74)
+                    .addMigrations(AddBitcoinSupport_74_75)
+                    .addMigrations(AddSolanaSupport_75_76)
                     .build()
             }
             return instance!!

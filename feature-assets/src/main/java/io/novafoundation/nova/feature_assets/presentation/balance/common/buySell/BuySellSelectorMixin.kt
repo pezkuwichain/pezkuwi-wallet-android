@@ -12,8 +12,10 @@ import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_assets.presentation.AssetsRouter
 import io.novafoundation.nova.feature_assets.presentation.balance.common.buySell.BuySellSelectorMixin.SelectorType
 import io.novafoundation.nova.feature_buy_api.presentation.trade.TradeTokenRegistry
+import io.novafoundation.nova.runtime.ext.ChainGeneses
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.asset
+import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -75,7 +77,6 @@ class RealBuySellSelectorMixin(
     private suspend fun openAllAssetsSelector() = BuySellSelectorMixin.SelectorPayload(
         buyItem(enabled = true) { router.openBuyFlow() },
         sellItem(enabled = buySellRestrictionCheckMixin.isAllowed()) { router.openSellFlow() },
-        bridgeItem(enabled = true) { router.openBridgeFlow() },
         bridgeUsdtItem(enabled = true) { router.openBridgeFlow() }
     )
 
@@ -86,7 +87,11 @@ class RealBuySellSelectorMixin(
             buySellRestrictionCheckMixin.isAllowed()
 
         if (!buyAvailable && !sellAvailable) {
-            showErrorMessage(R.string.trade_token_not_supported_title, R.string.trade_token_not_supported_message)
+            if (isBridgeUsdt(selectorType, chainAsset)) {
+                router.openBridgeFlow()
+            } else {
+                showErrorMessage(R.string.trade_token_not_supported_title, R.string.trade_token_not_supported_message)
+            }
             return null
         }
 
@@ -94,6 +99,17 @@ class RealBuySellSelectorMixin(
             buyItem(enabled = buyAvailable) { router.openBuyProviders(selectorType.chaiId, selectorType.assetId) },
             sellItem(enabled = sellAvailable) { router.openSellProviders(selectorType.chaiId, selectorType.assetId) }
         )
+    }
+
+    /** USDT has no buy/sell provider on either bridge leg (Pezkuwi wUSDT / Polkadot USDT) - Bridge
+     *  is the actual way to get it there (convert from the other leg), so route straight to it
+     *  instead of a dead-end "not supported" message. Matched by symbol rather than a hardcoded
+     *  asset id - the raw on-chain pallet_assets id (e.g. 1984 for USDT on Polkadot Asset Hub)
+     *  differs from this app's own local Chain.Asset.id space (1 there), so comparing ids
+     *  directly here would silently miss that leg. */
+    private fun isBridgeUsdt(selectorType: SelectorType.Asset, chainAsset: Chain.Asset): Boolean {
+        val isBridgeChain = selectorType.chaiId == ChainGeneses.PEZKUWI_ASSET_HUB || selectorType.chaiId == ChainGeneses.POLKADOT_ASSET_HUB
+        return isBridgeChain && chainAsset.symbol.value == "USDT"
     }
 
     private fun buyItem(enabled: Boolean, action: () -> Unit): ListSelectorMixin.Item {
@@ -113,16 +129,6 @@ class RealBuySellSelectorMixin(
             R.string.wallet_asset_sell_tokens,
             if (enabled) R.color.text_primary else R.color.button_text_inactive,
             if (enabled) action else sellErrorAction()
-        )
-    }
-
-    private fun bridgeItem(enabled: Boolean, action: () -> Unit): ListSelectorMixin.Item {
-        return ListSelectorMixin.Item(
-            R.drawable.ic_bridge,
-            if (enabled) R.color.icon_primary else R.color.icon_inactive,
-            R.string.wallet_asset_bridge,
-            if (enabled) R.color.text_primary else R.color.button_text_inactive,
-            action
         )
     }
 

@@ -143,6 +143,10 @@ class BalanceListFragment :
             }
         }
 
+        viewModel.miningSimulationFlow.observe { model ->
+            pezkuwiDashboardAdapter.setMiningModel(model)
+        }
+
         viewModel.bannersMixin.bindWithAdapter(bannerAdapter) {
             binder.balanceListAssets.invalidateItemDecorations()
         }
@@ -299,6 +303,14 @@ class BalanceListFragment :
 
     override fun onStartTrackingClicked() {
         viewModel.startTrackingClicked()
+    }
+
+    override fun onMiningSquareClicked() {
+        viewModel.miningSquareClicked()
+    }
+
+    override fun onMiningInfoClicked() {
+        viewModel.miningInfoClicked()
     }
 
     private fun setupRecyclerViewSpacing() {

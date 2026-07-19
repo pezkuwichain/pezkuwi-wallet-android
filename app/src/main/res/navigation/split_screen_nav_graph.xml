@@ -847,6 +847,14 @@
             app:popUpTo="@id/balanceDetailFragment"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_balanceDetailFragment_to_bridgeFlow"
+            app:destination="@id/bridgeFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
     </fragment>
 
     <fragment
@@ -1201,7 +1209,21 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
+        <action
+            android:id="@+id/action_bridge_to_execution"
+            app:destination="@id/bridgeExecutionFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/bridgeExecutionFragment"
+        android:name="io.novafoundation.nova.feature_assets.presentation.bridge.execution.BridgeExecutionFragment"
+        android:label="BridgeExecutionFragment"
+        tools:layout="@layout/fragment_bridge_execution" />
 
     <fragment
         android:id="@+id/tradeProvidersFragment"

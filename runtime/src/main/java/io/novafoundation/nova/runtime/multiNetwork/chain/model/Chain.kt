@@ -33,6 +33,8 @@ data class Chain(
     val types: Types?,
     val isEthereumBased: Boolean,
     val isTronBased: Boolean,
+    val isBitcoinBased: Boolean,
+    val isSolanaBased: Boolean,
     val isTestNet: Boolean,
     val source: Source,
     val hasSubstrateRuntime: Boolean,
@@ -137,6 +139,18 @@ data class Chain(
             data class Trc20(
                 val contractAddress: String
             ) : Type()
+
+            /**
+             * Native BTC balance on a Bitcoin-based chain.
+             * Balance is fetched from a mempool.space-style REST API rather than JSON-RPC.
+             */
+            object BitcoinNative : Type()
+
+            /**
+             * Native SOL balance on a Solana-based chain.
+             * Balance is fetched from Solana's own JSON-RPC (getBalance), not a Substrate/EVM one.
+             */
+            object SolanaNative : Type()
 
             object Unsupported : Type()
         }

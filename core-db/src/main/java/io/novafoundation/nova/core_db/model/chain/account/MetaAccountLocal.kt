@@ -39,6 +39,10 @@ class MetaAccountLocal(
     val typeExtras: SerializedJson?,
     val tronPublicKey: ByteArray? = null,
     val tronAddress: ByteArray? = null,
+    val bitcoinPublicKey: ByteArray? = null,
+    val bitcoinAddress: ByteArray? = null,
+    val solanaPublicKey: ByteArray? = null,
+    val solanaAddress: ByteArray? = null,
 ) {
 
     enum class Status {
@@ -58,6 +62,12 @@ class MetaAccountLocal(
 
             const val TRON_PUBKEY = "tronPublicKey"
             const val TRON_ADDRESS = "tronAddress"
+
+            const val BITCOIN_PUBKEY = "bitcoinPublicKey"
+            const val BITCOIN_ADDRESS = "bitcoinAddress"
+
+            const val SOLANA_PUBKEY = "solanaPublicKey"
+            const val SOLANA_ADDRESS = "solanaAddress"
 
             const val NAME = "name"
             const val IS_SELECTED = "isSelected"
@@ -90,7 +100,106 @@ class MetaAccountLocal(
             globallyUniqueId = globallyUniqueId,
             typeExtras = typeExtras,
             tronPublicKey = tronPublicKey,
-            tronAddress = tronAddress
+            tronAddress = tronAddress,
+            bitcoinPublicKey = bitcoinPublicKey,
+            bitcoinAddress = bitcoinAddress,
+            solanaPublicKey = solanaPublicKey,
+            solanaAddress = solanaAddress,
+        ).also {
+            it.id = id
+        }
+    }
+
+    // We do not use copy as we need explicitly set id
+    fun addBitcoinAccount(
+        bitcoinPublicKey: ByteArray,
+        bitcoinAddress: ByteArray,
+    ): MetaAccountLocal {
+        return MetaAccountLocal(
+            substratePublicKey = substratePublicKey,
+            substrateCryptoType = substrateCryptoType,
+            substrateAccountId = substrateAccountId,
+            ethereumPublicKey = ethereumPublicKey,
+            ethereumAddress = ethereumAddress,
+            name = name,
+            parentMetaId = parentMetaId,
+            isSelected = isSelected,
+            position = position,
+            type = type,
+            status = status,
+            globallyUniqueId = globallyUniqueId,
+            typeExtras = typeExtras,
+            tronPublicKey = tronPublicKey,
+            tronAddress = tronAddress,
+            bitcoinPublicKey = bitcoinPublicKey,
+            bitcoinAddress = bitcoinAddress,
+            solanaPublicKey = solanaPublicKey,
+            solanaAddress = solanaAddress,
+        ).also {
+            it.id = id
+        }
+    }
+
+    // We do not use copy as we need explicitly set id
+    fun addTronAccount(
+        tronPublicKey: ByteArray,
+        tronAddress: ByteArray,
+    ): MetaAccountLocal {
+        return MetaAccountLocal(
+            substratePublicKey = substratePublicKey,
+            substrateCryptoType = substrateCryptoType,
+            substrateAccountId = substrateAccountId,
+            ethereumPublicKey = ethereumPublicKey,
+            ethereumAddress = ethereumAddress,
+            name = name,
+            parentMetaId = parentMetaId,
+            isSelected = isSelected,
+            position = position,
+            type = type,
+            status = status,
+            globallyUniqueId = globallyUniqueId,
+            typeExtras = typeExtras,
+            tronPublicKey = tronPublicKey,
+            tronAddress = tronAddress,
+            // Previously missing - dropped bitcoin/solana on any account already carrying them. Since
+            // this migration is deliberately unconditional/self-healing (re-runs every app start to
+            // recover from a since-fixed bug re-losing a keypair), a re-run after Bitcoin/Solana were
+            // already backfilled would silently wipe them back to null. See addBitcoinAccount/
+            // addSolanaAccount - every addXAccount must carry every sibling chain-family field forward.
+            bitcoinPublicKey = bitcoinPublicKey,
+            bitcoinAddress = bitcoinAddress,
+            solanaPublicKey = solanaPublicKey,
+            solanaAddress = solanaAddress,
+        ).also {
+            it.id = id
+        }
+    }
+
+    // We do not use copy as we need explicitly set id
+    fun addSolanaAccount(
+        solanaPublicKey: ByteArray,
+        solanaAddress: ByteArray,
+    ): MetaAccountLocal {
+        return MetaAccountLocal(
+            substratePublicKey = substratePublicKey,
+            substrateCryptoType = substrateCryptoType,
+            substrateAccountId = substrateAccountId,
+            ethereumPublicKey = ethereumPublicKey,
+            ethereumAddress = ethereumAddress,
+            name = name,
+            parentMetaId = parentMetaId,
+            isSelected = isSelected,
+            position = position,
+            type = type,
+            status = status,
+            globallyUniqueId = globallyUniqueId,
+            typeExtras = typeExtras,
+            tronPublicKey = tronPublicKey,
+            tronAddress = tronAddress,
+            bitcoinPublicKey = bitcoinPublicKey,
+            bitcoinAddress = bitcoinAddress,
+            solanaPublicKey = solanaPublicKey,
+            solanaAddress = solanaAddress,
         ).also {
             it.id = id
         }
@@ -109,6 +218,10 @@ class MetaAccountLocal(
         if (!ethereumAddress.contentEquals(other.ethereumAddress)) return false
         if (!tronPublicKey.contentEquals(other.tronPublicKey)) return false
         if (!tronAddress.contentEquals(other.tronAddress)) return false
+        if (!bitcoinPublicKey.contentEquals(other.bitcoinPublicKey)) return false
+        if (!bitcoinAddress.contentEquals(other.bitcoinAddress)) return false
+        if (!solanaPublicKey.contentEquals(other.solanaPublicKey)) return false
+        if (!solanaAddress.contentEquals(other.solanaAddress)) return false
         if (name != other.name) return false
         if (parentMetaId != other.parentMetaId) return false
         if (isSelected != other.isSelected) return false
@@ -130,6 +243,10 @@ class MetaAccountLocal(
         result = 31 * result + (ethereumAddress?.contentHashCode() ?: 0)
         result = 31 * result + (tronPublicKey?.contentHashCode() ?: 0)
         result = 31 * result + (tronAddress?.contentHashCode() ?: 0)
+        result = 31 * result + (bitcoinPublicKey?.contentHashCode() ?: 0)
+        result = 31 * result + (bitcoinAddress?.contentHashCode() ?: 0)
+        result = 31 * result + (solanaPublicKey?.contentHashCode() ?: 0)
+        result = 31 * result + (solanaAddress?.contentHashCode() ?: 0)
         result = 31 * result + name.hashCode()
         result = 31 * result + (parentMetaId?.hashCode() ?: 0)
         result = 31 * result + isSelected.hashCode()

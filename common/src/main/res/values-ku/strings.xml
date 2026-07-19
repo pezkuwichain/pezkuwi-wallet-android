@@ -2756,7 +2756,7 @@
     <string name="bridge_enter_amount">Mîqdar binivîse</string>
     <string name="bridge_hez_to_dot_warning">Guherandina HEZ→DOT li gorî rewşa DOT sînordar dibe.</string>
     <string name="bridge_hez_to_dot_blocked">Guherandina HEZ→DOT niha tune. Dema DOT têr bibe dîsa biceribîne.</string>
-    <string name="bridge_wusdt_to_usdt_blocked">Guherandina USDT(Pez)→USDT(Pol) niha tune. Li benda damezrandina lîkîdîteya 1:1.</string>
+    <string name="bridge_wusdt_to_usdt_blocked">Ev mîqdar ji rezerva berdest a pireyê (%s USDT) zêdetir e. Mîqdarek biçûktir biceribîne.</string>
 
     <string name="staking_dashboard_syncing">Agahdariya staking tê barkirin…</string>
 

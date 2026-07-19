@@ -22,6 +22,8 @@ import io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.assets
         EvmNativeAssetsModule::class,
         EquilibriumAssetsModule::class,
         TronAssetsModule::class,
+        BitcoinAssetsModule::class,
+        SolanaAssetsModule::class,
         UnsupportedAssetsModule::class
     ]
 )
@@ -38,6 +40,8 @@ class AssetsModule {
         @EquilibriumAsset equilibrium: Lazy<AssetSource>,
         @TronNativeAssets tronNative: Lazy<AssetSource>,
         @Trc20Assets trc20: Lazy<AssetSource>,
+        @BitcoinNativeAssets bitcoinNative: Lazy<AssetSource>,
+        @SolanaNativeAssets solanaNative: Lazy<AssetSource>,
         @UnsupportedAssets unsupported: AssetSource,
 
         nativeAssetEventDetector: NativeAssetEventDetector,
@@ -53,6 +57,8 @@ class AssetsModule {
         equilibriumAssetSource = equilibrium,
         tronNativeSource = tronNative,
         trc20Source = trc20,
+        bitcoinNativeSource = bitcoinNative,
+        solanaNativeSource = solanaNative,
         unsupportedBalanceSource = unsupported,
 
         nativeAssetEventDetector = nativeAssetEventDetector,

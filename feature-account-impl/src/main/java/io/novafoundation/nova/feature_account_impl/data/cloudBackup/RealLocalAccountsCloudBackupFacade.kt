@@ -7,6 +7,8 @@ import io.novafoundation.nova.common.data.secrets.v2.KeyPairSchema
 import io.novafoundation.nova.common.data.secrets.v2.MetaAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
 import io.novafoundation.nova.common.data.secrets.v2.derivationPath
+import io.novafoundation.nova.common.data.secrets.v2.bitcoinDerivationPath
+import io.novafoundation.nova.common.data.secrets.v2.bitcoinKeypair
 import io.novafoundation.nova.common.data.secrets.v2.entropy
 import io.novafoundation.nova.common.data.secrets.v2.ethereumDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.ethereumKeypair
@@ -15,8 +17,12 @@ import io.novafoundation.nova.common.data.secrets.v2.nonce
 import io.novafoundation.nova.common.data.secrets.v2.privateKey
 import io.novafoundation.nova.common.data.secrets.v2.publicKey
 import io.novafoundation.nova.common.data.secrets.v2.seed
+import io.novafoundation.nova.common.data.secrets.v2.solanaDerivationPath
+import io.novafoundation.nova.common.data.secrets.v2.solanaKeypair
 import io.novafoundation.nova.common.data.secrets.v2.substrateDerivationPath
 import io.novafoundation.nova.common.data.secrets.v2.substrateKeypair
+import io.novafoundation.nova.common.data.secrets.v2.tronDerivationPath
+import io.novafoundation.nova.common.data.secrets.v2.tronKeypair
 import io.novafoundation.nova.common.utils.filterNotNull
 import io.novafoundation.nova.common.utils.findById
 import io.novafoundation.nova.common.utils.mapToSet
@@ -90,6 +96,9 @@ class RealLocalAccountsCloudBackupFacade(
             substrate = baseSecrets.getSubstrateBackupSecrets(),
             ethereum = baseSecrets.getEthereumBackupSecrets(),
             chainAccounts = emptyList(),
+            bitcoin = baseSecrets.getBitcoinBackupSecrets(),
+            tron = baseSecrets.getTronBackupSecrets(),
+            solana = baseSecrets.getSolanaBackupSecrets(),
         )
 
         return CloudBackup(
@@ -357,6 +366,9 @@ class RealLocalAccountsCloudBackupFacade(
             substrate = prepareSubstrateBackupSecrets(baseSecrets, joinedMetaAccountInfo),
             ethereum = baseSecrets.getEthereumBackupSecrets(),
             chainAccounts = chainAccountsFromChainSecrets + chainAccountFromAdditionalSecrets,
+            bitcoin = baseSecrets.getBitcoinBackupSecrets(),
+            tron = baseSecrets.getTronBackupSecrets(),
+            solana = baseSecrets.getSolanaBackupSecrets(),
         )
     }
 
@@ -466,7 +478,13 @@ class RealLocalAccountsCloudBackupFacade(
             substrateKeyPair = substrate?.keypair?.toLocalKeyPair() ?: return null,
             substrateDerivationPath = substrate?.derivationPath,
             ethereumKeypair = ethereum?.keypair?.toLocalKeyPair(),
-            ethereumDerivationPath = ethereum?.derivationPath
+            ethereumDerivationPath = ethereum?.derivationPath,
+            bitcoinKeypair = bitcoin?.keypair?.toLocalKeyPair(),
+            bitcoinDerivationPath = bitcoin?.derivationPath,
+            tronKeypair = tron?.keypair?.toLocalKeyPair(),
+            tronDerivationPath = tron?.derivationPath,
+            solanaKeypair = solana?.keypair?.toLocalKeyPair(),
+            solanaDerivationPath = solana?.derivationPath
         )
     }
 
@@ -476,6 +494,33 @@ class RealLocalAccountsCloudBackupFacade(
         return CloudBackup.WalletPrivateInfo.EthereumSecrets(
             keypair = ethereumKeypair?.toBackupKeypairSecrets() ?: return null,
             derivationPath = ethereumDerivationPath
+        )
+    }
+
+    private fun EncodableStruct<MetaAccountSecrets>?.getBitcoinBackupSecrets(): CloudBackup.WalletPrivateInfo.BitcoinSecrets? {
+        if (this == null) return null
+
+        return CloudBackup.WalletPrivateInfo.BitcoinSecrets(
+            keypair = bitcoinKeypair?.toBackupKeypairSecrets() ?: return null,
+            derivationPath = bitcoinDerivationPath
+        )
+    }
+
+    private fun EncodableStruct<MetaAccountSecrets>?.getTronBackupSecrets(): CloudBackup.WalletPrivateInfo.TronSecrets? {
+        if (this == null) return null
+
+        return CloudBackup.WalletPrivateInfo.TronSecrets(
+            keypair = tronKeypair?.toBackupKeypairSecrets() ?: return null,
+            derivationPath = tronDerivationPath
+        )
+    }
+
+    private fun EncodableStruct<MetaAccountSecrets>?.getSolanaBackupSecrets(): CloudBackup.WalletPrivateInfo.SolanaSecrets? {
+        if (this == null) return null
+
+        return CloudBackup.WalletPrivateInfo.SolanaSecrets(
+            keypair = solanaKeypair?.toBackupKeypairSecrets() ?: return null,
+            derivationPath = solanaDerivationPath
         )
     }
 
@@ -520,7 +565,13 @@ class RealLocalAccountsCloudBackupFacade(
             ethereumPublicKey = metaAccount.ethereumPublicKey,
             name = metaAccount.name,
             type = metaAccount.type.toBackupWalletType() ?: return null,
-            chainAccounts = chainAccounts.mapToSet { chainAccount -> chainAccount.toBackupPublicChainAccount(chainsById) }
+            chainAccounts = chainAccounts.mapToSet { chainAccount -> chainAccount.toBackupPublicChainAccount(chainsById) },
+            bitcoinAddress = metaAccount.bitcoinAddress,
+            bitcoinPublicKey = metaAccount.bitcoinPublicKey,
+            tronAddress = metaAccount.tronAddress,
+            tronPublicKey = metaAccount.tronPublicKey,
+            solanaAddress = metaAccount.solanaAddress,
+            solanaPublicKey = metaAccount.solanaPublicKey,
         )
     }
 
@@ -542,7 +593,13 @@ class RealLocalAccountsCloudBackupFacade(
             isSelected = isSelected,
             position = accountPosition,
             status = MetaAccountLocal.Status.ACTIVE,
-            typeExtras = null
+            typeExtras = null,
+            bitcoinAddress = bitcoinAddress,
+            bitcoinPublicKey = bitcoinPublicKey,
+            tronAddress = tronAddress,
+            tronPublicKey = tronPublicKey,
+            solanaAddress = solanaAddress,
+            solanaPublicKey = solanaPublicKey,
         ).also {
             if (localIdOverwrite != null) {
                 it.id = localIdOverwrite

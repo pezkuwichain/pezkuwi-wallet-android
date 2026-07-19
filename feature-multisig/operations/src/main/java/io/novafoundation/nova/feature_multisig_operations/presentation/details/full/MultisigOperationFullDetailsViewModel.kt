@@ -11,6 +11,7 @@ import io.novafoundation.nova.common.utils.launchUnit
 import io.novafoundation.nova.common.utils.withSafeLoading
 import io.novafoundation.nova.common.view.bottomSheet.description.DescriptionBottomSheetLauncher
 import io.novafoundation.nova.feature_account_api.data.multisig.MultisigPendingOperationsService
+import io.novafoundation.nova.feature_account_api.data.multisig.model.PendingMultisigOperation
 import io.novafoundation.nova.feature_account_api.domain.interfaces.AccountUIUseCase
 import io.novafoundation.nova.feature_account_api.presenatation.actions.ExternalActions
 import io.novafoundation.nova.feature_account_api.presenatation.actions.showAddressActions
@@ -24,10 +25,12 @@ import io.novafoundation.nova.feature_wallet_api.presentation.formatters.amount.
 import io.novafoundation.nova.feature_wallet_api.presentation.formatters.amount.formatAmountToAmountModel
 import io.novafoundation.nova.runtime.ext.fullId
 import io.novafoundation.nova.runtime.ext.utilityAsset
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 
 private const val CALL_HASH_SHOWN_SYMBOLS = 9
 
@@ -52,16 +55,38 @@ class MultisigOperationFullDetailsViewModel(
         router.back()
     }
 
-    private val operationFlow = multisigOperationsService.pendingOperationFlow(payload.toOperationId())
-        .filterNotNull()
-        .shareInBackground()
+    // Mirrors MultisigOperationDetailsViewModel's not-yet-submitted handling - this screen is
+    // reachable (via "Call Details") for a first-signer deep-link operation too, since
+    // callDetailsVisible there is based on `call != null`, which is always true here.
+    private val notYetSubmittedOperationFlow = MutableStateFlow<PendingMultisigOperation?>(null)
+
+    private val operationFlow = merge(
+        multisigOperationsService.pendingOperationFlow(payload.toOperationId()).filterNotNull(),
+        notYetSubmittedOperationFlow.filterNotNull()
+    ).shareInBackground()
+
+    init {
+        checkOperationAvailability()
+    }
+
+    private fun checkOperationAvailability() = launchUnit {
+        val operationId = payload.toOperationId()
+        if (interactor.isOperationAvailable(operationId)) return@launchUnit
+
+        val notSubmittedCallData = payload.notSubmittedCallData ?: return@launchUnit
+        val builtOperation = runCatching {
+            interactor.buildNotYetSubmittedOperation(operationId, notSubmittedCallData)
+        }.getOrNull() ?: return@launchUnit
+
+        notYetSubmittedOperationFlow.value = builtOperation
+    }
 
     private val tokenFlow = operationFlow.map {
         arbitraryTokenUseCase.getToken(it.chain.utilityAsset.fullId)
     }.shareInBackground()
 
-    val depositorAccountModel = operationFlow.map {
-        accountUIUseCase.getAccountModel(it.depositor, it.chain)
+    val depositorAccountModel = operationFlow.map { operation ->
+        operation.depositor?.let { accountUIUseCase.getAccountModel(it, operation.chain) }
     }.withSafeLoading()
         .shareInBackground()
 
@@ -89,8 +114,11 @@ class MultisigOperationFullDetailsViewModel(
 
     fun onDepositorClicked() = launchUnit {
         val chain = operationFlow.first().chain
-        depositorAccountModel.first().onLoaded {
-            externalActions.showAddressActions(it.address(), chain)
+        depositorAccountModel.first().onLoaded { accountModel ->
+            // Null for a not-yet-submitted operation (nobody has deposited yet) - the depositor
+            // row is hidden in that case (see showAccountWithLoading), so this click handler
+            // shouldn't be reachable, but guard it explicitly rather than assume.
+            accountModel?.let { externalActions.showAddressActions(it.address(), chain) }
         }
     }
 

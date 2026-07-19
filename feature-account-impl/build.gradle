@@ -13,6 +13,16 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    testOptions {
+        unitTests {
+            // android.util.Log.* throws "Method ... not mocked" by default in plain JVM unit tests (no real
+            // Android framework, no Robolectric) - TronAddressBackfillMigrationTest is the first test in this
+            // module to exercise code that calls Log.d/Log.e. This makes those stubbed calls return harmless
+            // defaults instead of throwing, which is what the framework's own stubs are meant for in this context.
+            returnDefaultValues = true
+        }
+    }
 }
 
 dependencies {

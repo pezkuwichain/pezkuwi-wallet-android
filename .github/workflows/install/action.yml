@@ -18,7 +18,27 @@ runs:
     - name: Install NDK
       run: |
         SDKMANAGER=$(find ${ANDROID_SDK_ROOT}/cmdline-tools -name sdkmanager -type f 2>/dev/null | head -1)
-        echo "y" | sudo ${SDKMANAGER} --install "ndk;26.1.10909125" --sdk_root=${ANDROID_SDK_ROOT}
+        NDK_PACKAGE="ndk;26.1.10909125"
+
+        # sdkmanager's download of the ~1GB NDK zip from Google's CDN occasionally comes back truncated/corrupted
+        # ("Error on ZipFile unknown archive") with no built-in retry, taking down the whole build for a purely
+        # transient network blip. Retry with cleanup between attempts: sdkmanager can otherwise resume from the
+        # same corrupted partial file instead of re-fetching, making a naive retry fail identically every time.
+        for attempt in 1 2 3; do
+          echo "NDK install attempt $attempt/3"
+          if echo "y" | sudo ${SDKMANAGER} --install "$NDK_PACKAGE" --sdk_root=${ANDROID_SDK_ROOT}; then
+            echo "NDK installed successfully"
+            exit 0
+          fi
+
+          echo "Attempt $attempt failed - clearing any partial/corrupted download before retrying"
+          sudo rm -rf "${ANDROID_SDK_ROOT}/ndk/26.1.10909125"
+          sudo find "${ANDROID_SDK_ROOT}" -maxdepth 1 -name "tmp*" -exec rm -rf {} +
+          sleep 10
+        done
+
+        echo "NDK install failed after 3 attempts"
+        exit 1
       shell: bash
 
     - name: Set ndk.dir in local.properties

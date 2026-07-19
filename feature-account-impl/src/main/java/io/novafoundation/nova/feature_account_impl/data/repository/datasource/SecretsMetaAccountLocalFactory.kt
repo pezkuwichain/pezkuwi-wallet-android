@@ -2,6 +2,7 @@ package io.novafoundation.nova.feature_account_impl.data.repository.datasource
 
 import io.novafoundation.nova.common.data.secrets.v2.KeyPairSchema
 import io.novafoundation.nova.common.data.secrets.v2.MetaAccountSecrets
+import io.novafoundation.nova.common.utils.bitcoinPublicKeyToAccountId
 import io.novafoundation.nova.common.utils.substrateAccountId
 import io.novafoundation.nova.common.utils.tronPublicKeyToAccountId
 import io.novafoundation.nova.core.model.CryptoType
@@ -31,6 +32,8 @@ class RealSecretsMetaAccountLocalFactory : SecretsMetaAccountLocalFactory {
         val substratePublicKey = secrets[MetaAccountSecrets.SubstrateKeypair][KeyPairSchema.PublicKey]
         val ethereumPublicKey = secrets[MetaAccountSecrets.EthereumKeypair]?.get(KeyPairSchema.PublicKey)
         val tronPublicKey = secrets[MetaAccountSecrets.TronKeypair]?.get(KeyPairSchema.PublicKey)
+        val bitcoinPublicKey = secrets[MetaAccountSecrets.BitcoinKeypair]?.get(KeyPairSchema.PublicKey)
+        val solanaPublicKey = secrets[MetaAccountSecrets.SolanaKeypair]?.get(KeyPairSchema.PublicKey)
 
         return MetaAccountLocal(
             substratePublicKey = substratePublicKey,
@@ -47,7 +50,16 @@ class RealSecretsMetaAccountLocalFactory : SecretsMetaAccountLocalFactory {
             globallyUniqueId = MetaAccountLocal.generateGloballyUniqueId(),
             typeExtras = null,
             tronPublicKey = tronPublicKey,
-            tronAddress = tronPublicKey?.tronPublicKeyToAccountId()
+            tronAddress = tronPublicKey?.tronPublicKeyToAccountId(),
+            bitcoinPublicKey = bitcoinPublicKey,
+            // Bip32EcdsaKeypairFactory already yields a compressed (33-byte) public key (confirmed against
+            // substrate-sdk-android's own source: ECDSAUtils.derivePublicKey -> compressedPublicKeyFromPrivate),
+            // which is exactly the format both BIP143 (P2WPKH) and bitcoinPublicKeyToAccountId() require - no
+            // extra compression/decompression step needed here, unlike Ethereum's uncompressed-key derivation.
+            bitcoinAddress = bitcoinPublicKey?.bitcoinPublicKeyToAccountId(),
+            // Solana's accountId IS the public key itself, no hash/transform step - see SolanaAddress.kt's doc.
+            solanaPublicKey = solanaPublicKey,
+            solanaAddress = solanaPublicKey
         )
     }
 }

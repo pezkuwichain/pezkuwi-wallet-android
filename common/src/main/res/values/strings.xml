@@ -350,26 +350,36 @@
 
     <string name="wallet_asset_sell_tokens">Sell tokens</string>
     <string name="wallet_asset_buy_tokens">Buy tokens</string>
-    <string name="wallet_asset_bridge">Bridge DOT ↔ HEZ</string>
     <string name="wallet_asset_bridge_usdt">Bridge USDT(DOT) ↔ USDT(HEZ)</string>
 
     <!-- Bridge Screen -->
-    <string name="bridge_title">DOT ↔ HEZ Bridge</string>
+    <string name="bridge_title">USDT Bridge</string>
+    <string name="bridge_pair_usdt">USDT ⇄ USDT.p</string>
     <string name="bridge_you_send">You send</string>
     <string name="bridge_you_receive">You receive (estimated)</string>
     <string name="bridge_exchange_rate">Exchange rate</string>
     <string name="bridge_fee">Bridge fee</string>
     <string name="bridge_minimum">Minimum</string>
-    <string name="bridge_rate_format">1 DOT = %s HEZ</string>
-    <string name="bridge_rate_format_reverse">1 HEZ = %s DOT</string>
     <string name="bridge_swap_button">Swap</string>
-    <string name="bridge_hez_to_dot_note">HEZ→DOT swaps are processed when sufficient DOT liquidity is available.</string>
     <string name="bridge_insufficient_balance">Insufficient balance</string>
     <string name="bridge_below_minimum">Amount below minimum</string>
     <string name="bridge_enter_amount">Enter amount</string>
-    <string name="bridge_hez_to_dot_warning">HEZ→DOT swaps may have limited availability based on current liquidity.</string>
-    <string name="bridge_hez_to_dot_blocked">HEZ→DOT swaps are temporarily unavailable. Please try again when DOT liquidity is sufficient.</string>
-    <string name="bridge_wusdt_to_usdt_blocked">USDT(Pez)→USDT(Pol) swaps are temporarily unavailable. Waiting for 1:1 liquidity to be established.</string>
+    <string name="bridge_wusdt_to_usdt_blocked">This amount exceeds the bridge\'s current available reserve (%s USDT). Try a smaller amount.</string>
+    <string name="bridge_consent_required_message">This amount exceeds the automatic payout limit and needs approval from 3 of the bridge\'s 5 signatories - typically resolved within about 2 hours. You can reach them at t.me/pezkuwidestek in the meantime.</string>
+    <string name="bridge_consent_checkbox_label">I understand this may take time to complete and want to proceed</string>
+
+    <string name="bridge_sign_status_ok">Bridge allowance OK (%s)</string>
+    <string name="bridge_sign_button">Sign renewal (%s)</string>
+    <string name="bridge_sign_waiting_others">Signed — waiting for other signers</string>
+    <string name="bridge_sign_in_progress">Signing…</string>
+    <string name="bridge_sign_error">Signing failed, tap to retry</string>
+
+    <string name="bridge_deposit_success_label">Bridge complete — funds delivered</string>
+    <string name="bridge_deposit_pending_message">Still processing - this can take longer if it needs manual multisig review. Your funds are safe and recorded on-chain. Check back in a few minutes, or reach the signatories at t.me/pezkuwidestek.</string>
+
+    <string name="bridge_execution_submitting_label">Submitting transfer…</string>
+    <string name="bridge_execution_waiting_destination_label">Waiting for confirmation on %s…</string>
+    <string name="bridge_execution_do_not_close">Do not close the app!</string>
 
     <string name="wallet_asset_buy_sell">Buy/Sell</string>
 
@@ -2767,6 +2777,12 @@
     <string name="pezkuwi_dashboard_start_tracking">Start Tracking</string>
     <string name="pezkuwi_dashboard_tracking_success">Score tracking started!</string>
     <string name="pezkuwi_dashboard_kurds_title">Hejmara Kurd Le Cihane</string>
+    <string name="pezkuwi_dashboard_mining_simulation_title">Mining Simulation</string>
+    <string name="pezkuwi_dashboard_mining_airdrop_label">PEZ Airdrop</string>
+    <string name="pezkuwi_dashboard_mining_needs_trust_score">Trust score must be greater than 0 for mining to start</string>
+
+    <string name="pending_signatures_title">Pending Signatures</string>
+    <string name="pending_signatures_sign">Sign</string>
 
     <!-- Citizenship Application -->
     <string name="citizenship_title">Citizenship Application</string>

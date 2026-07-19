@@ -6,6 +6,7 @@ import io.novafoundation.nova.common.data.network.runtime.binding.cast
 import io.novafoundation.nova.common.data.secrets.v2.ChainAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.MetaAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.mapKeypairStructToKeypair
+import io.novafoundation.nova.common.utils.Bip32Ed25519KeypairFactory
 import io.novafoundation.nova.common.utils.castOrNull
 import io.novafoundation.nova.common.utils.deriveSeed32
 import io.novafoundation.nova.core.model.CryptoType
@@ -33,6 +34,32 @@ import kotlinx.coroutines.withContext
  * Not user-configurable via the "Advanced Encryption" UI yet (Phase 1 read-only Tron support) - always derived at this fixed path.
  */
 const val TRON_DEFAULT_DERIVATION_PATH = "//44//195//0/0/0"
+
+/**
+ * BIP84 purpose (native SegWit), SLIP-44 coin type 0 (Bitcoin). Deliberately `//84//...`, not `//44//...` -
+ * this app only supports native SegWit (bech32 `bc1q...`) addresses, not legacy/P2SH-SegWit, so the derivation
+ * path signals that choice the same way real Bitcoin wallets do. Not user-configurable yet - always derived at
+ * this fixed path (single address, no HD address-index rotation).
+ */
+const val BITCOIN_DEFAULT_DERIVATION_PATH = "//84//0//0/0/0"
+
+/**
+ * SLIP-44 coin type 501 is Solana's registered BIP44 coin type. Path is m/44'/501'/0'/0' (all
+ * hardened, SLIP-0010 Ed25519) - the Phantom/Solflare/Solana CLI default, NOT the older
+ * Sollet-style m/44'/501'/0' (no final change level). Not user-configurable via the "Advanced
+ * Encryption" UI yet, same as Tron/Bitcoin - always derived at this fixed path.
+ *
+ * This is deliberately a plain "44/501/0/0" segment list, not the junction-string format
+ * ("//44//501//0/0") Tron/Bitcoin use - unlike those (which reuse [Bip32EcdsaKeypairFactory]/
+ * [DerivationPathDecoder]'s junction decoding, built for secp256k1), Solana's Ed25519 derivation
+ * has no such decoder in this codebase and is handled directly by [Bip32Ed25519KeypairFactory].
+ */
+val SOLANA_DEFAULT_DERIVATION_PATH_SEGMENTS = listOf(44, 501, 0, 0)
+
+/** Human-readable form of [SOLANA_DEFAULT_DERIVATION_PATH_SEGMENTS], stored/displayed the same way
+ *  [TRON_DEFAULT_DERIVATION_PATH]/[BITCOIN_DEFAULT_DERIVATION_PATH] are - not itself parsed back
+ *  into segments anywhere, purely for display/backup/consistency with the other two. */
+const val SOLANA_DEFAULT_DERIVATION_PATH = "m/44'/501'/0'/0'"
 
 class AccountSecretsFactory(
     private val JsonDecoder: JsonDecoder
@@ -131,6 +158,8 @@ class AccountSecretsFactory(
         ethereumDerivationPath: String?,
         accountSource: AccountSource,
         tronDerivationPath: String? = TRON_DEFAULT_DERIVATION_PATH,
+        bitcoinDerivationPath: String? = BITCOIN_DEFAULT_DERIVATION_PATH,
+        solanaDerivationPath: String? = SOLANA_DEFAULT_DERIVATION_PATH,
     ): Result<MetaAccountSecrets> = withContext(Dispatchers.Default) {
         val (substrateSecrets, substrateCryptoType) = chainAccountSecrets(
             derivationPath = substrateDerivationPath,
@@ -157,6 +186,29 @@ class AccountSecretsFactory(
             Bip32EcdsaKeypairFactory.generate(seed = seed, junctions = decodedTronDerivationPath?.junctions.orEmpty())
         }
 
+        // Bitcoin (native SegWit) also reuses the exact same secp256k1/BIP32 keypair generation as Ethereum/Tron -
+        // only the SLIP-44 coin type (0) and BIP84 purpose differ. See BITCOIN_DEFAULT_DERIVATION_PATH's doc.
+        val bitcoinKeypair = accountSource.castOrNull<AccountSource.Mnemonic>()?.let {
+            val decodedBitcoinDerivationPath = decodeDerivationPath(bitcoinDerivationPath, ethereum = true)
+
+            val seed = deriveSeed(it.mnemonic, password = decodedBitcoinDerivationPath?.password, ethereum = true).seed
+
+            Bip32EcdsaKeypairFactory.generate(seed = seed, junctions = decodedBitcoinDerivationPath?.junctions.orEmpty())
+        }
+
+        // Solana's Ed25519 SLIP-0010 derivation is a fundamentally different scheme from
+        // Tron/Bitcoin's secp256k1/BIP32 (see Bip32Ed25519KeypairFactory's doc) - it still starts
+        // from the exact same standard BIP39 seed (seed generation itself is chain-agnostic), just
+        // via fixed segments rather than junction-string decoding (no ed25519 path decoder exists
+        // in this codebase, so this doesn't reuse decodeDerivationPath/DerivationPathDecoder).
+        val solanaKeypair = accountSource.castOrNull<AccountSource.Mnemonic>()?.let {
+            // No BIP39 passphrase support yet (Phase 1, same as Tron/Bitcoin) - there is no
+            // junction-string decoder for ed25519 paths to extract one from even if there were.
+            val seed = deriveSeed(it.mnemonic, password = null, ethereum = true).seed
+
+            Bip32Ed25519KeypairFactory.generate(seed, SOLANA_DEFAULT_DERIVATION_PATH_SEGMENTS)
+        }
+
         val secrets = MetaAccountSecrets(
             entropy = substrateSecrets[ChainAccountSecrets.Entropy],
             substrateSeed = substrateSecrets[ChainAccountSecrets.Seed],
@@ -165,7 +217,11 @@ class AccountSecretsFactory(
             ethereumKeypair = ethereumKeypair,
             ethereumDerivationPath = ethereumDerivationPath,
             tronKeypair = tronKeypair,
-            tronDerivationPath = tronDerivationPath
+            tronDerivationPath = tronDerivationPath,
+            bitcoinKeypair = bitcoinKeypair,
+            bitcoinDerivationPath = bitcoinDerivationPath,
+            solanaKeypair = solanaKeypair,
+            solanaDerivationPath = solanaDerivationPath,
         )
 
         Result(secrets = secrets, cryptoType = substrateCryptoType)

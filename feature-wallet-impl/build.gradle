@@ -27,6 +27,17 @@ android {
     }
     namespace 'io.novafoundation.nova.feature_wallet_impl'
 
+    testOptions {
+        unitTests.all {
+            testLogging {
+                events "failed"
+                exceptionFormat "full"
+                showCauses true
+                showStackTraces true
+            }
+        }
+    }
+
     buildFeatures {
         viewBinding true
     }
@@ -71,6 +82,7 @@ dependencies {
 
     testImplementation jUnitDep
     testImplementation mockitoDep
+    testImplementation project(':test-shared')
 
     implementation substrateSdkDep
 

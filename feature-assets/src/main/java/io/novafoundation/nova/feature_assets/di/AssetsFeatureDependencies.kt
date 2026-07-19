@@ -5,6 +5,7 @@ import coil.ImageLoader
 import com.google.gson.Gson
 import io.novafoundation.nova.common.address.AddressIconGenerator
 import io.novafoundation.nova.common.address.format.EthereumAddressFormat
+import io.novafoundation.nova.common.data.config.GlobalConfigDataSource
 import io.novafoundation.nova.common.data.memory.ComputationalCache
 import io.novafoundation.nova.common.data.network.AppLinksProvider
 import io.novafoundation.nova.common.data.network.HttpExceptionHandler
@@ -315,6 +316,8 @@ interface AssetsFeatureDependencies {
     fun addressDisplayUseCase(): AddressDisplayUseCase
 
     fun chainRegistry(): ChainRegistry
+
+    fun globalConfigDataSource(): GlobalConfigDataSource
 
     @Named(REMOTE_STORAGE_SOURCE)
     fun remoteStorageSource(): StorageDataSource

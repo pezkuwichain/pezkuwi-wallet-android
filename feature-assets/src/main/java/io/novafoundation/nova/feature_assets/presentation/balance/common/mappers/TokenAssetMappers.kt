@@ -6,7 +6,8 @@ import io.novafoundation.nova.common.presentation.AssetIconProvider
 import io.novafoundation.nova.common.presentation.getAssetIconOrFallback
 import io.novafoundation.nova.common.utils.formatting.formatAsChange
 import io.novafoundation.nova.common.utils.orZero
-import io.novafoundation.nova.feature_account_api.data.mappers.mapChainToUi
+import io.novafoundation.nova.feature_account_api.presenatation.chain.ChainUi
+import io.novafoundation.nova.runtime.ext.displayNameWithAssetStandard
 import io.novafoundation.nova.feature_assets.R
 import io.novafoundation.nova.feature_account_api.presenatation.chain.getAssetIconOrFallback
 import io.novafoundation.nova.feature_assets.domain.common.AssetWithNetwork
@@ -90,7 +91,14 @@ class TokenAssetFormatter(
                 group.getId(),
                 mapAssetToAssetModel(it.asset, balance(it.balanceWithOffChain)),
                 assetIconProvider.getAssetIconOrFallback(it.asset.token.configuration),
-                mapChainToUi(it.chain)
+                // Not mapChainToUi() here - this row's subtitle needs to disambiguate which issuance of the
+                // token this is (e.g. "Ethereum (ERC-20)" vs "Tron (TRC-20)"), which a bare chain name alone
+                // doesn't when multiple ecosystems share the same symbol (USDT, USDC, etc.).
+                ChainUi(
+                    id = it.chain.id,
+                    name = it.chain.displayNameWithAssetStandard(),
+                    icon = it.chain.icon
+                )
             )
         }
     }

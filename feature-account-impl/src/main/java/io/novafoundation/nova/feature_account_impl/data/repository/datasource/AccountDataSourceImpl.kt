@@ -30,6 +30,9 @@ import io.novafoundation.nova.feature_account_impl.data.mappers.AccountMappers
 import io.novafoundation.nova.feature_account_impl.data.mappers.mapMetaAccountTypeToLocal
 import io.novafoundation.nova.feature_account_impl.data.mappers.mapMetaAccountWithBalanceFromLocal
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.AccountDataMigration
+import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.BitcoinAddressBackfillMigration
+import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.SolanaAddressBackfillMigration
+import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.TronAddressBackfillMigration
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.model.ChainAccountInsertionData
 import io.novafoundation.nova.feature_account_impl.data.repository.datasource.migration.model.MetaAccountInsertionData
 import io.novafoundation.nova.runtime.ext.accountIdOf
@@ -64,15 +67,45 @@ class AccountDataSourceImpl(
     private val secretsMetaAccountLocalFactory: SecretsMetaAccountLocalFactory,
     secretStoreV1: SecretStoreV1,
     accountDataMigration: AccountDataMigration,
+    tronAddressBackfillMigration: TronAddressBackfillMigration,
+    bitcoinAddressBackfillMigration: BitcoinAddressBackfillMigration,
+    solanaAddressBackfillMigration: SolanaAddressBackfillMigration,
 ) : AccountDataSource, SecretStoreV1 by secretStoreV1 {
 
     init {
-        migrateIfNeeded(accountDataMigration)
-    }
+        // Run sequentially in one coroutine, not as independent launches - the Tron/Bitcoin/Solana backfills
+        // read accounts/secrets that the legacy migration may still be in the middle of writing for very old
+        // (pre-MetaAccount) installs, and separate GlobalScope.launch calls give no ordering guarantee
+        // relative to each other.
+        async {
+            Log.d("AccountDataSourceImpl", "migrations block starting")
 
-    private fun migrateIfNeeded(migration: AccountDataMigration) = async {
-        if (migration.migrationNeeded()) {
-            migration.migrate(::saveSecuritySource)
+            if (accountDataMigration.migrationNeeded()) {
+                accountDataMigration.migrate(::saveSecuritySource)
+            }
+
+            Log.d("AccountDataSourceImpl", "about to run tronAddressBackfillMigration")
+
+            tronAddressBackfillMigration.migrate()
+
+            Log.d("AccountDataSourceImpl", "about to run bitcoinAddressBackfillMigration")
+
+            bitcoinAddressBackfillMigration.migrate()
+
+            Log.d("AccountDataSourceImpl", "about to run solanaAddressBackfillMigration")
+
+            solanaAddressBackfillMigration.migrate()
+
+            Log.d("AccountDataSourceImpl", "migrations block done")
+
+            metaAccountDao.getMetaAccounts().forEach {
+                Log.d(
+                    "TronDiag",
+                    "metaId=${it.id} name=${it.name} type=${it.type} isSelected=${it.isSelected} " +
+                        "tronAddress=${it.tronAddress?.joinToString("") { b -> "%02x".format(b) } ?: "NULL"} " +
+                        "tronPublicKey=${if (it.tronPublicKey != null) "present(${it.tronPublicKey!!.size}B)" else "NULL"}"
+                )
+            }
         }
     }
 

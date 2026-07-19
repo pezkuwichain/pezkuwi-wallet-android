@@ -10,7 +10,15 @@ val TokenSymbol.mainTokensFirstAscendingOrder
         "DOT" -> 3
         "KSM" -> 4
         "USDC" -> 5
-        else -> 6
+        "TRX" -> 6
+        "SOL" -> 7
+        "BTC" -> 8
+        "ETH" -> 9
+        "BNB" -> 10
+        "AVAX" -> 11
+        "LINK" -> 12
+        "TAO" -> 13
+        else -> 14
     }
 
 val TokenSymbol.alphabeticalOrder

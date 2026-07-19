@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
 import io.novafoundation.nova.common.data.repository.AssetsViewModeRepository
+import io.novafoundation.nova.common.data.storage.Preferences
 import io.novafoundation.nova.common.di.scope.ScreenScope
 import io.novafoundation.nova.common.di.viewmodel.ViewModelKey
 import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
@@ -20,7 +21,9 @@ import io.novafoundation.nova.feature_assets.domain.WalletInteractor
 import io.novafoundation.nova.feature_assets.domain.assets.ExternalBalancesInteractor
 import io.novafoundation.nova.feature_assets.domain.assets.list.AssetsListInteractor
 import io.novafoundation.nova.feature_assets.domain.breakdown.BalanceBreakdownInteractor
+import io.novafoundation.nova.feature_assets.domain.dashboard.MiningSimulationRepository
 import io.novafoundation.nova.feature_assets.domain.dashboard.PezkuwiDashboardInteractor
+import io.novafoundation.nova.feature_assets.domain.dashboard.RealMiningSimulationRepository
 import io.novafoundation.nova.runtime.di.REMOTE_STORAGE_SOURCE
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.storage.source.StorageDataSource
@@ -104,6 +107,12 @@ class BalanceListModule {
     }
 
     @Provides
+    @ScreenScope
+    fun provideMiningSimulationRepository(preferences: Preferences): MiningSimulationRepository {
+        return RealMiningSimulationRepository(preferences)
+    }
+
+    @Provides
     @IntoMap
     @ViewModelKey(BalanceListViewModel::class)
     fun provideViewModel(
@@ -130,6 +139,7 @@ class BalanceListModule {
         pezkuwiDashboardInteractor: PezkuwiDashboardInteractor,
         extrinsicService: ExtrinsicService,
         chainRegistry: ChainRegistry,
+        miningSimulationRepository: MiningSimulationRepository,
     ): ViewModel {
         return BalanceListViewModel(
             promotionBannersMixinFactory = promotionBannersMixinFactory,
@@ -154,7 +164,8 @@ class BalanceListModule {
             giftsRestrictionCheckMixin = giftsRestrictionCheckMixin,
             pezkuwiDashboardInteractor = pezkuwiDashboardInteractor,
             extrinsicService = extrinsicService,
-            chainRegistry = chainRegistry
+            chainRegistry = chainRegistry,
+            miningSimulationRepository = miningSimulationRepository
         )
     }
 

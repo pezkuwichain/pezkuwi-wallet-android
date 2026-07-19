@@ -7,7 +7,7 @@ import io.novafoundation.nova.common.utils.RuntimeContext
 import io.novafoundation.nova.common.utils.diffed
 import io.novafoundation.nova.common.utils.filterList
 import io.novafoundation.nova.common.utils.inBackground
-import io.novafoundation.nova.common.utils.mapList
+import io.novafoundation.nova.common.utils.mapListNotNull
 import io.novafoundation.nova.common.utils.mapNotNullToSet
 import io.novafoundation.nova.common.utils.provideContext
 import io.novafoundation.nova.common.utils.removeHexPrefix
@@ -41,6 +41,7 @@ import io.novafoundation.nova.runtime.multiNetwork.runtime.types.BaseTypeSynchro
 import io.novasama.substrate_sdk_android.wsrpc.SocketService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -67,14 +68,37 @@ class ChainRegistry(
     private val runtimeSyncService: RuntimeSyncService,
     private val web3ApiPool: Web3ApiPool,
     private val gson: Gson
-) : CoroutineScope by CoroutineScope(Dispatchers.Default) {
+    // SupervisorJob, not the plain Job a bare CoroutineScope(Dispatchers.Default) would give: without it, an
+    // uncaught exception in ANY coroutine sharing this scope (e.g. currentChains'/chainsById's shareIn, or any
+    // launch{} below) cancels every sibling, including the other one - a single malformed/leftover chain row
+    // would then permanently kill sync for every chain, not just the offending one.
+) : CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.Default) {
 
     val currentChains = chainDao.joinChainInfoFlow()
-        .mapList { mapChainLocalToChain(it, gson) }
+        // mapListNotNull, not mapList: mapChainLocalToChain() can throw on a single malformed row (e.g. a
+        // gson.fromJson() failure on the chain's `additional` JSON blob) - since this whole step runs as ONE
+        // transform over the ENTIRE chain list, one bad chain would previously throw out of this operator and
+        // permanently kill this Eagerly-shared flow for every chain, not just the offending one. Skip and log
+        // instead, matching the per-chain isolation already applied to registerChain/unregisterChain below.
+        .mapListNotNull { chainLocal ->
+            runCatching { mapChainLocalToChain(chainLocal, gson) }
+                .onFailure { Log.e(LOG_TAG, "Failed to map chain ${chainLocal.chain.id} (${chainLocal.chain.name}) from local DB", it) }
+                .getOrNull()
+        }
         .diffed()
         .map { diff ->
-            diff.removed.forEach { unregisterChain(it) }
-            diff.newOrUpdated.forEach { chain -> registerChain(chain) }
+            // Each chain's register/unregister is isolated: one malformed/leftover row (e.g. a chain persisted
+            // as disabled from an earlier session) must not throw out of this operator and kill this flow for
+            // every other chain - shareIn(..., Eagerly) never restarts once its upstream completes/throws, so
+            // any single unhandled exception here would silently and permanently break sync for the whole app.
+            diff.removed.forEach { chain ->
+                runCatching { unregisterChain(chain) }
+                    .onFailure { Log.e(LOG_TAG, "Failed to unregister chain ${chain.name} (${chain.id})", it) }
+            }
+            diff.newOrUpdated.forEach { chain ->
+                runCatching { registerChain(chain) }
+                    .onFailure { Log.e(LOG_TAG, "Failed to register chain ${chain.name} (${chain.id})", it) }
+            }
 
             diff.all
         }
@@ -221,11 +245,11 @@ class ChainRegistry(
     }
 
     private suspend fun registerConnection(chain: Chain): ChainConnection? {
-        // Tron nodes are plain REST APIs (TronGrid), not WSS JSON-RPC endpoints - ChainConnection's
-        // SocketService can only speak the latter, so attempting to set one up here would hang
-        // indefinitely instead of failing fast. Tron balance/transfer operations already go through
-        // their own dedicated TronGridApi client, independent of this connection pool.
-        if (chain.isTronBased) return null
+        // Tron/Bitcoin nodes are plain REST APIs (TronGrid / mempool.space), not WSS JSON-RPC endpoints -
+        // ChainConnection's SocketService can only speak the latter, so attempting to set one up here would
+        // hang indefinitely instead of failing fast. Balance/transfer operations for both go through their
+        // own dedicated REST API clients, independent of this connection pool.
+        if (chain.isTronBased || chain.isBitcoinBased || chain.isSolanaBased) return null
 
         val connection = connectionPool.setupConnection(chain)
 

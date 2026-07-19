@@ -63,6 +63,43 @@ class SubstrateFee(
     override val asset: Chain.Asset
 ) : Fee
 
+/**
+ * Fee for a Bitcoin transaction, denominated in sats: `feeRate (sat/vB) * estimated vsize` - see
+ * `RealBitcoinTransactionService` for how both are derived. The network only ever collects what miners include
+ * in a block, which is exactly this amount (unlike account-model chains, a Bitcoin fee is not a cap/estimate
+ * that gets partially refunded - it is the literal difference between input and output values).
+ */
+class BitcoinFee(
+    override val amount: BigInteger,
+    override val submissionOrigin: SubmissionOrigin,
+    override val asset: Chain.Asset
+) : Fee
+
+/**
+ * Fee for a Tron transaction (native TRX or TRC-20), always denominated in TRX (sun), regardless of which asset
+ * is being sent - Tron has no separate "gas token" concept, network resources (bandwidth/energy) are always
+ * burned as TRX. [amount] is this client's own estimate of that burn (see `RealTronTransactionService`); the
+ * network only ever burns what it actually uses, so the real cost can be lower, but never higher than what this
+ * client authorized via `fee_limit` when submitting.
+ */
+class TronFee(
+    override val amount: BigInteger,
+    override val submissionOrigin: SubmissionOrigin,
+    override val asset: Chain.Asset
+) : Fee
+
+/**
+ * Fee for a Solana transaction, denominated in lamports, always paid in native SOL regardless of which asset is
+ * being sent (Solana has no separate "gas token" concept, same as Tron). [amount] is `getFeeForMessage`'s
+ * authoritative, exact answer for this specific compiled message (not an estimate the way Bitcoin's vsize-based
+ * fee is) - see `RealSolanaTransactionService`.
+ */
+class SolanaFee(
+    override val amount: BigInteger,
+    override val submissionOrigin: SubmissionOrigin,
+    override val asset: Chain.Asset
+) : Fee
+
 class SubstrateFeeBase(
     override val amount: BigInteger,
     override val asset: Chain.Asset

@@ -7,6 +7,8 @@ import io.novafoundation.nova.common.data.secrets.v2.ChainAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.MetaAccountSecrets
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
 import io.novafoundation.nova.common.data.secrets.v2.entropy
+import io.novafoundation.nova.common.data.secrets.v2.tronDerivationPath
+import io.novafoundation.nova.common.data.secrets.v2.tronKeypair
 import io.novafoundation.nova.core.model.CryptoType
 import io.novafoundation.nova.core_db.dao.MetaAccountDao
 import io.novafoundation.nova.core_db.model.chain.account.ChainAccountLocal
@@ -534,6 +536,64 @@ class RealLocalAccountsCloudBackupFacadeTest {
             add(AccountAdded(metaId = 0, LightMetaAccount.Type.SECRETS))
         }
         verifyEvent(expectedEvent)
+    }
+
+    // Regression test for a wallet's Tron address/keypair being silently dropped on a cloud backup round trip:
+    // WalletPublicInfo/WalletPrivateInfo had no tron field at all until this fix, so a backup written from a
+    // wallet that genuinely had a Tron address, once applied back to local (e.g. after "clear all data" +
+    // restore, or on a fresh install created via the cloud-backup-first-wallet flow), landed with
+    // tronAddress/tronPublicKey/tronKeypair = null - found via real-device testing, not by this test.
+    @Test
+    fun shouldApplyAddAccountDiffWithTronSecrets() = runBlocking {
+        LocalAccountsMocker.setupMocks(metaAccountDao) {}
+        SecretStoreMocker.setupMocks(secretStore) {}
+
+        allChainsAreEvm(false)
+
+        val localBackup = buildTestCloudBackup {
+            publicData { }
+            privateData { }
+        }
+
+        val bytes32 = bytes32of(0)
+        val tronAddressBytes = bytes20of(1)
+        val tronDerivationPath = "//44//195//0/0/0"
+
+        val cloudBackup = buildTestCloudBackup {
+            publicData {
+                wallet(walletUUid(0)) {
+                    substrateAccountId(bytes32)
+                    substrateCryptoType(CryptoType.SR25519)
+                    substratePublicKey(bytes32)
+
+                    tronPublicKey(bytes32)
+                    tronAddress(tronAddressBytes)
+                }
+            }
+
+            privateData {
+                wallet(walletUUid(0)) {
+                    entropy(bytes32)
+
+                    substrate {
+                        seed(bytes32)
+                        keypair(KeyPairSecrets(bytes32, bytes32, bytes32))
+                    }
+
+                    tron {
+                        derivationPath(tronDerivationPath)
+                        keypair(KeyPairSecrets(bytes32, bytes32, nonce = null))
+                    }
+                }
+            }
+        }
+
+        val diff = localBackup.localVsCloudDiff(cloudBackup, BackupDiffStrategy.overwriteLocal())
+
+        facade.applyBackupDiff(diff, cloudBackup)
+
+        verify(metaAccountDao).insertMetaAccount(metaAccountWithTronAddress(tronAddressBytes))
+        verify(secretStore).putMetaAccountSecrets(eq(0), metaAccountSecretsWithTronDerivationPath(tronDerivationPath))
     }
 
     @Test
@@ -1203,6 +1263,14 @@ class RealLocalAccountsCloudBackupFacadeTest {
 
     private fun metaAccountWithUuid(id: String): MetaAccountLocal {
         return argThat { it.globallyUniqueId == id }
+    }
+
+    private fun metaAccountWithTronAddress(tronAddress: ByteArray): MetaAccountLocal {
+        return argThat { it.tronAddress.contentEquals(tronAddress) }
+    }
+
+    private fun metaAccountSecretsWithTronDerivationPath(derivationPath: String): EncodableStruct<MetaAccountSecrets> {
+        return argThat { it.tronDerivationPath == derivationPath && it.tronKeypair != null }
     }
 
     private suspend fun verifyNoAdditionalSecretsInserted() {
