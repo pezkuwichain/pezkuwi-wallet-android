@@ -143,17 +143,29 @@ internal class RealExtrinsicSplitter @Inject constructor(
         val genesisHash = chain.requireGenesisHash().fromHex()
 
         val isPezkuwi = runtime.metadata.extrinsic.signedExtensions.any { it.id == "AuthorizeCall" }
+        android.util.Log.e(
+            "ExtrinsicDebug",
+            "wrapInFakeExtrinsic: chain=${chain.name} isPezkuwi=$isPezkuwi " +
+                "signedExtensionIds=${runtime.metadata.extrinsic.signedExtensions.map { it.id }}"
+        )
 
-        return ExtrinsicBuilder(
+        val builder = ExtrinsicBuilder(
             runtime = runtime,
             extrinsicVersion = ExtrinsicVersion.V4,
             batchMode = BatchMode.BATCH,
         ).apply {
             // Use custom CheckMortality for Pezkuwi chains to avoid DictEnum type lookup issues
             if (isPezkuwi) {
+                android.util.Log.e("ExtrinsicDebug", "using PezkuwiCheckImmortal")
                 setTransactionExtension(PezkuwiCheckImmortal(genesisHash))
             } else {
-                setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
+                android.util.Log.e("ExtrinsicDebug", "using standard CheckMortality(Era.Immortal)")
+                runCatching {
+                    setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
+                }.onFailure { e ->
+                    android.util.Log.e("ExtrinsicDebug", "standard CheckMortality setTransactionExtension threw", e)
+                    throw e
+                }
             }
             setTransactionExtension(CheckGenesis(chain.requireGenesisHash().fromHex()))
             setTransactionExtension(ChargeTransactionPayment(BigInteger.ZERO))
@@ -167,6 +179,10 @@ internal class RealExtrinsicSplitter @Inject constructor(
 
             val signingContext = signingContextFactory.default(chain)
             signer.setSignerDataForFee(signingContext)
-        }.buildExtrinsic()
+        }
+
+        return runCatching { builder.buildExtrinsic() }
+            .onFailure { e -> android.util.Log.e("ExtrinsicDebug", "buildExtrinsic threw", e) }
+            .getOrThrow()
     }
 }
