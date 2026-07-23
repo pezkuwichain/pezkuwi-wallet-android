@@ -2,6 +2,7 @@ package io.novafoundation.nova.feature_deep_linking.presentation.handling
 
 import android.net.Uri
 import io.novafoundation.nova.common.utils.onFailureInstance
+import io.novafoundation.nova.feature_deep_linking.presentation.handling.common.DeepLinkHandlingException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.merge
 
@@ -23,12 +24,18 @@ class RootDeepLinkHandler(
 
         return handleDeepLinkInternal(pendingDeepLink)
             .onSuccess { pendingDeepLinkProvider.clear() }
+            // A pending link that reaches a handler but fails with a terminal error (malformed/unresolvable),
+            // or matches no handler, will never succeed on retry - clear it so it does not replay on every launch.
+            .onFailureInstance<DeepLinkHandlingException, Unit> { pendingDeepLinkProvider.clear() }
+            .onFailureInstance<HandlerNotFoundException, Unit> { pendingDeepLinkProvider.clear() }
     }
 
     override suspend fun handleDeepLink(data: Uri): Result<Unit> {
         pendingDeepLinkProvider.save(data)
         return handleDeepLinkInternal(data)
             .onSuccess { pendingDeepLinkProvider.clear() }
+            // Same as above: a terminal handling failure must not be persisted, otherwise it bricks every launch.
+            .onFailureInstance<DeepLinkHandlingException, Unit> { pendingDeepLinkProvider.clear() }
             .onFailureInstance<HandlerNotFoundException, Unit> { pendingDeepLinkProvider.clear() } // If we haven't find any handler - no need to save deep link
     }
 
