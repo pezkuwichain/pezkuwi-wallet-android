@@ -8,10 +8,8 @@ import io.novafoundation.nova.feature_account_api.data.signer.SigningContext
 import io.novafoundation.nova.common.utils.min
 import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicSplitter
 import io.novafoundation.nova.feature_account_api.data.extrinsic.SplitCalls
-import io.novafoundation.nova.runtime.ext.isPezkuwiChain
 import io.novafoundation.nova.runtime.ext.requireGenesisHash
 import io.novafoundation.nova.runtime.extrinsic.CustomTransactionExtensions
-import io.novafoundation.nova.runtime.extrinsic.extensions.PezkuwiCheckImmortal
 import io.novafoundation.nova.runtime.extrinsic.multi.CallBuilder
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
@@ -46,9 +44,6 @@ import javax.inject.Inject
 private typealias CallWeightsByType = Map<String, Deferred<WeightV2>>
 
 private const val LEAVE_SOME_SPACE_MULTIPLIER = 0.8
-
-// DIAGNOSTIC BUILD — remove with the probe in wrapInFakeExtrinsic.
-private const val DIAG = "PezMsigDiag"
 
 @FeatureScope
 internal class RealExtrinsicSplitter @Inject constructor(
@@ -139,17 +134,10 @@ internal class RealExtrinsicSplitter @Inject constructor(
     }
 
     /**
-     * DIAGNOSTIC BUILD — not for release.
+     * A throwaway signed extrinsic, built only to measure the weight of `call`.
      *
-     * "Failed to encode extension CheckMortality" reproduces here, and only here, when
-     * approving a multisig operation on Pezkuwi Asset Hub. This path is multisig-only:
-     * asMulti needs a max_weight, so a throwaway signed extrinsic is built to measure
-     * the inner call. Plain transfers never reach it, which is why they succeed.
-     *
-     * Static reading could not tell which side of the isPezkuwiChain gate fails, so this
-     * build tries BOTH era encodings and reports the outcome of each. Read the PezMsigDiag
-     * lines to see which one the chain accepts, then wire that choice in permanently and
-     * delete this.
+     * Immortal era: this extrinsic is never submitted, so there is nothing for a mortal
+     * era to protect, and an immortal one needs no block hash lookup.
      */
     private suspend fun wrapInFakeExtrinsic(
         signer: NovaSigner,
@@ -158,68 +146,27 @@ internal class RealExtrinsicSplitter @Inject constructor(
         chain: Chain
     ): SendableExtrinsic {
         val genesisHash = chain.requireGenesisHash().fromHex()
-        val isPezkuwi = chain.isPezkuwiChain
 
-        android.util.Log.e(
-            DIAG,
-            "chain='${chain.name}' id=${chain.id} isPezkuwiChain=$isPezkuwi " +
-                "genesis=${chain.requireGenesisHash()}"
-        )
-        android.util.Log.e(
-            DIAG,
-            "signedExtensions=${runtime.metadata.extrinsic.signedExtensions.map { it.id }}"
-        )
+        val builder = ExtrinsicBuilder(
+            runtime = runtime,
+            extrinsicVersion = ExtrinsicVersion.V4,
+            batchMode = BatchMode.BATCH,
+        ).apply {
+            setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
+            setTransactionExtension(CheckGenesis(chain.requireGenesisHash().fromHex()))
+            setTransactionExtension(ChargeTransactionPayment(BigInteger.ZERO))
+            setTransactionExtension(CheckMetadataHash(CheckMetadataHashMode.Disabled))
+            setTransactionExtension(CheckSpecVersion(0))
+            setTransactionExtension(CheckTxVersion(0))
 
-        // Builds the fake extrinsic with one specific era encoding. Kept as a local so the
-        // two attempts differ in exactly one thing and nothing else.
-        suspend fun attempt(usePezkuwiEra: Boolean): Result<SendableExtrinsic> = runCatching {
-            ExtrinsicBuilder(
-                runtime = runtime,
-                extrinsicVersion = ExtrinsicVersion.V4,
-                batchMode = BatchMode.BATCH,
-            ).apply {
-                if (usePezkuwiEra) {
-                    setTransactionExtension(PezkuwiCheckImmortal(genesisHash))
-                } else {
-                    setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
-                }
-                setTransactionExtension(CheckGenesis(chain.requireGenesisHash().fromHex()))
-                setTransactionExtension(ChargeTransactionPayment(BigInteger.ZERO))
-                setTransactionExtension(CheckMetadataHash(CheckMetadataHashMode.Disabled))
-                setTransactionExtension(CheckSpecVersion(0))
-                setTransactionExtension(CheckTxVersion(0))
+            CustomTransactionExtensions.defaultValues(runtime).forEach(::setTransactionExtension)
 
-                CustomTransactionExtensions.defaultValues(runtime).forEach(::setTransactionExtension)
+            call(call)
 
-                call(call)
-
-                val signingContext = signingContextFactory.default(chain)
-                signer.setSignerDataForFee(signingContext)
-            }.buildExtrinsic()
+            val signingContext = signingContextFactory.default(chain)
+            signer.setSignerDataForFee(signingContext)
         }
 
-        fun report(label: String, result: Result<SendableExtrinsic>) {
-            result.fold(
-                onSuccess = { android.util.Log.e(DIAG, "$label -> OK") },
-                onFailure = { e ->
-                    // The message alone has been the whole diagnosis so far; the cause chain
-                    // is what actually names the failing type.
-                    val causes = generateSequence(e) { it.cause }.joinToString(" <- ") {
-                        "${it::class.java.simpleName}: ${it.message}"
-                    }
-                    android.util.Log.e(DIAG, "$label -> FAIL  $causes", e)
-                }
-            )
-        }
-
-        // Preferred first: whatever the current gate would have chosen on its own.
-        val preferred = attempt(usePezkuwiEra = isPezkuwi)
-        report(if (isPezkuwi) "PezkuwiCheckImmortal(gate choice)" else "CheckMortality(gate choice)", preferred)
-        preferred.getOrNull()?.let { return it }
-
-        val alternative = attempt(usePezkuwiEra = !isPezkuwi)
-        report(if (isPezkuwi) "CheckMortality(alternative)" else "PezkuwiCheckImmortal(alternative)", alternative)
-
-        return alternative.getOrElse { throw preferred.exceptionOrNull()!! }
+        return builder.buildExtrinsic()
     }
 }
