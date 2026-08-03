@@ -27,8 +27,19 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--
+        Location is here only because Bluetooth LE scanning required it before API 31,
+        and LE scanning is how a Ledger device is discovered. The wallet never reads a
+        location: there is no LocationManager or FusedLocationProvider call anywhere.
+        Capping at 30 stops modern Android from asking a wallet for location it does not
+        use — on API 31+ BLUETOOTH_SCAN covers discovery on its own.
+    -->
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:maxSdkVersion="30" />
 
     <application
         android:name="io.novafoundation.nova.app.App"
