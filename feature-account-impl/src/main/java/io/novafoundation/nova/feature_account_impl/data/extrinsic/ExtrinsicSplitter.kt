@@ -222,5 +222,4 @@ internal class RealExtrinsicSplitter @Inject constructor(
 
         return alternative.getOrElse { throw preferred.exceptionOrNull()!! }
     }
-
 }
