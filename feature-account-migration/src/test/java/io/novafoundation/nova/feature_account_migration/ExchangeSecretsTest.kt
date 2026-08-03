@@ -68,8 +68,12 @@ class ExchangeSecretsTest {
 
         val encoded = keyExchangeUtils.encrypt("Hello".toByteArray(), peerA, peerB.public)
 
-        // Change one byte
-        encoded[encoded.lastIndex - 1] = (encoded.last() xor 0x01)
+        // Flip a bit in the byte being written, not in a different one: reading last()
+        // while writing lastIndex - 1 leaves the array untouched whenever those two
+        // bytes already differ by exactly 0x01, which is 1 run in 256. Decryption then
+        // succeeds, no AEADBadTagException is thrown, and a tamper-detection test
+        // reports a failure that has nothing to do with tamper detection.
+        encoded[encoded.lastIndex - 1] = (encoded[encoded.lastIndex - 1] xor 0x01)
 
         keyExchangeUtils.decrypt(encoded, peerB, peerA.public)
     }
