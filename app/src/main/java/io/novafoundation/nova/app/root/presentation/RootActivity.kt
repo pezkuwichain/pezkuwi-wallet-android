@@ -22,6 +22,9 @@ import io.novafoundation.nova.common.view.dialog.dialog
 import io.novafoundation.nova.feature_push_notifications.presentation.multisigsWarning.observeEnableMultisigPushesAlert
 import io.novafoundation.nova.splash.presentation.SplashBackgroundHolder
 
+import io.novafoundation.nova.app.root.presentation.update.AppReviewPrompt
+import io.novafoundation.nova.app.root.presentation.update.InAppUpdates
+import io.novafoundation.nova.common.appstore.AppReviewTracker
 import javax.inject.Inject
 
 class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>(), SplashBackgroundHolder {
@@ -34,6 +37,12 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>(), SplashB
 
     @Inject
     lateinit var contextManager: ContextManager
+
+    @Inject
+    lateinit var appReviewTracker: AppReviewTracker
+
+    private val inAppUpdates by lazy { InAppUpdates(this) }
+    private val appReviewPrompt by lazy { AppReviewPrompt(this, appReviewTracker) }
 
     override fun createBinding(): ActivityRootBinding {
         return ActivityRootBinding.inflate(LayoutInflater.from(this))
@@ -104,6 +113,19 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>(), SplashB
         super.onStart()
 
         viewModel.noticeInForeground()
+
+        // Both are no-ops outside a Play install, and both swallow their own failures:
+        // neither an update check nor a rating card may keep the wallet from opening.
+        inAppUpdates.checkForUpdate()
+        appReviewPrompt.requestIfEarned()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Finishes an immediate update that was interrupted, and installs a flexible one
+        // that finished downloading while the app was in the background.
+        inAppUpdates.resumeIfNeeded()
     }
 
     override fun subscribe(viewModel: RootViewModel) {

@@ -1,6 +1,7 @@
 package io.novafoundation.nova.feature_account_impl.data.extrinsic
 
 import android.util.Log
+import io.novafoundation.nova.common.appstore.AppReviewTracker
 import io.novafoundation.nova.common.data.network.runtime.binding.DispatchError
 import io.novafoundation.nova.common.data.network.runtime.binding.bindDispatchError
 import io.novafoundation.nova.common.data.network.runtime.model.FeeResponse
@@ -74,6 +75,7 @@ class RealExtrinsicService(
     private val feePaymentProviderRegistry: FeePaymentProviderRegistry,
     private val eventsRepository: EventsRepository,
     private val signingContextFactory: SigningContext.Factory,
+    private val appReviewTracker: AppReviewTracker,
     private val coroutineScope: CoroutineScope? // TODO: Make it non-nullable
 ) : ExtrinsicService {
 
@@ -86,8 +88,13 @@ class RealExtrinsicService(
         val (extrinsic, submissionOrigin, _, callExecutionType, signingHierarchy) = buildSubmissionExtrinsic(chain, origin, formExtrinsic, submissionOptions)
         val hash = rpcCalls.submitExtrinsic(chain.id, extrinsic)
 
+        // The one place every on-chain action passes through, so counting here covers
+        // transfers, staking and the rest without a hook per screen. The tracker never
+        // throws — a rating counter must not be able to fail a submission.
+        appReviewTracker.onMeaningfulSuccess()
+
         ExtrinsicSubmission(hash, submissionOrigin, callExecutionType, signingHierarchy)
-    }
+    }.onFailure { appReviewTracker.onFailure() }
 
     override suspend fun submitMultiExtrinsicAwaitingInclusion(
         chain: Chain,

@@ -42,6 +42,7 @@ import io.novafoundation.nova.feature_dapp_api.data.repository.BrowserTabExterna
 import io.novafoundation.nova.feature_dapp_api.data.repository.DAppMetadataRepository
 import io.novafoundation.nova.feature_dapp_api.di.deeplinks.DAppDeepLinks
 import io.novafoundation.nova.feature_deep_linking.presentation.handling.PendingDeepLinkProvider
+import io.novafoundation.nova.common.appstore.AppReviewTracker
 import io.novafoundation.nova.feature_deep_linking.presentation.handling.common.DeepLinkingPreferences
 import io.novafoundation.nova.feature_gift_api.di.GiftDeepLinks
 import io.novafoundation.nova.feature_governance_api.data.MutableGovernanceState
@@ -186,4 +187,6 @@ interface RootDependencies {
     fun chainMigrationRepository(): ChainMigrationRepository
 
     fun migrationInfoRepository(): MigrationInfoRepository
+
+    fun appReviewTracker(): AppReviewTracker
 }

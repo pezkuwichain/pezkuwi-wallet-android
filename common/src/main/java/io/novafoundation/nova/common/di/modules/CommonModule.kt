@@ -37,6 +37,8 @@ import io.novafoundation.nova.common.data.repository.ToggleFeatureRepository
 import io.novafoundation.nova.common.data.secrets.v1.SecretStoreV1
 import io.novafoundation.nova.common.data.secrets.v1.SecretStoreV1Impl
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
+import io.novafoundation.nova.common.appstore.AppReviewTracker
+import io.novafoundation.nova.common.appstore.RealAppReviewTracker
 import io.novafoundation.nova.common.data.storage.Preferences
 import io.novafoundation.nova.common.data.storage.PreferencesImpl
 import io.novafoundation.nova.common.data.storage.encrypt.EncryptedPreferences
@@ -164,6 +166,10 @@ class CommonModule {
     fun providePreferences(sharedPreferences: SharedPreferences): Preferences {
         return PreferencesImpl(sharedPreferences)
     }
+
+    @Provides
+    @ApplicationScope
+    fun provideAppReviewTracker(preferences: Preferences): AppReviewTracker = RealAppReviewTracker(preferences)
 
     @Provides
     @ApplicationScope
