@@ -1,1 +1,5 @@
-Pezkuwi Wallet — the official app for the Digital Kurdistan State. Manage your HEZ tokens, stake, and participate in on-chain governance.
+Multisig approvals work again on Pezkuwi chains. Signers could open an operation but not approve it — that is fixed.
+
+The wallet now tells you when a newer version is available and installs it without leaving the app.
+
+You can also rate the wallet from inside the app, after you have actually used it.

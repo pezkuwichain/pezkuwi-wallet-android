@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import io.novafoundation.nova.common.appstore.AppReviewTracker
 import io.novafoundation.nova.common.address.AddressIconGenerator
 import io.novafoundation.nova.common.data.mappers.mapEncryptionToCryptoType
 import io.novafoundation.nova.common.data.network.AppLinksProvider
@@ -254,7 +255,8 @@ class AccountFeatureModule {
         extrinsicSplitter: ExtrinsicSplitter,
         feePaymentProviderRegistry: FeePaymentProviderRegistry,
         eventsRepository: EventsRepository,
-        signingContextFactory: SigningContext.Factory
+        signingContextFactory: SigningContext.Factory,
+        appReviewTracker: AppReviewTracker,
     ): ExtrinsicService.Factory = RealExtrinsicServiceFactory(
         rpcCalls,
         chainRegistry,
@@ -264,7 +266,8 @@ class AccountFeatureModule {
         extrinsicSplitter,
         eventsRepository,
         feePaymentProviderRegistry,
-        signingContextFactory
+        signingContextFactory,
+        appReviewTracker
     )
 
     @Provides
@@ -279,6 +282,7 @@ class AccountFeatureModule {
         feePaymentProviderRegistry: FeePaymentProviderRegistry,
         eventsRepository: EventsRepository,
         signingContextFactory: SigningContext.Factory,
+        appReviewTracker: AppReviewTracker,
     ): ExtrinsicService = RealExtrinsicService(
         rpcCalls,
         chainRegistry,
@@ -289,6 +293,7 @@ class AccountFeatureModule {
         feePaymentProviderRegistry,
         eventsRepository,
         signingContextFactory,
+        appReviewTracker,
         coroutineScope = null
     )
 

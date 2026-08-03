@@ -12,6 +12,7 @@ import io.novafoundation.nova.common.data.network.NetworkApiCreator
 import io.novafoundation.nova.common.data.network.rpc.SocketSingleRequestExecutor
 import io.novafoundation.nova.common.data.secrets.v1.SecretStoreV1
 import io.novafoundation.nova.common.data.secrets.v2.SecretStoreV2
+import io.novafoundation.nova.common.appstore.AppReviewTracker
 import io.novafoundation.nova.common.data.storage.Preferences
 import io.novafoundation.nova.common.data.storage.encrypt.EncryptedPreferences
 import io.novafoundation.nova.common.di.modules.Caching
@@ -147,6 +148,8 @@ interface AccountFeatureDependencies {
     fun appLinksProvider(): AppLinksProvider
 
     fun preferences(): Preferences
+
+    fun appReviewTracker(): AppReviewTracker
 
     fun encryptedPreferences(): EncryptedPreferences
 
