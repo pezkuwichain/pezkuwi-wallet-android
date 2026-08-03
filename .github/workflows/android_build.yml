@@ -236,6 +236,51 @@ jobs:
         if: ${{ inputs.build-debug-tests }}
         run: ./gradlew assembleDebugAndroidTest
 
+      # Play rejects updates whose 64-bit native libraries are not aligned for 16 KB
+      # memory pages. Nothing in the build says so — a misaligned .so only surfaces as a
+      # policy issue in Play Console, days later, after a release has already gone out.
+      # One dependency shipping an unaligned library is enough, so check what was
+      # actually produced rather than trusting the dependency list.
+      #
+      # 32-bit ABIs are exempt: those devices use 4 KB pages.
+      - name: 🔍 Verify 16 KB native alignment
+        if: ${{ !startsWith(inputs.gradlew-command, 'false') }}
+        run: |
+          set -euo pipefail
+          work=$(mktemp -d)
+          found=0
+          bad=0
+
+          for archive in $(find app/build/outputs -name '*.aab' -o -name '*.apk' | sort); do
+            for entry in $(unzip -Z1 "$archive" 2>/dev/null | grep -E 'lib/(arm64-v8a|x86_64)/.*\.so$' || true); do
+              found=$((found + 1))
+              unzip -o -q -j "$archive" "$entry" -d "$work"
+              lib="$work/$(basename "$entry")"
+
+              # Largest LOAD segment alignment; 16384 (0x4000) is the requirement.
+              align=$(readelf -lW "$lib" 2>/dev/null | awk '/LOAD/ {print $NF}' | sort -u | tail -1)
+              align_dec=$((align))
+
+              if [ "$align_dec" -lt 16384 ]; then
+                echo "::error::$(basename "$archive") $entry aligned at $align, needs 0x4000 (16384)"
+                bad=$((bad + 1))
+              else
+                echo "  ok  $entry  $align"
+              fi
+              rm -f "$lib"
+            done
+          done
+
+          rm -rf "$work"
+
+          if [ "$found" -eq 0 ]; then
+            echo "No 64-bit native libraries in the build output — nothing to check."
+            exit 0
+          fi
+
+          echo "Checked $found 64-bit native libraries, $bad misaligned."
+          [ "$bad" -eq 0 ]
+
       - name: 🧹 Delete key after building
         if: ${{ !startsWith(inputs.keystore-file-name, 'false') }}
         run: rm ./app/${{ inputs.keystore-file-name }}
