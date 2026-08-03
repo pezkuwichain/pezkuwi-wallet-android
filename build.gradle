@@ -53,8 +53,6 @@ buildscript {
 
         substrateSdkVersion = '2.11.0'
 
-        gifVersion = '1.2.19'
-
         zXingVersion = '3.4.0'
         zXingEmbeddedVersion = '3.5.0@aar'
 
@@ -165,8 +163,6 @@ buildscript {
 
         substrateSdkDep = "io.github.nova-wallet.substrate-sdk-android:core:$substrateSdkVersion"
         substrateSdkSerializationDep = "io.github.nova-wallet.substrate-sdk-android:kotlinx-serialization-scale:$substrateSdkVersion"
-
-        gifDep = "pl.droidsonroids.gif:android-gif-drawable:$gifVersion"
 
         wsDep = "com.neovisionaries:nv-websocket-client:$wsVersion"
 

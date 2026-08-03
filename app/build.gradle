@@ -302,7 +302,6 @@ dependencies {
     implementation retrofitDep
     implementation gsonConvertedDep
 
-    implementation gifDep
 
     compileOnly wsDep
 
