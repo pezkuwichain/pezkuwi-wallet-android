@@ -47,6 +47,9 @@ private typealias CallWeightsByType = Map<String, Deferred<WeightV2>>
 
 private const val LEAVE_SOME_SPACE_MULTIPLIER = 0.8
 
+// DIAGNOSTIC BUILD — remove with the probe in wrapInFakeExtrinsic.
+private const val DIAG = "PezMsigDiag"
+
 @FeatureScope
 internal class RealExtrinsicSplitter @Inject constructor(
     private val rpcCalls: RpcCalls,
@@ -135,6 +138,19 @@ internal class RealExtrinsicSplitter @Inject constructor(
         return split
     }
 
+    /**
+     * DIAGNOSTIC BUILD — not for release.
+     *
+     * "Failed to encode extension CheckMortality" reproduces here, and only here, when
+     * approving a multisig operation on Pezkuwi Asset Hub. This path is multisig-only:
+     * asMulti needs a max_weight, so a throwaway signed extrinsic is built to measure
+     * the inner call. Plain transfers never reach it, which is why they succeed.
+     *
+     * Static reading could not tell which side of the isPezkuwiChain gate fails, so this
+     * build tries BOTH era encodings and reports the outcome of each. Read the PezMsigDiag
+     * lines to see which one the chain accepts, then wire that choice in permanently and
+     * delete this.
+     */
     private suspend fun wrapInFakeExtrinsic(
         signer: NovaSigner,
         call: GenericCall.Instance,
@@ -142,35 +158,69 @@ internal class RealExtrinsicSplitter @Inject constructor(
         chain: Chain
     ): SendableExtrinsic {
         val genesisHash = chain.requireGenesisHash().fromHex()
+        val isPezkuwi = chain.isPezkuwiChain
 
-        val builder = ExtrinsicBuilder(
-            runtime = runtime,
-            extrinsicVersion = ExtrinsicVersion.V4,
-            batchMode = BatchMode.BATCH,
-        ).apply {
-            // Use custom CheckMortality for Pezkuwi chains to avoid DictEnum type lookup issues.
-            // Gated on chain identity (not signed-extension presence): both Pezkuwi and Polkadot
-            // Asset Hub declare "AuthorizeCall", so that alone can't tell the chains apart, and
-            // PezkuwiCheckImmortal's raw DictEnum value fails Polkadot's own Era type codec.
-            if (chain.isPezkuwiChain) {
-                setTransactionExtension(PezkuwiCheckImmortal(genesisHash))
-            } else {
-                setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
-            }
-            setTransactionExtension(CheckGenesis(chain.requireGenesisHash().fromHex()))
-            setTransactionExtension(ChargeTransactionPayment(BigInteger.ZERO))
-            setTransactionExtension(CheckMetadataHash(CheckMetadataHashMode.Disabled))
-            setTransactionExtension(CheckSpecVersion(0))
-            setTransactionExtension(CheckTxVersion(0))
+        android.util.Log.e(
+            DIAG,
+            "chain='${chain.name}' id=${chain.id} isPezkuwiChain=$isPezkuwi " +
+                "genesis=${chain.requireGenesisHash()}"
+        )
+        android.util.Log.e(
+            DIAG,
+            "signedExtensions=${runtime.metadata.extrinsic.signedExtensions.map { it.id }}"
+        )
 
-            CustomTransactionExtensions.defaultValues(runtime).forEach(::setTransactionExtension)
+        // Builds the fake extrinsic with one specific era encoding. Kept as a local so the
+        // two attempts differ in exactly one thing and nothing else.
+        suspend fun attempt(usePezkuwiEra: Boolean): Result<SendableExtrinsic> = runCatching {
+            ExtrinsicBuilder(
+                runtime = runtime,
+                extrinsicVersion = ExtrinsicVersion.V4,
+                batchMode = BatchMode.BATCH,
+            ).apply {
+                if (usePezkuwiEra) {
+                    setTransactionExtension(PezkuwiCheckImmortal(genesisHash))
+                } else {
+                    setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
+                }
+                setTransactionExtension(CheckGenesis(chain.requireGenesisHash().fromHex()))
+                setTransactionExtension(ChargeTransactionPayment(BigInteger.ZERO))
+                setTransactionExtension(CheckMetadataHash(CheckMetadataHashMode.Disabled))
+                setTransactionExtension(CheckSpecVersion(0))
+                setTransactionExtension(CheckTxVersion(0))
 
-            call(call)
+                CustomTransactionExtensions.defaultValues(runtime).forEach(::setTransactionExtension)
 
-            val signingContext = signingContextFactory.default(chain)
-            signer.setSignerDataForFee(signingContext)
+                call(call)
+
+                val signingContext = signingContextFactory.default(chain)
+                signer.setSignerDataForFee(signingContext)
+            }.buildExtrinsic()
         }
 
-        return builder.buildExtrinsic()
+        fun report(label: String, result: Result<SendableExtrinsic>) {
+            result.fold(
+                onSuccess = { android.util.Log.e(DIAG, "$label -> OK") },
+                onFailure = { e ->
+                    // The message alone has been the whole diagnosis so far; the cause chain
+                    // is what actually names the failing type.
+                    val causes = generateSequence(e) { it.cause }.joinToString(" <- ") {
+                        "${it::class.java.simpleName}: ${it.message}"
+                    }
+                    android.util.Log.e(DIAG, "$label -> FAIL  $causes", e)
+                }
+            )
+        }
+
+        // Preferred first: whatever the current gate would have chosen on its own.
+        val preferred = attempt(usePezkuwiEra = isPezkuwi)
+        report(if (isPezkuwi) "PezkuwiCheckImmortal(gate choice)" else "CheckMortality(gate choice)", preferred)
+        preferred.getOrNull()?.let { return it }
+
+        val alternative = attempt(usePezkuwiEra = !isPezkuwi)
+        report(if (isPezkuwi) "CheckMortality(alternative)" else "PezkuwiCheckImmortal(alternative)", alternative)
+
+        return alternative.getOrElse { throw preferred.exceptionOrNull()!! }
     }
+
 }
