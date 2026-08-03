@@ -8,10 +8,8 @@ import io.novafoundation.nova.feature_account_api.data.signer.SigningContext
 import io.novafoundation.nova.common.utils.min
 import io.novafoundation.nova.feature_account_api.data.extrinsic.ExtrinsicSplitter
 import io.novafoundation.nova.feature_account_api.data.extrinsic.SplitCalls
-import io.novafoundation.nova.runtime.ext.isPezkuwiChain
 import io.novafoundation.nova.runtime.ext.requireGenesisHash
 import io.novafoundation.nova.runtime.extrinsic.CustomTransactionExtensions
-import io.novafoundation.nova.runtime.extrinsic.extensions.PezkuwiCheckImmortal
 import io.novafoundation.nova.runtime.extrinsic.multi.CallBuilder
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
@@ -135,6 +133,12 @@ internal class RealExtrinsicSplitter @Inject constructor(
         return split
     }
 
+    /**
+     * A throwaway signed extrinsic, built only to measure the weight of `call`.
+     *
+     * Immortal era: this extrinsic is never submitted, so there is nothing for a mortal
+     * era to protect, and an immortal one needs no block hash lookup.
+     */
     private suspend fun wrapInFakeExtrinsic(
         signer: NovaSigner,
         call: GenericCall.Instance,
@@ -148,15 +152,7 @@ internal class RealExtrinsicSplitter @Inject constructor(
             extrinsicVersion = ExtrinsicVersion.V4,
             batchMode = BatchMode.BATCH,
         ).apply {
-            // Use custom CheckMortality for Pezkuwi chains to avoid DictEnum type lookup issues.
-            // Gated on chain identity (not signed-extension presence): both Pezkuwi and Polkadot
-            // Asset Hub declare "AuthorizeCall", so that alone can't tell the chains apart, and
-            // PezkuwiCheckImmortal's raw DictEnum value fails Polkadot's own Era type codec.
-            if (chain.isPezkuwiChain) {
-                setTransactionExtension(PezkuwiCheckImmortal(genesisHash))
-            } else {
-                setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
-            }
+            setTransactionExtension(CheckMortality(Era.Immortal, genesisHash))
             setTransactionExtension(CheckGenesis(chain.requireGenesisHash().fromHex()))
             setTransactionExtension(ChargeTransactionPayment(BigInteger.ZERO))
             setTransactionExtension(CheckMetadataHash(CheckMetadataHashMode.Disabled))
