@@ -4,8 +4,12 @@ import android.util.Log
 import io.novafoundation.nova.common.utils.LOG_TAG
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewHolder
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
+import org.json.JSONObject
 
-sealed class MetamaskError(val errorCode: Int, message: String) : Throwable(message) {
+/**
+ * [publicMessage] is sent to the dApp page as is, so it must never carry internal error details.
+ */
+sealed class MetamaskError(val errorCode: Int, val publicMessage: String) : Throwable(publicMessage) {
 
     class Rejected : MetamaskError(4001, "Action rejected")
 
@@ -33,7 +37,8 @@ class MetamaskResponder(private val webViewHolder: WebViewHolder) {
     }
 
     fun respondError(messageId: String, error: MetamaskError) {
-        val js = "window.ethereum.sendRpcError($messageId, ${error.errorCode}, \"${error.message}\")"
+        val message = JSONObject.quote(error.publicMessage)
+        val js = "window.ethereum.sendRpcError($messageId, ${error.errorCode}, $message)"
 
         evaluateJs(js)
     }

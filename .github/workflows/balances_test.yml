@@ -6,6 +6,9 @@ on:
   schedule:
     - cron: '0 */8 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   build-app:
     uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main

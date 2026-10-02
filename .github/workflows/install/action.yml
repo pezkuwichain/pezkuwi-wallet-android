@@ -14,6 +14,9 @@ runs:
       uses: android-actions/setup-android@v3
       with:
         cmdline-tools-version: 12266719
+        # The action's default also installs the legacy 'tools' package, which the current
+        # SDK repository no longer serves ("Failed to find package 'tools'"), failing the step.
+        packages: 'platform-tools'
 
     - name: Install NDK
       run: |

@@ -3,7 +3,9 @@ package io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs
 import android.util.Log
 import io.novafoundation.nova.common.utils.LOG_TAG
 import io.novafoundation.nova.feature_dapp_impl.web3.Web3Responder
+import io.novafoundation.nova.feature_dapp_impl.web3.states.Web3StateMachineHost
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewHolder
+import org.json.JSONObject
 
 class PolkadotJsResponder(
     private val webViewHolder: WebViewHolder
@@ -35,5 +37,20 @@ class PolkadotJsResponder(
 
     private fun successSubscription(id: String, result: String) = "window.walletExtension.onAppSubscription(\"$id\", $result)"
 
-    private fun failure(id: String, error: Throwable) = "window.walletExtension.onAppResponse(\"$id\", null, new Error(\"${error.message.orEmpty()}\"))"
+    private fun failure(id: String, error: Throwable): String {
+        val message = JSONObject.quote(publicErrorMessage(error))
+
+        return "window.walletExtension.onAppResponse(\"$id\", null, new Error($message))"
+    }
+
+    /**
+     * The page is untrusted, so it only ever receives a fixed message per known rejection reason,
+     * never the text of an arbitrary internal exception.
+     */
+    private fun publicErrorMessage(error: Throwable): String = when (error) {
+        Web3StateMachineHost.NotAuthorizedException -> "Rejected by user"
+        Web3StateMachineHost.SigningFailedException -> "Signing failed"
+        Web3StateMachineHost.PhishingDetectedException -> "Phishing detected!"
+        else -> "Request failed"
+    }
 }
