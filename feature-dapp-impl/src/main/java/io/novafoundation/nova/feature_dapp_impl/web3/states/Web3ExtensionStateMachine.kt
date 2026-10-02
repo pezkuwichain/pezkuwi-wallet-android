@@ -42,6 +42,7 @@ interface Web3StateMachineHost {
 
     object NotAuthorizedException : Exception("Rejected by user")
     object SigningFailedException : Exception("Signing failed")
+    object PhishingDetectedException : Exception("Phishing detected!")
 
     val selectedAccount: Flow<MetaAccount>
     val currentPageAnalyzed: Flow<BrowserPageAnalyzed>
