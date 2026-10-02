@@ -20,6 +20,9 @@ on:
         required: true
         default: main
 
+permissions:
+  contents: read
+
 jobs:
   build:
     uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main

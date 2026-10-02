@@ -29,6 +29,9 @@ env:
   DEBUG_GOOGLE_OAUTH_ID: ${{ secrets.DEBUG_GOOGLE_OAUTH_ID }}
   RELEASE_GOOGLE_OAUTH_ID: ${{ secrets.RELEASE_GOOGLE_OAUTH_ID }}
 
+permissions:
+  contents: read
+
 jobs:
   ktlint:
     name: Kotlin Lint

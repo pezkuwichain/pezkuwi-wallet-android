@@ -11,6 +11,9 @@ on:
         type: string
 
 
+permissions:
+  contents: read
+
 jobs:
   test:
     uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
