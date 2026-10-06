@@ -2083,4 +2083,47 @@ Referral kısmına bu adresi yapıştır:
     <string name="citizenship_approve_address_hint">Başvuranın adresi</string>
     <string name="citizenship_approve_button">Referral Onayla</string>
     <string name="citizenship_approve_success">Referral başarıyla onaylandı</string>
+
+    <!-- Dijital Kurdistan Ecosystem Hub (DApps tab) -->
+    <string name="dks_hub_title">Dijital Kurdistan</string>
+    <string name="dks_hub_subtitle">Ekosistem Merkezi</string>
+    <plurals name="dks_hub_apps_count">
+        <item quantity="one">%d Uygulama</item>
+        <item quantity="other">%d Uygulama</item>
+    </plurals>
+    <string name="dks_hub_back">Geri</string>
+    <string name="dks_hub_section_finance">Finans</string>
+    <string name="dks_hub_section_governance">Yönetişim</string>
+    <string name="dks_hub_section_education">Eğitim</string>
+    <string name="dks_hub_section_social">Sosyal</string>
+    <string name="dks_hub_app_wallet">Cüzdan</string>
+    <string name="dks_hub_app_bank">Banka</string>
+    <string name="dks_hub_app_exchange">Borsa</string>
+    <string name="dks_hub_app_dex">Pez-DEX</string>
+    <string name="dks_hub_app_p2p">P2P / Al-Sat</string>
+    <string name="dks_hub_app_b2b">B2B</string>
+    <string name="dks_hub_app_zekat">Bac/Zekat</string>
+    <string name="dks_hub_app_launchpad">Launchpad</string>
+    <string name="dks_hub_app_president">Başkan</string>
+    <string name="dks_hub_app_assembly">Meclis</string>
+    <string name="dks_hub_app_vote">Oy</string>
+    <string name="dks_hub_app_validators">Doğrulayıcılar</string>
+    <string name="dks_hub_app_justice">Adalet</string>
+    <string name="dks_hub_app_proposals">Öneriler</string>
+    <string name="dks_hub_app_polls">Anketler</string>
+    <string name="dks_hub_app_identity">Kimlik</string>
+    <string name="dks_hub_app_delegation">Delegasyon</string>
+    <string name="dks_hub_app_forum">Forum</string>
+    <string name="dks_hub_app_university">Üniversite</string>
+    <string name="dks_hub_app_perwerde">Perwerde</string>
+    <string name="dks_hub_app_certificates">Sertifikalar</string>
+    <string name="dks_hub_app_research">Araştırma</string>
+    <string name="dks_hub_app_whatskurd">whatsKURD</string>
+    <string name="dks_hub_app_kurdmedia">KurdMedia</string>
+    <string name="dks_hub_app_kurdai">KurdAI</string>
+    <string name="dks_hub_app_games">Oyunlar</string>
+    <string name="dks_hub_app_music">Müzik</string>
+    <string name="dks_hub_app_rewshenbir">Rewshenbir</string>
+    <string name="dks_hub_app_referral">Davet</string>
+    <string name="dks_hub_app_coming_soon">%s, yakında</string>
 </resources>

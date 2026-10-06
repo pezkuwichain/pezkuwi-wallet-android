@@ -21,7 +21,10 @@ import io.novafoundation.nova.feature_dapp_impl.presentation.common.DappModel
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.dappCategoryToUi
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.mapDAppCatalogToDAppCategoryModels
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.mapFavoriteDappToDappModel
+import io.novafoundation.nova.feature_dapp_impl.presentation.main.hub.DksHub
+import io.novafoundation.nova.feature_dapp_impl.presentation.main.hub.DksHubApp
 import io.novafoundation.nova.feature_dapp_impl.presentation.main.model.DAppCategoryState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -76,6 +79,9 @@ class MainDAppViewModel(
         .withLoading()
         .share()
 
+    /** Whether the Dijital Kurdistan hub is open over the catalog. */
+    val dksHubShown = MutableStateFlow(false)
+
     init {
         syncDApps()
     }
@@ -89,7 +95,21 @@ class MainDAppViewModel(
     }
 
     fun dappClicked(dapp: DappModel) {
+        // "Dijital Kurdistan" opens its hub first; the user picks where to go from there.
+        if (DksHub.isEntry(dapp.url)) {
+            dksHubShown.value = true
+            return
+        }
         router.openDAppBrowser(DAppBrowserPayload.Address(dapp.url))
+    }
+
+    fun dksHubAppClicked(app: DksHubApp) {
+        val url = app.url ?: return
+        router.openDAppBrowser(DAppBrowserPayload.Address(url))
+    }
+
+    fun closeDksHub() {
+        dksHubShown.value = false
     }
 
     fun searchClicked() {

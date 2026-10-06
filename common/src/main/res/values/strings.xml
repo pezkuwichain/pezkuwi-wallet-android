@@ -2811,4 +2811,47 @@
     <string name="citizenship_approve_address_hint">Applicant\'s address</string>
     <string name="citizenship_approve_button">Approve Referral</string>
     <string name="citizenship_approve_success">Referral approved successfully</string>
+
+    <!-- Dijital Kurdistan Ecosystem Hub (DApps tab) -->
+    <string name="dks_hub_title">Dijital Kurdistan</string>
+    <string name="dks_hub_subtitle">Ecosystem Hub</string>
+    <plurals name="dks_hub_apps_count">
+        <item quantity="one">%d App</item>
+        <item quantity="other">%d Apps</item>
+    </plurals>
+    <string name="dks_hub_back">Back</string>
+    <string name="dks_hub_section_finance">Finance</string>
+    <string name="dks_hub_section_governance">Governance</string>
+    <string name="dks_hub_section_education">Education</string>
+    <string name="dks_hub_section_social">Social</string>
+    <string name="dks_hub_app_wallet">Wallet</string>
+    <string name="dks_hub_app_bank">Bank</string>
+    <string name="dks_hub_app_exchange">Exchange</string>
+    <string name="dks_hub_app_dex">Pez-DEX</string>
+    <string name="dks_hub_app_p2p">P2P / Buy-Sell</string>
+    <string name="dks_hub_app_b2b">B2B</string>
+    <string name="dks_hub_app_zekat">Bac/Zekat</string>
+    <string name="dks_hub_app_launchpad">Launchpad</string>
+    <string name="dks_hub_app_president">President</string>
+    <string name="dks_hub_app_assembly">Assembly</string>
+    <string name="dks_hub_app_vote">Vote</string>
+    <string name="dks_hub_app_validators">Validators</string>
+    <string name="dks_hub_app_justice">Justice</string>
+    <string name="dks_hub_app_proposals">Proposals</string>
+    <string name="dks_hub_app_polls">Polls</string>
+    <string name="dks_hub_app_identity">Identity</string>
+    <string name="dks_hub_app_delegation">Delegation</string>
+    <string name="dks_hub_app_forum">Forum</string>
+    <string name="dks_hub_app_university">University</string>
+    <string name="dks_hub_app_perwerde">Perwerde</string>
+    <string name="dks_hub_app_certificates">Certificates</string>
+    <string name="dks_hub_app_research">Research</string>
+    <string name="dks_hub_app_whatskurd">whatsKURD</string>
+    <string name="dks_hub_app_kurdmedia">KurdMedia</string>
+    <string name="dks_hub_app_kurdai">KurdAI</string>
+    <string name="dks_hub_app_games">Games</string>
+    <string name="dks_hub_app_music">Music</string>
+    <string name="dks_hub_app_rewshenbir">Rewshenbir</string>
+    <string name="dks_hub_app_referral">Referral</string>
+    <string name="dks_hub_app_coming_soon">%s, coming soon</string>
 </resources>
