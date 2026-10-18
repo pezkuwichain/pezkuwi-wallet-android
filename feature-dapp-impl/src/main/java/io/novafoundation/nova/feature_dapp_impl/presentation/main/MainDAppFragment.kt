@@ -1,6 +1,7 @@
 package io.novafoundation.nova.feature_dapp_impl.presentation.main
 
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.ConcatAdapter
 import coil.ImageLoader
 import io.novafoundation.nova.common.base.BaseFragment
@@ -11,6 +12,7 @@ import io.novafoundation.nova.common.presentation.LoadingState
 import io.novafoundation.nova.common.utils.insets.applyStatusBarInsets
 import io.novafoundation.nova.common.utils.recyclerView.space.SpaceBetween
 import io.novafoundation.nova.common.utils.recyclerView.space.addSpaceItemDecoration
+import io.novafoundation.nova.common.utils.setVisible
 import io.novafoundation.nova.feature_banners_api.presentation.PromotionBannerAdapter
 import io.novafoundation.nova.feature_banners_api.presentation.bindWithAdapter
 import io.novafoundation.nova.feature_dapp_api.di.DAppFeatureApi
@@ -21,6 +23,8 @@ import io.novafoundation.nova.feature_dapp_impl.presentation.common.DAppClickHan
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.DappCategoryListAdapter
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.DappCategoryViewHolder
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.DappModel
+import io.novafoundation.nova.feature_dapp_impl.presentation.main.hub.DksHubApp
+import io.novafoundation.nova.feature_dapp_impl.presentation.main.hub.DksHubView
 import javax.inject.Inject
 
 class MainDAppFragment :
@@ -28,7 +32,8 @@ class MainDAppFragment :
     DAppClickHandler,
     DAppHeaderAdapter.Handler,
     DappCategoriesAdapter.Handler,
-    MainFavoriteDAppsAdapter.Handler {
+    MainFavoriteDAppsAdapter.Handler,
+    DksHubView.Handler {
 
     override fun createBinding() = FragmentDappMainBinding.inflate(layoutInflater)
 
@@ -45,6 +50,13 @@ class MainDAppFragment :
 
     private val dappCategoriesListAdapter by lazy(LazyThreadSafetyMode.NONE) { DappCategoryListAdapter(this) }
 
+    // Back closes the hub before it leaves the tab.
+    private val closeHubOnBack = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            viewModel.closeDksHub()
+        }
+    }
+
     override fun applyInsets(rootView: View) {
         binder.dappRecyclerViewCatalog.applyStatusBarInsets()
     }
@@ -53,6 +65,10 @@ class MainDAppFragment :
         binder.dappRecyclerViewCatalog.adapter = ConcatAdapter(headerAdapter, bannerAdapter, favoritesAdapter, dappsShimmering, dappCategoriesListAdapter)
         binder.dappRecyclerViewCatalog.itemAnimator = null
         setupRecyclerViewSpacing()
+
+        binder.dappDksHub.hubHandler = this
+        binder.dappDksHub.loadLogo(imageLoader)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, closeHubOnBack)
     }
 
     override fun inject() {
@@ -97,6 +113,19 @@ class MainDAppFragment :
             favoritesAdapter.show(it.isNotEmpty())
             favoritesAdapter.setDApps(it)
         }
+
+        viewModel.dksHubShown.observe { shown ->
+            binder.dappDksHub.setVisible(shown)
+            closeHubOnBack.isEnabled = shown
+        }
+    }
+
+    override fun onHubAppClicked(app: DksHubApp) {
+        viewModel.dksHubAppClicked(app)
+    }
+
+    override fun onHubBackClicked() {
+        viewModel.closeDksHub()
     }
 
     override fun onCategoryClicked(id: String) {

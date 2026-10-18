@@ -2795,4 +2795,46 @@
     <string name="citizenship_approve_address_hint">Navnîşana serlêder</string>
     <string name="citizenship_approve_button">Referralê bipejirîne</string>
     <string name="citizenship_approve_success">Referral bi serkeftî hat pejirandin</string>
+
+    <!-- Dijital Kurdistan Ecosystem Hub (DApps tab) -->
+    <string name="dks_hub_title">Kurdistana Dîjîtal</string>
+    <string name="dks_hub_subtitle">Navenda Ekosîstemê</string>
+    <plurals name="dks_hub_apps_count">
+        <item quantity="one">%d Sepan</item>
+        <item quantity="other">%d Sepan</item>
+    </plurals>
+    <string name="dks_hub_back">Paş</string>
+    <string name="dks_hub_section_finance">Darayî</string>
+    <string name="dks_hub_section_governance">Rêveberî</string>
+    <string name="dks_hub_section_education">Perwerde</string>
+    <string name="dks_hub_section_social">Civakî</string>
+    <string name="dks_hub_app_wallet">Berîk</string>
+    <string name="dks_hub_app_bank">Bank</string>
+    <string name="dks_hub_app_exchange">Danûstandin</string>
+    <string name="dks_hub_app_dex">Pez-DEX</string>
+    <string name="dks_hub_app_p2p">P2P / Kirîn-Firotin</string>
+    <string name="dks_hub_app_b2b">B2B</string>
+    <string name="dks_hub_app_zekat">Bac/Zekat</string>
+    <string name="dks_hub_app_launchpad">Destpêk</string>
+    <string name="dks_hub_app_president">Serok</string>
+    <string name="dks_hub_app_assembly">Meclîs</string>
+    <string name="dks_hub_app_vote">Deng bide</string>
+    <string name="dks_hub_app_validators">Pejirandox</string>
+    <string name="dks_hub_app_justice">Dadwerî</string>
+    <string name="dks_hub_app_proposals">Pêşniyar</string>
+    <string name="dks_hub_app_polls">Rapirsî</string>
+    <string name="dks_hub_app_identity">Nasnama</string>
+    <string name="dks_hub_app_delegation">Wekîltî</string>
+    <string name="dks_hub_app_forum">Forum</string>
+    <string name="dks_hub_app_university">Zanîngeh</string>
+    <string name="dks_hub_app_perwerde">Perwerde</string>
+    <string name="dks_hub_app_certificates">Belge</string>
+    <string name="dks_hub_app_research">Lêkolîn</string>
+    <string name="dks_hub_app_whatskurd">whatsKURD</string>
+    <string name="dks_hub_app_kurdmedia">KurdMedya</string>
+    <string name="dks_hub_app_kurdai">KurdAI</string>
+    <string name="dks_hub_app_games">Lîstik</string>
+    <string name="dks_hub_app_music">Muzîk</string>
+    <string name="dks_hub_app_rewshenbir">Rewşenbîr</string>
+    <string name="dks_hub_app_referral">Referans</string>
 </resources>
