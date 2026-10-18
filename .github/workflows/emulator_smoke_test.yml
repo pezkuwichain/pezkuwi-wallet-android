@@ -1,0 +1,73 @@
+name: Emulator smoke test
+
+# Installs the release APK on an Android emulator and checks it starts and
+# reaches the welcome screen. Called by the release workflow on every build.
+# A pull request that changes the test runs it against the latest release APK
+# from main; it can also be run by hand against the APK of a given run.
+
+on:
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      run-id:
+        description: "Run whose 'apk' artifact to test"
+        required: true
+  pull_request:
+    paths:
+      - .github/workflows/emulator_smoke_test.yml
+      - .github/scripts/smoke-test.sh
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pick the APK to test
+        id: apk
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run-id }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            RUN_ID=$(gh api "repos/${{ github.repository }}/actions/artifacts?name=apk&per_page=20" \
+              --jq '[.artifacts[] | select(.expired | not) | select(.workflow_run.head_branch == "main")][0].workflow_run.id')
+            [ -n "$RUN_ID" ] && [ "$RUN_ID" != "null" ] || { echo "::error::no release APK from main to test"; exit 1; }
+          fi
+          echo "run-id=${RUN_ID:-${{ github.run_id }}}" >> "$GITHUB_OUTPUT"
+
+      - name: Download built artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: apk
+          path: app
+          run-id: ${{ steps.apk.outputs.run-id }}
+          github-token: ${{ github.token }}
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Launch the app on an emulator
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          script: .github/scripts/smoke-test.sh app/releaseMarket/app-releaseMarket.apk
+
+      - name: Upload screen, view tree and logcat
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-output
+          path: smoke-out/
+          if-no-files-found: ignore
