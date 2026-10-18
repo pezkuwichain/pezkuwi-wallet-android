@@ -1,8 +1,9 @@
 name: Emulator smoke test
 
 # Installs the release APK on an Android emulator and checks it starts and
-# reaches the welcome screen. Called by the release workflow on every build;
-# can be run by hand against the APK of an earlier run.
+# reaches the welcome screen. Called by the release workflow on every build.
+# A pull request that changes the test runs it against the latest release APK
+# from main; it can also be run by hand against the APK of a given run.
 
 on:
   workflow_call:
@@ -11,6 +12,10 @@ on:
       run-id:
         description: "Run whose 'apk' artifact to test"
         required: true
+  pull_request:
+    paths:
+      - .github/workflows/emulator_smoke_test.yml
+      - .github/scripts/smoke-test.sh
 
 permissions:
   contents: read
@@ -23,12 +28,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Pick the APK to test
+        id: apk
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run-id }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            RUN_ID=$(gh api "repos/${{ github.repository }}/actions/artifacts?name=apk&per_page=20" \
+              --jq '[.artifacts[] | select(.expired | not) | select(.workflow_run.head_branch == "main")][0].workflow_run.id')
+            [ -n "$RUN_ID" ] && [ "$RUN_ID" != "null" ] || { echo "::error::no release APK from main to test"; exit 1; }
+          fi
+          echo "run-id=${RUN_ID:-${{ github.run_id }}}" >> "$GITHUB_OUTPUT"
+
       - name: Download built artifact
         uses: actions/download-artifact@v4
         with:
           name: apk
           path: app
-          run-id: ${{ inputs.run-id || github.run_id }}
+          run-id: ${{ steps.apk.outputs.run-id }}
           github-token: ${{ github.token }}
 
       - name: Enable KVM
