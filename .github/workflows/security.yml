@@ -77,6 +77,10 @@ jobs:
         with:
           fail-on-severity: critical
           deny-licenses: GPL-3.0, AGPL-3.0
+          # TruffleHog (AGPL-3.0) is run unmodified as a CI scanner; it is not
+          # linked into or shipped with anything, so the licence's obligations
+          # do not reach this repository. Only this package is exempt.
+          allow-dependencies-licenses: pkg:githubactions/trufflesecurity/trufflehog
 
   secret-scan:
     name: Secret Scan
@@ -88,12 +92,26 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: TruffleHog Secret Scan
-        uses: trufflesecurity/trufflehog@main
+      # Push and pull_request scan only the commits they bring: the action picks
+      # the range from the event. `base: main` made a push to main rescan the
+      # whole history, where Nova's own Infura keys are still live, so this job
+      # was red on every push and a new leak would have looked like the old red.
+      - name: TruffleHog Secret Scan (new commits)
+        if: github.event_name != 'schedule'
+        uses: trufflesecurity/trufflehog@e76dff8a7e57d6df0c60ad8cbf5d5cba505a8fc9 # v3.99.2
         with:
           path: ./
-          base: ${{ github.event.repository.default_branch }}
+          version: 3.99.2
           extra_args: --only-verified
+
+      # The weekly run checks what is in the tree today, not the history.
+      - name: TruffleHog Secret Scan (current tree)
+        if: github.event_name == 'schedule'
+        run: |
+          mkdir -p "$RUNNER_TEMP/tree"
+          git archive HEAD | tar -x -C "$RUNNER_TEMP/tree"
+          docker run --rm -v "$RUNNER_TEMP/tree:/tree" ghcr.io/trufflesecurity/trufflehog:3.99.2 \
+            filesystem /tree --fail --no-update --github-actions --only-verified
 
   hardcoded-secrets:
     name: Hardcoded Secret Detection
