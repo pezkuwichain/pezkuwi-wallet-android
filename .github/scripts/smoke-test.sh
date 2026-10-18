@@ -29,7 +29,7 @@ for _ in $(seq 1 $((TIMEOUT / 3))); do
   fi
   adb shell pidof "$PKG" >/dev/null || fail "the app process is gone"
   adb shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1 || continue
-  if adb exec-out cat /sdcard/ui.xml | grep -q "$PKG:id/welcomeCreateWalletButton" &&
+  if adb exec-out cat /sdcard/ui.xml | grep -q "$PKG:id/welcomeCreateWalletButtonNAIL" &&
      adb exec-out cat /sdcard/ui.xml | grep -q "$PKG:id/welcomeRestoreWalletButton"; then
     echo "welcome screen shown, both create and restore buttons present"
     adb exec-out screencap -p > "$OUT/screen.png" || true
