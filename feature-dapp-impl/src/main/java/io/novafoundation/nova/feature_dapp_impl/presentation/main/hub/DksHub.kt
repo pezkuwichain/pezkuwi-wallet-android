@@ -101,7 +101,7 @@ object DksHub {
             apps = listOf(
                 DksHubApp("whatskurd", "💬", R.string.dks_hub_app_whatskurd, web("/social/whatskurd")),
                 DksHubApp("forum", "📰", R.string.dks_hub_app_forum, web("/forum")),
-                DksHubApp("kurdmedia", "📺", R.string.dks_hub_app_kurdmedia, web("/social/kurdmedia")),
+                DksHubApp("kurdmedia", "📺", R.string.dks_hub_app_kurdmedia, "https://dks.news"),
                 DksHubApp("kurdai", "🎙️", R.string.dks_hub_app_kurdai, "https://kurdishtts.dks.news"),
                 DksHubApp("games", "🎮", R.string.dks_hub_app_games, "https://games.pex.mom"),
                 DksHubApp("music", "🎵", R.string.dks_hub_app_music, "https://music.dks.news"),
