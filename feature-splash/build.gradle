@@ -33,6 +33,7 @@ dependencies {
 
     testImplementation jUnitDep
     testImplementation mockitoDep
+    testImplementation project(':test-shared')
 
     implementation coroutinesDep
     implementation coroutinesAndroidDep
