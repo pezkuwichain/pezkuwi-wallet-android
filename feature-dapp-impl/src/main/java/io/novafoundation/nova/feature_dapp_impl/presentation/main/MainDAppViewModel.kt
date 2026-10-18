@@ -104,8 +104,7 @@ class MainDAppViewModel(
     }
 
     fun dksHubAppClicked(app: DksHubApp) {
-        val url = app.url ?: return
-        router.openDAppBrowser(DAppBrowserPayload.Address(url))
+        router.openDAppBrowser(DAppBrowserPayload.Address(app.url))
     }
 
     fun closeDksHub() {

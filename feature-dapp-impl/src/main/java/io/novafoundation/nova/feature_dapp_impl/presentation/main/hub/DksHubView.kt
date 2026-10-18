@@ -221,13 +221,8 @@ class DksHubView @JvmOverloads constructor(
             gravity = Gravity.CENTER_HORIZONTAL
             setPadding(dp(2), dp(6), dp(2), dp(8))
             background = ripple(Color.TRANSPARENT, radius = dp(14).toFloat(), rippleColor = ColorUtils.setAlphaComponent(color, 0x55))
-            if (app.isAvailable) {
-                contentDescription = context.getString(app.title)
-                setOnClickListener { hubHandler?.onHubAppClicked(app) }
-            } else {
-                contentDescription = context.getString(R.string.dks_hub_app_coming_soon, context.getString(app.title))
-                alpha = 0.45f
-            }
+            contentDescription = context.getString(app.title)
+            setOnClickListener { hubHandler?.onHubAppClicked(app) }
         }
         // The icon sits on a soft disc of the section's colour, lit from its centre.
         val icon = TextView(context).apply {

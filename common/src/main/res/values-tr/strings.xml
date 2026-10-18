@@ -2125,5 +2125,4 @@ Referral kısmına bu adresi yapıştır:
     <string name="dks_hub_app_music">Müzik</string>
     <string name="dks_hub_app_rewshenbir">Rewshenbir</string>
     <string name="dks_hub_app_referral">Davet</string>
-    <string name="dks_hub_app_coming_soon">%s, yakında</string>
 </resources>

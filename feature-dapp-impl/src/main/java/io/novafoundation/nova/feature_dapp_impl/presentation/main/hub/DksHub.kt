@@ -9,18 +9,15 @@ import io.novafoundation.nova.feature_dapp_impl.R
  * in the DApps tab, before choosing where to go. Four sections, each a grid of apps.
  *
  * Every app opens in the DApp browser. Most are pages of the web app at app.pezkuwichain.io,
- * the same routes its own mobile home links to; the rest are their own sites. An app with
- * no address yet is shown dimmed and does nothing when tapped.
+ * the same routes its own mobile home links to; the rest are their own sites.
  */
 
 data class DksHubApp(
     val id: String,
     val emoji: String,
     @StringRes val title: Int,
-    val url: String?,
-) {
-    val isAvailable: Boolean get() = url != null
-}
+    val url: String,
+)
 
 data class DksHubSection(
     val id: String,
@@ -107,7 +104,7 @@ object DksHub {
                 DksHubApp("kurdmedia", "📺", R.string.dks_hub_app_kurdmedia, web("/social/kurdmedia")),
                 DksHubApp("kurdai", "🎙️", R.string.dks_hub_app_kurdai, "https://kurdishtts.dks.news"),
                 DksHubApp("games", "🎮", R.string.dks_hub_app_games, "https://games.pex.mom"),
-                DksHubApp("music", "🎵", R.string.dks_hub_app_music, null),
+                DksHubApp("music", "🎵", R.string.dks_hub_app_music, "https://music.dks.news"),
                 DksHubApp("rewshenbir", "🦅", R.string.dks_hub_app_rewshenbir, "https://rewshenbir.pezkiwi.app"),
                 DksHubApp("referral", "👥", R.string.dks_hub_app_referral, web("/dashboard")),
             )
