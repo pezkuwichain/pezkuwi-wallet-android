@@ -69,14 +69,9 @@ jobs:
         run: |
           echo "App uploaded to: ${{ steps.s3_upload.outputs.s3_url }}"
 
-  appium-mobile-tests:
-    needs: [upload-to-s3]
-    if: ${{ always() && needs.upload-to-s3.result == 'success' }}
-    uses: ./.github/workflows/appium-mobile-tests.yml
-    with:
-      app_url: ${{ needs.upload-to-s3.outputs.s3_url }}
-      test_grep: "android"
-      allure_job_run_id: ""
-    secrets:
-      WORKFLOW_TOKEN: ${{ secrets.PAT_TOKEN }}
-      ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
+  smoke-test:
+    needs: build
+    permissions:
+      contents: read
+      actions: read
+    uses: ./.github/workflows/emulator_smoke_test.yml
