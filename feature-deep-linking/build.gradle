@@ -31,6 +31,8 @@ dependencies {
     implementation daggerDep
     ksp daggerCompiler
 
+    testImplementation project(':test-shared')
+
     androidTestImplementation androidTestRunnerDep
     androidTestImplementation androidTestRulesDep
     androidTestImplementation androidJunitDep

@@ -65,4 +65,5 @@ dependencies {
 
     testImplementation jUnitDep
     testImplementation mockitoDep
+    testImplementation project(':test-shared')
 }
