@@ -31,7 +31,9 @@ class ReferendumDeepLinkHandler(
     override suspend fun matches(data: Uri): Boolean {
         val path = data.path ?: return false
 
-        return path.startsWith(ReferendumDetailsDeepLinkConfigurator.PREFIX)
+        // Exact match, not startsWith: otherwise "/open/governance" (and any "/open/gov*") would wrongly
+        // match the referendum prefix "/open/gov" and fail with ReferendumIsNotSpecified.
+        return path == ReferendumDetailsDeepLinkConfigurator.PREFIX
     }
 
     override suspend fun handleDeepLink(data: Uri) = runCatching {
