@@ -11,6 +11,7 @@ import io.novafoundation.nova.common.data.network.AppLinksProvider
 import io.novafoundation.nova.common.data.network.HttpExceptionHandler
 import io.novafoundation.nova.common.data.network.NetworkApiCreator
 import io.novafoundation.nova.common.data.network.TimeHeaderInterceptor
+import io.novafoundation.nova.common.data.network.mirror.ConfigMirrorInterceptor
 import io.novafoundation.nova.common.data.network.rpc.SocketSingleRequestExecutor
 import io.novafoundation.nova.common.di.scope.ApplicationScope
 import io.novafoundation.nova.common.mixin.api.NetworkStateMixin
@@ -76,8 +77,13 @@ class NetworkModule {
 
     @Provides
     @ApplicationScope
+    fun provideConfigMirrorInterceptor() = ConfigMirrorInterceptor()
+
+    @Provides
+    @ApplicationScope
     fun provideOkHttpClient(
-        context: Context
+        context: Context,
+        configMirrorInterceptor: ConfigMirrorInterceptor
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -86,6 +92,7 @@ class NetworkModule {
             .cache(Cache(File(context.cacheDir, HTTP_CACHE), CACHE_SIZE))
             .retryOnConnectionFailure(true)
             .addInterceptor(TimeHeaderInterceptor())
+            .addInterceptor(configMirrorInterceptor)
 
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
