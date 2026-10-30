@@ -12,6 +12,7 @@ import io.novafoundation.nova.core_db.model.chain.AssetSourceLocal
 import io.novafoundation.nova.core_db.model.chain.ChainAssetLocal.Companion.ENABLED_DEFAULT_BOOL
 import io.novafoundation.nova.core_db.model.chain.ChainLocal
 import io.novafoundation.nova.core_db.model.chain.ChainNodeLocal
+import io.novafoundation.nova.core_db.model.chain.JoinedChainInfo
 import io.novafoundation.nova.core_db.model.chain.NodeSelectionPreferencesLocal
 import io.novafoundation.nova.runtime.multiNetwork.chain.mappers.mapExternalApisToLocal
 import io.novafoundation.nova.runtime.multiNetwork.chain.mappers.mapRemoteAssetToLocal
@@ -19,17 +20,48 @@ import io.novafoundation.nova.runtime.multiNetwork.chain.mappers.mapRemoteChainT
 import io.novafoundation.nova.runtime.multiNetwork.chain.mappers.mapRemoteExplorersToLocal
 import io.novafoundation.nova.runtime.multiNetwork.chain.mappers.mapRemoteNodesToLocal
 import io.novafoundation.nova.runtime.multiNetwork.chain.remote.ChainFetcher
+import io.novafoundation.nova.runtime.multiNetwork.chain.remote.model.ChainRemote
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class ChainSyncService(
     private val chainDao: ChainDao,
     private val chainFetcher: ChainFetcher,
-    private val gson: Gson
+    private val gson: Gson,
+    private val bundledChains: BundledChains = BundledChains.None,
 ) {
 
     suspend fun syncUp() = withContext(Dispatchers.Default) {
-        val localChainsJoinedInfo = chainDao.getJoinChainInfo().filter { it.chain.source != ChainLocal.Source.CUSTOM }
+        if (loadLocal().isEmpty()) {
+            // A first install has nothing to show until a chain list arrives. Try the network once (the
+            // config mirrors are behind it), and if that fails, start from the list the APK was built with
+            // so the wallet opens; the remote list replaces it below as soon as it can be fetched.
+            val firstTry = try {
+                chainFetcher.getChains()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(LOG_TAG, "First chain fetch failed, starting from the bundled chain list", e)
+                null
+            }
+
+            if (firstTry != null) {
+                applyRemoteChains(firstTry, loadLocal())
+                return@withContext
+            }
+
+            bundledChains.load()?.let { applyRemoteChains(it, loadLocal()) }
+        }
+
+        val remoteChains = retryUntilDone { chainFetcher.getChains() }
+
+        applyRemoteChains(remoteChains, loadLocal())
+    }
+
+    private suspend fun loadLocal() = chainDao.getJoinChainInfo().filter { it.chain.source != ChainLocal.Source.CUSTOM }
+
+    private suspend fun applyRemoteChains(remoteChains: List<ChainRemote>, localChainsJoinedInfo: List<JoinedChainInfo>) {
         val oldChains = localChainsJoinedInfo.map { it.chain }
         val oldAssets = localChainsJoinedInfo.flatMap { it.assets }.filter { it.source == AssetSourceLocal.DEFAULT }
         val oldNodes = localChainsJoinedInfo.flatMap { it.nodes }.filter { it.source != ChainNodeLocal.Source.CUSTOM }
@@ -39,8 +71,6 @@ class ChainSyncService(
 
         val oldChainsById = oldChains.associateBy { it.id }
         val associatedOldAssets = oldAssets.associateBy { it.fullId() }
-
-        val remoteChains = retryUntilDone { chainFetcher.getChains() }
 
         // A transient upstream issue (CDN hiccup, regional network filtering, a bad publish) can make
         // chainFetcher.getChains() return successfully with a suspiciously small/empty list instead of
@@ -54,7 +84,7 @@ class ChainSyncService(
                 "Refusing to apply chain sync: remote returned ${remoteChains.size} chains vs ${oldChains.size} currently stored " +
                     "(would remove more than half). Likely a transient fetch issue - skipping this sync cycle."
             )
-            return@withContext
+            return
         }
 
         // One malformed/incompatible chain (a new field the app's mapper doesn't understand yet, a bad
