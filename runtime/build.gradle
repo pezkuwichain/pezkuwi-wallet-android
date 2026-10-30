@@ -1,8 +1,8 @@
 apply from: '../scripts/secrets.gradle'
 apply plugin: 'kotlin-parcelize'
+apply from: '../scripts/bundled-config.gradle'
 
 def chainsUrl = "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/chains/v22/android/chains.json"
-def bundledConfigDir = "$buildDir/generated/bundledConfig"
 
 android {
 
@@ -37,6 +37,14 @@ android {
         }
     }
     namespace 'io.novafoundation.nova.runtime'
+
+    testOptions {
+        unitTests {
+            // android.util.Log.* throws "Method ... not mocked" in plain JVM unit tests; the first-install
+            // fallback logs the failed fetch it recovers from.
+            returnDefaultValues = true
+        }
+    }
 }
 
 dependencies {
@@ -71,41 +79,5 @@ dependencies {
     androidTestImplementation androidJunitDep
 }
 
-// The chain list a first install starts from when none can be fetched (AssetBundledChains). It is the live
-// list at build time, so every build carries the chains that were current when it was made.
-def bundleChainsConfig = tasks.register("bundleChainsConfig") {
-    def target = file("$bundledConfigDir/bundled-config/chains.json")
-    outputs.file(target)
-    outputs.upToDateWhen { false }
-
-    doLast {
-        def sources = [
-            chainsUrl,
-            chainsUrl.replace("https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/",
-                "https://cdn.jsdelivr.net/gh/pezkuwichain/pezkuwi-wallet-utils@master/")
-        ]
-        def bytes = null
-        for (source in sources) {
-            try {
-                bytes = new URL(source).getBytes(connectTimeout: 20_000, readTimeout: 60_000)
-                break
-            } catch (IOException e) {
-                logger.warn("bundleChainsConfig: $source failed: $e")
-            }
-        }
-        if (bytes == null) throw new GradleException("bundleChainsConfig: no source answered")
-
-        def chains = new groovy.json.JsonSlurper().parse(bytes)
-        if (!(chains instanceof List) || chains.isEmpty()) {
-            throw new GradleException("bundleChainsConfig: the chain list is not a non-empty JSON array")
-        }
-
-        target.parentFile.mkdirs()
-        target.bytes = bytes
-        def sha256 = java.security.MessageDigest.getInstance("SHA-256").digest(bytes).encodeHex().toString()
-        logger.lifecycle("bundleChainsConfig: ${chains.size()} chains, sha256 $sha256")
-    }
-}
-
-android.sourceSets.main.assets.srcDir(bundledConfigDir)
-preBuild.dependsOn(bundleChainsConfig)
+// The chain list a first install starts from when none can be fetched (AssetBundledChains).
+bundleConfigAsset("bundleChainsConfig", chainsUrl, "bundled-config/chains.json") { it instanceof List && !it.isEmpty() }

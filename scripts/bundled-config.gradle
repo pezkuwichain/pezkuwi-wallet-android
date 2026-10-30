@@ -1,0 +1,44 @@
+// Config files the APK is built with, so a first install can open when none can be fetched
+// (GitHub blocked, offline). Each is the live file at build time, fetched from GitHub or its jsDelivr
+// mirror, checked by the caller's `isUsable`, and placed in the module's assets under `assetPath`.
+//
+//   apply from: '../scripts/bundled-config.gradle'
+//   bundleConfigAsset("bundleChainsConfig", chainsUrl, "bundled-config/chains.json") { it instanceof List && !it.isEmpty() }
+
+ext.bundleConfigAsset = { String taskName, String url, String assetPath, Closure isUsable ->
+    def outputDir = "$buildDir/generated/bundledConfig"
+    def target = file("$outputDir/$assetPath")
+
+    def task = tasks.register(taskName) {
+        outputs.file(target)
+        outputs.upToDateWhen { false }
+
+        doLast {
+            def sources = [
+                url,
+                url.replaceFirst('^https://raw\\.githubusercontent\\.com/([^/]+)/([^/]+)/([^/]+)/', 'https://cdn.jsdelivr.net/gh/$1/$2@$3/')
+            ]
+            def bytes = null
+            for (source in sources) {
+                try {
+                    bytes = new URL(source).getBytes(connectTimeout: 20_000, readTimeout: 60_000)
+                    break
+                } catch (IOException e) {
+                    logger.warn("$taskName: $source failed: $e")
+                }
+            }
+            if (bytes == null) throw new GradleException("$taskName: no source answered for $url")
+
+            def parsed = new groovy.json.JsonSlurper().parse(bytes)
+            if (!isUsable(parsed)) throw new GradleException("$taskName: $url is not a usable config file")
+
+            target.parentFile.mkdirs()
+            target.bytes = bytes
+            def sha256 = java.security.MessageDigest.getInstance("SHA-256").digest(bytes).encodeHex().toString()
+            logger.lifecycle("$taskName: $assetPath ${bytes.length} bytes, sha256 $sha256")
+        }
+    }
+
+    android.sourceSets.main.assets.srcDir(outputDir)
+    preBuild.dependsOn(task)
+}
