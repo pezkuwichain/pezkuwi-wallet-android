@@ -25,6 +25,7 @@ import io.novafoundation.nova.common.data.memory.ComputationalCache
 import io.novafoundation.nova.common.data.memory.RealComputationalCache
 import io.novafoundation.nova.common.data.network.NetworkApiCreator
 import io.novafoundation.nova.common.data.network.coingecko.CoinGeckoLinkParser
+import io.novafoundation.nova.common.data.network.dns.EncryptedFirstDns
 import io.novafoundation.nova.common.data.network.mirror.ConfigMirrorInterceptor
 import io.novafoundation.nova.common.data.providers.deviceid.AndroidDeviceIdProvider
 import io.novafoundation.nova.common.data.providers.deviceid.DeviceIdProvider
@@ -146,12 +147,17 @@ class CommonModule {
 
     @Provides
     @ApplicationScope
-    fun imageLoader(context: Context, configMirrorInterceptor: ConfigMirrorInterceptor) = ImageLoader.Builder(context)
+    fun imageLoader(
+        context: Context,
+        configMirrorInterceptor: ConfigMirrorInterceptor,
+        encryptedFirstDns: EncryptedFirstDns
+    ) = ImageLoader.Builder(context)
         // Token icons live on raw.githubusercontent.com too; Coil keeps its own disk cache.
         .okHttpClient {
             OkHttpClient.Builder()
                 .cache(CoilUtils.createDefaultCache(context))
                 .addInterceptor(configMirrorInterceptor)
+                .dns(encryptedFirstDns)
                 .build()
         }
         .componentRegistry {

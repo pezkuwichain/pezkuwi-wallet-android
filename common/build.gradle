@@ -115,6 +115,7 @@ dependencies {
     api gsonConvertedDep
     implementation scalarsConverterDep
     implementation interceptorVersion
+    implementation okhttpDnsOverHttpsDep
 
     implementation zXingCoreDep
     implementation zXingEmbeddedDep
