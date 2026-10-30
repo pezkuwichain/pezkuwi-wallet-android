@@ -23,7 +23,7 @@ class Envelope(val payload: ByteArray, val signatures: List<Pair<String, ByteArr
     companion object {
 
         fun parse(bytes: ByteArray): Envelope = guard {
-            val json = JsonParser.parseString(String(bytes, Charsets.UTF_8)).asJsonObject
+            val json = parseJson(String(bytes, Charsets.UTF_8)).asJsonObject
             val signatures = json.getAsJsonArray("signatures").map {
                 val signature = it.asJsonObject
                 signature["keyid"].asString to Base64.decode(signature["sig"].asString)
@@ -43,7 +43,7 @@ class Envelope(val payload: ByteArray, val signatures: List<Pair<String, ByteArr
     }
 
     fun payloadJson(expectedType: String): JsonObject = guard {
-        val json = JsonParser.parseString(String(payload, Charsets.UTF_8)).asJsonObject
+        val json = parseJson(String(payload, Charsets.UTF_8)).asJsonObject
         if (json["type"].asString != expectedType) throw SignedConfigException("expected $expectedType, got ${json["type"]}")
         json
     }
@@ -166,3 +166,7 @@ private inline fun <T> guard(block: () -> T): T = try {
 } catch (e: Exception) {
     throw SignedConfigException("malformed metadata: $e")
 }
+
+// The Gson the app resolves predates JsonParser.parseString.
+@Suppress("DEPRECATION")
+private fun parseJson(text: String) = JsonParser().parse(text)
