@@ -1,5 +1,6 @@
 package io.novafoundation.nova.runtime.di
 
+import android.content.Context
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,7 @@ import io.novafoundation.nova.runtime.ethereum.Web3ApiFactory
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.asset.EvmAssetsSyncService
 import io.novafoundation.nova.runtime.multiNetwork.asset.remote.AssetFetcher
+import io.novafoundation.nova.runtime.multiNetwork.chain.AssetBundledChains
 import io.novafoundation.nova.runtime.multiNetwork.chain.ChainSyncService
 import io.novafoundation.nova.runtime.multiNetwork.chain.remote.ChainFetcher
 import io.novafoundation.nova.runtime.multiNetwork.connection.ChainConnection
@@ -56,8 +58,9 @@ class ChainRegistryModule {
         dao: ChainDao,
         chainAssetDao: ChainAssetDao,
         chainFetcher: ChainFetcher,
-        gson: Gson
-    ) = ChainSyncService(dao, chainFetcher, gson)
+        gson: Gson,
+        context: Context
+    ) = ChainSyncService(dao, chainFetcher, gson, AssetBundledChains(context, gson))
 
     @Provides
     @ApplicationScope

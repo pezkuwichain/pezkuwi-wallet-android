@@ -22,5 +22,10 @@ public class Log {
         return 0;
     }
 
+    public static int e(String tag, String msg, Throwable tr) {
+        System.out.println("ERROR: " + tag + ": " + msg + ": " + tr);
+        return 0;
+    }
+
     // add other methods if required...
 }

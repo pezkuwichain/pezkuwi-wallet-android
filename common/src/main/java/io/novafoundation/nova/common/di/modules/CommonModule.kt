@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import coil.ImageLoader
 import coil.decode.SvgDecoder
+import coil.util.CoilUtils
 import com.google.android.play.core.integrity.IntegrityManagerFactory
 import dagger.Module
 import dagger.Provides
@@ -24,6 +25,8 @@ import io.novafoundation.nova.common.data.memory.ComputationalCache
 import io.novafoundation.nova.common.data.memory.RealComputationalCache
 import io.novafoundation.nova.common.data.network.NetworkApiCreator
 import io.novafoundation.nova.common.data.network.coingecko.CoinGeckoLinkParser
+import io.novafoundation.nova.common.data.network.dns.EncryptedFirstDns
+import io.novafoundation.nova.common.data.network.mirror.ConfigMirrorInterceptor
 import io.novafoundation.nova.common.data.providers.deviceid.AndroidDeviceIdProvider
 import io.novafoundation.nova.common.data.providers.deviceid.DeviceIdProvider
 import io.novafoundation.nova.common.data.repository.AssetsIconModeRepository
@@ -116,6 +119,7 @@ import io.novafoundation.nova.common.view.input.selector.ListSelectorMixin
 import io.novafoundation.nova.common.view.input.selector.RealListSelectorMixinFactory
 import io.novasama.substrate_sdk_android.encrypt.Signer
 import io.novasama.substrate_sdk_android.icon.IconGenerator
+import okhttp3.OkHttpClient
 import java.security.SecureRandom
 import java.util.Random
 import javax.inject.Qualifier
@@ -143,7 +147,19 @@ class CommonModule {
 
     @Provides
     @ApplicationScope
-    fun imageLoader(context: Context) = ImageLoader.Builder(context)
+    fun imageLoader(
+        context: Context,
+        configMirrorInterceptor: ConfigMirrorInterceptor,
+        encryptedFirstDns: EncryptedFirstDns
+    ) = ImageLoader.Builder(context)
+        // Token icons live on raw.githubusercontent.com too; Coil keeps its own disk cache.
+        .okHttpClient {
+            OkHttpClient.Builder()
+                .cache(CoilUtils.createDefaultCache(context))
+                .addInterceptor(configMirrorInterceptor)
+                .dns(encryptedFirstDns)
+                .build()
+        }
         .componentRegistry {
             add(SvgDecoder(context))
         }

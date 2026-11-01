@@ -11,7 +11,12 @@ import io.novafoundation.nova.common.data.network.AppLinksProvider
 import io.novafoundation.nova.common.data.network.HttpExceptionHandler
 import io.novafoundation.nova.common.data.network.NetworkApiCreator
 import io.novafoundation.nova.common.data.network.TimeHeaderInterceptor
+import io.novafoundation.nova.common.data.network.dns.EncryptedFirstDns
+import io.novafoundation.nova.common.data.network.mirror.ConfigMirrorInterceptor
 import io.novafoundation.nova.common.data.network.rpc.SocketSingleRequestExecutor
+import io.novafoundation.nova.common.data.network.signed.PreferencesSignedConfigStore
+import io.novafoundation.nova.common.data.network.signed.SignedConfigInterceptor
+import io.novafoundation.nova.common.data.network.signed.bundledConfigRoot
 import io.novafoundation.nova.common.di.scope.ApplicationScope
 import io.novafoundation.nova.common.mixin.api.NetworkStateMixin
 import io.novafoundation.nova.common.mixin.impl.NetworkStateProvider
@@ -35,6 +40,9 @@ import java.util.concurrent.TimeUnit
 private const val HTTP_CACHE = "http_cache"
 private const val CACHE_SIZE = 50L * 1024L * 1024L // 50 MiB
 private const val TIMEOUT_SECONDS = 20L
+private const val DOH_TIMEOUT_SECONDS = 4L
+private const val DOH_CACHE = "doh_cache"
+private const val DOH_CACHE_SIZE = 1L * 1024L * 1024L // 1 MiB
 
 private const val SOCKET_CONNECTION_TIMEOUT = 5_000
 
@@ -76,8 +84,36 @@ class NetworkModule {
 
     @Provides
     @ApplicationScope
+    fun provideConfigMirrorInterceptor() = ConfigMirrorInterceptor()
+
+    @Provides
+    @ApplicationScope
+    fun provideSignedConfigInterceptor(context: Context) = SignedConfigInterceptor(
+        bundledRoot = context.bundledConfigRoot(),
+        store = PreferencesSignedConfigStore(context),
+    )
+
+    @Provides
+    @ApplicationScope
+    fun provideEncryptedFirstDns(context: Context): EncryptedFirstDns {
+        // Only carries DNS queries to the resolvers, which it reaches by IP; short timeouts so a network that
+        // blocks DoH falls back to the system resolver quickly.
+        val resolverClient = OkHttpClient.Builder()
+            .connectTimeout(DOH_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(DOH_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .cache(Cache(File(context.cacheDir, DOH_CACHE), DOH_CACHE_SIZE))
+            .build()
+
+        return EncryptedFirstDns(EncryptedFirstDns.publicResolvers(resolverClient))
+    }
+
+    @Provides
+    @ApplicationScope
     fun provideOkHttpClient(
-        context: Context
+        context: Context,
+        signedConfigInterceptor: SignedConfigInterceptor,
+        configMirrorInterceptor: ConfigMirrorInterceptor,
+        encryptedFirstDns: EncryptedFirstDns
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -85,7 +121,11 @@ class NetworkModule {
             .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .cache(Cache(File(context.cacheDir, HTTP_CACHE), CACHE_SIZE))
             .retryOnConnectionFailure(true)
+            .dns(encryptedFirstDns)
             .addInterceptor(TimeHeaderInterceptor())
+            // Outside the mirrors, so whatever host answered, the file is checked against the signed list.
+            .addInterceptor(signedConfigInterceptor)
+            .addInterceptor(configMirrorInterceptor)
 
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

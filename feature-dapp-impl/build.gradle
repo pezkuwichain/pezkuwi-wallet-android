@@ -1,6 +1,7 @@
 apply plugin: 'kotlin-parcelize'
 apply from: '../tests.gradle'
 apply from: "../scripts/secrets.gradle"
+apply from: "../scripts/bundled-config.gradle"
 
 android {
 
@@ -20,6 +21,14 @@ android {
         }
     }
     namespace 'io.novafoundation.nova.feature_dapp_impl'
+
+    testOptions {
+        unitTests {
+            // android.util.Log.* throws "Method ... not mocked" in plain JVM unit tests; the first-install
+            // fallback logs the failed fetch it recovers from.
+            returnDefaultValues = true
+        }
+    }
 
     packagingOptions {
         resources.excludes.add("META-INF/NOTICE.md")
@@ -96,3 +105,10 @@ dependencies {
     testImplementation jUnitDep
     testImplementation mockitoDep
 }
+
+// The DApps catalog a first install shows when none can be fetched (AssetBundledDappCatalog).
+bundleConfigAsset(
+    "bundleDappsConfig",
+    "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/dapps/dapps_full.json",
+    "bundled-config/dapps.json"
+) { it instanceof Map && it.dapps instanceof List && !it.dapps.isEmpty() }

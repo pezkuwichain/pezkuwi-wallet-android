@@ -25,6 +25,7 @@ import io.novafoundation.nova.test_shared.emptyDiff
 import io.novafoundation.nova.test_shared.insertsElement
 import io.novafoundation.nova.test_shared.removesElement
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -128,6 +129,50 @@ class ChainSyncServiceTest {
                 externalApisDiff = insertsTransferApiByUrl(transferApiUrl),
                 nodeSelectionPreferencesDiff = insertsNodeSelectionPreferences(REMOTE_CHAIN.chainId)
             )
+        }
+    }
+
+    @Test
+    fun `a first install starts from the bundled list when the fetch fails`() {
+        runBlocking {
+            val bundled = REMOTE_CHAIN.copy(chainId = "0xbb")
+            chainSyncService = ChainSyncService(dao, chainFetcher, gson) { listOf(bundled) }
+            localReturns(emptyList())
+            `when`(chainFetcher.getChains()).thenThrow(RuntimeException("unreachable")).thenReturn(listOf(REMOTE_CHAIN))
+
+            chainSyncService.syncUp()
+
+            verify(dao).applyDiff(
+                chainDiff = insertsChainWithId(bundled.chainId),
+                assetsDiff = insertsAssetWithId(assetId),
+                nodesDiff = insertsNodeWithUrl(nodeUrl),
+                explorersDiff = insertsExplorerByName(explorerName),
+                externalApisDiff = insertsTransferApiByUrl(transferApiUrl),
+                nodeSelectionPreferencesDiff = insertsNodeSelectionPreferences(bundled.chainId)
+            )
+            // ... and the fetched list still follows it.
+            verify(dao).applyDiff(
+                chainDiff = insertsChainWithId(REMOTE_CHAIN.chainId),
+                assetsDiff = insertsAssetWithId(assetId),
+                nodesDiff = insertsNodeWithUrl(nodeUrl),
+                explorersDiff = insertsExplorerByName(explorerName),
+                externalApisDiff = insertsTransferApiByUrl(transferApiUrl),
+                nodeSelectionPreferencesDiff = insertsNodeSelectionPreferences(REMOTE_CHAIN.chainId)
+            )
+        }
+    }
+
+    @Test
+    fun `the bundled list is not read when the fetch works`() {
+        runBlocking {
+            var bundledReads = 0
+            chainSyncService = ChainSyncService(dao, chainFetcher, gson) { bundledReads++; emptyList() }
+            localReturns(emptyList())
+            remoteReturns(listOf(REMOTE_CHAIN))
+
+            chainSyncService.syncUp()
+
+            assertEquals(0, bundledReads)
         }
     }
 
