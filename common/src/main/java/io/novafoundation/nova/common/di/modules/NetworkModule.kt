@@ -14,6 +14,9 @@ import io.novafoundation.nova.common.data.network.TimeHeaderInterceptor
 import io.novafoundation.nova.common.data.network.dns.EncryptedFirstDns
 import io.novafoundation.nova.common.data.network.mirror.ConfigMirrorInterceptor
 import io.novafoundation.nova.common.data.network.rpc.SocketSingleRequestExecutor
+import io.novafoundation.nova.common.data.network.signed.PreferencesSignedConfigStore
+import io.novafoundation.nova.common.data.network.signed.SignedConfigInterceptor
+import io.novafoundation.nova.common.data.network.signed.bundledConfigRoot
 import io.novafoundation.nova.common.di.scope.ApplicationScope
 import io.novafoundation.nova.common.mixin.api.NetworkStateMixin
 import io.novafoundation.nova.common.mixin.impl.NetworkStateProvider
@@ -85,6 +88,13 @@ class NetworkModule {
 
     @Provides
     @ApplicationScope
+    fun provideSignedConfigInterceptor(context: Context) = SignedConfigInterceptor(
+        bundledRoot = context.bundledConfigRoot(),
+        store = PreferencesSignedConfigStore(context),
+    )
+
+    @Provides
+    @ApplicationScope
     fun provideEncryptedFirstDns(context: Context): EncryptedFirstDns {
         // Only carries DNS queries to the resolvers, which it reaches by IP; short timeouts so a network that
         // blocks DoH falls back to the system resolver quickly.
@@ -101,6 +111,7 @@ class NetworkModule {
     @ApplicationScope
     fun provideOkHttpClient(
         context: Context,
+        signedConfigInterceptor: SignedConfigInterceptor,
         configMirrorInterceptor: ConfigMirrorInterceptor,
         encryptedFirstDns: EncryptedFirstDns
     ): OkHttpClient {
@@ -112,6 +123,8 @@ class NetworkModule {
             .retryOnConnectionFailure(true)
             .dns(encryptedFirstDns)
             .addInterceptor(TimeHeaderInterceptor())
+            // Outside the mirrors, so whatever host answered, the file is checked against the signed list.
+            .addInterceptor(signedConfigInterceptor)
             .addInterceptor(configMirrorInterceptor)
 
         if (BuildConfig.DEBUG) {
