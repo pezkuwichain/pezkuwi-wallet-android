@@ -1,5 +1,5 @@
-Multisig approvals work again on Pezkuwi chains. Signers could open an operation but not approve it — that is fixed.
+The DApps tab now opens the Dijital Kurdistan Ecosystem Hub: finance, governance, education and social apps in one place.
 
-The wallet now tells you when a newer version is available and installs it without leaving the app.
+The wallet keeps working when its configuration server is blocked. It loads chains from backup mirrors, carries a built-in chain list for the first start, and checks the signature of every configuration file.
 
-You can also rate the wallet from inside the app, after you have actually used it.
+Fixed: a crash when the app was reopened from the background, and failed links that reopened on every start.
