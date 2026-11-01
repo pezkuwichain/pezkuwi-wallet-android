@@ -1,5 +1,5 @@
-Pezkuwi zincirlerinde multisig onayı yeniden çalışıyor. İmzacılar işlemi açabiliyor ama onaylayamıyordu; düzeltildi.
+DApps sekmesi artık Dijital Kurdistan Ekosistem Merkezi'ni açıyor: finans, yönetim, eğitim ve sosyal uygulamalar tek yerde.
 
-Cüzdan artık yeni sürüm çıktığında haber veriyor ve güncellemeyi uygulamadan çıkmadan kuruyor.
+Cüzdan, ayar sunucusu engellendiğinde de çalışıyor. Zincirleri yedek aynalardan yüklüyor, ilk açılış için zincir listesini içinde taşıyor ve her ayar dosyasının imzasını kontrol ediyor.
 
-Cüzdanı, gerçekten kullandıktan sonra uygulama içinden puanlayabilirsiniz.
+Düzeltildi: uygulama arka plandan yeniden açılırken oluşan çökme ve her açılışta tekrar açılan başarısız bağlantılar.
