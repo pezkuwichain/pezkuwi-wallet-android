@@ -8,8 +8,9 @@ import io.novafoundation.nova.feature_dapp_impl.R
  * The Dijital Kurdistan Ecosystem Hub: what a user sees after tapping "Dijital Kurdistan"
  * in the DApps tab, before choosing where to go. Four sections, each a grid of apps.
  *
- * Every app opens in the DApp browser. Most are pages of the web app at app.pezkuwichain.io,
- * the same routes its own mobile home links to; the rest are their own sites.
+ * Every app opens in the DApp browser. An app with a domain of its own opens there, even while
+ * that site is still a "coming soon" page; the rest are pages of the web app at app.pezkuwichain.io,
+ * the same routes its own mobile home links to.
  */
 
 data class DksHubApp(
@@ -44,6 +45,7 @@ object DksHub {
 
     private const val WEB_APP = "https://app.pezkuwichain.io"
     private const val EXPLORER = "https://explorer.pezkuwichain.io"
+    private const val GOVERNANCE = "https://governance.pezkuwichain.io"
 
     private fun web(route: String) = WEB_APP + route
 
@@ -54,12 +56,12 @@ object DksHub {
             title = R.string.dks_hub_section_finance,
             color = 0xFF22C55E,
             apps = listOf(
-                DksHubApp("wallet", "👛", R.string.dks_hub_app_wallet, EXPLORER),
+                DksHubApp("wallet", "👛", R.string.dks_hub_app_wallet, "https://cuzdan.pex.network"),
                 DksHubApp("bank", "🏦", R.string.dks_hub_app_bank, web("/finance/bank")),
                 DksHubApp("exchange", "💱", R.string.dks_hub_app_exchange, "https://pex.network"),
                 DksHubApp("dex", "🔄", R.string.dks_hub_app_dex, web("/dex")),
-                DksHubApp("p2p", "🤝", R.string.dks_hub_app_p2p, web("/p2p")),
-                DksHubApp("b2b", "🤖", R.string.dks_hub_app_b2b, web("/bereketli")),
+                DksHubApp("p2p", "🤝", R.string.dks_hub_app_p2p, "https://buy-sell.pezkiwi.app"),
+                DksHubApp("b2b", "🤖", R.string.dks_hub_app_b2b, "https://bereketli.pezkiwi.app"),
                 DksHubApp("zekat", "💵", R.string.dks_hub_app_zekat, web("/finance/zekat")),
                 DksHubApp("launchpad", "🚀", R.string.dks_hub_app_launchpad, web("/launchpad")),
             )
@@ -72,12 +74,12 @@ object DksHub {
             apps = listOf(
                 DksHubApp("president", "👑", R.string.dks_hub_app_president, web("/elections")),
                 DksHubApp("assembly", "🏛️", R.string.dks_hub_app_assembly, web("/governance/assembly")),
-                DksHubApp("vote", "🗳️", R.string.dks_hub_app_vote, web("/elections")),
+                DksHubApp("vote", "🗳️", R.string.dks_hub_app_vote, GOVERNANCE),
                 DksHubApp("validators", "🛡️", R.string.dks_hub_app_validators, EXPLORER),
                 DksHubApp("justice", "⚖️", R.string.dks_hub_app_justice, web("/governance/justice")),
-                DksHubApp("proposals", "📜", R.string.dks_hub_app_proposals, web("/citizens/government")),
+                DksHubApp("proposals", "📜", R.string.dks_hub_app_proposals, GOVERNANCE),
                 DksHubApp("polls", "📊", R.string.dks_hub_app_polls, web("/governance/polls")),
-                DksHubApp("identity", "🪪", R.string.dks_hub_app_identity, web("/identity")),
+                DksHubApp("identity", "🪪", R.string.dks_hub_app_identity, "https://be-citizen.pezkiwi.app"),
                 DksHubApp("delegation", "🔗", R.string.dks_hub_app_delegation, "https://wekil.pex.mom"),
             )
         ),
@@ -100,7 +102,7 @@ object DksHub {
             color = 0xFF3B82F6,
             apps = listOf(
                 DksHubApp("whatskurd", "💬", R.string.dks_hub_app_whatskurd, web("/social/whatskurd")),
-                DksHubApp("forum", "📰", R.string.dks_hub_app_forum, web("/forum")),
+                DksHubApp("forum", "📰", R.string.dks_hub_app_forum, "https://forum.pezkuwichain.io"),
                 DksHubApp("kurdmedia", "📺", R.string.dks_hub_app_kurdmedia, "https://dks.news"),
                 DksHubApp("kurdai", "🎙️", R.string.dks_hub_app_kurdai, "https://kurdishtts.dks.news"),
                 DksHubApp("games", "🎮", R.string.dks_hub_app_games, "https://games.pex.mom"),
