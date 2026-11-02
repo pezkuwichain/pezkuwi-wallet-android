@@ -25,6 +25,8 @@ fn temporary_dir(name: &str) -> std::path::PathBuf {
 }
 
 fn start(db_dir: std::path::PathBuf) -> Engine {
+    // RUST_LOG=... shows smoldot's own timeline when a measurement needs explaining.
+    let _ = env_logger::builder().format_timestamp_millis().is_test(true).try_init();
     Engine::start(db_dir, Arc::new(SystemResolver)).unwrap()
 }
 
@@ -188,4 +190,44 @@ fn syncs_zagros_over_secure_websockets_only() {
         "{resolved}"
     );
     println!("resolved over wss only after {:.1}s", started.elapsed().as_secs_f64());
+}
+
+/// Measures a start from a saved database in a process of its own, as an app launch is. The first
+/// run with an empty `PEZKUWI_LIGHT_DB_DIR` syncs and waits for a save; later runs resume from it.
+#[test]
+#[ignore = "syncs the live Zagros testnet; needs PEZKUWI_LIGHT_RELAY_SPEC, PEZKUWI_LIGHT_PEOPLE_SPEC and PEZKUWI_LIGHT_DB_DIR"]
+fn resolves_after_a_start_from_the_saved_database() {
+    let relay = std::fs::read_to_string(std::env::var("PEZKUWI_LIGHT_RELAY_SPEC").unwrap()).unwrap();
+    let people = std::fs::read_to_string(std::env::var("PEZKUWI_LIGHT_PEOPLE_SPEC").unwrap()).unwrap();
+    let db_dir = std::path::PathBuf::from(std::env::var("PEZKUWI_LIGHT_DB_DIR").unwrap());
+    let warm = db_dir.join("people.db").exists();
+    let started = Instant::now();
+
+    let engine = start(db_dir.clone());
+    engine.add_chain("relay", &relay, None).unwrap();
+    engine.add_chain("people", &people, Some("relay")).unwrap();
+    let mut socket = connect(format!("{}/people", engine.base_url()));
+    rpc(&mut socket, 1, "state_call", serde_json::json!(["NavnisanApi_resolve", scale_bytes(b"dks.kurd")]));
+    let resolved = answer(&mut socket, 1)["result"].as_str().unwrap().to_owned();
+    assert!(
+        resolved.starts_with("0x0195c0de27b9a054a3a68cf2bb26abf99071ad46c2485295bb4120185a811a042f"),
+        "{resolved}"
+    );
+    println!(
+        "{} start resolved after {:.1}s",
+        if warm { "warm" } else { "cold" },
+        started.elapsed().as_secs_f64()
+    );
+
+    if !warm {
+        let synced_at = std::time::SystemTime::now();
+        let deadline = Instant::now() + Duration::from_secs(150);
+        for file in ["relay.db", "people.db"] {
+            let path = db_dir.join(file);
+            while std::fs::metadata(&path).and_then(|m| m.modified()).map_or(true, |at| at < synced_at) {
+                assert!(Instant::now() < deadline, "{file} was not saved after the sync");
+                std::thread::sleep(Duration::from_millis(500));
+            }
+        }
+    }
 }
