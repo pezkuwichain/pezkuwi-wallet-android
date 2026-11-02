@@ -68,6 +68,8 @@ private const val ON_FINALITY_RATE_LIMIT_ERROR_CODE = -32029
 /** How often a connection on the light client checks whether to retry RPC. */
 private const val LIGHT_FALLBACK_TICK_MILLIS = 15_000L
 
+private const val LIGHT_FALLBACK_TAG = "LightFallback"
+
 private val RATE_LIMIT_ERROR_CODES = listOf(
     INFURA_ERROR_CODE,
     ALCHEMY_ERROR_CODE,
@@ -174,6 +176,7 @@ class ChainConnection internal constructor(
      * in the order they arrive.
      */
     private fun Flow<NodeWithSaturatedUrl?>.withLightFallback(lightClients: LightClients): Flow<NodeWithSaturatedUrl?> {
+        Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: light client fallback armed")
         val policy = LightFallbackPolicy()
         var latestRpc: NodeWithSaturatedUrl? = null
         var light: NodeWithSaturatedUrl? = null
@@ -197,22 +200,27 @@ class ChainConnection internal constructor(
                     if (event.state is State.Connected && !onLight) policy.onRpcConnected()
 
                     if (event.state.needsAutobalance()) {
+                        Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: ${event.state} failed, source ${policy.source}, on light $onLight")
                         if (onLight) {
                             policy.onLightUnavailable(rpcNodeCount())
                             emit(latestRpc)
                         } else if (policy.onRpcFailure(rpcNodeCount(), System.currentTimeMillis())) {
                             val url = lightClients.url(chain.value.id)
+                            Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: light client url $url")
                             if (url == null) {
                                 policy.onLightUnavailable(rpcNodeCount())
                             } else {
-                                Log.d(LOG_TAG, "Every RPC node of ${chain.value.name} failed, using the light client")
+                                Log.d(LIGHT_FALLBACK_TAG, "Every RPC node of ${chain.value.name} failed, using the light client")
                                 light = lightClientNode(url).also { emit(it) }
                             }
                         }
                     }
                 }
 
-                FallbackEvent.Tick -> if (policy.onTick(rpcNodeCount(), System.currentTimeMillis())) emit(latestRpc)
+                FallbackEvent.Tick -> if (policy.onTick(rpcNodeCount(), System.currentTimeMillis())) {
+                    Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: retrying RPC")
+                    emit(latestRpc)
+                }
             }
         }
     }
