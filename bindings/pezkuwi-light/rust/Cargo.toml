@@ -10,6 +10,11 @@ publish = false
 # PezkuwiChain fork of smoldot: upstream smoldot cannot verify PezkuwiChain blocks (sovereign
 # sr25519 and BABE VRF signing contexts, `TeyrchainHost` runtime API).
 smoldot-light = { git = "https://github.com/pezkuwichain/smoldot", rev = "182d996a3ae2a9b507a776fa307f2e6fc5d14f7a", default-features = false, features = ["std"] }
+smoldot = { git = "https://github.com/pezkuwichain/smoldot", rev = "182d996a3ae2a9b507a776fa307f2e6fc5d14f7a", default-features = false, features = ["std"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12", "logging"] }
+futures-rustls = { version = "0.26", default-features = false, features = ["ring", "tls12", "logging"] }
+webpki-roots = "0.26"
+pin-project = "1"
 async-tungstenite = { version = "0.28", default-features = false, features = ["handshake", "futures-03-sink"] }
 futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 smol = "2.0"

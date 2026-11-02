@@ -14,8 +14,9 @@ use async_tungstenite::tungstenite::{
     Message,
 };
 use futures_util::{SinkExt as _, StreamExt as _};
+use crate::platform::{PezkuwiPlatform, Resolve};
 use smoldot_light::{
-    platform::DefaultPlatform, AddChainConfig, AddChainConfigJsonRpc, AddChainSuccess, ChainId,
+    AddChainConfig, AddChainConfigJsonRpc, AddChainSuccess, ChainId,
     Client, HandleRpcError, JsonRpcResponses,
 };
 use std::{
@@ -29,7 +30,7 @@ use std::{
     time::Duration,
 };
 
-type Platform = Arc<DefaultPlatform>;
+type Platform = PezkuwiPlatform;
 
 /// How often the finalized state of each chain is written to disk, so that the next start
 /// resumes from it instead of syncing from the chain specification.
@@ -41,6 +42,7 @@ const DATABASE_REQUEST_ID: &str = "pezkuwi-light-database";
 
 pub struct Engine {
     inner: Arc<Inner>,
+    platform: PezkuwiPlatform,
     port: u16,
 }
 
@@ -82,8 +84,8 @@ impl std::fmt::Display for Error {
 
 impl Engine {
     /// Starts the light client and its loopback server. `db_dir` holds one finalized-state file
-    /// per chain key.
-    pub fn start(db_dir: PathBuf) -> Result<Engine, Error> {
+    /// per chain key; `resolver` resolves the host names of peers.
+    pub fn start(db_dir: PathBuf, resolver: Arc<dyn Resolve>) -> Result<Engine, Error> {
         fs::create_dir_all(&db_dir).map_err(Error::Io)?;
         let listener =
             TcpListener::bind(SocketAddr::from((Ipv4Addr::LOCALHOST, 0))).map_err(Error::Io)?;
@@ -92,12 +94,14 @@ impl Engine {
         let mut token = [0u8; 32];
         rand::RngCore::fill_bytes(&mut rand::rngs::OsRng, &mut token);
 
+        let platform = PezkuwiPlatform::new(
+            env!("CARGO_PKG_NAME").into(),
+            env!("CARGO_PKG_VERSION").into(),
+            resolver,
+        );
         let executor = Arc::new(smol::Executor::new());
         let inner = Arc::new(Inner {
-            client: Mutex::new(Client::new(DefaultPlatform::new(
-                env!("CARGO_PKG_NAME").into(),
-                env!("CARGO_PKG_VERSION").into(),
-            ))),
+            client: Mutex::new(Client::new(platform.clone())),
             chains: Mutex::new(HashMap::new()),
             executor: executor.clone(),
             token: hex::encode(token),
@@ -111,7 +115,17 @@ impl Engine {
             .spawn(move || smol::block_on(executor.run(futures_util::future::pending::<()>())))
             .map_err(Error::Io)?;
 
-        Ok(Engine { inner, port })
+        Ok(Engine {
+            inner,
+            platform,
+            port,
+        })
+    }
+
+    /// Restricts new peer connections to secure WebSockets (`wss`), which look like any HTTPS
+    /// WebSocket on the wire. Off by default.
+    pub fn set_secure_only(&self, secure_only: bool) {
+        self.platform.set_secure_only(secure_only);
     }
 
     /// `ws://127.0.0.1:<port>/<token>`; a chain is reached at `<this>/<chain key>`.
