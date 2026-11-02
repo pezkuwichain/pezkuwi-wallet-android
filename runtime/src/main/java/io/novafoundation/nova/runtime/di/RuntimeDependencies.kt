@@ -3,6 +3,7 @@ package io.novafoundation.nova.runtime.di
 import android.content.Context
 import com.google.gson.Gson
 import io.novafoundation.nova.common.data.network.NetworkApiCreator
+import io.novafoundation.nova.common.data.network.dns.EncryptedFirstDns
 import io.novafoundation.nova.common.data.repository.AssetsIconModeRepository
 import io.novafoundation.nova.common.data.storage.Preferences
 import io.novafoundation.nova.common.interfaces.FileProvider
@@ -32,4 +33,6 @@ interface RuntimeDependencies {
     fun chainAssetDao(): ChainAssetDao
 
     fun assetsIconModeService(): AssetsIconModeRepository
+
+    fun encryptedFirstDns(): EncryptedFirstDns
 }

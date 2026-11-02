@@ -1,0 +1,46 @@
+apply plugin: 'org.mozilla.rust-android-gradle.rust-android'
+apply from: '../../scripts/bundled-config.gradle'
+
+android {
+    namespace 'io.novafoundation.nova.pezkuwi_light'
+
+    ndkVersion "26.1.10909125"
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation kotlinDep
+
+    testImplementation jUnitDep
+}
+
+cargo {
+    module = "rust/"
+    libname = "pezkuwi_light"
+    targets = ["arm", "arm64", "x86", "x86_64"]
+    profile = "release"
+    pythonCommand = "python3"
+}
+
+tasks.matching { it.name.matches(/merge.*JniLibFolders/) }.configureEach {
+    it.inputs.dir(new File(buildDir, "rustJniLibs/android"))
+    it.dependsOn("cargoBuild")
+}
+
+// Chain specifications the light client starts from: genesis state root, boot nodes and, for the
+// relay chain, a checkpoint. A checkpoint is a trust anchor, so it reaches the client only with the
+// APK; pezkuwi-wallet-utils' light_client_specs.py writes them and signed/targets.json lists them.
+def lightClientSpecs = "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/light-client"
+def isLightClientSpec = { it instanceof Map && it.genesis?.stateRootHash && it.bootNodes }
+bundleConfigAsset("bundleZagrosLightSpec", "$lightClientSpecs/zagros.json", "light-client/zagros.json") {
+    isLightClientSpec(it) && it.lightSyncState
+}
+bundleConfigAsset("bundleZagrosPeopleLightSpec", "$lightClientSpecs/people-zagros.json", "light-client/people-zagros.json") {
+    isLightClientSpec(it) && it.relay_chain == "zagros"
+}

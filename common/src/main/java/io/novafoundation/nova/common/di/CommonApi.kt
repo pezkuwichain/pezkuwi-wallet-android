@@ -15,6 +15,7 @@ import io.novafoundation.nova.common.data.network.AppLinksProvider
 import io.novafoundation.nova.common.data.network.HttpExceptionHandler
 import io.novafoundation.nova.common.data.network.NetworkApiCreator
 import io.novafoundation.nova.common.data.network.coingecko.CoinGeckoLinkParser
+import io.novafoundation.nova.common.data.network.dns.EncryptedFirstDns
 import io.novafoundation.nova.common.data.network.rpc.SocketSingleRequestExecutor
 import io.novafoundation.nova.common.data.providers.deviceid.DeviceIdProvider
 import io.novafoundation.nova.common.data.repository.AssetsIconModeRepository
@@ -166,6 +167,8 @@ interface CommonApi {
     fun backgroundAccessObserver(): BackgroundAccessObserver
 
     fun provideEncryptedPreferences(): EncryptedPreferences
+
+    fun encryptedFirstDns(): EncryptedFirstDns
 
     fun provideIconGenerator(): IconGenerator
 
