@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import io.novafoundation.nova.common.BuildConfig
 import io.novafoundation.nova.common.data.network.NetworkApiCreator
+import io.novafoundation.nova.common.data.network.dns.EncryptedFirstDns
 import io.novafoundation.nova.common.data.network.rpc.BulkRetriever
 import io.novafoundation.nova.common.data.storage.Preferences
 import io.novafoundation.nova.common.di.scope.ApplicationScope
@@ -25,6 +26,7 @@ import io.novafoundation.nova.runtime.multiNetwork.connection.ConnectionPool
 import io.novafoundation.nova.runtime.multiNetwork.connection.ConnectionSecrets
 import io.novafoundation.nova.runtime.multiNetwork.connection.Web3ApiPool
 import io.novafoundation.nova.runtime.multiNetwork.connection.autobalance.NodeAutobalancer
+import io.novafoundation.nova.runtime.multiNetwork.connection.light.LightClients
 import io.novafoundation.nova.runtime.multiNetwork.connection.autobalance.strategy.NodeSelectionStrategyProvider
 import io.novafoundation.nova.runtime.multiNetwork.connection.node.healthState.NodeHealthStateTesterFactory
 import io.novafoundation.nova.runtime.multiNetwork.runtime.AsyncChainSyncDispatcher
@@ -181,14 +183,23 @@ class ChainRegistryModule {
 
     @Provides
     @ApplicationScope
+    fun provideLightClients(
+        context: Context,
+        encryptedFirstDns: EncryptedFirstDns,
+    ) = LightClients(context, encryptedFirstDns)
+
+    @Provides
+    @ApplicationScope
     fun provideChainConnectionFactory(
         socketProvider: Provider<SocketService>,
         externalRequirementsFlow: MutableStateFlow<ChainConnection.ExternalRequirement>,
         nodeAutobalancer: NodeAutobalancer,
+        lightClients: LightClients,
     ) = ChainConnectionFactory(
         externalRequirementsFlow,
         nodeAutobalancer,
         socketProvider,
+        lightClients,
     )
 
     @Provides
