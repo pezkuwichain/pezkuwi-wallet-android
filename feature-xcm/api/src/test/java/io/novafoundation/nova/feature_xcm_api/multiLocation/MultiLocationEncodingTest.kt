@@ -6,7 +6,6 @@ import io.novafoundation.nova.feature_xcm_api.multiLocation.MultiLocation.Networ
 import io.novafoundation.nova.feature_xcm_api.versions.XcmVersion
 import io.novasama.substrate_sdk_android.extensions.toHexString
 import io.novasama.substrate_sdk_android.runtime.definitions.types.composite.DictEnum
-import io.novasama.substrate_sdk_android.runtime.definitions.types.composite.Struct
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -26,8 +25,9 @@ class MultiLocationEncodingTest {
     private fun assertEncodedByGenesis(genesis: HexString) {
         val location = RelativeMultiLocation(parents = 1, interior = Junctions(GlobalConsensus(NetworkId.Substrate(genesis))))
 
-        val encoded = location.toEncodableInstanceExt(XcmVersion.V5) as Struct.Instance
-        val junction = ((encoded["interior"] as DictEnum.Entry<*>).value as List<*>).single() as DictEnum.Entry<*>
+        val encoded = location.toEncodableInstanceExt(XcmVersion.V5)
+        val interior = requireNotNull(encoded.get<DictEnum.Entry<*>>("interior"))
+        val junction = (interior.value as List<*>).single() as DictEnum.Entry<*>
         val network = junction.value as DictEnum.Entry<*>
 
         assertEquals("GlobalConsensus", junction.name)
