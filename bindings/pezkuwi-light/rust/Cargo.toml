@@ -1,0 +1,36 @@
+[package]
+authors = ['PezkuwiChain']
+edition = '2021'
+license = 'Apache-2.0'
+name = "pezkuwi-light"
+version = "0.1.0"
+publish = false
+
+[dependencies]
+# PezkuwiChain fork of smoldot: upstream smoldot cannot verify PezkuwiChain blocks (sovereign
+# sr25519 and BABE VRF signing contexts, `TeyrchainHost` runtime API).
+smoldot-light = { git = "https://github.com/pezkuwichain/smoldot", rev = "182d996a3ae2a9b507a776fa307f2e6fc5d14f7a", default-features = false, features = ["std"] }
+async-tungstenite = { version = "0.28", default-features = false, features = ["handshake", "futures-03-sink"] }
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+smol = "2.0"
+jni = { version = "0.21", default-features = false }
+log = "0.4"
+rand = "0.8"
+hex = "0.4"
+serde_json = "1"
+
+[target.'cfg(target_os = "android")'.dependencies]
+android_logger = { version = "0.14", default-features = false }
+
+[dev-dependencies]
+tungstenite = "0.24"
+
+[profile.release]
+strip = false
+debug = 2
+lto = true
+opt-level = "s"
+
+[lib]
+name = "pezkuwi_light"
+crate-type = ["cdylib", "rlib"]

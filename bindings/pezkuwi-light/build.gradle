@@ -1,0 +1,33 @@
+apply plugin: 'org.mozilla.rust-android-gradle.rust-android'
+
+android {
+    namespace 'io.novafoundation.nova.pezkuwi_light'
+
+    ndkVersion "26.1.10909125"
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation kotlinDep
+
+    testImplementation jUnitDep
+}
+
+cargo {
+    module = "rust/"
+    libname = "pezkuwi_light"
+    targets = ["arm", "arm64", "x86", "x86_64"]
+    profile = "release"
+    pythonCommand = "python3"
+}
+
+tasks.matching { it.name.matches(/merge.*JniLibFolders/) }.configureEach {
+    it.inputs.dir(new File(buildDir, "rustJniLibs/android"))
+    it.dependsOn("cargoBuild")
+}
