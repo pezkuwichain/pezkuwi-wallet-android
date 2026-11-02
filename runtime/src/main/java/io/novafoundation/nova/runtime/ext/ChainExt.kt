@@ -462,7 +462,7 @@ object ChainGeneses {
     const val POLKADOT = "91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3"
 
     // Westend constant now points to Zagros Testnet
-    const val WESTEND = "96eb58af1bb7288115b5e4ff1590422533e749293f231974536dc6672417d06f"
+    const val WESTEND = "1b0b4727bbb5e44ed587d1056b4ad537ffb330034509a58866a088d77e792cd5"
 
     const val KUSAMA_ASSET_HUB = "48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a"
 

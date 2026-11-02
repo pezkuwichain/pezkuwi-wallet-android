@@ -31,11 +31,11 @@ android_logger = { version = "0.14", default-features = false }
 env_logger = { version = "0.11", default-features = false, features = ["humantime"] }
 tungstenite = "0.24"
 
-# Stripped here, not left to the Android Gradle plugin: it packages a library it cannot strip as
-# it is, and with debug info this one is 147 MB per ABI instead of 8.6 MB.
+# Line tables only: enough for the Play native-debug-symbols.zip to give file and line, at 59 MB
+# per ABI before the app strips it to 8.6 MB. Full debug info (`debug = 2`) is 147 MB per ABI.
 [profile.release]
-strip = true
-debug = false
+strip = false
+debug = "line-tables-only"
 lto = true
 opt-level = "s"
 

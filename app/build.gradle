@@ -6,6 +6,10 @@ apply from: "../scripts/versions.gradle"
 apply from: "../scripts/secrets.gradle"
 
 android {
+    // The NDK that CI installs and the bindings build with. Without it AGP expects its default NDK,
+    // cannot strip the native libraries: they ship with their debug sections and no native-debug-symbols.zip is made.
+    ndkVersion "26.1.10909125"
+
     defaultConfig {
         applicationId rootProject.applicationId
         versionCode computeVersionCode()
