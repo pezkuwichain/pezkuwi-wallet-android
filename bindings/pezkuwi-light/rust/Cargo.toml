@@ -31,9 +31,11 @@ android_logger = { version = "0.14", default-features = false }
 env_logger = { version = "0.11", default-features = false, features = ["humantime"] }
 tungstenite = "0.24"
 
+# Stripped here, not left to the Android Gradle plugin: it packages a library it cannot strip as
+# it is, and with debug info this one is 147 MB per ABI instead of 8.6 MB.
 [profile.release]
-strip = false
-debug = 2
+strip = true
+debug = false
 lto = true
 opt-level = "s"
 
