@@ -2,7 +2,6 @@ package io.novafoundation.nova.runtime.multiNetwork.connection.light
 
 import android.content.Context
 import android.util.Log
-import io.novafoundation.nova.common.utils.LOG_TAG
 import io.novafoundation.nova.lightclient.HostResolver
 import io.novafoundation.nova.lightclient.PezkuwiLight
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.ChainId
@@ -58,7 +57,7 @@ class LightClients(
                 inUse += chainId
                 PezkuwiLight.chainUrl(base, chainId)
             }.onFailure {
-                Log.w(LOG_TAG, "Light client unavailable for $chainId", it)
+                Log.w(TAG, "Light client unavailable for $chainId", it)
             }.getOrNull()
         }
     }
@@ -75,7 +74,7 @@ class LightClients(
                 // Still registered on failure, so a later url() does not register it twice
                 runCatching { PezkuwiLight.removeChain(unused) }
                     .onSuccess { registered -= unused }
-                    .onFailure { Log.w(LOG_TAG, "Cannot stop the light client for $unused", it) }
+                    .onFailure { Log.w(TAG, "Cannot stop the light client for $unused", it) }
                     .getOrNull() ?: break
             }
         }
@@ -96,9 +95,9 @@ class LightClients(
                     val candidate = specApi.spec(SPEC_SOURCE + chain.file)
                     if (LightSpecs.isUpdate(current = spec(chain), candidate = candidate)) {
                         writeAtomically(storedSpec(chain), candidate)
-                        Log.d(LOG_TAG, "Light client specification ${chain.file} updated")
+                        Log.d(TAG, "Light client specification ${chain.file} updated")
                     }
-                }.onFailure { Log.w(LOG_TAG, "Cannot refresh light client specification ${chain.file}", it) }
+                }.onFailure { Log.w(TAG, "Cannot refresh light client specification ${chain.file}", it) }
             }
         }
     }
@@ -137,6 +136,8 @@ class LightClients(
         const val ZAGROS: ChainId = "1b0b4727bbb5e44ed587d1056b4ad537ffb330034509a58866a088d77e792cd5"
         const val ZAGROS_PEOPLE: ChainId = "c72b38f36affaeb2661018b201c2be02e8c09fc699640525d39200a10fd77878"
 
+        // Not LOG_TAG: called inside a coroutine, it gives the coroutine class name
+        const val TAG = "LightClients"
         const val DATABASE_DIR = "light-client"
         const val SPECS_DIR = "light-client-specs"
         const val BUNDLED_DIR = "light-client/"
