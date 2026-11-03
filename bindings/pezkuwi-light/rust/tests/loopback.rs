@@ -231,3 +231,43 @@ fn resolves_after_a_start_from_the_saved_database() {
         }
     }
 }
+
+#[test]
+#[ignore = "needs PEZKUWI_LIGHT_RELAY_SPEC and PEZKUWI_LIGHT_PEOPLE_SPEC"]
+fn a_removed_chain_stops_and_can_be_registered_again() {
+    use pezkuwi_light::engine::Error;
+    use std::sync::atomic::{AtomicBool, Ordering};
+
+    // A panic on an executor thread would not fail the test by itself.
+    static PANICKED: AtomicBool = AtomicBool::new(false);
+    let default_hook = std::panic::take_hook();
+    std::panic::set_hook(Box::new(move |info| {
+        PANICKED.store(true, Ordering::SeqCst);
+        default_hook(info);
+    }));
+
+    let relay = std::fs::read_to_string(std::env::var("PEZKUWI_LIGHT_RELAY_SPEC").unwrap()).unwrap();
+    let people = std::fs::read_to_string(std::env::var("PEZKUWI_LIGHT_PEOPLE_SPEC").unwrap()).unwrap();
+    let engine = start(temporary_dir("remove"));
+    engine.add_chain("relay", &relay, None).unwrap();
+    engine.add_chain("people", &people, Some("relay")).unwrap();
+
+    assert!(matches!(engine.remove_chain("relay"), Err(Error::RelayChainInUse(_))));
+    engine.remove_chain("people").unwrap();
+    engine.remove_chain("relay").unwrap();
+    assert!(matches!(engine.remove_chain("relay"), Err(Error::NotRegistered(_))));
+
+    match tungstenite::connect(format!("{}/relay", engine.base_url())) {
+        Err(tungstenite::Error::Http(response)) => assert_eq!(response.status(), 404),
+        other => panic!("a removed chain was served: {:?}", other.map(|_| ())),
+    }
+
+    // Past the first database save of the removed chains, which must not reach smoldot.
+    std::thread::sleep(Duration::from_secs(25));
+    assert!(!PANICKED.load(Ordering::SeqCst), "a removed chain's database save panicked");
+
+    engine.add_chain("relay", &relay, None).unwrap();
+    let mut socket = connect(format!("{}/relay", engine.base_url()));
+    rpc(&mut socket, 1, "chainSpec_v1_chainName", serde_json::json!([]));
+    assert!(answer(&mut socket, 1)["result"].is_string());
+}

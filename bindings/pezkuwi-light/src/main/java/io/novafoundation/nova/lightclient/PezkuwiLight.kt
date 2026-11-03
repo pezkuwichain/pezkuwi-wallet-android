@@ -32,6 +32,15 @@ object PezkuwiLight {
     external fun addChain(key: String, chainSpec: String, relayChainKey: String?)
 
     /**
+     * Stops syncing the chain under [key]. Connections already open keep working until they close.
+     * Its database is kept, so a later [addChain] resumes from it.
+     *
+     * @throws IllegalStateException if the key is not registered, or is the relay chain of a
+     * registered teyrchain
+     */
+    external fun removeChain(key: String)
+
+    /**
      * Restricts new peer connections to secure WebSockets (`wss`, normally on port 443), which
      * look like any HTTPS WebSocket on the wire. Open connections are kept.
      */

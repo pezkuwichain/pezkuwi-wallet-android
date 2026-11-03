@@ -67,6 +67,8 @@ struct Registered {
 pub enum Error {
     UnknownRelayChain(String),
     AlreadyRegistered(String),
+    NotRegistered(String),
+    RelayChainInUse(String),
     AddChain(String),
     Io(io::Error),
 }
@@ -76,6 +78,8 @@ impl std::fmt::Display for Error {
         match self {
             Error::UnknownRelayChain(key) => write!(f, "relay chain {key} is not registered"),
             Error::AlreadyRegistered(key) => write!(f, "chain {key} is already registered"),
+            Error::NotRegistered(key) => write!(f, "chain {key} is not registered"),
+            Error::RelayChainInUse(key) => write!(f, "chain {key} is the relay chain of a registered chain"),
             Error::AddChain(err) => write!(f, "smoldot rejected the chain: {err}"),
             Error::Io(err) => write!(f, "{err}"),
         }
@@ -188,6 +192,21 @@ impl Engine {
                 json_rpc_responses.expect("JSON-RPC is enabled"),
             ))
             .detach();
+        Ok(())
+    }
+
+    /// Stops syncing a chain. Connections already open keep their own instance until they close;
+    /// a relay chain stays while a teyrchain registered on it does. The saved database is kept,
+    /// so registering the chain again resumes from it.
+    pub fn remove_chain(&self, key: &str) -> Result<(), Error> {
+        let mut chains = self.inner.chains.lock().unwrap();
+        let base = chains.get(key).ok_or_else(|| Error::NotRegistered(key.into()))?.base;
+        if chains.values().any(|chain| chain.relay == Some(base)) {
+            return Err(Error::RelayChainInUse(key.into()));
+        }
+
+        chains.remove(key);
+        let () = self.inner.client.lock().unwrap().remove_chain(base);
         Ok(())
     }
 }
@@ -353,14 +372,16 @@ async fn save_database(
     loop {
         smol::Timer::after(wait).await;
         wait = DATABASE_SAVE_INTERVAL;
-        if inner
-            .client
-            .lock()
-            .unwrap()
-            .json_rpc_request(request.clone(), chain_id)
-            .is_err()
         {
-            continue;
+            // Under the registry lock, so the chain cannot be removed between the check and the
+            // request: smoldot panics on a request to a removed chain.
+            let chains = inner.chains.lock().unwrap();
+            if chains.get(&key).map(|chain| chain.base) != Some(chain_id) {
+                return;
+            }
+            if inner.client.lock().unwrap().json_rpc_request(request.clone(), chain_id).is_err() {
+                continue;
+            }
         }
         while let Some(response) = responses.next().await {
             let response: serde_json::Value = match serde_json::from_str(&response) {
