@@ -257,6 +257,11 @@
 # class has no @SerializedName and sits outside the model/response/request/dto packages kept above.
 # Class and method names are obfuscated.
 -keepclassmembers class io.novafoundation.nova.** { <fields>; }
+# Constructors of the app's classes. R8 full mode makes a class it never sees instantiated abstract, and
+# Gson instantiates its models reflectively: DappMetadataResponse, outside every name pattern above,
+# failed with "Abstract classes can't be instantiated". Constructors are named <init> either way, so
+# this costs no obfuscation, and it applies only to classes that are otherwise kept.
+-keepclassmembers class io.novafoundation.nova.** { <init>(...); }
 
 # Methods a WebView page calls by name (DApp browser web3 bridge, integrity check, Transak events).
 -keepclassmembers class * {
