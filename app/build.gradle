@@ -65,10 +65,11 @@ android {
             matchingFallbacks = ['release']
             signingConfig signingConfigs.debug
 
+            // No applicationIdSuffix: every release* build type gets the production Firebase config
+            // (applicationVariants below), whose only client is the production package. The debug
+            // signature keeps it from installing over a Play install, and the production API key,
+            // restricted to the release certificates, refuses its Firebase calls.
             versionNameSuffix '-releaseTest'
-            // The debug package: the Firebase config CI builds with has a client for it, and none for
-            // a releaseTest package. Installs in place of a debug build.
-            applicationIdSuffix '.debug'
 
             buildConfigField "String", "BuildType", "\"releaseTest\""
         }
