@@ -23,7 +23,7 @@ buildscript {
 
         coroutinesVersion = '1.8.1'
 
-        biometricVersion = '1.0.1'
+        biometricVersion = '1.1.0'
 
         progressButtonsVersion = '2.1.0'
 
