@@ -72,6 +72,9 @@
 # Gson 2.11 ships these rules; this app is on 2.10.1.
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+# web3j's TypeReference reads its type argument the same way; without it the EVM token balance flow
+# failed with "Missing type parameter".
+-keep,allowobfuscation,allowshrinking class * extends org.web3j.abi.TypeReference
 # Retrofit reads a suspend function's return type from Continuation's generic signature (rules from
 # Retrofit 2.10; this app is on 2.9.0).
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
