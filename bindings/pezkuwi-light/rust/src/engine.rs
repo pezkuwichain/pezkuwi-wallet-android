@@ -25,7 +25,10 @@ use std::{
     net::{Ipv4Addr, SocketAddr, TcpListener, TcpStream},
     num::NonZero,
     path::PathBuf,
-    sync::{Arc, Mutex},
+    sync::{
+        atomic::{AtomicU64, AtomicUsize, Ordering},
+        Arc, Mutex,
+    },
     thread,
     time::Duration,
 };
@@ -49,6 +52,11 @@ pub struct Engine {
 struct Inner {
     client: Mutex<Client<Platform>>,
     chains: Mutex<HashMap<String, Registered>>,
+    /// Connection instances open on [`Inner::client`]; changed under both locks.
+    connections: AtomicUsize,
+    /// Source of [`Registered::registration`].
+    registrations: AtomicU64,
+    platform: PezkuwiPlatform,
     executor: Arc<smol::Executor<'static>>,
     token: String,
     db_dir: PathBuf,
@@ -61,6 +69,8 @@ struct Registered {
     base: ChainId,
     /// Base instance of the relay chain, for a teyrchain.
     relay: Option<ChainId>,
+    /// Unique per registration, unlike `base`: smoldot reuses the id of a removed chain.
+    registration: u64,
 }
 
 #[derive(Debug)]
@@ -107,6 +117,9 @@ impl Engine {
         let inner = Arc::new(Inner {
             client: Mutex::new(Client::new(platform.clone())),
             chains: Mutex::new(HashMap::new()),
+            connections: AtomicUsize::new(0),
+            registrations: AtomicU64::new(0),
+            platform: platform.clone(),
             executor: executor.clone(),
             token: hex::encode(token),
             db_dir,
@@ -155,6 +168,7 @@ impl Engine {
         };
 
         let database = fs::read_to_string(self.inner.database_path(key)).unwrap_or_default();
+        let registration = self.inner.registrations.fetch_add(1, Ordering::SeqCst);
         let AddChainSuccess {
             chain_id,
             json_rpc_responses,
@@ -181,6 +195,7 @@ impl Engine {
                 spec: spec.into(),
                 base: chain_id,
                 relay,
+                registration,
             },
         );
         self.inner
@@ -189,6 +204,7 @@ impl Engine {
                 self.inner.clone(),
                 key.to_owned(),
                 chain_id,
+                registration,
                 json_rpc_responses.expect("JSON-RPC is enabled"),
             ))
             .detach();
@@ -206,7 +222,9 @@ impl Engine {
         }
 
         chains.remove(key);
-        let () = self.inner.client.lock().unwrap().remove_chain(base);
+        let mut client = self.inner.client.lock().unwrap();
+        let () = client.remove_chain(base);
+        self.inner.reset_when_idle(&chains, &mut client);
         Ok(())
     }
 }
@@ -214,6 +232,15 @@ impl Engine {
 impl Inner {
     fn database_path(&self, key: &str) -> PathBuf {
         database_path(&self.db_dir, key)
+    }
+
+    /// Replaces the client once no chain and no connection is left. smoldot keeps its
+    /// peer-to-peer network service, with the peer connections in it, for as long as the client
+    /// lives, so removing every chain alone leaves those connections open.
+    fn reset_when_idle(&self, chains: &HashMap<String, Registered>, client: &mut Client<Platform>) {
+        if chains.is_empty() && self.connections.load(Ordering::SeqCst) == 0 {
+            *client = Client::new(self.platform.clone());
+        }
     }
 }
 
@@ -274,8 +301,12 @@ async fn serve(inner: Arc<Inner>, stream: smol::Async<TcpStream>) {
 
     let (chain_id, mut responses) = {
         let chains = inner.chains.lock().unwrap();
-        let registered = &chains[&key];
-        let added = inner.client.lock().unwrap().add_chain(AddChainConfig {
+        // Removed since the handshake routed it
+        let Some(registered) = chains.get(&key) else {
+            return;
+        };
+        let mut client = inner.client.lock().unwrap();
+        let added = client.add_chain(AddChainConfig {
             user_data: (),
             specification: &registered.spec,
             // The base instance already holds the chain; smoldot shares it with this one.
@@ -287,7 +318,10 @@ async fn serve(inner: Arc<Inner>, stream: smol::Async<TcpStream>) {
             },
         });
         match added {
-            Ok(success) => (success.chain_id, success.json_rpc_responses.expect("JSON-RPC is enabled")),
+            Ok(success) => {
+                inner.connections.fetch_add(1, Ordering::SeqCst);
+                (success.chain_id, success.json_rpc_responses.expect("JSON-RPC is enabled"))
+            }
             Err(err) => {
                 log::warn!("{key}: cannot open a connection instance: {err}");
                 return;
@@ -336,7 +370,11 @@ async fn serve(inner: Arc<Inner>, stream: smol::Async<TcpStream>) {
     };
     futures_util::future::select(Box::pin(inbound), Box::pin(outbound)).await;
 
-    let () = inner.client.lock().unwrap().remove_chain(chain_id);
+    let chains = inner.chains.lock().unwrap();
+    let mut client = inner.client.lock().unwrap();
+    let () = client.remove_chain(chain_id);
+    inner.connections.fetch_sub(1, Ordering::SeqCst);
+    inner.reset_when_idle(&chains, &mut client);
 }
 
 /// JSON-RPC error for a request smoldot refused because its queue is full, so the caller gets an
@@ -358,6 +396,7 @@ async fn save_database(
     inner: Arc<Inner>,
     key: String,
     chain_id: ChainId,
+    registration: u64,
     mut responses: JsonRpcResponses<Platform>,
 ) {
     let request = serde_json::json!({
@@ -376,7 +415,7 @@ async fn save_database(
             // Under the registry lock, so the chain cannot be removed between the check and the
             // request: smoldot panics on a request to a removed chain.
             let chains = inner.chains.lock().unwrap();
-            if chains.get(&key).map(|chain| chain.base) != Some(chain_id) {
+            if chains.get(&key).map(|chain| chain.registration) != Some(registration) {
                 return;
             }
             if inner.client.lock().unwrap().json_rpc_request(request.clone(), chain_id).is_err() {
