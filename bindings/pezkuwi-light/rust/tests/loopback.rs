@@ -68,6 +68,28 @@ fn scale_bytes(bytes: &[u8]) -> String {
     format!("0x{:02x}{}", (bytes.len() as u8) << 2, hex::encode(bytes))
 }
 
+/// Established TCP connections of this process to anything but the loopback interface (Linux).
+fn peer_connections() -> usize {
+    let inodes: std::collections::HashSet<String> = std::fs::read_dir("/proc/self/fd")
+        .unwrap()
+        .filter_map(|fd| std::fs::read_link(fd.ok()?.path()).ok())
+        .filter_map(|target| {
+            let target = target.to_string_lossy().into_owned();
+            Some(target.strip_prefix("socket:[")?.strip_suffix(']')?.to_owned())
+        })
+        .collect();
+    ["/proc/net/tcp", "/proc/net/tcp6"]
+        .iter()
+        .flat_map(|table| std::fs::read_to_string(table).unwrap_or_default().lines().skip(1).map(str::to_owned).collect::<Vec<_>>())
+        .filter(|line| {
+            let fields: Vec<&str> = line.split_whitespace().collect();
+            let remote = fields[2];
+            let loopback = remote.starts_with("0100007F") || remote.starts_with("00000000000000000000000001000000");
+            fields[3] == "01" && !loopback && inodes.contains(fields[9])
+        })
+        .count()
+}
+
 #[test]
 fn a_path_without_the_token_is_refused() {
     let engine = start(temporary_dir("refused"));
@@ -230,4 +252,57 @@ fn resolves_after_a_start_from_the_saved_database() {
             }
         }
     }
+}
+
+#[test]
+#[ignore = "connects to the live Zagros testnet; needs PEZKUWI_LIGHT_RELAY_SPEC and PEZKUWI_LIGHT_PEOPLE_SPEC"]
+fn a_removed_chain_stops_and_can_be_registered_again() {
+    use pezkuwi_light::engine::Error;
+    use std::sync::atomic::{AtomicBool, Ordering};
+
+    // A panic on an executor thread would not fail the test by itself.
+    static PANICKED: AtomicBool = AtomicBool::new(false);
+    let default_hook = std::panic::take_hook();
+    std::panic::set_hook(Box::new(move |info| {
+        PANICKED.store(true, Ordering::SeqCst);
+        default_hook(info);
+    }));
+
+    let relay = std::fs::read_to_string(std::env::var("PEZKUWI_LIGHT_RELAY_SPEC").unwrap()).unwrap();
+    let people = std::fs::read_to_string(std::env::var("PEZKUWI_LIGHT_PEOPLE_SPEC").unwrap()).unwrap();
+    let engine = start(temporary_dir("remove"));
+    engine.add_chain("relay", &relay, None).unwrap();
+    engine.add_chain("people", &people, Some("relay")).unwrap();
+    let deadline = Instant::now() + Duration::from_secs(90);
+    while peer_connections() == 0 {
+        assert!(Instant::now() < deadline, "no peer connection was opened");
+        std::thread::sleep(Duration::from_millis(500));
+    }
+
+    assert!(matches!(engine.remove_chain("relay"), Err(Error::RelayChainInUse(_))));
+    engine.remove_chain("people").unwrap();
+    engine.remove_chain("relay").unwrap();
+
+    // Removing every chain alone left smoldot's network service, and its peer connections, open.
+    // Connection attempts already under way finish first: about 20 s on Zagros.
+    let deadline = Instant::now() + Duration::from_secs(60);
+    while peer_connections() > 0 {
+        assert!(Instant::now() < deadline, "peer connections outlived every chain");
+        std::thread::sleep(Duration::from_secs(1));
+    }
+    assert!(matches!(engine.remove_chain("relay"), Err(Error::NotRegistered(_))));
+
+    match tungstenite::connect(format!("{}/relay", engine.base_url())) {
+        Err(tungstenite::Error::Http(response)) => assert_eq!(response.status(), 404),
+        other => panic!("a removed chain was served: {:?}", other.map(|_| ())),
+    }
+
+    // Past the first database save of the removed chains, which must not reach smoldot.
+    std::thread::sleep(Duration::from_secs(25));
+    assert!(!PANICKED.load(Ordering::SeqCst), "a removed chain's database save panicked");
+
+    engine.add_chain("relay", &relay, None).unwrap();
+    let mut socket = connect(format!("{}/relay", engine.base_url()));
+    rpc(&mut socket, 1, "chainSpec_v1_chainName", serde_json::json!([]));
+    assert!(answer(&mut socket, 1)["result"].is_string());
 }

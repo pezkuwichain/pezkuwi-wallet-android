@@ -156,6 +156,26 @@ pub extern "system" fn Java_io_novafoundation_nova_lightclient_PezkuwiLight_addC
     }
 }
 
+/// Stops syncing the chain registered under `key`; a relay chain goes after its teyrchains.
+#[no_mangle]
+pub extern "system" fn Java_io_novafoundation_nova_lightclient_PezkuwiLight_removeChain<'local>(
+    mut env: JNIEnv<'local>,
+    _this: JObject<'local>,
+    key: JString<'local>,
+) {
+    let Some(engine) = engine() else {
+        throw(&mut env, "light client is not started");
+        return;
+    };
+    let Some(key) = read_string(&mut env, &key) else {
+        throw(&mut env, "invalid chain key");
+        return;
+    };
+    if let Err(err) = engine.remove_chain(&key) {
+        throw(&mut env, &err.to_string());
+    }
+}
+
 /// Restricts new peer connections to secure WebSockets.
 #[no_mangle]
 pub extern "system" fn Java_io_novafoundation_nova_lightclient_PezkuwiLight_setSecureOnly<'local>(

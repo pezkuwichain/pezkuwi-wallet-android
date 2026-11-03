@@ -9,7 +9,7 @@ import org.junit.Test
 class LightFallbackPolicyTest {
 
     private val minute = 60_000L
-    private val policy = LightFallbackPolicy(initialBackoffMillis = minute, maxBackoffMillis = 4 * minute)
+    private val policy = LightFallbackPolicy(initialBackoffMillis = minute, maxBackoffMillis = 4 * minute, releaseLightAfterMillis = 5 * minute)
 
     @Test
     fun `light client takes over only after every RPC node failed in a row`() {
@@ -24,7 +24,7 @@ class LightFallbackPolicyTest {
     @Test
     fun `a connected RPC node resets the count`() {
         policy.onRpcFailure(rpcNodeCount = 2, nowMillis = 0)
-        policy.onRpcConnected()
+        policy.onRpcConnected(nowMillis = 0)
 
         assertFalse(policy.onRpcFailure(rpcNodeCount = 2, nowMillis = 0))
         assertTrue(policy.onRpcFailure(rpcNodeCount = 2, nowMillis = 0))
@@ -68,7 +68,7 @@ class LightFallbackPolicyTest {
         policy.onTick(rpcNodeCount = 1, nowMillis = minute)
         policy.onRpcFailure(rpcNodeCount = 1, nowMillis = minute)
         policy.onTick(rpcNodeCount = 1, nowMillis = 3 * minute)
-        policy.onRpcConnected()
+        policy.onRpcConnected(nowMillis = 3 * minute)
 
         assertTrue(policy.onRpcFailure(rpcNodeCount = 1, nowMillis = 10 * minute))
         assertFalse(policy.onTick(rpcNodeCount = 1, nowMillis = 11 * minute - 1))
@@ -90,5 +90,54 @@ class LightFallbackPolicyTest {
         policy.onRpcFailure(rpcNodeCount = 1, nowMillis = 0)
         assertFalse(policy.onRpcFailure(rpcNodeCount = 1, nowMillis = 0))
         assertEquals(Source.LIGHT, policy.source)
+    }
+
+    @Test
+    fun `the light client is released once RPC has stayed connected for the release delay`() {
+        useLightThenReturnToRpcAt(minute)
+
+        assertFalse(policy.shouldReleaseLight(nowMillis = 6 * minute - 1))
+        assertTrue(policy.shouldReleaseLight(nowMillis = 6 * minute))
+        assertFalse(policy.shouldReleaseLight(nowMillis = 7 * minute))
+    }
+
+    @Test
+    fun `an RPC failure restarts the release delay`() {
+        useLightThenReturnToRpcAt(minute)
+
+        policy.onRpcFailure(rpcNodeCount = 2, nowMillis = 3 * minute)
+        policy.onRpcConnected(nowMillis = 4 * minute)
+
+        assertFalse(policy.shouldReleaseLight(nowMillis = 9 * minute - 1))
+        assertTrue(policy.shouldReleaseLight(nowMillis = 9 * minute))
+    }
+
+    @Test
+    fun `a repeated connected state does not restart the release delay`() {
+        useLightThenReturnToRpcAt(minute)
+        policy.onRpcConnected(nowMillis = 3 * minute)
+
+        assertTrue(policy.shouldReleaseLight(nowMillis = 6 * minute))
+    }
+
+    @Test
+    fun `nothing is released while the light client serves the connection`() {
+        policy.onRpcFailure(rpcNodeCount = 1, nowMillis = 0)
+
+        assertFalse(policy.shouldReleaseLight(nowMillis = 100 * minute))
+    }
+
+    @Test
+    fun `a light client that was never used is not released`() {
+        policy.onRpcConnected(nowMillis = 0)
+
+        assertFalse(policy.shouldReleaseLight(nowMillis = 100 * minute))
+    }
+
+    private fun useLightThenReturnToRpcAt(nowMillis: Long) {
+        policy.onRpcFailure(rpcNodeCount = 2, nowMillis = 0)
+        policy.onRpcFailure(rpcNodeCount = 2, nowMillis = 0)
+        policy.onTick(rpcNodeCount = 2, nowMillis = nowMillis)
+        policy.onRpcConnected(nowMillis = nowMillis)
     }
 }

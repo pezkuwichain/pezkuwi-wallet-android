@@ -197,7 +197,10 @@ class ChainConnection internal constructor(
 
                 is FallbackEvent.Socket -> {
                     val onLight = light != null && event.state.urlOrNull() == light?.saturatedUrl
-                    if (event.state is State.Connected && !onLight) policy.onRpcConnected()
+                    if (event.state is State.Connected && !onLight) {
+                        policy.onRpcConnected(System.currentTimeMillis())
+                        lightClients.refreshSpecsInBackground()
+                    }
 
                     if (event.state.needsAutobalance()) {
                         Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: ${event.state} failed, source ${policy.source}, on light $onLight")
@@ -217,9 +220,17 @@ class ChainConnection internal constructor(
                     }
                 }
 
-                FallbackEvent.Tick -> if (policy.onTick(rpcNodeCount(), System.currentTimeMillis())) {
-                    Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: retrying RPC")
-                    emit(latestRpc)
+                FallbackEvent.Tick -> {
+                    val now = System.currentTimeMillis()
+                    if (policy.onTick(rpcNodeCount(), now)) {
+                        Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: retrying RPC")
+                        emit(latestRpc)
+                    }
+                    if (policy.shouldReleaseLight(now)) {
+                        Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: RPC is stable, releasing the light client")
+                        light = null
+                        lightClients.release(chain.value.id)
+                    }
                 }
             }
         }

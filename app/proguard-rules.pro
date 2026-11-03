@@ -67,6 +67,19 @@
 -keep class * implements com.google.gson.TypeAdapterFactory
 -keep class * implements com.google.gson.JsonSerializer
 -keep class * implements com.google.gson.JsonDeserializer
+# R8 full mode keeps generic signatures only on kept classes, so an anonymous `object : TypeToken<T>() {}`
+# lost its T: chains failed to load from the local DB ("TypeToken must be created with a type argument").
+# Gson 2.11 ships these rules; this app is on 2.10.1.
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+# web3j's TypeReference reads its type argument the same way; without it the EVM token balance flow
+# failed with "Missing type parameter".
+-keep,allowobfuscation,allowshrinking class * extends org.web3j.abi.TypeReference
+# Retrofit reads a suspend function's return type from Continuation's generic signature (rules from
+# Retrofit 2.10; this app is on 2.9.0).
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+-keep,allowobfuscation,allowshrinking interface retrofit2.Call
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
 -keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
@@ -92,7 +105,9 @@
 # ============================================================
 # SR25519 signing - keep the native methods and the class
 -keep class io.novafoundation.nova.sr25519.BizinikiwSr25519 { *; }
--keep class io.novafoundation.nova.** { native <methods>; }
+# Names of classes with native methods and of those methods, which JNI binds by name. (A
+# `-keep class io.novafoundation.nova.** { native <methods>; }` here kept every class of the app,
+# native methods or not.)
 -keepclasseswithmembernames class * {
     native <methods>;
 }
@@ -241,9 +256,20 @@
 -keep class io.novafoundation.nova.**.navigation.** { *; }
 -keep class * extends androidx.navigation.NavDestination { *; }
 
-# Keep all Nova foundation classes (prevent aggressive obfuscation)
--keep class io.novafoundation.nova.** { *; }
--keepnames class io.novafoundation.nova.**
+# Field names of the app's own classes, so Gson reads and writes JSON by the declared names even where a
+# class has no @SerializedName and sits outside the model/response/request/dto packages kept above.
+# Class and method names are obfuscated.
+-keepclassmembers class io.novafoundation.nova.** { <fields>; }
+# Constructors of the app's classes. R8 full mode makes a class it never sees instantiated abstract, and
+# Gson instantiates its models reflectively: DappMetadataResponse, outside every name pattern above,
+# failed with "Abstract classes can't be instantiated". Constructors are named <init> either way, so
+# this costs no obfuscation, and it applies only to classes that are otherwise kept.
+-keepclassmembers class io.novafoundation.nova.** { <init>(...); }
+
+# Methods a WebView page calls by name (DApp browser web3 bridge, integrity check, Transak events).
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
 
 # ============================================================
 # Optimization settings
@@ -269,6 +295,10 @@
 -dontwarn org.apache.xalan.**
 -dontwarn org.ietf.jgss.**
 -dontwarn org.apache.http.**
+# Referenced only by Jackson's Java 7 support class, which Jackson loads defensively; Android has no
+# java.beans. R8 compatibility mode reports these as missing.
+-dontwarn java.beans.ConstructorProperties
+-dontwarn java.beans.Transient
 
 # ByteBuddy (test dependency)
 -dontwarn net.bytebuddy.**

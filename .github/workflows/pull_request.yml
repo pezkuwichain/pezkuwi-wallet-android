@@ -23,3 +23,14 @@ jobs:
       keystore-file-name: develop_key.jks # develop variant is signed with signingConfigs.dev (develop_key.jks)
       build-debug-tests: false # TODO: Enable this, when debug build will be fixed for tests
     secrets: inherit
+
+  # The Play build goes through R8; the develop build above does not. This builds the same rules into a
+  # debug-signed APK, so a class R8 renames or strips shows here and its mapping can be measured.
+  r8:
+    uses: pezkuwichain/pezkuwi-wallet-android/.github/workflows/android_build.yml@main
+    with:
+      branch: ${{ github.event_name == 'workflow_dispatch' && inputs.branch || github.head_ref }}
+      gradlew-command: assembleReleaseTest
+      run-tests: false
+      upload-name: apk-r8
+    secrets: inherit

@@ -112,7 +112,6 @@ private fun bindGlobalConsensusJunction(instance: Any?): Junction {
 
         "Polkadot" -> Junction.GlobalConsensus(NetworkId.Substrate(Chain.Geneses.POLKADOT))
         "Kusama" -> Junction.GlobalConsensus(NetworkId.Substrate(Chain.Geneses.KUSAMA))
-        "Westend" -> Junction.GlobalConsensus(NetworkId.Substrate(Chain.Geneses.WESTEND))
         "Ethereum" -> {
             val chainId = bindInt(asDictEnum.value.castToStruct()["chain_id"])
             Junction.GlobalConsensus(NetworkId.Ethereum(chainId))
@@ -189,7 +188,6 @@ private fun NetworkId.Substrate.toEncodableInstance(): Any {
     return when (genesisHash) {
         Chain.Geneses.POLKADOT -> DictEnum.Entry("Polkadot", null)
         Chain.Geneses.KUSAMA -> DictEnum.Entry("Kusama", null)
-        Chain.Geneses.WESTEND -> DictEnum.Entry("Westend", null)
         Chain.Ids.ETHEREUM -> DictEnum.Entry("Ethereum", null)
         else -> DictEnum.Entry("ByGenesis", genesisHash.fromHex())
     }

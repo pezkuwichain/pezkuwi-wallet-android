@@ -6,6 +6,10 @@ apply from: "../scripts/versions.gradle"
 apply from: "../scripts/secrets.gradle"
 
 android {
+    // The NDK that CI installs and the bindings build with. Without it AGP expects its default NDK,
+    // cannot strip the native libraries: they ship with their debug sections and no native-debug-symbols.zip is made.
+    ndkVersion "26.1.10909125"
+
     defaultConfig {
         applicationId rootProject.applicationId
         versionCode computeVersionCode()
@@ -61,8 +65,11 @@ android {
             matchingFallbacks = ['release']
             signingConfig signingConfigs.debug
 
+            // No applicationIdSuffix: every release* build type gets the production Firebase config
+            // (applicationVariants below), whose only client is the production package. The debug
+            // signature keeps it from installing over a Play install, and the production API key,
+            // restricted to the release certificates, refuses its Firebase calls.
             versionNameSuffix '-releaseTest'
-            applicationIdSuffix '.releaseTest'
 
             buildConfigField "String", "BuildType", "\"releaseTest\""
         }
