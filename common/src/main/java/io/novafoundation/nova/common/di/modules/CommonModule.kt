@@ -47,6 +47,8 @@ import io.novafoundation.nova.common.data.storage.PreferencesImpl
 import io.novafoundation.nova.common.data.storage.encrypt.EncryptedPreferences
 import io.novafoundation.nova.common.data.storage.encrypt.EncryptedPreferencesImpl
 import io.novafoundation.nova.common.data.storage.encrypt.EncryptionUtil
+import io.novafoundation.nova.common.data.storage.encrypt.KeystoreAesGcmCipher
+import io.novafoundation.nova.common.data.storage.encrypt.LegacyRsaWrappedAesDecrypter
 import io.novafoundation.nova.common.di.scope.ApplicationScope
 import io.novafoundation.nova.common.domain.interactor.AssetViewModeInteractor
 import io.novafoundation.nova.common.domain.usecase.MaskingModeUseCase
@@ -207,7 +209,10 @@ class CommonModule {
     @Provides
     @ApplicationScope
     fun provideEncryptionUtil(context: Context): EncryptionUtil {
-        return EncryptionUtil(context)
+        return EncryptionUtil(
+            current = KeystoreAesGcmCipher(alias = "data_key_v2"),
+            legacy = LegacyRsaWrappedAesDecrypter(context),
+        )
     }
 
     @Provides
