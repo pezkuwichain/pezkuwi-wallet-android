@@ -67,6 +67,16 @@
 -keep class * implements com.google.gson.TypeAdapterFactory
 -keep class * implements com.google.gson.JsonSerializer
 -keep class * implements com.google.gson.JsonDeserializer
+# R8 full mode keeps generic signatures only on kept classes, so an anonymous `object : TypeToken<T>() {}`
+# lost its T: chains failed to load from the local DB ("TypeToken must be created with a type argument").
+# Gson 2.11 ships these rules; this app is on 2.10.1.
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+# Retrofit reads a suspend function's return type from Continuation's generic signature (rules from
+# Retrofit 2.10; this app is on 2.9.0).
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+-keep,allowobfuscation,allowshrinking interface retrofit2.Call
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
 -keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
