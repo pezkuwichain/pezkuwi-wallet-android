@@ -2,7 +2,9 @@ package io.novafoundation.nova.feature_wallet_impl.data.network.blockchain.asset
 
 import io.novafoundation.nova.common.data.network.runtime.binding.bindAccountIdentifier
 import io.novafoundation.nova.common.data.network.runtime.binding.bindNumber
-import io.novafoundation.nova.common.utils.oneOf
+import io.novafoundation.nova.common.utils.instanceOf
+import io.novasama.substrate_sdk_android.runtime.AccountId
+import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.history.realtime.RealtimeHistoryUpdate
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.history.realtime.substrate.SubstrateRealtimeOperationFetcher
 import io.novafoundation.nova.feature_wallet_api.data.network.blockhain.assets.history.realtime.substrate.SubstrateRealtimeOperationFetcher.Factory.Source
@@ -22,10 +24,6 @@ import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.Chain
 import io.novafoundation.nova.runtime.multiNetwork.chain.model.hasSameId
 import io.novafoundation.nova.runtime.multiNetwork.getRuntime
-import io.novasama.substrate_sdk_android.runtime.RuntimeSnapshot
-import io.novasama.substrate_sdk_android.runtime.definitions.types.generics.GenericCall
-import io.novasama.substrate_sdk_android.runtime.metadata.call
-import io.novasama.substrate_sdk_android.runtime.metadata.module
 
 class StatemineAssetHistory(
     private val chainRegistry: ChainRegistry,
@@ -63,29 +61,31 @@ class StatemineAssetHistory(
             val runtime = chainRegistry.getRuntime(chain.id)
 
             val call = extrinsicVisit.call
-            if (!call.isTransfer(runtime, chainAsset)) return null
+            val statemineType = chainAsset.requireStatemine()
+            val moduleName = statemineType.palletNameOrDefault()
 
-            val amount = bindNumber(call.arguments["amount"])
+            val (senderId, recipientId) = call.assetTransferParties(moduleName, extrinsicVisit.origin) ?: return null
+
+            if (!statemineType.hasSameId(runtime, dynamicInstanceId = call.arguments["id"])) return null
 
             return RealtimeHistoryUpdate.Type.Transfer(
-                senderId = extrinsicVisit.origin,
-                recipientId = bindAccountIdentifier(call.arguments["target"]),
-                amountInPlanks = amount,
+                senderId = senderId,
+                recipientId = recipientId,
+                amountInPlanks = bindNumber(call.arguments["amount"]),
                 chainAsset = chainAsset,
             )
         }
-
-        private fun GenericCall.Instance.isTransfer(runtime: RuntimeSnapshot, chainAsset: Chain.Asset): Boolean {
-            val statemineType = chainAsset.requireStatemine()
-            val moduleName = statemineType.palletNameOrDefault()
-            val module = runtime.metadata.module(moduleName)
-
-            val matchingCall = oneOf(
-                module.call("transfer"),
-                module.call("transfer_keep_alive"),
-            )
-
-            return matchingCall && statemineType.hasSameId(runtime, dynamicInstanceId = arguments["id"])
-        }
     }
+}
+
+/** Sender and recipient of an assets pallet transfer, or null when the call is not one. */
+internal fun GenericCall.Instance.assetTransferParties(moduleName: String, origin: AccountId): Pair<AccountId, AccountId>? = when {
+    instanceOf(moduleName, "transfer", "transfer_keep_alive") ->
+        origin to bindAccountIdentifier(arguments["target"])
+
+    // Spends an allowance: the funds leave `owner`, not the delegate that signed (the USDT bridge credits this way)
+    instanceOf(moduleName, "transfer_approved") ->
+        bindAccountIdentifier(arguments["owner"]) to bindAccountIdentifier(arguments["destination"])
+
+    else -> null
 }
