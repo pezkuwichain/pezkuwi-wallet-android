@@ -85,7 +85,11 @@ jobs:
 
       - name: Build for CodeQL
         if: matrix.build-mode == 'manual'
-        run: ./gradlew assembleDebug -x test -x lint
+        # No Gradle or Kotlin daemon is left running: the analysis after the build needs that memory, and
+        # with them alive the runner ran out of it during query evaluation.
+        run: |
+          ./gradlew assembleDebug -x test -x lint --no-daemon -Pkotlin.compiler.execution.strategy=in-process
+          free -m
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
