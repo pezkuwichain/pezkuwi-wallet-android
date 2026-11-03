@@ -295,6 +295,10 @@
 -dontwarn org.apache.xalan.**
 -dontwarn org.ietf.jgss.**
 -dontwarn org.apache.http.**
+# Referenced only by Jackson's Java 7 support class, which Jackson loads defensively; Android has no
+# java.beans. R8 compatibility mode reports these as missing.
+-dontwarn java.beans.ConstructorProperties
+-dontwarn java.beans.Transient
 
 # ByteBuddy (test dependency)
 -dontwarn net.bytebuddy.**
