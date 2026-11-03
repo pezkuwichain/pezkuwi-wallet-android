@@ -241,9 +241,15 @@
 -keep class io.novafoundation.nova.**.navigation.** { *; }
 -keep class * extends androidx.navigation.NavDestination { *; }
 
-# Keep all Nova foundation classes (prevent aggressive obfuscation)
--keep class io.novafoundation.nova.** { *; }
--keepnames class io.novafoundation.nova.**
+# Field names of the app's own classes, so Gson reads and writes JSON by the declared names even where a
+# class has no @SerializedName and sits outside the model/response/request/dto packages kept above.
+# Class and method names are obfuscated.
+-keepclassmembers class io.novafoundation.nova.** { <fields>; }
+
+# Methods a WebView page calls by name (DApp browser web3 bridge, integrity check, Transak events).
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
 
 # ============================================================
 # Optimization settings
