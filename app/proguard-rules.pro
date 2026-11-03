@@ -92,7 +92,9 @@
 # ============================================================
 # SR25519 signing - keep the native methods and the class
 -keep class io.novafoundation.nova.sr25519.BizinikiwSr25519 { *; }
--keep class io.novafoundation.nova.** { native <methods>; }
+# Names of classes with native methods and of those methods, which JNI binds by name. (A
+# `-keep class io.novafoundation.nova.** { native <methods>; }` here kept every class of the app,
+# native methods or not.)
 -keepclasseswithmembernames class * {
     native <methods>;
 }
