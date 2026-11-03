@@ -78,6 +78,7 @@ import io.novafoundation.nova.feature_account_api.presenatation.mixin.selectSing
 import io.novafoundation.nova.feature_account_api.presenatation.mixin.selectWallet.SelectWalletCommunicator
 import io.novafoundation.nova.feature_account_api.presenatation.mixin.selectWallet.SelectWalletMixin
 import io.novafoundation.nova.feature_account_api.presenatation.navigation.ExtrinsicNavigationWrapper
+import io.novafoundation.nova.feature_account_impl.BiometricUnlockKey
 import io.novafoundation.nova.feature_account_impl.RealBiometricServiceFactory
 import io.novafoundation.nova.feature_account_impl.data.cloudBackup.CloudBackupAccountsModificationsTracker
 import io.novafoundation.nova.feature_account_impl.data.ethereum.transaction.RealEvmTransactionService
@@ -734,8 +735,8 @@ class AccountFeatureModule {
 
     @Provides
     @FeatureScope
-    fun provideBiometricServiceFactory(accountRepository: AccountRepository): BiometricServiceFactory {
-        return RealBiometricServiceFactory(accountRepository)
+    fun provideBiometricServiceFactory(accountRepository: AccountRepository, preferences: Preferences): BiometricServiceFactory {
+        return RealBiometricServiceFactory(accountRepository, BiometricUnlockKey(preferences))
     }
 
     @Provides
