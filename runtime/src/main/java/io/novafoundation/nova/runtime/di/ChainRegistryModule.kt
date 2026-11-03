@@ -26,6 +26,7 @@ import io.novafoundation.nova.runtime.multiNetwork.connection.ConnectionPool
 import io.novafoundation.nova.runtime.multiNetwork.connection.ConnectionSecrets
 import io.novafoundation.nova.runtime.multiNetwork.connection.Web3ApiPool
 import io.novafoundation.nova.runtime.multiNetwork.connection.autobalance.NodeAutobalancer
+import io.novafoundation.nova.runtime.multiNetwork.connection.light.LightClientSpecApi
 import io.novafoundation.nova.runtime.multiNetwork.connection.light.LightClients
 import io.novafoundation.nova.runtime.multiNetwork.connection.autobalance.strategy.NodeSelectionStrategyProvider
 import io.novafoundation.nova.runtime.multiNetwork.connection.node.healthState.NodeHealthStateTesterFactory
@@ -186,7 +187,8 @@ class ChainRegistryModule {
     fun provideLightClients(
         context: Context,
         encryptedFirstDns: EncryptedFirstDns,
-    ) = LightClients(context, encryptedFirstDns)
+        networkApiCreator: NetworkApiCreator,
+    ) = LightClients(context, encryptedFirstDns, networkApiCreator.create(LightClientSpecApi::class.java))
 
     @Provides
     @ApplicationScope

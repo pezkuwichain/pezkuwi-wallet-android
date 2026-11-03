@@ -197,7 +197,10 @@ class ChainConnection internal constructor(
 
                 is FallbackEvent.Socket -> {
                     val onLight = light != null && event.state.urlOrNull() == light?.saturatedUrl
-                    if (event.state is State.Connected && !onLight) policy.onRpcConnected(System.currentTimeMillis())
+                    if (event.state is State.Connected && !onLight) {
+                        policy.onRpcConnected(System.currentTimeMillis())
+                        lightClients.refreshSpecsInBackground()
+                    }
 
                     if (event.state.needsAutobalance()) {
                         Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: ${event.state} failed, source ${policy.source}, on light $onLight")
