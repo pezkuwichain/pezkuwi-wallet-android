@@ -7,6 +7,7 @@ import io.novafoundation.nova.feature_dapp_impl.web3.states.ExtensionsStore
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.Web3Injector
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewScriptInjector
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewWeb3JavaScriptInterface
+import io.novafoundation.nova.feature_dapp_impl.web3.webview.jsInterfaceFullName
 
 private const val JS_INTERFACE_NAME = "Metamask"
 
@@ -45,7 +46,7 @@ class MetamaskInjector(
                 window.ethereum = new pezkuwi.Provider($providerConfigJson);
                 window.web3 = new pezkuwi.Web3(window.ethereum);
                 pezkuwi.postMessage = (jsonString) => {
-                        Pezkuwi_Metamask.onNewMessage(JSON.stringify(jsonString))
+                        ${jsInterfaceFullName(JS_INTERFACE_NAME)}.onNewMessage(JSON.stringify(jsonString))
                 };
         """.trimIndent()
 
