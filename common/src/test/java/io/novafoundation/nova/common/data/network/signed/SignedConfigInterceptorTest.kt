@@ -175,6 +175,22 @@ class SignedConfigInterceptorTest {
     }
 
     @Test
+    fun `root keys handed to new holders need two old and two new signatures`() {
+        val newHolders = List(3) { Key("sr25519") }
+        val root2 = rootPayload(2, newHolders, targetsKey)
+        publish(CHAINS to chains)
+
+        served["signed/root.2.json"] = envelope(root2, rootKeys[0], rootKeys[1])
+        assertNull(fetch(CHAINS))
+        assertNull(store.trustedRoot)
+
+        served["signed/root.2.json"] = envelope(root2, rootKeys[0], rootKeys[1], newHolders[0], newHolders[2])
+        now += 600
+        assertEquals("[\"pezkuwi\"]", fetch(CHAINS))
+        assertNotNull(store.trustedRoot)
+    }
+
+    @Test
     fun `a root signed by one root key is not followed`() {
         val newTargetsKey = Key("ed25519")
         served["signed/root.2.json"] = envelope(rootPayload(2, rootKeys, newTargetsKey), rootKeys[0])
