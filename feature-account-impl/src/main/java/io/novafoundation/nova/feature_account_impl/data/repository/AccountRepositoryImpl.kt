@@ -193,16 +193,6 @@ class AccountRepositoryImpl(
         return accountDao.getAccount(address)?.let { mapAccountLocalToAccount(it) }
     }
 
-    override suspend fun getMyAccounts(query: String, chainId: String): Set<Account> {
-//        return withContext(Dispatchers.Default) {
-//            accountDao.getAccounts(query, networkType)
-//                .map { mapAccountLocalToAccount(it) }
-//                .toSet()
-//        }
-
-        return emptySet() // TODO wallet
-    }
-
     override suspend fun isCodeSet(): Boolean {
         return accountDataSource.getPinCode() != null
     }

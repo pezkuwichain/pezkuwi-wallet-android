@@ -29,8 +29,8 @@ class BaseException(
             return BaseException(Kind.NETWORK, message, exception)
         }
 
-        fun unexpectedError(exception: Throwable): BaseException {
-            return BaseException(Kind.UNEXPECTED, exception.message ?: "", exception)
+        fun unexpectedError(fallbackMessage: String, exception: Throwable): BaseException {
+            return BaseException(Kind.UNEXPECTED, exception.message ?: fallbackMessage, exception)
         }
     }
 }
