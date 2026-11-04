@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyEllipsis">
 
     <string name="account_ledger_generic_item_subtitle">Flex, Stax, Nano</string>
-    <string name="account_ledger_generic_item_subtitle">Flex, Stax, Nano</string>
     <string name="ledger_device_nano_gen5">Ledger Nano Gen5</string>
     <string name="multisig_gifts_not_supported_title">Diyarî ji bo cîzdanên Multisig nayê piştgirîkirin</string>
     <string name="multisig_gifts_not_supported_message">Ji bo afirandin an birêvebirina diyariyan ji kerema xwe derbasî cureyekî din ê cîzdanê bibe.</string>
@@ -624,7 +623,6 @@
     <string name="mnemonic_card_reveal_subtitle">Piştrast bike ku kes ekrana te nabîne\nû wêneyê ekranê negire</string>
     <string name="mnemonic_card_title">Ji kerema xwe %s</string>
     <string name="mnemonic_card_title_highlight">bi tu kesî re parve neke</string>
-    <string name="account_backup_mnemonic_title">Hevoka xwe ya veşartî binivîse</string>
     <string name="account_backup_mnemonic_title">Hevoka xwe ya veşartî binivîse</string>
     <string name="start_create_wallet_input_hint">Cîzdanê min ê nû</string>
     <string name="start_create_wallet_name_your_wallet">Navekî bide cîzdanê xwe</string>
