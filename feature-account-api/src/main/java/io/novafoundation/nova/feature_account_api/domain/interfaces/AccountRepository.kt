@@ -68,8 +68,6 @@ interface AccountRepository {
 
     suspend fun getAccountOrNull(address: String): Account?
 
-    suspend fun getMyAccounts(query: String, chainId: String): Set<Account>
-
     suspend fun isCodeSet(): Boolean
 
     suspend fun savePinCode(code: String)

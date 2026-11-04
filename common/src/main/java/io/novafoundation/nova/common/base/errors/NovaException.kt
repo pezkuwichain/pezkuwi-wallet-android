@@ -1,5 +1,6 @@
 package io.novafoundation.nova.common.base.errors
 
+import io.novafoundation.nova.common.R
 import io.novafoundation.nova.common.resources.ResourceManager
 
 class NovaException(
@@ -16,11 +17,7 @@ class NovaException(
     companion object {
 
         fun networkError(resourceManager: ResourceManager, throwable: Throwable): NovaException {
-            return NovaException(Kind.NETWORK, "", throwable) // TODO: add common error text to resources
-        }
-
-        fun unexpectedError(exception: Throwable): NovaException {
-            return NovaException(Kind.UNEXPECTED, exception.message ?: "", exception) // TODO: add common error text to resources
+            return NovaException(Kind.NETWORK, resourceManager.getString(R.string.connection_error_message_v2_2_0), throwable)
         }
     }
 }

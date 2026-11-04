@@ -3,6 +3,7 @@ package io.novafoundation.nova.app
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import android.util.Log
 import com.walletconnect.android.Core
 import com.walletconnect.android.CoreClient
 import com.walletconnect.android.relay.ConnectionType
@@ -14,6 +15,7 @@ import io.novafoundation.nova.common.di.CommonApi
 import io.novafoundation.nova.common.di.FeatureContainer
 import io.novafoundation.nova.common.resources.ContextManager
 import io.novafoundation.nova.common.resources.LanguagesHolder
+import io.novafoundation.nova.common.utils.LOG_TAG
 import io.novafoundation.nova.common.utils.coroutines.RootScope
 import io.novafoundation.nova.feature_wallet_connect_impl.BuildConfig
 import javax.inject.Inject
@@ -85,13 +87,15 @@ open class App : Application(), FeatureContainer {
         )
 
         CoreClient.initialize(relayServerUrl = serverUrl, connectionType = connectionType, application = this, metaData = appMetaData) { error ->
-            // TODO maybe re-initialize client
+            // Initialization fails only on bad configuration (project id, metadata), which a retry would not fix.
+            // The relay itself connects later, on demand, in RealWalletConnectService
+            Log.e(LOG_TAG, "Failed to initialize Wallet Connect core", error.throwable)
         }
 
         val initParams = Wallet.Params.Init(core = CoreClient)
 
         Web3Wallet.initialize(initParams) { error ->
-            // TODO maybe re-initialize client
+            Log.e(LOG_TAG, "Failed to initialize Web3Wallet", error.throwable)
         }
     }
 }
