@@ -31,4 +31,18 @@
         android:singleLine="true"
         android:textColor="@color/text_primary"
         tools:text="polkadot.js.org" />
+
+    <TextView
+        android:id="@+id/addressBarKurdBadge"
+        style="@style/TextAppearance.NovaFoundation.SemiBold.Caption1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="26dp"
+        android:background="?attr/selectableItemBackground"
+        android:minHeight="32dp"
+        android:gravity="center"
+        android:paddingHorizontal="7dp"
+        android:visibility="gone"
+        tools:text="@string/dapp_kurd_badge_official"
+        tools:visibility="visible" />
 </merge>

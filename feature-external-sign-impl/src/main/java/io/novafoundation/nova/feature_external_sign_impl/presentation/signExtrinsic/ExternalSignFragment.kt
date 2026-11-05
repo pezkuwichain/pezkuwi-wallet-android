@@ -1,7 +1,6 @@
 package io.novafoundation.nova.feature_external_sign_impl.presentation.signExtrinsic
 
 import androidx.core.os.bundleOf
-
 import coil.ImageLoader
 import io.novafoundation.nova.common.base.BaseFragment
 import io.novafoundation.nova.common.base.blockBackPressing
@@ -15,18 +14,18 @@ import io.novafoundation.nova.common.view.setProgressState
 import io.novafoundation.nova.common.view.shape.addRipple
 import io.novafoundation.nova.common.view.shape.getBlockDrawable
 import io.novafoundation.nova.common.view.showValueOrHide
-import io.novafoundation.nova.feature_account_api.view.showWallet
 import io.novafoundation.nova.feature_account_api.view.showAddress
 import io.novafoundation.nova.feature_account_api.view.showChain
+import io.novafoundation.nova.feature_account_api.view.showWallet
 import io.novafoundation.nova.feature_external_sign_api.di.ExternalSignFeatureApi
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.ExternalSignPayload
+import io.novafoundation.nova.feature_external_sign_api.model.signPayload.SiteNameKind
 import io.novafoundation.nova.feature_external_sign_api.presentation.dapp.showDAppIcon
 import io.novafoundation.nova.feature_external_sign_impl.R
 import io.novafoundation.nova.feature_external_sign_impl.databinding.FragmentConfirmSignExtrinsicBinding
 import io.novafoundation.nova.feature_external_sign_impl.di.ExternalSignFeatureComponent
 import io.novafoundation.nova.feature_wallet_api.presentation.mixin.fee.setupFeeLoading
 import io.novafoundation.nova.feature_wallet_api.presentation.view.FeeView
-
 import javax.inject.Inject
 
 private const val PAYLOAD_KEY = "DAppSignExtrinsicFragment.Payload"
@@ -90,6 +89,7 @@ class ExternalSignFragment : BaseFragment<ExternalSignViewModel, FragmentConfirm
 
         binder.confirmSignExtinsicIcon.showDAppIcon(viewModel.dAppInfo?.icon, imageLoader)
         binder.confirmSignExtinsicDappUrl.showValueOrHide(viewModel.dAppInfo?.url)
+        showSiteNameKind(viewModel.dAppInfo?.siteNameKind)
 
         viewModel.performingOperationInProgress.observe { operationInProgress ->
             val actionsAllowed = !operationInProgress
@@ -113,5 +113,20 @@ class ExternalSignFragment : BaseFragment<ExternalSignViewModel, FragmentConfirm
         feeView.setVisible(mixin != null)
 
         mixin?.let { setupFeeLoading(it, feeView) }
+    }
+
+    /** On a `.kurd` page, what kind of name asks: only an official one is the state's. */
+    private fun showSiteNameKind(kind: SiteNameKind?) {
+        val url = viewModel.dAppInfo?.url ?: return
+        kind ?: return
+
+        val (kindRes, noteRes) = when (kind) {
+            SiteNameKind.OFFICIAL -> R.string.dapp_kurd_sign_kind_official to null
+            SiteNameKind.REGISTERED -> R.string.dapp_kurd_sign_kind_registered to R.string.dapp_kurd_sign_note_registered
+            SiteNameKind.UNVERIFIED -> R.string.dapp_kurd_sign_kind_unverified to R.string.dapp_kurd_sign_note_unverified
+        }
+        binder.confirmSignExtinsicDappUrl.showValue(url, getString(kindRes))
+        binder.confirmSignExtinsicSiteNameNote.setVisible(noteRes != null)
+        noteRes?.let(binder.confirmSignExtinsicSiteNameNote::setText)
     }
 }

@@ -50,7 +50,9 @@ interface Web3StateMachineHost {
     val externalEvents: Flow<Web3ExtensionStateMachine.ExternalEvent>
 
     suspend fun authorizeDApp(payload: AuthorizeDappBottomSheet.Payload): Web3Session.Authorization.State
-    suspend fun confirmTx(request: ExternalSignRequest): ConfirmTxResponse
+
+    /** [origin]: the page that asked, which must still be the page shown. */
+    suspend fun confirmTx(request: ExternalSignRequest, origin: String): ConfirmTxResponse
 
     fun showError(text: String)
 

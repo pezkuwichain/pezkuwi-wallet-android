@@ -65,6 +65,16 @@
                     app:title="@string/dapp_dapp" />
             </io.novafoundation.nova.common.view.TableView>
 
+            <TextView
+                android:id="@+id/confirmSignExtinsicSiteNameNote"
+                style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.2"
+                android:textColor="@color/text_warning"
+                android:visibility="gone" />
+
             <io.novafoundation.nova.common.view.TableView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

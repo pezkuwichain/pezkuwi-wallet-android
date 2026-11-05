@@ -1,5 +1,7 @@
 package io.novafoundation.nova.runtime.di
 
+import io.novafoundation.nova.runtime.names.KurdNameResolver
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
 import com.google.gson.Gson
 import io.novafoundation.nova.core.storage.StorageCache
 import io.novafoundation.nova.runtime.call.MultiChainRuntimeCallsApi
@@ -61,6 +63,10 @@ interface RuntimeApi {
     fun chainStateRepository(): ChainStateRepository
 
     fun chainRegistry(): ChainRegistry
+
+    fun kurdNameResolver(): KurdNameResolver
+
+    fun kurdSiteServer(): KurdSiteServer
 
     fun rpcCalls(): RpcCalls
 

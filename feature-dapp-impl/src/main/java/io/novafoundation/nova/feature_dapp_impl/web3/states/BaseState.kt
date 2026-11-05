@@ -6,6 +6,7 @@ import io.novafoundation.nova.feature_account_api.presenatation.account.wallet.W
 import io.novafoundation.nova.feature_dapp_impl.domain.DappInteractor
 import io.novafoundation.nova.feature_dapp_impl.web3.Web3Transport
 import io.novafoundation.nova.feature_dapp_impl.web3.session.Web3Session
+import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewWeb3JavaScriptInterface
 import io.novafoundation.nova.feature_external_sign_api.presentation.externalSign.AuthorizeDappBottomSheet
 import kotlinx.coroutines.flow.first
 
@@ -73,5 +74,14 @@ abstract class BaseState<R : Web3Transport.Request<*>, S>(
         )
 
         return authorizationState == Web3Session.Authorization.State.ALLOWED
+    }
+
+    /**
+     * True while the tab still shows the page that sent [request]. Requests are handled one at a
+     * time, so a page could otherwise ask and navigate away, leaving its request to be judged as
+     * the next page's.
+     */
+    protected suspend fun isFromCurrentPage(request: R): Boolean {
+        return WebViewWeb3JavaScriptInterface.sameOrigin(request.origin, hostApi.currentPageAnalyzed.first().url)
     }
 }

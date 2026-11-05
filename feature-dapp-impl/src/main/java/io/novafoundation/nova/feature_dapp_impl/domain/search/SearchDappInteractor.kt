@@ -8,10 +8,12 @@ import io.novafoundation.nova.feature_dapp_api.data.repository.DAppMetadataRepos
 import io.novafoundation.nova.feature_dapp_impl.data.repository.FavouritesDAppRepository
 import io.novafoundation.nova.feature_dapp_impl.domain.common.buildUrlToDappMapping
 import io.novafoundation.nova.feature_dapp_impl.domain.common.createDAppComparator
+import io.novafoundation.nova.runtime.names.KurdName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.net.URLEncoder
 
 class SearchDappInteractor(
     private val dAppMetadataRepository: DAppMetadataRepository,
@@ -31,8 +33,12 @@ class SearchDappInteractor(
             .sortedWith(createDAppComparator())
             .map(DappSearchResult::Dapp)
 
+        // A .kurd name is resolved on chain by the wallet: never a web address, never a search query
+        val kurdName = KurdName.parse(query).takeIf { KurdName.mentionsKurd(query) }
+
         val searchGroupContent = when {
             query.isEmpty() -> null
+            KurdName.mentionsKurd(query) -> null
             Urls.isValidWebUrl(query) -> {
                 val searchUrl = Urls.ensureHttpsProtocol(query)
                 val searchUrlDomain = Urls.domainOf(searchUrl)
@@ -44,6 +50,10 @@ class SearchDappInteractor(
         }
 
         buildMap {
+            kurdName?.let {
+                put(DappSearchGroup.KURD_NAME, listOf(DappSearchResult.KurdName(it)))
+            }
+
             searchGroupContent?.let {
                 put(DappSearchGroup.SEARCH, listOf(searchGroupContent))
             }
@@ -54,7 +64,7 @@ class SearchDappInteractor(
         }
     }
 
-    private fun searchUrlFor(query: String): String = "https://duckduckgo.com/?q=$query"
+    private fun searchUrlFor(query: String): String = "https://duckduckgo.com/?q=" + URLEncoder.encode(query, Charsets.UTF_8.name())
 
     private suspend fun getDapps(categoryId: String?): Collection<DApp> {
         val dApps = dAppMetadataRepository.getDAppCatalog()

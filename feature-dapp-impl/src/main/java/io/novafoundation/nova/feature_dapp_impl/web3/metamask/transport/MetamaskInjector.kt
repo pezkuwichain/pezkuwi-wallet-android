@@ -46,7 +46,7 @@ class MetamaskInjector(
                 window.ethereum = new pezkuwi.Provider($providerConfigJson);
                 window.web3 = new pezkuwi.Web3(window.ethereum);
                 pezkuwi.postMessage = (jsonString) => {
-                        ${jsInterfaceFullName(JS_INTERFACE_NAME)}.onNewMessage(JSON.stringify(jsonString))
+                        ${jsInterfaceFullName(JS_INTERFACE_NAME)}.postMessage(JSON.stringify(jsonString))
                 };
         """.trimIndent()
 

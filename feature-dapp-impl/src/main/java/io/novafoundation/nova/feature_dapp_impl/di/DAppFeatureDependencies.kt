@@ -40,6 +40,8 @@ import io.novafoundation.nova.feature_wallet_connect_api.presentation.WalletConn
 import io.novafoundation.nova.runtime.di.ExtrinsicSerialization
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.runtime.repository.RuntimeVersionsRepository
+import io.novafoundation.nova.runtime.names.KurdNameResolver
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
 
 interface DAppFeatureDependencies {
 
@@ -100,6 +102,10 @@ interface DAppFeatureDependencies {
     fun gson(): Gson
 
     fun chainRegistry(): ChainRegistry
+
+    fun kurdSiteServer(): KurdSiteServer
+
+    fun kurdNameResolver(): KurdNameResolver
 
     fun imageLoader(): ImageLoader
 

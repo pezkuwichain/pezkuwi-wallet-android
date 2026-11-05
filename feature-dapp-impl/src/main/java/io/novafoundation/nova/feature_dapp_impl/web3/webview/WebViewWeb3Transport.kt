@@ -13,8 +13,9 @@ abstract class WebViewWeb3Transport<R : Web3Transport.Request<*>>(
     CoroutineScope by scope {
 
     override val requestsFlow = webViewWeb3JavaScriptInterface.messages
-        .mapNotNull(::messageToRequest)
+        .mapNotNull { messageToRequest(it.json, it.origin) }
         .shareIn(this, started = SharingStarted.Eagerly)
 
-    protected abstract suspend fun messageToRequest(message: String): R?
+    /** [origin]: where the message came from, as the WebView reported it. */
+    protected abstract suspend fun messageToRequest(message: String, origin: String): R?
 }

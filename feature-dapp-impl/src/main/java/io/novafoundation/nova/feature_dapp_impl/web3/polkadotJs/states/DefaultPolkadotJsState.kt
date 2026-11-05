@@ -8,6 +8,10 @@ import io.novafoundation.nova.feature_dapp_impl.domain.DappInteractor
 import io.novafoundation.nova.feature_dapp_impl.domain.browser.polkadotJs.PolkadotJsExtensionInteractor
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.PolkadotJsTransportRequest
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.model.mapPolkadotJsSignerPayloadToPolkadotPayload
+import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.rpc.PolkadotJsRpcBridge
+import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.rpc.isKurdPage
+import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.rpc.sameOrigin
+import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.rpc.until
 import io.novafoundation.nova.feature_dapp_impl.web3.session.Web3Session
 import io.novafoundation.nova.feature_dapp_impl.web3.states.BaseState
 import io.novafoundation.nova.feature_dapp_impl.web3.states.Web3ExtensionStateMachine.ExternalEvent
@@ -17,7 +21,9 @@ import io.novafoundation.nova.feature_dapp_impl.web3.states.Web3StateMachineHost
 import io.novafoundation.nova.feature_dapp_impl.web3.states.hostApi.ConfirmTxResponse
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.ExternalSignRequest
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.polkadot.PolkadotSignerResult
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 class DefaultPolkadotJsState(
     private val interactor: PolkadotJsExtensionInteractor,
@@ -27,6 +33,7 @@ class DefaultPolkadotJsState(
     web3Session: Web3Session,
     hostApi: Web3StateMachineHost,
     walletUiUseCase: WalletUiUseCase,
+    private val rpcBridge: PolkadotJsRpcBridge,
 ) : BaseState<PolkadotJsTransportRequest<*>, PolkadotJsState>(
     commonInteractor = commonInteractor,
     resourceManager = resourceManager,
@@ -38,6 +45,11 @@ class DefaultPolkadotJsState(
     PolkadotJsState {
 
     override suspend fun acceptRequest(request: PolkadotJsTransportRequest<*>, transition: StateMachineTransition<PolkadotJsState>) {
+        if (!isFromCurrentPage(request)) {
+            request.reject(NotAuthorizedException)
+            return
+        }
+
         when (request) {
             is PolkadotJsTransportRequest.Single.AuthorizeTab -> authorizeTab(request)
             is PolkadotJsTransportRequest.Single.ListAccounts -> supplyAccountList(request)
@@ -45,6 +57,7 @@ class DefaultPolkadotJsState(
             is PolkadotJsTransportRequest.Subscription.SubscribeAccounts -> supplyAccountListSubscription(request)
             is PolkadotJsTransportRequest.Single.ListMetadata -> suppleKnownMetadatas(request)
             is PolkadotJsTransportRequest.Single.ProvideMetadata -> handleProvideMetadata(request)
+            is PolkadotJsTransportRequest.Rpc<*> -> handleRpc(request)
         }
     }
 
@@ -72,7 +85,7 @@ class DefaultPolkadotJsState(
     private suspend fun signExtrinsicWithConfirmation(request: PolkadotJsTransportRequest.Single.Sign) {
         val signRequest = ExternalSignRequest.Polkadot(request.requestId, mapPolkadotJsSignerPayloadToPolkadotPayload(request.signerPayload))
 
-        when (val response = hostApi.confirmTx(signRequest)) {
+        when (val response = hostApi.confirmTx(signRequest, request.origin)) {
             is ConfirmTxResponse.Rejected -> request.reject(NotAuthorizedException)
             is ConfirmTxResponse.Sent -> throw IllegalStateException("Unexpected 'Sent' response for PolkadotJs extension")
             is ConfirmTxResponse.Signed -> request.accept(PolkadotSignerResult(response.requestId, response.signature, response.modifiedTransaction))
@@ -91,6 +104,36 @@ class DefaultPolkadotJsState(
                 request.reject(Web3StateMachineHost.SigningFailedException)
             }
         }
+    }
+
+    /**
+     * Chain calls are offered to `.kurd` pages only, judged by the page the tab shows rather than
+     * anything the page says: elsewhere a page opens its own connections. A subscription ends when
+     * the tab leaves the page's origin.
+     */
+    private suspend fun handleRpc(request: PolkadotJsTransportRequest.Rpc<*>) {
+        val pageUrl = hostApi.currentPageAnalyzed.first().url
+        if (!isKurdPage(pageUrl)) {
+            if (request is PolkadotJsTransportRequest.Rpc.ListProviders) request.accept(emptyMap()) else request.reject(NotAuthorizedException)
+            return
+        }
+
+        runCatching {
+            when (request) {
+                is PolkadotJsTransportRequest.Rpc.ListProviders -> request.accept(rpcBridge.providers())
+                is PolkadotJsTransportRequest.Rpc.StartProvider -> request.accept(rpcBridge.start(request.key))
+                is PolkadotJsTransportRequest.Rpc.Send -> request.scope.launch {
+                    runCatching { rpcBridge.send(request.method, request.params) }
+                        .onSuccess(request::accept)
+                        .onFailure(request::reject)
+                }
+                is PolkadotJsTransportRequest.Rpc.Subscribe -> {
+                    val updates = rpcBridge.subscribe(request.method, request.params)
+                    request.accept(updates.until { hostApi.currentPageAnalyzed.first { !sameOrigin(it.url, pageUrl) } })
+                }
+                is PolkadotJsTransportRequest.Rpc.SubscribeConnected -> request.accept(flowOf(true))
+            }
+        }.onFailure(request::reject)
     }
 
     private suspend fun handleProvideMetadata(request: PolkadotJsTransportRequest.Single.ProvideMetadata) = request.respondIfAllowed {

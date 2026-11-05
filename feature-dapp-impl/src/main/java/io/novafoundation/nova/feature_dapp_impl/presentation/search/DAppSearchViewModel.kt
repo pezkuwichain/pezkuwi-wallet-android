@@ -13,20 +13,25 @@ import io.novafoundation.nova.common.utils.Event
 import io.novafoundation.nova.common.utils.inBackground
 import io.novafoundation.nova.common.utils.sendEvent
 import io.novafoundation.nova.common.utils.withSafeLoading
-import io.novafoundation.nova.feature_dapp_impl.presentation.DAppRouter
 import io.novafoundation.nova.feature_dapp_api.presentation.browser.main.DAppBrowserPayload
 import io.novafoundation.nova.feature_dapp_impl.R
 import io.novafoundation.nova.feature_dapp_impl.domain.DappInteractor
 import io.novafoundation.nova.feature_dapp_impl.domain.search.DappSearchGroup
 import io.novafoundation.nova.feature_dapp_impl.domain.search.DappSearchResult
 import io.novafoundation.nova.feature_dapp_impl.domain.search.SearchDappInteractor
+import io.novafoundation.nova.feature_dapp_impl.presentation.DAppRouter
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.dappCategoryToUi
 import io.novafoundation.nova.feature_dapp_impl.presentation.search.model.DappSearchModel
+import io.novafoundation.nova.runtime.names.KurdLookalikes
+import io.novafoundation.nova.runtime.names.KurdName
+import io.novafoundation.nova.runtime.names.KurdNameResolver
+import io.novafoundation.nova.runtime.names.KurdResolution
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DAppSearchViewModel(
@@ -37,10 +42,13 @@ class DAppSearchViewModel(
     private val payload: SearchPayload,
     private val dAppSearchResponder: DAppSearchResponder,
     private val actionAwaitableMixinFactory: ActionAwaitableMixin.Factory,
-    private val appLinksProvider: AppLinksProvider
+    private val appLinksProvider: AppLinksProvider,
+    private val kurdNameResolver: KurdNameResolver,
 ) : BaseViewModel() {
 
     val dAppNotInCatalogWarning = actionAwaitableMixinFactory.confirmingAction<DappUnknownWarningModel>()
+
+    val kurdLookalikeWarning = actionAwaitableMixinFactory.create<KurdLookalikeWarning, KurdLookalikeChoice>()
 
     val query = MutableStateFlow(payload.initialUrl.orEmpty())
 
@@ -91,6 +99,7 @@ class DAppSearchViewModel(
         val content = when (searchGroup) {
             DappSearchGroup.DAPPS -> resourceManager.getString(R.string.dapp_dapps)
             DappSearchGroup.SEARCH -> resourceManager.getString(R.string.common_search)
+            DappSearchGroup.KURD_NAME -> resourceManager.getString(R.string.dapp_search_kurd_name)
         }
 
         return TextHeader(content)
@@ -117,6 +126,14 @@ class DAppSearchViewModel(
                 searchResult = searchResult,
                 actionIcon = null
             )
+
+            is DappSearchResult.KurdName -> DappSearchModel(
+                title = searchResult.name.name,
+                description = resourceManager.getString(R.string.dapp_search_kurd_name_subtitle),
+                iconRes = R.drawable.shield_checkmark_outline,
+                searchResult = searchResult,
+                actionIcon = null
+            )
         }
     }
 
@@ -126,6 +143,7 @@ class DAppSearchViewModel(
                 is DappSearchResult.Dapp -> searchResult.dapp.url
                 is DappSearchResult.Search -> searchResult.searchUrl
                 is DappSearchResult.Url -> searchResult.url
+                is DappSearchResult.KurdName -> urlAfterLookalikeCheck(searchResult.name)
             }
 
             if (!searchResult.isTrustedByNova) {
@@ -143,6 +161,25 @@ class DAppSearchViewModel(
         }
     }
 
+    /**
+     * The typed name's address, unless a proven official name it imitates exists and the reader
+     * chooses that one. Looked up only when the typed name has such a candidate, and for a few
+     * seconds at most: the opened page still shows by its badge whether it is official.
+     */
+    private suspend fun urlAfterLookalikeCheck(typed: KurdName): String {
+        val official = withTimeoutOrNull(LOOKALIKE_CHECK_MILLIS) {
+            KurdLookalikes.candidates(typed).firstOrNull { candidate ->
+                val resolution = kurdNameResolver.resolve(candidate)
+                resolution is KurdResolution.Resolved && resolution.verified && resolution.official
+            }
+        } ?: return DappSearchResult.KurdName(typed).url
+
+        return when (kurdLookalikeWarning.awaitAction(KurdLookalikeWarning(typed, official))) {
+            KurdLookalikeChoice.GO_OFFICIAL -> DappSearchResult.KurdName(official).url
+            KurdLookalikeChoice.OPEN_TYPED -> DappSearchResult.KurdName(typed).url
+        }
+    }
+
     private fun shouldReportResult() = when (payload.request) {
         SearchPayload.Request.GO_TO_URL -> true
 
@@ -157,3 +194,5 @@ class DAppSearchViewModel(
         }
     }
 }
+
+private const val LOOKALIKE_CHECK_MILLIS = 8_000L

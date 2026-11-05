@@ -8,9 +8,10 @@ import io.novafoundation.nova.common.list.PayloadGenerator
 import io.novafoundation.nova.common.list.headers.TextHeader
 import io.novafoundation.nova.common.list.resolvePayload
 import io.novafoundation.nova.common.utils.inflater
-import io.novafoundation.nova.feature_dapp_impl.domain.search.DappSearchResult
 import io.novafoundation.nova.feature_dapp_api.presentation.view.DAppView
+import io.novafoundation.nova.feature_dapp_impl.R
 import io.novafoundation.nova.feature_dapp_impl.databinding.ItemDappSearchCategoryBinding
+import io.novafoundation.nova.feature_dapp_impl.domain.search.DappSearchResult
 import io.novafoundation.nova.feature_dapp_impl.presentation.search.model.DappSearchModel
 
 class SearchDappAdapter(
@@ -77,6 +78,7 @@ private object DiffCallback : BaseGroupedDiffCallback<TextHeader, DappSearchMode
     private fun isSingletonItem(item: DappSearchModel) = when (item.searchResult) {
         is DappSearchResult.Search -> true
         is DappSearchResult.Url -> true
+        is DappSearchResult.KurdName -> true
         is DappSearchResult.Dapp -> false
     }
 }
@@ -100,7 +102,7 @@ private class SearchHolder(
     }
 
     fun bind(item: DappSearchModel) = with(dAppView) {
-        setIconUrl(item.icon)
+        if (item.iconRes != null) setIconResource(item.iconRes, R.color.icon_positive) else setIconUrl(item.icon)
 
         bindTitle(item)
         setSubtitle(item.description)

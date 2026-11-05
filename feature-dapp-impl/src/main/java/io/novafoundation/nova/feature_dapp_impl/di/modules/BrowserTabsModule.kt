@@ -1,5 +1,6 @@
 package io.novafoundation.nova.feature_dapp_impl.di.modules
 
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -84,9 +85,10 @@ class BrowserTabsModule {
     fun providePageSessionFactory(
         compoundWeb3Injector: CompoundWeb3Injector,
         contextManager: ContextManager,
-        integrityCheckJSBridgeFactory: IntegrityCheckJSBridgeFactory
+        integrityCheckJSBridgeFactory: IntegrityCheckJSBridgeFactory,
+        kurdSiteServer: KurdSiteServer,
     ): BrowserTabSessionFactory {
-        return BrowserTabSessionFactory(compoundWeb3Injector, contextManager, integrityCheckJSBridgeFactory)
+        return BrowserTabSessionFactory(compoundWeb3Injector, contextManager, integrityCheckJSBridgeFactory, kurdSiteServer)
     }
 
     @FeatureScope

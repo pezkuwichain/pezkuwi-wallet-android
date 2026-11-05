@@ -43,18 +43,21 @@ class LightClients(
     private val mutex = Mutex()
     private var baseUrl: String? = null
     private val registered = mutableSetOf<ChainId>()
-    private val inUse = mutableSetOf<ChainId>()
+    private val leases = LightClientLeases(relayOf = { chains.getValue(it).relay })
 
     fun supports(chainId: ChainId): Boolean = chainId in chains
 
-    /** Loopback JSON-RPC URL of [chainId], or null when the light client cannot serve it. */
-    suspend fun url(chainId: ChainId): String? = mutex.withLock {
+    /**
+     * Loopback JSON-RPC URL of [chainId], or null when the light client cannot serve it. The chain
+     * keeps syncing until every [holder] that asked for it has [release]d it.
+     */
+    suspend fun url(chainId: ChainId, holder: Any): String? = mutex.withLock {
         withContext(Dispatchers.IO) {
             runCatching {
                 if (!supports(chainId)) return@runCatching null
                 val base = baseUrl ?: PezkuwiLight.start(File(context.filesDir, DATABASE_DIR), resolver()).also { baseUrl = it }
                 register(chainId)
-                inUse += chainId
+                leases.acquire(chainId, holder)
                 PezkuwiLight.chainUrl(base, chainId)
             }.onFailure {
                 Log.w(TAG, "Light client unavailable for $chainId", it)
@@ -63,14 +66,15 @@ class LightClients(
     }
 
     /**
-     * [chainId] no longer needs the light client, so it stops syncing: a synced chain costs data
-     * and CPU while nothing reads it. A relay chain goes once none of its teyrchains is in use.
+     * [holder] no longer needs [chainId]. Once no holder does, the chain stops syncing: a synced
+     * chain costs data and CPU while nothing reads it. A relay chain goes once none of its
+     * teyrchains is in use.
      */
-    suspend fun release(chainId: ChainId) = mutex.withLock {
+    suspend fun release(chainId: ChainId, holder: Any) = mutex.withLock {
         withContext(Dispatchers.IO) {
-            inUse -= chainId
+            leases.release(chainId, holder)
             while (true) {
-                val unused = registered.firstOrNull { key -> key !in inUse && registered.none { chains.getValue(it).relay == key } } ?: break
+                val unused = leases.nextUnused(registered) ?: break
                 // Still registered on failure, so a later url() does not register it twice
                 runCatching { PezkuwiLight.removeChain(unused) }
                     .onSuccess { registered -= unused }
@@ -132,15 +136,15 @@ class LightClients(
         dns.lookup(host).mapNotNull { it.hostAddress }.toTypedArray()
     }
 
-    private companion object {
+    companion object {
         const val ZAGROS: ChainId = "1b0b4727bbb5e44ed587d1056b4ad537ffb330034509a58866a088d77e792cd5"
         const val ZAGROS_PEOPLE: ChainId = "c72b38f36affaeb2661018b201c2be02e8c09fc699640525d39200a10fd77878"
 
         // Not LOG_TAG: called inside a coroutine, it gives the coroutine class name
-        const val TAG = "LightClients"
-        const val DATABASE_DIR = "light-client"
-        const val SPECS_DIR = "light-client-specs"
-        const val BUNDLED_DIR = "light-client/"
-        const val SPEC_SOURCE = "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/light-client/"
+        private const val TAG = "LightClients"
+        private const val DATABASE_DIR = "light-client"
+        private const val SPECS_DIR = "light-client-specs"
+        private const val BUNDLED_DIR = "light-client/"
+        private const val SPEC_SOURCE = "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/light-client/"
     }
 }

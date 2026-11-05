@@ -14,6 +14,7 @@ import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.PolkadotJsInject
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.PolkadotJsResponder
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.PolkadotJsTransportFactory
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.di.PolkadotJs
+import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.rpc.ChainRegistryRpc
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.states.PolkadotJsStateFactory
 import io.novafoundation.nova.feature_dapp_impl.web3.session.Web3Session
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewHolder
@@ -74,6 +75,7 @@ class PolkadotJsModule {
         addressIconGenerator: AddressIconGenerator,
         web3Session: Web3Session,
         walletUiUseCase: WalletUiUseCase,
+        chainRegistry: ChainRegistry,
     ): PolkadotJsStateFactory {
         return PolkadotJsStateFactory(
             interactor = interactor,
@@ -81,7 +83,8 @@ class PolkadotJsModule {
             resourceManager = resourceManager,
             addressIconGenerator = addressIconGenerator,
             web3Session = web3Session,
-            walletUiUseCase = walletUiUseCase
+            walletUiUseCase = walletUiUseCase,
+            chainRpc = ChainRegistryRpc(chainRegistry),
         )
     }
 }

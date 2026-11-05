@@ -58,6 +58,11 @@ class DefaultMetamaskState(
     private val knownChains = mapOf(MetamaskChain.ETHEREUM.chainId to MetamaskChain.ETHEREUM)
 
     override suspend fun acceptRequest(request: MetamaskTransportRequest<*>, transition: StateMachineTransition<MetamaskState>) {
+        if (!isFromCurrentPage(request)) {
+            request.reject(MetamaskError.Rejected())
+            return
+        }
+
         when (request) {
             is MetamaskTransportRequest.RequestAccounts -> handleRequestAccounts(request, transition)
             is MetamaskTransportRequest.AddEthereumChain -> handleAddEthereumChain(request, transition)
@@ -181,7 +186,7 @@ class DefaultMetamaskState(
         metamaskRequest: MetamaskTransportRequest<String>,
         hostApiConfirmRequest: ExternalSignRequest.Evm
     ) {
-        when (val response = hostApi.confirmTx(hostApiConfirmRequest)) {
+        when (val response = hostApi.confirmTx(hostApiConfirmRequest, metamaskRequest.origin)) {
             is ConfirmTxResponse.Rejected -> metamaskRequest.reject(MetamaskError.Rejected())
             is ConfirmTxResponse.Signed -> metamaskRequest.accept(response.signature)
             is ConfirmTxResponse.Sent -> metamaskRequest.accept(response.txHash)

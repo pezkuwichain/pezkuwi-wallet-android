@@ -46,37 +46,37 @@ class MetamaskTransport(
     scope: CoroutineScope,
 ) : WebViewWeb3Transport<MetamaskTransportRequest<*>>(scope, webViewWeb3JavaScriptInterface) {
 
-    override suspend fun messageToRequest(message: String): MetamaskTransportRequest<*>? = runCatching {
+    override suspend fun messageToRequest(message: String, origin: String): MetamaskTransportRequest<*>? = runCatching {
         val request = gson.fromJson<MetamaskRequest>(message)
 
         when (request.identifier) {
             MetamaskTransportRequest.Identifier.REQUEST_ACCOUNTS.id -> {
-                MetamaskTransportRequest.RequestAccounts(request.id, gson, responder)
+                MetamaskTransportRequest.RequestAccounts(request.id, origin, gson, responder)
             }
             MetamaskTransportRequest.Identifier.ADD_ETHEREUM_CHAIN.id -> {
                 val chain = gson.fromParsedHierarchy<MetamaskChain>(request.payload)
 
-                MetamaskTransportRequest.AddEthereumChain(request.id, gson, responder, chain)
+                MetamaskTransportRequest.AddEthereumChain(request.id, origin, gson, responder, chain)
             }
             MetamaskTransportRequest.Identifier.SWITCH_ETHEREUM_CHAIN.id -> {
                 val switchChainRequest = gson.fromParsedHierarchy<SwitchChainRequest>(request.payload)
 
-                MetamaskTransportRequest.SwitchEthereumChain(request.id, gson, responder, switchChainRequest.chainId)
+                MetamaskTransportRequest.SwitchEthereumChain(request.id, origin, gson, responder, switchChainRequest.chainId)
             }
             MetamaskTransportRequest.Identifier.SIGN_TRANSACTION.id -> {
                 val transaction = gson.fromParsedHierarchy<MetamaskTransaction>(request.payload)
 
-                MetamaskTransportRequest.SendTransaction(request.id, gson, responder, transaction)
+                MetamaskTransportRequest.SendTransaction(request.id, origin, gson, responder, transaction)
             }
             MetamaskTransportRequest.Identifier.SIGN_TYPED_MESSAGE.id -> {
                 val typedMessage = gson.fromParsedHierarchy<MetamaskTypedMessage>(request.payload)
 
-                MetamaskTransportRequest.SignTypedMessage(request.id, gson, responder, typedMessage)
+                MetamaskTransportRequest.SignTypedMessage(request.id, origin, gson, responder, typedMessage)
             }
             MetamaskTransportRequest.Identifier.PERSONAL_SIGN.id -> {
                 val personalSignMessage = gson.fromParsedHierarchy<MetamaskPersonalSignMessage>(request.payload)
 
-                MetamaskTransportRequest.PersonalSign(request.id, gson, responder, personalSignMessage)
+                MetamaskTransportRequest.PersonalSign(request.id, origin, gson, responder, personalSignMessage)
             }
             else -> null
         }

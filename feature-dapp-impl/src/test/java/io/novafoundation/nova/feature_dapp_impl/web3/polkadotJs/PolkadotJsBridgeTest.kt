@@ -13,7 +13,8 @@ class PolkadotJsBridgeTest {
     fun `bridge script calls the interface the injector registers`() {
         val bridge = File("src/main/res/raw/javascript_interface_bridge.js").readText()
 
-        val call = "${jsInterfaceFullName(POLKADOT_JS_INTERFACE_NAME)}.onNewMessage("
+        // A web message listener object exposes postMessage, and nothing else
+        val call = "${jsInterfaceFullName(POLKADOT_JS_INTERFACE_NAME)}.postMessage("
         assertTrue("bridge must call $call", bridge.contains(call))
     }
 }

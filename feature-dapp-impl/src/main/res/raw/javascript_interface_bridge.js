@@ -9,6 +9,6 @@ window.addEventListener("message", ({ data, source }) => {
 
       if (data.origin === "dapp-request") {
       // should be in tact with PolkadotJsExtension.kt
-        Pezkuwi_PolkadotJs.onNewMessage(dataJson)
+        Pezkuwi_PolkadotJs.postMessage(dataJson)
       }
     });
