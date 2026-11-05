@@ -35,12 +35,13 @@ class PolkadotJsTransport(
     scope: CoroutineScope,
 ) : WebViewWeb3Transport<PolkadotJsTransportRequest<*>>(scope, webViewWeb3JavaScriptInterface) {
 
-    override suspend fun messageToRequest(message: String): PolkadotJsTransportRequest<*>? {
+    override suspend fun messageToRequest(message: String, origin: String): PolkadotJsTransportRequest<*>? {
         Log.d(LOG_TAG, message)
 
         val parsedMessage = gson.parseArbitraryObject(message)!!
 
-        val url = parsedMessage["url"] as? String ?: return null
+        // The page writes its own url into the message; the WebView's word for the origin is used instead
+        val url = origin
         val requestId = parsedMessage["id"] as? String ?: return null
 
         return when (parsedMessage["msgType"]) {

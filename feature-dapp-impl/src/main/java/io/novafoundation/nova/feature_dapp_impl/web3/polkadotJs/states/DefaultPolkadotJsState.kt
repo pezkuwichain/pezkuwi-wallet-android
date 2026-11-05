@@ -45,6 +45,11 @@ class DefaultPolkadotJsState(
     PolkadotJsState {
 
     override suspend fun acceptRequest(request: PolkadotJsTransportRequest<*>, transition: StateMachineTransition<PolkadotJsState>) {
+        if (!isFromCurrentPage(request)) {
+            request.reject(NotAuthorizedException)
+            return
+        }
+
         when (request) {
             is PolkadotJsTransportRequest.Single.AuthorizeTab -> authorizeTab(request)
             is PolkadotJsTransportRequest.Single.ListAccounts -> supplyAccountList(request)
@@ -80,7 +85,7 @@ class DefaultPolkadotJsState(
     private suspend fun signExtrinsicWithConfirmation(request: PolkadotJsTransportRequest.Single.Sign) {
         val signRequest = ExternalSignRequest.Polkadot(request.requestId, mapPolkadotJsSignerPayloadToPolkadotPayload(request.signerPayload))
 
-        when (val response = hostApi.confirmTx(signRequest)) {
+        when (val response = hostApi.confirmTx(signRequest, request.origin)) {
             is ConfirmTxResponse.Rejected -> request.reject(NotAuthorizedException)
             is ConfirmTxResponse.Sent -> throw IllegalStateException("Unexpected 'Sent' response for PolkadotJs extension")
             is ConfirmTxResponse.Signed -> request.accept(PolkadotSignerResult(response.requestId, response.signature, response.modifiedTransaction))

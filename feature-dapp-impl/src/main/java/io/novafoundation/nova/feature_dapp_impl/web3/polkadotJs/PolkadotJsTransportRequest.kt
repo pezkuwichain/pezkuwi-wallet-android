@@ -23,6 +23,9 @@ sealed class PolkadotJsTransportRequest<R>(
     val requestId: String,
 ) : Web3Transport.Request<R> {
 
+    /** [url] is the sender's origin as the WebView reported it; the page's own claim is not read. */
+    override val origin: String get() = url
+
     override fun reject(error: Throwable) {
         web3Responder.respondError(requestId, error)
     }

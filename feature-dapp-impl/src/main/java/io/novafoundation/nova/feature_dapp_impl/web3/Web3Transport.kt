@@ -8,6 +8,9 @@ interface Web3Transport<REQUEST : Web3Transport.Request<*>> {
 
     interface Request<RESPONSE> {
 
+        /** The origin of the page that sent it, as the WebView reported it rather than the page. */
+        val origin: String
+
         fun accept(response: RESPONSE)
 
         fun reject(error: Throwable)

@@ -15,17 +15,21 @@ import java.net.URI
  */
 class WebViewWeb3JavaScriptInterface {
 
-    private val _messages = MutableSharedFlow<String>(extraBufferCapacity = 3)
-    val messages: Flow<String> = _messages
+    /** A bridge message and the origin of the page that sent it. */
+    class Message(val json: String, val origin: String)
+
+    private val _messages = MutableSharedFlow<Message>(extraBufferCapacity = 3)
+    val messages: Flow<Message> = _messages
 
     /** Called on the main thread, with the sender's origin and frame as the WebView knows them. */
     fun onMessage(view: WebView, message: String, sourceOrigin: Uri, isMainFrame: Boolean) {
-        if (!isFromShownPage(view.url, sourceOrigin.toString(), isMainFrame)) {
+        val origin = originOf(sourceOrigin.toString())
+        if (origin == null || !isFromShownPage(view.url, sourceOrigin.toString(), isMainFrame)) {
             Log.w(LOG_TAG, "Ignoring a bridge message from $sourceOrigin, main frame $isMainFrame, page ${view.url}")
             return
         }
 
-        _messages.tryEmit(message)
+        _messages.tryEmit(Message(message, origin))
     }
 
     companion object {
@@ -35,6 +39,11 @@ class WebViewWeb3JavaScriptInterface {
             if (!isMainFrame) return false
             val page = originOf(pageUrl ?: return false) ?: return false
             return page == originOf(sourceOrigin)
+        }
+
+        fun sameOrigin(first: String, second: String): Boolean {
+            val one = originOf(first) ?: return false
+            return one == originOf(second)
         }
 
         /** `scheme://host[:port]`, lower-cased, default ports dropped; null for an opaque or host-less URL. */

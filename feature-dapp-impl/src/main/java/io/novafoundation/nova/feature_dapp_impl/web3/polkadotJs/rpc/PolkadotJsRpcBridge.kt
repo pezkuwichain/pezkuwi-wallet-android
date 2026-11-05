@@ -100,10 +100,7 @@ class PolkadotJsRpcBridge(private val rpc: ChainRpc) {
 /** True when [pageUrl] is on a `.kurd` host. */
 fun isKurdPage(pageUrl: String): Boolean = KurdName.isKurdHost(runCatching { URI(pageUrl).host }.getOrNull())
 
-fun sameOrigin(first: String, second: String): Boolean {
-    val one = WebViewWeb3JavaScriptInterface.originOf(first) ?: return false
-    return one == WebViewWeb3JavaScriptInterface.originOf(second)
-}
+fun sameOrigin(first: String, second: String): Boolean = WebViewWeb3JavaScriptInterface.sameOrigin(first, second)
 
 /** This flow until [signal] returns, then it completes and its upstream is cancelled. */
 fun <T> Flow<T>.until(signal: suspend () -> Unit): Flow<T> = channelFlow {

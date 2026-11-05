@@ -34,6 +34,7 @@ import io.novafoundation.nova.feature_dapp_impl.web3.states.ExtensionStoreFactor
 import io.novafoundation.nova.feature_dapp_impl.web3.states.Web3ExtensionStateMachine.ExternalEvent
 import io.novafoundation.nova.feature_dapp_impl.web3.states.Web3StateMachineHost
 import io.novafoundation.nova.feature_dapp_impl.web3.states.hostApi.ConfirmTxResponse
+import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewWeb3JavaScriptInterface
 import io.novafoundation.nova.feature_external_sign_api.model.ExternalSignCommunicator
 import io.novafoundation.nova.feature_external_sign_api.model.ExternalSignRequester
 import io.novafoundation.nova.feature_external_sign_api.model.awaitConfirmation
@@ -169,7 +170,10 @@ class DAppBrowserViewModel(
         return mapConfirmationStateToAuthorizationState(confirmationState)
     }
 
-    override suspend fun confirmTx(request: ExternalSignRequest): ConfirmTxResponse {
+    override suspend fun confirmTx(request: ExternalSignRequest, origin: String): ConfirmTxResponse {
+        val pageUrl = currentPageAnalyzed.first().url
+        if (!WebViewWeb3JavaScriptInterface.sameOrigin(pageUrl, origin)) return ConfirmTxResponse.Rejected(request.id)
+
         val chainId = request.extractChainId()
         val chain = chainRegistry.chainsById()[chainId]
 
@@ -178,7 +182,7 @@ class DAppBrowserViewModel(
         }
 
         val response = withContext(Dispatchers.Main) {
-            signRequester.awaitConfirmation(mapSignExtrinsicRequestToPayload(request))
+            signRequester.awaitConfirmation(mapSignExtrinsicRequestToPayload(request, origin, pageUrl))
         }
 
         return when (response) {
@@ -340,16 +344,22 @@ class DAppBrowserViewModel(
         currentPage.emit(BrowserPage(url, title, synchronizedWithBrowser))
     }
 
-    private suspend fun mapSignExtrinsicRequestToPayload(request: ExternalSignRequest): ExternalSignPayload {
+    private suspend fun mapSignExtrinsicRequestToPayload(request: ExternalSignRequest, origin: String, pageUrl: String): ExternalSignPayload {
         return ExternalSignPayload(
             signRequest = request,
-            dappMetadata = getDAppSignMetadata(currentPageAnalyzed.first().url),
+            dappMetadata = getDAppSignMetadata(origin, pageUrl),
             wallet = ExternalSignWallet.Current
         )
     }
 
-    private suspend fun getDAppSignMetadata(dAppUrl: String): SigningDappMetadata {
-        val kurdPage = kurdPage.first()
+    /** Named after the page that asked ([origin]), never after whatever the tab shows by now. */
+    private suspend fun getDAppSignMetadata(origin: String, dAppUrl: String): SigningDappMetadata {
+        val kurdName = KurdPageUi.nameOf(origin)
+        val kurdPage = kurdName?.let { KurdPageUi.from(it, kurdSiteServer.pageStates.value[it]) }
+        if (kurdName != null && kurdPage !is KurdPageUi.Open) {
+            // A .kurd page that is not open has no content that could have asked; say nothing official
+            return SigningDappMetadata(icon = null, name = kurdName.name, url = kurdName.name, siteNameKind = SiteNameKind.UNVERIFIED)
+        }
         if (kurdPage is KurdPageUi.Open) {
             val kind = when (kurdPage.badge) {
                 KurdPageUi.Badge.OFFICIAL -> SiteNameKind.OFFICIAL
