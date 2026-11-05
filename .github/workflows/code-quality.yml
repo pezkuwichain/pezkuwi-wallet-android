@@ -67,3 +67,27 @@ jobs:
       # ship without its licence.
       - name: Notices match the lockfiles
         run: python3 scripts/licences/rust_notices.py --check
+
+  android-licences:
+    name: Android Licences
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/workflows/install/
+
+      # Resolves the Play build's dependencies and checks each library's licence against the
+      # allowed set in app/build.gradle, without compiling anything.
+      - name: Licences of the Play build's libraries
+        run: ./gradlew :app:licenseeAndroidReleaseMarket
+
+      - name: Upload licence report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: licensee-report
+          path: app/build/reports/licensee/
+          if-no-files-found: ignore
