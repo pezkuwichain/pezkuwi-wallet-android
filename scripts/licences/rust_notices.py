@@ -1,0 +1,183 @@
+#!/usr/bin/env python3
+"""Writes the licence notices of every Rust crate linked into the app's native libraries.
+
+Every bindings/*/rust crate builds one .so. The notices ship inside the APK
+(app/src/main/assets/licences/rust-crates.txt). `--check` fails when the committed file no longer
+matches the lockfiles, so a dependency change cannot ship without them.
+"""
+import argparse
+import hashlib
+import json
+import pathlib
+import re
+import subprocess
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+OUTPUT = ROOT / "app/src/main/assets/licences/rust-crates.txt"
+# The ABIs the app ships; one target's graph can miss a crate another target pulls in.
+TARGETS = ["aarch64-linux-android", "armv7-linux-androideabi", "i686-linux-android", "x86_64-linux-android"]
+STANDARD = pathlib.Path(__file__).resolve().parent / "standard"
+# Crates whose pinned source declares no licence, with the licence their author has since given them.
+DECLARED_ELSEWHERE = {
+    "merkleized-metadata": (
+        "MIT OR Apache-2.0",
+        "licence declared upstream after the pinned commit: github.com/bkchr/merkleized-metadata (2024-05-21)",
+    ),
+}
+LICENCE_FILE = re.compile(r"^(licen[cs]e|copying|notice|copyright|unlicense)([-_.].*)?$", re.IGNORECASE)
+
+
+def manifests():
+    return sorted(ROOT.glob("bindings/*/rust/Cargo.toml"))
+
+
+def library_name(manifest):
+    meta = json.loads(subprocess.run(
+        ["cargo", "metadata", "--format-version", "1", "--locked", "--no-deps", "--manifest-path", str(manifest)],
+        check=True, capture_output=True, text=True,
+    ).stdout)
+    package = meta["packages"][0]
+    lib = next(t for t in package["targets"] if "cdylib" in t["kind"])
+    return f"lib{lib['name']}.so"
+
+
+def metadata(manifest, target):
+    out = subprocess.run(
+        ["cargo", "metadata", "--format-version", "1", "--locked", "--manifest-path", str(manifest),
+         "--filter-platform", target],
+        check=True, capture_output=True, text=True,
+    ).stdout
+    return json.loads(out)
+
+
+def shipped_packages(manifest):
+    """Packages reachable from the root through normal (not build or dev) dependencies."""
+    # The licence files are read from the crate sources, which `cargo metadata` does not download.
+    subprocess.run(["cargo", "fetch", "--locked", "--quiet", "--manifest-path", str(manifest)], check=True)
+    packages = {}
+    for target in TARGETS:
+        meta = metadata(manifest, target)
+        by_id = {p["id"]: p for p in meta["packages"]}
+        nodes = {n["id"]: n for n in meta["resolve"]["nodes"]}
+        root = meta["resolve"]["root"]
+        stack, seen = [root], {root}
+        while stack:
+            node = nodes[stack.pop()]
+            for dep in node["deps"]:
+                if any(k["kind"] is None for k in dep["dep_kinds"]) and dep["pkg"] not in seen:
+                    seen.add(dep["pkg"])
+                    stack.append(dep["pkg"])
+        seen.discard(root)
+        for pid in seen:
+            packages[pid] = by_id[pid]
+    return sorted(packages.values(), key=lambda p: (p["name"], p["version"]))
+
+
+def licence_files(package):
+    """Licence files of a crate; a crate inside a git workspace often keeps them at the workspace root."""
+    directory = pathlib.Path(package["manifest_path"]).parent
+    candidates = []
+    if package.get("license_file"):
+        candidates.append(directory / package["license_file"])
+    for current in [directory, *directory.parents]:
+        found = sorted(f for f in current.iterdir() if f.is_file() and LICENCE_FILE.match(f.name))
+        if found or not package["source"] or not package["source"].startswith("git+"):
+            candidates.extend(found)
+            break
+        if (current / ".git").exists():
+            break
+    unique = []
+    for path in candidates:
+        if path.is_file() and path.resolve() not in [u.resolve() for u in unique]:
+            unique.append(path)
+    return unique
+
+
+def source_of(package):
+    """Where this exact version's source is: for a git dependency the fork and commit, not upstream."""
+    source = package["source"] or ""
+    if source.startswith("git+"):
+        url, _, commit = source[len("git+"):].partition("#")
+        return f"{url.split('?')[0]}/tree/{commit}"
+    return package.get("repository") or source or "local"
+
+
+def spdx_ids(expression):
+    ids = [i for i in re.split(r"[\s/()]+", expression or "") if i and i not in ("OR", "AND", "WITH")]
+    return list(dict.fromkeys(ids))
+
+
+def render():
+    texts = {}
+    sections = []
+    total = set()
+    for manifest in manifests():
+        packages = shipped_packages(manifest)
+        total.update((p["name"], p["version"]) for p in packages)
+        entries = [entry(package, texts) for package in packages]
+        sections += ["=" * 72, f"{library_name(manifest)}: {len(packages)} crates ({manifest.parent.relative_to(ROOT)})",
+                     "=" * 72, "", *entries]
+    lines = [
+        "Third-party Rust crates in the app's native libraries",
+        "Generated by scripts/licences/rust_notices.py from bindings/*/rust/Cargo.lock.",
+        f"{len(total)} distinct crates. Each refers to its licence texts by id; the texts follow the lists.",
+        "",
+        *sections,
+        "=" * 72,
+        "Licence texts",
+        "=" * 72,
+    ]
+    for digest, text in texts.items():
+        lines += ["", f"[{digest}]", "", text, "", "-" * 72]
+    return "\n".join(lines) + "\n"
+
+
+def entry(package, texts):
+    licence, note = package.get("license"), None
+    if not licence and package["name"] in DECLARED_ELSEWHERE:
+        licence, note = DECLARED_ELSEWHERE[package["name"]]
+    if not licence and not package.get("license_file"):
+        raise SystemExit(f"{package['name']}: declares no licence; record where it is licensed in DECLARED_ELSEWHERE")
+    refs = []
+    for path in licence_files(package):
+        text = path.read_text(encoding="utf-8", errors="replace").strip()
+        digest = hashlib.sha256(text.encode()).hexdigest()[:12]
+        texts.setdefault(digest, text)
+        refs.append(f"{path.name} [{digest}]")
+    if not refs:
+        for spdx in spdx_ids(licence):
+            standard = STANDARD / f"{spdx}.txt"
+            if not standard.is_file():
+                raise SystemExit(f"{package['name']}: no licence file and no standard text for {spdx}")
+            digest = f"spdx:{spdx}"
+            texts.setdefault(digest, standard.read_text(encoding="utf-8").strip())
+            refs.append(f"standard text [{digest}]")
+    return (
+        f"{package['name']} {package['version']}\n"
+        f"  licence: {licence or 'see licence text'}{f' ({note})' if note else ''}\n"
+        f"  source: {source_of(package)}\n"
+        f"  authors: {', '.join(package.get('authors') or []) or '-'}\n"
+        f"  licence text: {', '.join(refs)}\n"
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true", help="fail if the committed notices are stale")
+    args = parser.parse_args()
+    content = render()
+    if args.check:
+        if not OUTPUT.exists() or OUTPUT.read_text(encoding="utf-8") != content:
+            print(f"{OUTPUT.relative_to(ROOT)} is stale: run scripts/licences/rust_notices.py", file=sys.stderr)
+            return 1
+        print(f"{OUTPUT.relative_to(ROOT)} is current")
+        return 0
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT.write_text(content, encoding="utf-8")
+    print(f"wrote {OUTPUT.relative_to(ROOT)}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

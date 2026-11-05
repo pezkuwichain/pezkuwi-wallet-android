@@ -1,5 +1,15 @@
 apply plugin: 'kotlin-parcelize'
 
+String sourceCommit() {
+    try {
+        def process = ['git', 'rev-parse', 'HEAD'].execute()
+        def commit = process.text.trim()
+        return process.waitFor() == 0 && commit ==~ /[0-9a-f]{40}/ ? commit : ""
+    } catch (IOException ignored) {
+        return ""
+    }
+}
+
 android {
 
     defaultConfig {
@@ -8,6 +18,9 @@ android {
         buildConfigField "String", "PRIVACY_URL", "\"https://pezkuwichain.io/privacy.html\""
         buildConfigField "String", "TERMS_URL", "\"https://pezkuwichain.io/terms.html\""
         buildConfigField "String", "GITHUB_URL", "\"https://github.com/pezkuwichain\""
+        // Releases are not tagged, so the licences page is told which commit this build is made from:
+        // that is where the source the GPL-licensed light client requires us to offer lives.
+        buildConfigField "String", "LICENCES_URL", "\"https://pezkuwichain.github.io/pezkuwi-wallet-utils/licences/?commit=${sourceCommit()}\""
         buildConfigField "String", "TELEGRAM_URL", "\"https://t.me/pezkuwichainBot\""
         buildConfigField "String", "TWITTER_URL", "\"https://x.com/bizinikiwi\""
         buildConfigField "String", "RATE_URL", "\"market://details?id=${rootProject.applicationId}.${releaseApplicationSuffix}\""

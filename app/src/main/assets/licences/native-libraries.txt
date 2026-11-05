@@ -1,0 +1,27 @@
+Prebuilt native libraries in app/src/main/jniLibs
+
+These replace the copies inside two Maven dependencies with builds aligned to 16 KB pages. Their
+licences are those of the dependencies they replace, which are listed with the other Android
+libraries.
+
+libsqlcipher.so
+  from: net.zetetic:android-database-sqlcipher 4.5.3 (a dependency of the WalletConnect SDK), segments realigned
+  licence: SQLCipher Community Edition, a BSD-style licence (Copyright (c) Zetetic LLC),
+    https://www.zetetic.net/sqlcipher/license/ ; SQLite is in the public domain.
+    It links OpenSSL statically: this product includes software developed by the OpenSSL Project
+    for use in the OpenSSL Toolkit (http://www.openssl.org/), and cryptographic software written by
+    Eric Young (eay@cryptsoft.com).
+  source: https://github.com/sqlcipher/android-database-sqlcipher
+
+libsr25519java.so
+  from: substrate-sdk-android 2.11.0, crate sr25519-java, rebuilt from source
+  licence: Apache-2.0 (Novasama Technologies)
+  source: https://github.com/novasamatech/substrate-sdk-android/tree/master/sr25519-java
+  Rust crates linked in, with their licences:
+    schnorrkel <=0.9.1           BSD-3-Clause (Web3 Foundation, Isis Lovecruft, Jeff Burdges)
+    jni 0.17                     MIT OR Apache-2.0
+    zeroize <=1.1.1              Apache-2.0 OR MIT
+    log <=0.4.11                 MIT OR Apache-2.0
+  and the crates schnorrkel depends on (curve25519-dalek, merlin, sha2, subtle, rand and others),
+  all under BSD-3-Clause, MIT or Apache-2.0. The standard texts of these licences are in
+  rust-crates.txt.

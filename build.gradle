@@ -243,6 +243,7 @@ buildscript {
         classpath "com.google.firebase:firebase-appdistribution-gradle:$firebaseAppDistrVersion"
         classpath "com.github.triplet.gradle:play-publisher:$playPublisherVersion"
         classpath "com.google.devtools.ksp:symbol-processing-gradle-plugin:2.1.0-1.0.29"
+        classpath "app.cash.licensee:licensee-gradle-plugin:1.14.0"
     }
 }
 
@@ -255,6 +256,13 @@ allprojects {
         maven { url "https://nexus.iroha.tech/repository/maven-soramitsu/" }
         mavenLocal()
         flatDir { dirs "$rootDir/common/libs" }
+    }
+
+    // substrate-sdk-android brings in the NovaCrypto libraries, which are GPL-3.0. The app provides the
+    // few classes the SDK uses under Apache-2.0 instead (common, io.github.novacrypto).
+    configurations.configureEach {
+        exclude group: 'com.github.NovaCrypto'
+        exclude group: 'io.github.novacrypto'
     }
 }
 

@@ -43,6 +43,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
         binder.settingsGithub.setOnClickListener { viewModel.githubClicked() }
         binder.settingsTerms.setOnClickListener { viewModel.termsClicked() }
         binder.settingsPrivacy.setOnClickListener { viewModel.privacyClicked() }
+        binder.settingsLicences.setOnClickListener { viewModel.licencesClicked() }
 
         binder.settingsRateUs.setOnClickListener { viewModel.rateUsClicked() }
         binder.settingsWiki.setOnClickListener { viewModel.wikiClicked() }
