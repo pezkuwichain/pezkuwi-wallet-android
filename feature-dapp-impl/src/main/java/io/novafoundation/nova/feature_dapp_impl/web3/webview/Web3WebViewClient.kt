@@ -2,9 +2,12 @@ package io.novafoundation.nova.feature_dapp_impl.web3.webview
 
 import android.graphics.Bitmap
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import io.novafoundation.nova.runtime.names.KurdName
+import java.io.ByteArrayInputStream
 
 interface PageCallback {
 
@@ -33,11 +36,25 @@ class Web3WebViewClient(
     private var desktopModeChanged = false
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        if (KurdName.isKurdHost(request.url.host)) return true
+
         if (pageCallback.shouldOverrideUrlLoading(view, request)) {
             return true
         }
 
         return super.shouldOverrideUrlLoading(view, request)
+    }
+
+    /**
+     * Every request to a `.kurd` host -- a page, a frame, an image a page embeds -- ends here, before
+     * the network: such a host is a name on chain, and asking system DNS for it would tell the
+     * network which site the reader opens. `loadUrl` reaches this hook too, unlike
+     * [shouldOverrideUrlLoading].
+     */
+    override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+        if (!KurdName.isKurdHost(request.url.host)) return null
+
+        return WebResourceResponse("text/plain", "utf-8", 403, "Forbidden", emptyMap(), ByteArrayInputStream(ByteArray(0)))
     }
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {

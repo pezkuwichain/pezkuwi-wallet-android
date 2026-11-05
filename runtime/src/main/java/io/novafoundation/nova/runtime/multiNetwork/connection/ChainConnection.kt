@@ -208,7 +208,7 @@ class ChainConnection internal constructor(
                             policy.onLightUnavailable(rpcNodeCount())
                             emit(latestRpc)
                         } else if (policy.onRpcFailure(rpcNodeCount(), System.currentTimeMillis())) {
-                            val url = lightClients.url(chain.value.id)
+                            val url = lightClients.url(chain.value.id, holder = this@ChainConnection)
                             Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: light client url $url")
                             if (url == null) {
                                 policy.onLightUnavailable(rpcNodeCount())
@@ -229,7 +229,7 @@ class ChainConnection internal constructor(
                     if (policy.shouldReleaseLight(now)) {
                         Log.d(LIGHT_FALLBACK_TAG, "${chain.value.name}: RPC is stable, releasing the light client")
                         light = null
-                        lightClients.release(chain.value.id)
+                        lightClients.release(chain.value.id, holder = this@ChainConnection)
                     }
                 }
             }

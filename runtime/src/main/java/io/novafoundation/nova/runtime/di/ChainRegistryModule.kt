@@ -28,6 +28,8 @@ import io.novafoundation.nova.runtime.multiNetwork.connection.Web3ApiPool
 import io.novafoundation.nova.runtime.multiNetwork.connection.autobalance.NodeAutobalancer
 import io.novafoundation.nova.runtime.multiNetwork.connection.light.LightClientSpecApi
 import io.novafoundation.nova.runtime.multiNetwork.connection.light.LightClients
+import io.novafoundation.nova.runtime.names.KurdNameResolver
+import io.novafoundation.nova.runtime.names.RealKurdNameResolver
 import io.novafoundation.nova.runtime.multiNetwork.connection.autobalance.strategy.NodeSelectionStrategyProvider
 import io.novafoundation.nova.runtime.multiNetwork.connection.node.healthState.NodeHealthStateTesterFactory
 import io.novafoundation.nova.runtime.multiNetwork.runtime.AsyncChainSyncDispatcher
@@ -189,6 +191,22 @@ class ChainRegistryModule {
         encryptedFirstDns: EncryptedFirstDns,
         networkApiCreator: NetworkApiCreator,
     ) = LightClients(context, encryptedFirstDns, networkApiCreator.create(LightClientSpecApi::class.java))
+
+    @Provides
+    @ApplicationScope
+    fun provideKurdNameResolver(
+        lightClients: LightClients,
+        socketProvider: Provider<SocketService>,
+        chainRegistry: ChainRegistry,
+        connectionSecrets: ConnectionSecrets,
+    ): KurdNameResolver = RealKurdNameResolver(
+        // Names live on the testnet until the mainnet People chain is launched with the pallet
+        chainId = LightClients.ZAGROS_PEOPLE,
+        lightClients = lightClients,
+        socketProvider = socketProvider,
+        chainRegistry = chainRegistry,
+        connectionSecrets = connectionSecrets,
+    )
 
     @Provides
     @ApplicationScope
