@@ -54,3 +54,16 @@ jobs:
           name: ktlint-report
           path: build/reports/checkstyle/ktlint.xml
           if-no-files-found: ignore
+
+  rust-notices:
+    name: Rust Licence Notices
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # The notices ship inside the APK; a crate added, removed or upgraded without them would
+      # ship without its licence.
+      - name: Notices match the lockfiles
+        run: python3 scripts/licences/rust_notices.py --check

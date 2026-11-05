@@ -271,6 +271,13 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_file_outline"
                 app:title="@string/about_privacy" />
+
+            <io.novafoundation.nova.common.view.settings.SettingsItemView
+                android:id="@+id/settingsLicences"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_file_outline"
+                app:title="@string/about_open_source_licences" />
         </io.novafoundation.nova.common.view.settings.SettingsGroupView>
 
         <ImageView

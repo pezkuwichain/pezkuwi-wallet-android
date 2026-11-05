@@ -242,6 +242,10 @@ class SettingsViewModel(
         openLink(appLinksProvider.privacyUrl)
     }
 
+    fun licencesClicked() {
+        openLink(appLinksProvider.licencesUrl)
+    }
+
     fun emailClicked() {
         _openEmailEvent.value = appLinksProvider.email.event()
     }

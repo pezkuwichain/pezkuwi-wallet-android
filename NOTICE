@@ -1,3 +1,20 @@
+Pezkuwi Wallet
+
+Copyright 2026 PezkuwiChain
+Pezkuwi Wallet is derived from Nova Wallet; the Nova Wallet notice follows below.
+
+Third-party components ship with their licences inside the app, under assets/licences:
+  rust-crates.txt          Rust crates in the native libraries (scripts/licences/rust_notices.py)
+  native-libraries.txt     prebuilt native libraries in app/src/main/jniLibs
+  android-libraries.json   Android libraries, generated at build time by the licensee plugin
+
+The light client links smoldot, licensed GPL-3.0-or-later WITH Classpath-exception-2.0. Its
+source is https://github.com/pezkuwichain/smoldot at the revision pinned in
+bindings/pezkuwi-light/rust/Cargo.toml. Settings > About > Open source licenses in the app opens
+a page naming the exact commit each build is made from.
+
+------------------------------------------------------------------------
+
 Nova - Polkadot, Kusama wallet
 
 Copyright 2022-2025 Novasama Technologies PTE. LTD.

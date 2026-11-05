@@ -3,6 +3,7 @@ package io.novafoundation.nova.common.data.network
 class AppLinksProvider(
     val termsUrl: String,
     val privacyUrl: String,
+    val licencesUrl: String,
     val telegram: String,
     val twitter: String,
     val rateApp: String,

@@ -55,6 +55,7 @@ class NetworkModule {
         return AppLinksProvider(
             termsUrl = BuildConfig.TERMS_URL,
             privacyUrl = BuildConfig.PRIVACY_URL,
+            licencesUrl = BuildConfig.LICENCES_URL,
             payoutsLearnMore = BuildConfig.PAYOUTS_LEARN_MORE,
             twitterAccountTemplate = BuildConfig.TWITTER_ACCOUNT_TEMPLATE,
             setControllerLearnMore = BuildConfig.SET_CONTROLLER_LEARN_MORE,

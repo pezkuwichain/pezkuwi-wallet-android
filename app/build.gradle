@@ -2,6 +2,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'com.google.firebase.appdistribution'
 apply plugin: "com.github.triplet.play"
+apply plugin: 'app.cash.licensee'
 apply from: "../scripts/versions.gradle"
 apply from: "../scripts/secrets.gradle"
 
@@ -339,6 +340,22 @@ dependencies {
     androidTestImplementation allureKotlinCommons
     androidTestImplementation allureKotlinJunit4
     androidTestImplementation allureKotlinAndroid
+}
+
+// Every Android library the app ships is listed, with its licence, in the APK itself; a dependency
+// under a licence not allowed here fails the build. The Rust crates and the prebuilt native
+// libraries are listed beside it (assets/licences, scripts/licences/rust_notices.py).
+licensee {
+    allow('Apache-2.0')
+    allow('MIT')
+    allow('BSD-2-Clause')
+    allow('BSD-3-Clause')
+    allow('ISC')
+    allowUrl('https://www.zetetic.net/sqlcipher/license/') {
+        because 'SQLCipher Community Edition, a BSD-style licence'
+    }
+    bundleAndroidAsset = true
+    androidAssetReportPath = 'licences/android-libraries.json'
 }
 
 task printVersion {

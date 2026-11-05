@@ -243,6 +243,7 @@ buildscript {
         classpath "com.google.firebase:firebase-appdistribution-gradle:$firebaseAppDistrVersion"
         classpath "com.github.triplet.gradle:play-publisher:$playPublisherVersion"
         classpath "com.google.devtools.ksp:symbol-processing-gradle-plugin:2.1.0-1.0.29"
+        classpath "app.cash.licensee:licensee-gradle-plugin:1.14.0"
     }
 }
 
