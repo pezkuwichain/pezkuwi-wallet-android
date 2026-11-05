@@ -11,6 +11,7 @@ import io.novafoundation.nova.core_db.dao.ChainAssetDao
 import io.novafoundation.nova.core_db.dao.ChainDao
 import io.novafoundation.nova.core_db.dao.StorageDao
 import io.novasama.substrate_sdk_android.wsrpc.SocketService
+import okhttp3.OkHttpClient
 
 interface RuntimeDependencies {
 
@@ -35,4 +36,6 @@ interface RuntimeDependencies {
     fun assetsIconModeService(): AssetsIconModeRepository
 
     fun encryptedFirstDns(): EncryptedFirstDns
+
+    fun okHttpClient(): OkHttpClient
 }
