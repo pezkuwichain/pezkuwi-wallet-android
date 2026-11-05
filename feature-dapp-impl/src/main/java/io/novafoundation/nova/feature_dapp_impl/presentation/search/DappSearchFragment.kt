@@ -108,6 +108,10 @@ class DappSearchFragment : BaseFragment<DAppSearchViewModel, FragmentSearchDappB
     }
 
     private fun setupDAppNotInCatalogWarning() {
+        viewModel.kurdLookalikeWarning.awaitableActionLiveData.observeEvent { event ->
+            KurdLookalikeSheet(providedContext, event.payload, onChoice = event.onSuccess, onCancel = event.onCancel).show()
+        }
+
         viewModel.dAppNotInCatalogWarning.awaitableActionLiveData.observeEvent { event ->
             warningDialog(
                 context = providedContext,

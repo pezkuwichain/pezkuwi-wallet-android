@@ -1,6 +1,5 @@
 package io.novafoundation.nova.feature_dapp_impl.di
 
-import io.novafoundation.nova.runtime.names.content.KurdSiteServer
 import android.content.Context
 import coil.ImageLoader
 import com.google.gson.Gson
@@ -41,6 +40,8 @@ import io.novafoundation.nova.feature_wallet_connect_api.presentation.WalletConn
 import io.novafoundation.nova.runtime.di.ExtrinsicSerialization
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.runtime.repository.RuntimeVersionsRepository
+import io.novafoundation.nova.runtime.names.KurdNameResolver
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
 
 interface DAppFeatureDependencies {
 
@@ -103,6 +104,8 @@ interface DAppFeatureDependencies {
     fun chainRegistry(): ChainRegistry
 
     fun kurdSiteServer(): KurdSiteServer
+
+    fun kurdNameResolver(): KurdNameResolver
 
     fun imageLoader(): ImageLoader
 

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="28dp">
+
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:importantForAccessibility="no"
+        android:padding="14dp"
+        android:src="@drawable/ic_warning_filled"
+        android:tint="@color/icon_warning" />
+
+    <TextView
+        style="@style/TextAppearance.NovaFoundation.Bold.Title3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/dapp_kurd_lookalike_title"
+        android:textColor="@color/text_primary" />
+
+    <io.novafoundation.nova.common.view.TableView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <io.novafoundation.nova.common.view.TableCellView
+            android:id="@+id/kurdLookalikeTyped"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <io.novafoundation.nova.common.view.TableCellView
+            android:id="@+id/kurdLookalikeOfficial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </io.novafoundation.nova.common.view.TableView>
+
+    <TextView
+        style="@style/TextAppearance.NovaFoundation.Regular.Footnote.Secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:lineSpacingMultiplier="1.2"
+        android:text="@string/dapp_kurd_lookalike_message" />
+
+    <io.novafoundation.nova.common.view.PrimaryButton
+        android:id="@+id/kurdLookalikeGoOfficial"
+        style="@style/Widget.Nova.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/kurdLookalikeOpenAnyway"
+        style="@style/TextAppearance.NovaFoundation.Regular.Footnote.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:minHeight="44dp"
+        android:paddingHorizontal="12dp" />
+</LinearLayout>

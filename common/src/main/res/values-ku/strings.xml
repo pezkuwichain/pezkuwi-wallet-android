@@ -2160,4 +2160,10 @@
     <string name="dapp_kurd_owner_institution">Saziya dewletê (multisig)</string>
     <string name="dapp_kurd_details_content">Naverok</string>
     <string name="dapp_kurd_clear_site_data">Daneyên vê malperê jê bibe</string>
+    <string name="dapp_kurd_lookalike_title">Ev nav dişibe navekî fermî</string>
+    <string name="dapp_kurd_lookalike_typed">Te nivîsî</string>
+    <string name="dapp_kurd_lookalike_official">Navê fermî</string>
+    <string name="dapp_kurd_lookalike_message">Malperên sexte navên nêzîkî navên fermî bi kar tînin da ku te bixapînin.</string>
+    <string name="dapp_kurd_lookalike_go">Biçe %s</string>
+    <string name="dapp_kurd_lookalike_open_anyway">Dîsa jî %s veke</string>
 </resources>

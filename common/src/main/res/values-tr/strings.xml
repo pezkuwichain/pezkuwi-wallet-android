@@ -2157,4 +2157,10 @@ Referral kısmına bu adresi yapıştır:
     <string name="dapp_kurd_owner_institution">Devlet kurumu (çoklu imza)</string>
     <string name="dapp_kurd_details_content">İçerik</string>
     <string name="dapp_kurd_clear_site_data">Bu sitenin verilerini sil</string>
+    <string name="dapp_kurd_lookalike_title">Bu ad resmî bir ada benziyor</string>
+    <string name="dapp_kurd_lookalike_typed">Yazdığın</string>
+    <string name="dapp_kurd_lookalike_official">Resmî ad</string>
+    <string name="dapp_kurd_lookalike_message">Sahte siteler seni kandırmak için resmî adlara yakın adlar kullanır.</string>
+    <string name="dapp_kurd_lookalike_go">%s adresine git</string>
+    <string name="dapp_kurd_lookalike_open_anyway">Yine de %s adresini aç</string>
 </resources>

@@ -2885,4 +2885,10 @@
     <string name="dapp_kurd_owner_institution">State institution (multisig)</string>
     <string name="dapp_kurd_details_content">Content</string>
     <string name="dapp_kurd_clear_site_data">Clear this site\'s data</string>
+    <string name="dapp_kurd_lookalike_title">This name looks like an official one</string>
+    <string name="dapp_kurd_lookalike_typed">You typed</string>
+    <string name="dapp_kurd_lookalike_official">Official name</string>
+    <string name="dapp_kurd_lookalike_message">Fake sites use names close to official ones to deceive you.</string>
+    <string name="dapp_kurd_lookalike_go">Go to %s</string>
+    <string name="dapp_kurd_lookalike_open_anyway">Open %s anyway</string>
 </resources>
