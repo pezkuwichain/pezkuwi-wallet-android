@@ -2854,4 +2854,6 @@
     <string name="dks_hub_app_music">Music</string>
     <string name="dks_hub_app_rewshenbir">Rewshenbir</string>
     <string name="dks_hub_app_referral">Referral</string>
+    <string name="dapp_search_kurd_name">.kurd name</string>
+    <string name="dapp_search_kurd_name_subtitle">Resolved on chain · never sent to a search engine</string>
 </resources>

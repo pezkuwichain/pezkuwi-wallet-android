@@ -63,6 +63,12 @@ class DAppView @JvmOverloads constructor(
         binder.itemDAppIcon.showDAppIcon(iconUrl, imageLoader)
     }
 
+    /** A bundled icon instead of a DApp's own, for entries that are not catalogue DApps. */
+    fun setIconResource(@DrawableRes iconRes: Int, @ColorRes tintRes: Int?) {
+        binder.itemDAppIcon.setImageResource(iconRes)
+        binder.itemDAppIcon.setImageTintRes(tintRes)
+    }
+
     fun setFavoriteIconVisible(visible: Boolean) {
         binder.itemDappFavorite.setVisible(visible)
     }

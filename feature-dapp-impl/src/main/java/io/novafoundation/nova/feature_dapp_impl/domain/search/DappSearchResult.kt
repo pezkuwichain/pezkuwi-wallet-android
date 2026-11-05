@@ -12,6 +12,13 @@ sealed interface DappSearchResult {
         override val isTrustedByNova: Boolean = false
     }
 
+    /** A `.kurd` name: resolved on chain when opened, never looked up on the web. */
+    class KurdName(val name: io.novafoundation.nova.runtime.names.KurdName) : DappSearchResult {
+        override val isTrustedByNova: Boolean = true
+
+        val url: String get() = "https://${name.name}/"
+    }
+
     class Dapp(val dapp: DApp) : DappSearchResult {
         override val isTrustedByNova: Boolean = true
     }

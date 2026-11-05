@@ -8,5 +8,6 @@ class DappSearchModel(
     val description: String? = null,
     val icon: String? = null,
     @DrawableRes val actionIcon: Int?,
+    @DrawableRes val iconRes: Int? = null,
     val searchResult: DappSearchResult
 )

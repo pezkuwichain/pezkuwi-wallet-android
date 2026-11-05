@@ -91,6 +91,7 @@ class DAppSearchViewModel(
         val content = when (searchGroup) {
             DappSearchGroup.DAPPS -> resourceManager.getString(R.string.dapp_dapps)
             DappSearchGroup.SEARCH -> resourceManager.getString(R.string.common_search)
+            DappSearchGroup.KURD_NAME -> resourceManager.getString(R.string.dapp_search_kurd_name)
         }
 
         return TextHeader(content)
@@ -117,6 +118,14 @@ class DAppSearchViewModel(
                 searchResult = searchResult,
                 actionIcon = null
             )
+
+            is DappSearchResult.KurdName -> DappSearchModel(
+                title = searchResult.name.name,
+                description = resourceManager.getString(R.string.dapp_search_kurd_name_subtitle),
+                iconRes = R.drawable.shield_checkmark_outline,
+                searchResult = searchResult,
+                actionIcon = null
+            )
         }
     }
 
@@ -126,6 +135,7 @@ class DAppSearchViewModel(
                 is DappSearchResult.Dapp -> searchResult.dapp.url
                 is DappSearchResult.Search -> searchResult.searchUrl
                 is DappSearchResult.Url -> searchResult.url
+                is DappSearchResult.KurdName -> searchResult.url
             }
 
             if (!searchResult.isTrustedByNova) {

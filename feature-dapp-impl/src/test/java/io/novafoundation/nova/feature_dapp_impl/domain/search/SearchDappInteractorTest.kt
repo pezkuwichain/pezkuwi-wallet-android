@@ -29,4 +29,18 @@ class SearchDappInteractorTest {
             assertEquals(query, null, results[DappSearchGroup.SEARCH])
         }
     }
+
+    @Test
+    fun `a valid kurd name is offered as the name itself`() = runBlocking {
+        val offered = interactor.searchDapps("https://Serok.Gov.Kurd/", categoryId = null)[DappSearchGroup.KURD_NAME]!!.single()
+
+        assertEquals("https://serok.gov.kurd/", (offered as DappSearchResult.KurdName).url)
+    }
+
+    @Test
+    fun `an invalid kurd name is offered nowhere`() = runBlocking {
+        listOf("uni-x--edu.kurd", "dks_news.kurd", "a.b.c.d.e.kurd").forEach { query ->
+            assertEquals(query, emptyMap<DappSearchGroup, List<DappSearchResult>>(), interactor.searchDapps(query, categoryId = null))
+        }
+    }
 }

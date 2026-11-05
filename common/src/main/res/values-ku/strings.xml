@@ -2129,4 +2129,6 @@
         <item quantity="one">%d Sepan</item>
         <item quantity="other">%d Sepan</item>
     </plurals>
+    <string name="dapp_search_kurd_name">Navê .kurd</string>
+    <string name="dapp_search_kurd_name_subtitle">Bi zincîrê tê çareserkirin · ji motora lêgerînê re nayê şandin</string>
 </resources>
