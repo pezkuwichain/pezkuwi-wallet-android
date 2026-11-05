@@ -6,6 +6,9 @@ import io.novafoundation.nova.common.resources.ResourceManager
 
 private const val JAVASCRIPT_INTERFACE_PREFIX = "Pezkuwi"
 
+// The name a page's scripts call the native interface by; bundled bridge scripts must use this exact name.
+internal fun jsInterfaceFullName(interfaceName: String) = "${JAVASCRIPT_INTERFACE_PREFIX}_$interfaceName"
+
 class WebViewScriptInjector(
     private val resourceManager: ResourceManager
 ) {
@@ -21,9 +24,7 @@ class WebViewScriptInjector(
         jsInterface: WebViewWeb3JavaScriptInterface,
         interfaceName: String
     ) {
-        val fullName = "${JAVASCRIPT_INTERFACE_PREFIX}_$interfaceName"
-
-        into.addJavascriptInterface(jsInterface, fullName)
+        into.addJavascriptInterface(jsInterface, jsInterfaceFullName(interfaceName))
     }
 
     fun injectScript(
