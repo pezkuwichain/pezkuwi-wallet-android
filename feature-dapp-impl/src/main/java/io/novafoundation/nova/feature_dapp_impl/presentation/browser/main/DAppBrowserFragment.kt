@@ -45,12 +45,14 @@ import io.novafoundation.nova.feature_dapp_impl.presentation.common.favourites.s
 import io.novafoundation.nova.feature_dapp_impl.utils.tabs.models.BrowserTabSession
 import io.novafoundation.nova.feature_dapp_impl.utils.tabs.models.SessionCallback
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.CompoundWeb3Injector
+import io.novafoundation.nova.feature_dapp_impl.web3.webview.KurdExternalContent
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.Web3ChromeClient
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.Web3WebViewClient
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewHolder
 import io.novafoundation.nova.feature_external_sign_api.presentation.externalSign.AuthorizeDappBottomSheet
 import io.novafoundation.nova.runtime.names.KurdName
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 private const val OVERFLOW_TABS_COUNT = 100
@@ -252,6 +254,10 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
 
         binder.dappBrowserKurdNotice.kurdNoticeSecondary.setOnClickListener { viewModel.kurdOpenAnyway() }
         binder.dappBrowserKurdOnChainVersionRetry.setOnClickListener { viewModel.kurdRetry() }
+        binder.dappBrowserKurdExternalClose.setOnClickListener {
+            kurdExternalDismissed = kurdBlocked
+            showKurdExternal()
+        }
 
         viewModel.tabsCountFlow.observe {
             if (it >= OVERFLOW_TABS_COUNT) {
@@ -268,6 +274,16 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
         clearProgress()
         session.attachToHost(createChromeClient(), this)
         webViewHolder.set(session.webView)
+
+        kurdBlockedJob?.cancel()
+        kurdBlockedJob = viewLifecycleOwner.lifecycleScope.launch {
+            session.kurdBlocked.collect {
+                kurdBlocked = it
+                // A new document starts empty; a note closed on the page before does not carry over
+                if (it.isEmpty()) kurdExternalDismissed = emptySet()
+                showKurdExternal()
+            }
+        }
         webViewClient = session.webViewClient
 
         binder.dappBrowserWebViewContainer.removeAllViews()
@@ -364,6 +380,28 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
 
     private var lastKurdPage: KurdPageUi? = null
 
+    private var kurdBlockedJob: Job? = null
+    private var kurdBlocked: Set<KurdExternalContent.Kind> = emptySet()
+
+    /** What was blocked when the reader closed the note; it comes back only if something new is. */
+    private var kurdExternalDismissed: Set<KurdExternalContent.Kind> = emptySet()
+
+    /** Content an open `.kurd` page could not load from servers outside its name. */
+    private fun showKurdExternal() {
+        val shown = lastKurdPage is KurdPageUi.Open && kurdBlocked.isNotEmpty() && !kurdExternalDismissed.containsAll(kurdBlocked)
+        binder.dappBrowserKurdExternal.setVisible(shown)
+        if (!shown) return
+
+        val kinds = kurdBlocked.sorted().joinToString(", ") { kind ->
+            when (kind) {
+                KurdExternalContent.Kind.MEDIA -> getString(R.string.dapp_kurd_external_media)
+                KurdExternalContent.Kind.IMAGE -> getString(R.string.dapp_kurd_external_image)
+                KurdExternalContent.Kind.OTHER -> getString(R.string.dapp_kurd_external_other)
+            }
+        }
+        binder.dappBrowserKurdExternalText.text = getString(R.string.dapp_kurd_external_note, kinds)
+    }
+
     private fun showKurdBadge(page: KurdPageUi?) {
         binder.dappBrowserAddressBar.showKurdBadge((page as? KurdPageUi.Open)?.badge) { viewModel.kurdBadgeClicked() }
     }
@@ -372,6 +410,7 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
     private fun showKurdPage(page: KurdPageUi?) {
         lastKurdPage = page
         showKurdBadge(page)
+        showKurdExternal()
         binder.dappBrowserKurdOnChainVersion.setVisible((page as? KurdPageUi.Open)?.onChainVersion == true)
 
         val notice = binder.dappBrowserKurdNotice
