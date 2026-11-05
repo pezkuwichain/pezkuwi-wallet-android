@@ -7,9 +7,11 @@ import io.novafoundation.nova.feature_dapp_impl.web3.Web3Transport
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.model.InjectedAccount
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.model.InjectedMetadataKnown
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.model.SignerPayload
+import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.rpc.ProviderMeta
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.polkadot.PolkadotSignerResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -33,6 +35,11 @@ sealed class PolkadotJsTransportRequest<R>(
         LIST_METADATA("pub(metadata.list)"),
         PROVIDE_METADATA("pub(metadata.provide)"),
         SIGN_BYTES("pub(bytes.sign)"),
+        RPC_LIST_PROVIDERS("pub(rpc.listProviders)"),
+        RPC_START_PROVIDER("pub(rpc.startProvider)"),
+        RPC_SEND("pub(rpc.send)"),
+        RPC_SUBSCRIBE("pub(rpc.subscribe)"),
+        RPC_SUBSCRIBE_CONNECTED("pub(rpc.subscribeConnected)"),
     }
 
     sealed class Single<R>(
@@ -122,6 +129,95 @@ sealed class PolkadotJsTransportRequest<R>(
 
             override fun serializeResponse(response: Boolean): String {
                 return response.toString()
+            }
+        }
+    }
+
+    /** The provider half of the extension API: the page's chain calls, answered over the wallet's connection. */
+    sealed class Rpc<R>(
+        web3Responder: Web3Responder,
+        url: String,
+        identifier: Identifier,
+        requestId: String,
+    ) : PolkadotJsTransportRequest<R>(web3Responder, identifier, url, requestId) {
+
+        class ListProviders(
+            web3Responder: Web3Responder,
+            url: String,
+            requestId: String,
+            private val gson: Gson,
+        ) : Rpc<Map<String, ProviderMeta>>(web3Responder, url, Identifier.RPC_LIST_PROVIDERS, requestId) {
+
+            override fun accept(response: Map<String, ProviderMeta>) {
+                web3Responder.respondResult(requestId, gson.toJson(response))
+            }
+        }
+
+        class StartProvider(
+            web3Responder: Web3Responder,
+            url: String,
+            requestId: String,
+            val key: String,
+            private val gson: Gson,
+        ) : Rpc<ProviderMeta>(web3Responder, url, Identifier.RPC_START_PROVIDER, requestId) {
+
+            override fun accept(response: ProviderMeta) {
+                web3Responder.respondResult(requestId, gson.toJson(response))
+            }
+        }
+
+        /** Answered off the request queue: a slow node must not hold up the page's other calls. */
+        class Send(
+            val scope: CoroutineScope,
+            web3Responder: Web3Responder,
+            url: String,
+            requestId: String,
+            val method: String,
+            val params: List<Any>,
+            private val gson: Gson,
+        ) : Rpc<Any?>(web3Responder, url, Identifier.RPC_SEND, requestId) {
+
+            override fun accept(response: Any?) {
+                web3Responder.respondResult(requestId, gson.toJson(response))
+            }
+        }
+
+        /** Answers with a subscription id, then sends each notification's result to the page's callback. */
+        class Subscribe(
+            private val scope: CoroutineScope,
+            web3Responder: Web3Responder,
+            url: String,
+            requestId: String,
+            val method: String,
+            val params: List<Any>,
+            private val gson: Gson,
+        ) : Rpc<Flow<Any?>>(web3Responder, url, Identifier.RPC_SUBSCRIBE, requestId) {
+
+            override fun accept(response: Flow<Any?>) {
+                web3Responder.respondResult(requestId, gson.toJson(requestId))
+
+                response
+                    .onEach { web3Responder.respondSubscription(requestId, gson.toJson(it)) }
+                    .catch { web3Responder.respondError(requestId, it) }
+                    .inBackground()
+                    .launchIn(scope)
+            }
+        }
+
+        class SubscribeConnected(
+            private val scope: CoroutineScope,
+            web3Responder: Web3Responder,
+            url: String,
+            requestId: String,
+        ) : Rpc<Flow<Boolean>>(web3Responder, url, Identifier.RPC_SUBSCRIBE_CONNECTED, requestId) {
+
+            override fun accept(response: Flow<Boolean>) {
+                web3Responder.respondResult(requestId, "true")
+
+                response
+                    .onEach { web3Responder.respondSubscription(requestId, it.toString()) }
+                    .inBackground()
+                    .launchIn(scope)
             }
         }
     }

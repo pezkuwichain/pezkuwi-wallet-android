@@ -7,6 +7,7 @@ import io.novafoundation.nova.common.utils.parseArbitraryObject
 import io.novafoundation.nova.feature_dapp_impl.web3.Web3Responder
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.model.mapRawPayloadToSignerPayloadJSON
 import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.model.mapRawPayloadToSignerPayloadRaw
+import io.novafoundation.nova.feature_dapp_impl.web3.polkadotJs.rpc.rpcCall
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewWeb3JavaScriptInterface
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewWeb3Transport
 import kotlinx.coroutines.CoroutineScope
@@ -73,6 +74,24 @@ class PolkadotJsTransport(
 
             PolkadotJsTransportRequest.Identifier.PROVIDE_METADATA.id ->
                 PolkadotJsTransportRequest.Single.ProvideMetadata(web3Responder, url, requestId)
+
+            PolkadotJsTransportRequest.Identifier.RPC_LIST_PROVIDERS.id ->
+                PolkadotJsTransportRequest.Rpc.ListProviders(web3Responder, url, requestId, gson)
+
+            PolkadotJsTransportRequest.Identifier.RPC_START_PROVIDER.id -> (parsedMessage["request"] as? String)?.let { key ->
+                PolkadotJsTransportRequest.Rpc.StartProvider(web3Responder, url, requestId, key, gson)
+            }
+
+            PolkadotJsTransportRequest.Identifier.RPC_SEND.id -> rpcCall(message)?.let { (method, params) ->
+                PolkadotJsTransportRequest.Rpc.Send(scope = this, web3Responder, url, requestId, method, params, gson)
+            }
+
+            PolkadotJsTransportRequest.Identifier.RPC_SUBSCRIBE.id -> rpcCall(message)?.let { (method, params) ->
+                PolkadotJsTransportRequest.Rpc.Subscribe(scope = this, web3Responder, url, requestId, method, params, gson)
+            }
+
+            PolkadotJsTransportRequest.Identifier.RPC_SUBSCRIBE_CONNECTED.id ->
+                PolkadotJsTransportRequest.Rpc.SubscribeConnected(scope = this, web3Responder, url, requestId)
 
             else -> null
         }
