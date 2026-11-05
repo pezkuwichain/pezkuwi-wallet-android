@@ -12,29 +12,30 @@ import io.novafoundation.nova.common.di.viewmodel.ViewModelModule
 import io.novafoundation.nova.common.mixin.actionAwaitable.ActionAwaitableMixin
 import io.novafoundation.nova.common.resources.ContextManager
 import io.novafoundation.nova.common.utils.ToastMessageManager
+import io.novafoundation.nova.common.utils.browser.fileChoosing.WebViewFileChooserFactory
+import io.novafoundation.nova.common.utils.browser.permissions.WebViewPermissionAskerFactory
+import io.novafoundation.nova.common.utils.webView.WebViewRequestInterceptor
+import io.novafoundation.nova.common.utils.webView.interceptors.CompoundWebViewRequestInterceptor
 import io.novafoundation.nova.core_db.dao.BrowserHostSettingsDao
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
 import io.novafoundation.nova.feature_dapp_api.data.repository.BrowserHostSettingsRepository
-import io.novafoundation.nova.feature_dapp_impl.presentation.DAppRouter
 import io.novafoundation.nova.feature_dapp_api.presentation.browser.main.DAppBrowserPayload
 import io.novafoundation.nova.feature_dapp_impl.data.repository.FavouritesDAppRepository
 import io.novafoundation.nova.feature_dapp_impl.data.repository.PhishingSitesRepository
 import io.novafoundation.nova.feature_dapp_impl.data.repository.RealBrowserHostSettingsRepository
 import io.novafoundation.nova.feature_dapp_impl.domain.DappInteractor
 import io.novafoundation.nova.feature_dapp_impl.domain.browser.DappBrowserInteractor
+import io.novafoundation.nova.feature_dapp_impl.presentation.DAppRouter
 import io.novafoundation.nova.feature_dapp_impl.presentation.browser.main.DAppBrowserViewModel
 import io.novafoundation.nova.feature_dapp_impl.presentation.search.DAppSearchCommunicator
 import io.novafoundation.nova.feature_dapp_impl.utils.tabs.BrowserTabService
 import io.novafoundation.nova.feature_dapp_impl.web3.states.ExtensionStoreFactory
-import io.novafoundation.nova.common.utils.browser.fileChoosing.WebViewFileChooserFactory
-import io.novafoundation.nova.common.utils.browser.permissions.WebViewPermissionAskerFactory
-import io.novafoundation.nova.common.utils.webView.WebViewRequestInterceptor
-import io.novafoundation.nova.common.utils.webView.interceptors.CompoundWebViewRequestInterceptor
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.interceptors.WalletConnectPairingInterceptor
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.interceptors.Web3FallbackInterceptor
 import io.novafoundation.nova.feature_external_sign_api.model.ExternalSignCommunicator
 import io.novafoundation.nova.feature_wallet_connect_api.presentation.WalletConnectService
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
 
 @Module(includes = [ViewModelModule::class])
 class DAppBrowserModule {
@@ -103,7 +104,8 @@ class DAppBrowserModule {
         dAppInteractor: DappInteractor,
         actionAwaitableMixinFactory: ActionAwaitableMixin.Factory,
         chainRegistry: ChainRegistry,
-        browserTabService: BrowserTabService
+        browserTabService: BrowserTabService,
+        kurdSiteServer: KurdSiteServer,
     ): ViewModel {
         return DAppBrowserViewModel(
             router = router,
@@ -116,7 +118,8 @@ class DAppBrowserModule {
             extensionStoreFactory = extensionStoreFactory,
             actionAwaitableMixinFactory = actionAwaitableMixinFactory,
             chainRegistry = chainRegistry,
-            browserTabService = browserTabService
+            browserTabService = browserTabService,
+            kurdSiteServer = kurdSiteServer,
         )
     }
 }

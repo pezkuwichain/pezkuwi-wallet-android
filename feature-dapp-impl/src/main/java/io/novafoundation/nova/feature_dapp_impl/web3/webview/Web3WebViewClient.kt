@@ -60,7 +60,11 @@ class Web3WebViewClient(
         if (request.method != "GET" || host == null) return emptyResponse(405, "Method Not Allowed")
 
         val response = runCatching {
-            runBlocking { withTimeout(KURD_REQUEST_TIMEOUT_MILLIS) { kurdSiteServer.serve(host, request.url.encodedPath.orEmpty()) } }
+            runBlocking {
+                withTimeout(KURD_REQUEST_TIMEOUT_MILLIS) {
+                    kurdSiteServer.serve(host, request.url.encodedPath.orEmpty(), mainFrame = request.isForMainFrame)
+                }
+            }
         }.getOrNull() ?: return emptyResponse(504, "Gateway Timeout")
 
         return WebResourceResponse(

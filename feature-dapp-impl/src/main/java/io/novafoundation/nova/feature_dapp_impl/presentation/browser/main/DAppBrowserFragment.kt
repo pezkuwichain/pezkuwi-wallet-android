@@ -5,21 +5,31 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.View
+import android.webkit.CookieManager
+import android.webkit.GeolocationPermissions
 import android.webkit.WebResourceRequest
+import android.webkit.WebStorage
 import android.webkit.WebView
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.SharedElementCallback
 import androidx.core.os.bundleOf
 import androidx.core.transition.addListener
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import io.novafoundation.nova.common.base.BaseFragment
 import io.novafoundation.nova.common.di.FeatureUtils
+import io.novafoundation.nova.common.utils.browser.fileChoosing.WebViewFileChooser
+import io.novafoundation.nova.common.utils.browser.permissions.WebViewPermissionAsker
 import io.novafoundation.nova.common.utils.insets.applyNavigationBarInsets
 import io.novafoundation.nova.common.utils.insets.applyStatusBarInsets
 import io.novafoundation.nova.common.utils.makeGone
 import io.novafoundation.nova.common.utils.makeVisible
+import io.novafoundation.nova.common.utils.setImageTintRes
+import io.novafoundation.nova.common.utils.setVisible
+import io.novafoundation.nova.common.utils.webView.WebViewRequestInterceptor
+import io.novafoundation.nova.common.view.dialog.infoDialog
 import io.novafoundation.nova.feature_dapp_api.di.DAppFeatureApi
 import io.novafoundation.nova.feature_dapp_api.presentation.browser.main.DAppBrowserPayload
 import io.novafoundation.nova.feature_dapp_impl.R
@@ -27,21 +37,21 @@ import io.novafoundation.nova.feature_dapp_impl.databinding.FragmentDappBrowserB
 import io.novafoundation.nova.feature_dapp_impl.di.DAppFeatureComponent
 import io.novafoundation.nova.feature_dapp_impl.domain.browser.isSecure
 import io.novafoundation.nova.feature_dapp_impl.presentation.browser.main.DappPendingConfirmation.Action
+import io.novafoundation.nova.feature_dapp_impl.presentation.browser.main.kurd.KurdDetailsSheet
+import io.novafoundation.nova.feature_dapp_impl.presentation.browser.main.kurd.KurdPageUi
 import io.novafoundation.nova.feature_dapp_impl.presentation.browser.main.sheets.AcknowledgePhishingBottomSheet
 import io.novafoundation.nova.feature_dapp_impl.presentation.browser.options.OptionsBottomSheetDialog
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.favourites.setupRemoveFavouritesConfirmation
 import io.novafoundation.nova.feature_dapp_impl.utils.tabs.models.BrowserTabSession
-import io.novafoundation.nova.feature_dapp_impl.web3.webview.Web3ChromeClient
-import io.novafoundation.nova.feature_dapp_impl.web3.webview.CompoundWeb3Injector
-import io.novafoundation.nova.feature_dapp_impl.web3.webview.Web3WebViewClient
-import io.novafoundation.nova.common.utils.browser.fileChoosing.WebViewFileChooser
-import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewHolder
-import io.novafoundation.nova.common.utils.browser.permissions.WebViewPermissionAsker
-import io.novafoundation.nova.common.utils.webView.WebViewRequestInterceptor
-import io.novafoundation.nova.common.view.dialog.infoDialog
 import io.novafoundation.nova.feature_dapp_impl.utils.tabs.models.SessionCallback
+import io.novafoundation.nova.feature_dapp_impl.web3.webview.CompoundWeb3Injector
+import io.novafoundation.nova.feature_dapp_impl.web3.webview.Web3ChromeClient
+import io.novafoundation.nova.feature_dapp_impl.web3.webview.Web3WebViewClient
+import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewHolder
 import io.novafoundation.nova.feature_external_sign_api.presentation.externalSign.AuthorizeDappBottomSheet
+import io.novafoundation.nova.runtime.names.KurdName
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 private const val OVERFLOW_TABS_COUNT = 100
 
@@ -222,10 +232,25 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
         viewModel.currentPageAnalyzed.observe {
             binder.dappBrowserAddressBar.setAddress(it.display)
             binder.dappBrowserAddressBar.showSecure(it.isSecure)
+            showKurdBadge(lastKurdPage)
             binder.dappBrowserFavorite.setImageResource(favoriteIcon(it.isFavourite))
 
             updateButtonsState()
         }
+
+        viewModel.kurdPage.observe(::showKurdPage)
+
+        viewModel.kurdDetailsEvent.observeEvent { page ->
+            lifecycleScope.launch {
+                val owner = when (val owner = page.details.owner) {
+                    KurdPageUi.Owner.Institution -> getString(R.string.dapp_kurd_owner_institution)
+                    is KurdPageUi.Owner.Account -> viewModel.kurdOwnerAddress(owner.accountId)
+                }
+                KurdDetailsSheet(requireContext(), page, owner) { clearKurdSiteData(page.name) }.show()
+            }
+        }
+
+        binder.dappBrowserKurdNotice.kurdNoticeSecondary.setOnClickListener { viewModel.kurdOpenAnyway() }
 
         viewModel.tabsCountFlow.observe {
             if (it >= OVERFLOW_TABS_COUNT) {
@@ -334,5 +359,92 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
         } else {
             R.drawable.ic_favorite_heart_outline
         }
+    }
+
+    private var lastKurdPage: KurdPageUi? = null
+
+    private fun showKurdBadge(page: KurdPageUi?) {
+        binder.dappBrowserAddressBar.showKurdBadge((page as? KurdPageUi.Open)?.badge) { viewModel.kurdBadgeClicked() }
+    }
+
+    /** A `.kurd` page's badge, or the notice shown in place of a page that did not open. */
+    private fun showKurdPage(page: KurdPageUi?) {
+        lastKurdPage = page
+        showKurdBadge(page)
+
+        val notice = binder.dappBrowserKurdNotice
+        val kind = (page as? KurdPageUi.Notice)?.kind
+        notice.root.setVisible(kind != null)
+        if (page == null || kind == null) return
+
+        data class Look(val icon: Int, val tint: Int, val title: Int, val message: String, val primary: Int, val primaryAction: () -> Unit)
+
+        val look = when (kind) {
+            KurdPageUi.NoticeKind.REFUSED -> Look(
+                R.drawable.ic_close_circle,
+                R.color.icon_negative,
+                R.string.dapp_kurd_refused_title,
+                getString(R.string.dapp_kurd_refused_message),
+                R.string.common_retry,
+                viewModel::kurdRetry
+            )
+            KurdPageUi.NoticeKind.NEEDS_CONSENT -> Look(
+                R.drawable.ic_warning_filled,
+                R.color.icon_warning,
+                R.string.dapp_kurd_unverified_title,
+                getString(R.string.dapp_kurd_unverified_message),
+                R.string.dapp_kurd_back,
+                viewModel::kurdBack
+            )
+            KurdPageUi.NoticeKind.NOT_REGISTERED -> Look(
+                R.drawable.ic_info,
+                R.color.icon_secondary,
+                R.string.dapp_kurd_not_registered_title,
+                getString(R.string.dapp_kurd_not_registered_message, page.name.name),
+                R.string.dapp_kurd_back,
+                viewModel::kurdBack
+            )
+            KurdPageUi.NoticeKind.NO_SITE -> Look(
+                R.drawable.ic_info,
+                R.color.icon_secondary,
+                R.string.dapp_kurd_no_site_title,
+                getString(R.string.dapp_kurd_no_site_message),
+                R.string.dapp_kurd_back,
+                viewModel::kurdBack
+            )
+            KurdPageUi.NoticeKind.UNAVAILABLE -> Look(
+                R.drawable.ic_warning_filled,
+                R.color.icon_warning,
+                R.string.dapp_kurd_unavailable_title,
+                getString(R.string.dapp_kurd_unavailable_message),
+                R.string.common_retry,
+                viewModel::kurdRetry
+            )
+        }
+
+        notice.kurdNoticeName.text = page.name.name
+        notice.kurdNoticeIcon.setImageResource(look.icon)
+        notice.kurdNoticeIcon.setImageTintRes(look.tint)
+        notice.kurdNoticeTitle.setText(look.title)
+        notice.kurdNoticeMessage.text = look.message
+        notice.kurdNoticePrimary.setText(look.primary)
+        notice.kurdNoticePrimary.setOnClickListener { look.primaryAction() }
+        notice.kurdNoticeSecondary.setVisible(kind == KurdPageUi.NoticeKind.NEEDS_CONSENT)
+        notice.kurdNoticeSecondary.setText(R.string.dapp_kurd_open_anyway)
+    }
+
+    /** Storage, cookies and permissions the page kept under its name; then it loads afresh. */
+    private fun clearKurdSiteData(name: KurdName) {
+        val origin = "https://${name.name}"
+        WebStorage.getInstance().deleteOrigin(origin)
+        GeolocationPermissions.getInstance().clear(origin)
+
+        val cookies = CookieManager.getInstance()
+        cookies.getCookie(origin)?.split(';')?.map { it.substringBefore('=').trim() }?.filter { it.isNotEmpty() }?.forEach { cookieName ->
+            cookies.setCookie(origin, "$cookieName=; Max-Age=0")
+        }
+        cookies.flush()
+
+        viewModel.reloadPage()
     }
 }

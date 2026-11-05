@@ -59,6 +59,14 @@
         app:layout_constraintBottom_toTopOf="@+id/dappBrowserBottomNavigation"
         app:layout_constraintTop_toBottomOf="@+id/dappBrowserAddressBarGroup" />
 
+    <include
+        android:id="@+id/dappBrowserKurdNotice"
+        layout="@layout/view_kurd_notice"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/dappBrowserBottomNavigation"
+        app:layout_constraintTop_toBottomOf="@+id/dappBrowserAddressBarGroup" />
+
     <ProgressBar
         android:id="@+id/dappBrowserProgress"
         style="?android:attr/progressBarStyleHorizontal"

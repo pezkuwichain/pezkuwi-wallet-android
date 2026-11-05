@@ -11,6 +11,9 @@ interface NameStorageReader {
 
     /** The raw value at [key] in block [at], or null when nothing is stored there. */
     suspend fun storage(key: ByteArray, at: String): ByteArray?
+
+    /** The number of block [at], shown to the reader as where a name was read. */
+    suspend fun blockNumber(at: String): Long?
 }
 
 enum class NameStatus {
@@ -41,6 +44,8 @@ sealed interface NameLookup {
         val rawChain: List<String>,
         /** Some label of the name is in `Navnisan::Locked`: reserved, never for sale. */
         val locked: Boolean,
+        /** The finalized block it was read at, when the source said; not part of agreement. */
+        val block: Long? = null,
     ) : NameLookup
 
     companion object {
@@ -83,7 +88,9 @@ sealed interface NameLookup {
             val status = effectiveStatus(records.map { it.first }, now) ?: return Lapsed
             val locked = nodes.any { reader.storage(lockedKey(it), at) != null }
 
-            return Found(records.first().first, status, records.map { it.second }, locked)
+            val block = runCatching { reader.blockNumber(at) }.getOrNull()
+
+            return Found(records.first().first, status, records.map { it.second }, locked, block)
         }
 
         /**

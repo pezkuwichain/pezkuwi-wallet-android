@@ -4,6 +4,9 @@ import io.novafoundation.nova.runtime.names.KurdName
 import io.novafoundation.nova.runtime.names.KurdNameResolver
 import io.novafoundation.nova.runtime.names.KurdResolution
 import io.novafoundation.nova.runtime.names.NameRecord
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -29,34 +32,78 @@ class KurdSiteServer(
         )
     }
 
+    /** How the browser shows a `.kurd` page: set by its top-level document, read by the address bar and notices. */
+    sealed interface PageState {
+
+        /** Content verified and served. [resolution] says how the name itself was read. */
+        class Open(val resolution: KurdResolution.Resolved, val root: Cid) : PageState
+
+        /** Read through RPC nodes only; the content waits until the reader chooses to open it. */
+        class NeedsConsent(val resolution: KurdResolution.Resolved) : PageState
+
+        /** Official or institutional and not verifiable now: never opened (decision D18). */
+        object Refused : PageState
+
+        object NotRegistered : PageState
+
+        /** Registered, but no site: no content, or content of a kind this wallet does not serve. */
+        object NoSite : PageState
+
+        object Unavailable : PageState
+    }
+
     private val resolutions = ConcurrentHashMap<KurdName, Pair<Long, KurdResolution>>()
+    private val consented: MutableSet<KurdName> = ConcurrentHashMap.newKeySet()
 
-    /** The latest resolution of [name], for the browser to show how it was verified. */
-    fun lastResolution(name: KurdName): KurdResolution? = resolutions[name]?.second
+    private val _pageStates = MutableStateFlow<Map<KurdName, PageState>>(emptyMap())
+    val pageStates: StateFlow<Map<KurdName, PageState>> = _pageStates
 
-    suspend fun serve(host: String, encodedPath: String): Response {
+    /**
+     * The reader chose to open [name] although only RPC nodes vouched for it; holds until the app
+     * restarts. Never offered for a name that must be verified, which is [PageState.Refused].
+     */
+    fun allowUnverified(name: KurdName) {
+        consented += name
+        resolutions -= name
+    }
+
+    /** Forgets [name]'s resolution, so a retry reads the chain again. */
+    fun forget(name: KurdName) {
+        resolutions -= name
+    }
+
+    /** [mainFrame]: the page's own document, whose outcome becomes the name's [PageState]. */
+    suspend fun serve(host: String, encodedPath: String, mainFrame: Boolean = false): Response {
         val name = KurdName.parse(host) ?: return status(404, "Not Found")
         val segments = decodePath(encodedPath) ?: return status(400, "Bad Request")
 
-        val resolution = resolve(name)
-        val record = when (resolution) {
-            is KurdResolution.Resolved -> resolution.record
-            is KurdResolution.NotFound -> return status(404, "Not Found")
-            is KurdResolution.Refused -> return status(403, "Forbidden")
-            is KurdResolution.Unavailable -> return status(502, "Bad Gateway")
+        val (state, response) = handle(name, segments)
+        if (mainFrame) _pageStates.update { it + (name to state) }
+        return response
+    }
+
+    private suspend fun handle(name: KurdName, segments: List<String>): Pair<PageState, Response> {
+        val resolution = when (val resolved = resolve(name)) {
+            is KurdResolution.Resolved -> resolved
+            is KurdResolution.NotFound -> return PageState.NotRegistered to status(404, "Not Found")
+            is KurdResolution.Refused -> return PageState.Refused to status(403, "Forbidden")
+            is KurdResolution.Unavailable -> return PageState.Unavailable to status(502, "Bad Gateway")
         }
 
-        val root = when (val content = record.content) {
-            null -> return status(404, "Not Found")
-            is NameRecord.Content.Ipfs -> Cid.fromContenthash(content.contenthash) ?: return status(415, "Unsupported Media Type")
+        val root = when (val content = resolution.record.content) {
+            null -> return PageState.NoSite to status(404, "Not Found")
+            is NameRecord.Content.Ipfs -> Cid.fromContenthash(content.contenthash) ?: return PageState.NoSite to status(415, "Unsupported Media Type")
             // A feed is resolved through its signed pointer, which this server does not read
-            is NameRecord.Content.Feed -> return status(415, "Unsupported Media Type")
+            is NameRecord.Content.Feed -> return PageState.NoSite to status(415, "Unsupported Media Type")
         }
 
+        if (!resolution.verified && name !in consented) return PageState.NeedsConsent(resolution) to status(428, "Precondition Required")
+
+        val open = PageState.Open(resolution, root)
         return when (val result = fetcher.fetch(root, segments)) {
-            is KurdContentFetcher.Result.File -> Response(200, "OK", mimeTypeOf(result.path.lastOrNull()), result.bytes)
-            KurdContentFetcher.Result.NotFound -> status(404, "Not Found")
-            KurdContentFetcher.Result.Unavailable -> status(502, "Bad Gateway")
+            is KurdContentFetcher.Result.File -> open to Response(200, "OK", mimeTypeOf(result.path.lastOrNull()), result.bytes)
+            KurdContentFetcher.Result.NotFound -> open to status(404, "Not Found")
+            KurdContentFetcher.Result.Unavailable -> PageState.Unavailable to status(502, "Bad Gateway")
         }
     }
 

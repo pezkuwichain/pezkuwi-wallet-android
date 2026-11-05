@@ -12,13 +12,14 @@ import io.novafoundation.nova.common.utils.removeHexPrefix
 import io.novafoundation.nova.common.utils.singleReplaySharedFlow
 import io.novafoundation.nova.feature_account_api.domain.interfaces.SelectedAccountUseCase
 import io.novafoundation.nova.feature_dapp_api.data.model.BrowserHostSettings
-import io.novafoundation.nova.feature_dapp_impl.presentation.DAppRouter
+import io.novafoundation.nova.feature_dapp_api.presentation.addToFavorites.AddToFavouritesPayload
+import io.novafoundation.nova.feature_dapp_api.presentation.browser.main.DAppBrowserPayload
 import io.novafoundation.nova.feature_dapp_impl.domain.DappInteractor
 import io.novafoundation.nova.feature_dapp_impl.domain.browser.BrowserPage
 import io.novafoundation.nova.feature_dapp_impl.domain.browser.BrowserPageAnalyzed
 import io.novafoundation.nova.feature_dapp_impl.domain.browser.DappBrowserInteractor
-import io.novafoundation.nova.feature_dapp_api.presentation.addToFavorites.AddToFavouritesPayload
-import io.novafoundation.nova.feature_dapp_api.presentation.browser.main.DAppBrowserPayload
+import io.novafoundation.nova.feature_dapp_impl.presentation.DAppRouter
+import io.novafoundation.nova.feature_dapp_impl.presentation.browser.main.kurd.KurdPageUi
 import io.novafoundation.nova.feature_dapp_impl.presentation.browser.options.DAppOptionsPayload
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.favourites.RemoveFavouritesPayload
 import io.novafoundation.nova.feature_dapp_impl.presentation.search.DAppSearchCommunicator
@@ -42,10 +43,16 @@ import io.novafoundation.nova.feature_external_sign_api.model.signPayload.Extern
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.SigningDappMetadata
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.polkadot.genesisHash
 import io.novafoundation.nova.feature_external_sign_api.presentation.externalSign.AuthorizeDappBottomSheet
+import io.novafoundation.nova.runtime.ext.addressOf
 import io.novafoundation.nova.runtime.ext.isDisabled
 import io.novafoundation.nova.runtime.multiNetwork.ChainRegistry
 import io.novafoundation.nova.runtime.multiNetwork.chainsById
+import io.novafoundation.nova.runtime.multiNetwork.connection.light.LightClients
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -53,13 +60,12 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 enum class ConfirmationState {
     ALLOWED, REJECTED, CANCELLED
@@ -78,7 +84,8 @@ class DAppBrowserViewModel(
     private val selectedAccountUseCase: SelectedAccountUseCase,
     private val actionAwaitableMixinFactory: ActionAwaitableMixin.Factory,
     private val chainRegistry: ChainRegistry,
-    private val browserTabService: BrowserTabService
+    private val browserTabService: BrowserTabService,
+    private val kurdSiteServer: KurdSiteServer,
 ) : BaseViewModel(), Web3StateMachineHost {
 
     val removeFromFavouritesConfirmation = actionAwaitableMixinFactory.confirmingAction<RemoveFavouritesPayload>()
@@ -96,6 +103,16 @@ class DAppBrowserViewModel(
     }.shareInBackground()
 
     override val externalEvents = singleReplaySharedFlow<ExternalEvent>()
+
+    /** The `.kurd` name the tab shows and how: a badge on an open page, or a notice in its place. */
+    val kurdPage: Flow<KurdPageUi?> = currentPage
+        .map { KurdPageUi.nameOf(it.url) }
+        .distinctUntilChanged()
+        .flatMapLatest { name -> if (name == null) flowOf(null) else kurdSiteServer.pageStates.map { KurdPageUi.from(name, it[name]) } }
+        .shareInBackground()
+
+    private val _kurdDetailsEvent = MutableLiveData<Event<KurdPageUi.Open>>()
+    val kurdDetailsEvent: LiveData<Event<KurdPageUi.Open>> = _kurdDetailsEvent
 
     private val _browserCommandEvent = MutableLiveData<Event<BrowserCommand>>()
     val browserCommandEvent: LiveData<Event<BrowserCommand>> = _browserCommandEvent
@@ -173,6 +190,32 @@ class DAppBrowserViewModel(
 
     override fun reloadPage() {
         _browserCommandEvent.postValue(BrowserCommand.Reload.event())
+    }
+
+    fun kurdRetry() = launch {
+        kurdPage.first()?.let { kurdSiteServer.forget(it.name) }
+        reloadPage()
+    }
+
+    /** Only from the unverified notice: a refused name has no way past it. */
+    fun kurdOpenAnyway() = launch {
+        val notice = kurdPage.first() as? KurdPageUi.Notice ?: return@launch
+        if (notice.kind != KurdPageUi.NoticeKind.NEEDS_CONSENT) return@launch
+
+        kurdSiteServer.allowUnverified(notice.name)
+        reloadPage()
+    }
+
+    fun kurdBack() {
+        _browserCommandEvent.value = BrowserCommand.GoBack.event()
+    }
+
+    fun kurdBadgeClicked() = launch {
+        (kurdPage.first() as? KurdPageUi.Open)?.let { _kurdDetailsEvent.value = it.event() }
+    }
+
+    suspend fun kurdOwnerAddress(accountId: ByteArray): String {
+        return chainRegistry.getChain(LightClients.ZAGROS_PEOPLE).addressOf(accountId)
     }
 
     fun detachCurrentSession() {

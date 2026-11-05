@@ -9,7 +9,14 @@ sealed interface KurdResolution {
      * finalized state. Otherwise two independent RPC nodes returned the same records, and the
      * name is shown with a "not verified" warning.
      */
-    class Resolved(override val name: KurdName, val record: NameRecord, val status: NameStatus, val verified: Boolean) : KurdResolution {
+    class Resolved(
+        override val name: KurdName,
+        val record: NameRecord,
+        val status: NameStatus,
+        val verified: Boolean,
+        /** The finalized block the name was read at, when known. */
+        val block: Long? = null,
+    ) : KurdResolution {
 
         /** "Official" badge: only granted names and their descendants; a bought name never shows it. */
         val official: Boolean get() = record.isOfficial

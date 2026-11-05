@@ -23,6 +23,7 @@ class NameLookupTest {
         assertEquals(NameStatus.ACTIVE, found.status)
         assertEquals(2, found.rawChain.size)
         assertFalse(found.locked)
+        assertEquals(1_284_551L, found.block)
     }
 
     @Test
@@ -125,6 +126,8 @@ class NameLookupTest {
         fun lock(name: KurdName) = apply { values[NameLookup.lockedKey(name.node).toHexString()] = byteArrayOf(0) }
 
         override suspend fun finalizedHead() = HEAD
+
+        override suspend fun blockNumber(at: String): Long = 1_284_551
 
         override suspend fun storage(key: ByteArray, at: String): ByteArray? {
             blocksRead += at

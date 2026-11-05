@@ -121,6 +121,11 @@ class RealKurdNameResolver(
             val request = RuntimeRequest(method = "state_getStorage", params = listOf(key.toHexString(withPrefix = true), at))
             return socket.executeAsync(request, mapper = pojo<String>()).result?.fromHex()
         }
+
+        override suspend fun blockNumber(at: String): Long? {
+            val header = socket.executeAsync(RuntimeRequest(method = "chain_getHeader", params = listOf(at))).result as? Map<*, *>
+            return (header?.get("number") as? String)?.removePrefix("0x")?.toLongOrNull(16)
+        }
     }
 
     companion object {
@@ -132,9 +137,9 @@ class RealKurdNameResolver(
         internal fun judge(name: KurdName, lookup: NameLookup, verified: Boolean): KurdResolution = when (lookup) {
             NameLookup.NotFound, NameLookup.Lapsed -> KurdResolution.NotFound(name, verified)
             is NameLookup.Found -> when {
-                verified -> KurdResolution.Resolved(name, lookup.record, lookup.status, verified = true)
+                verified -> KurdResolution.Resolved(name, lookup.record, lookup.status, verified = true, block = lookup.block)
                 mustBeVerified(name, lookup) -> KurdResolution.Refused(name)
-                else -> KurdResolution.Resolved(name, lookup.record, lookup.status, verified = false)
+                else -> KurdResolution.Resolved(name, lookup.record, lookup.status, verified = false, block = lookup.block)
             }
         }
 

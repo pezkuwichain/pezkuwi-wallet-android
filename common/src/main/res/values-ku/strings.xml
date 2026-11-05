@@ -2131,4 +2131,33 @@
     </plurals>
     <string name="dapp_search_kurd_name">Navê .kurd</string>
     <string name="dapp_search_kurd_name_subtitle">Bi zincîrê tê çareserkirin · ji motora lêgerînê re nayê şandin</string>
+    <string name="dapp_kurd_badge_official">Fermî</string>
+    <string name="dapp_kurd_badge_registered">Tomarkirî</string>
+    <string name="dapp_kurd_badge_unverified">Nehat piştrastkirin</string>
+    <string name="dapp_kurd_refused_title">Ev malper nayê vekirin</string>
+    <string name="dapp_kurd_refused_message">Navên fermî tenê piştî ku bi zincîrê hatin piştrastkirin vedibin. Niha girêdana bi zincîrê re çênebû.</string>
+    <string name="dapp_kurd_unverified_title">Nehat piştrastkirin</string>
+    <string name="dapp_kurd_unverified_message">Ev nav bi zincîrê nehat kontrolkirin. Dibe ku malper ne ya xwediyê navî be. Li vir agahiyên xwe yên taybet nenivîse û tiştekî îmze neke.</string>
+    <string name="dapp_kurd_back">Vegere</string>
+    <string name="dapp_kurd_open_anyway">Dîsa jî veke</string>
+    <string name="dapp_kurd_not_registered_title">Navekî wiha tune ye</string>
+    <string name="dapp_kurd_not_registered_message">%s ne tomarkirî ye, an jî dema wê qediyaye.</string>
+    <string name="dapp_kurd_no_site_title">Li ser vî navî malper tune</string>
+    <string name="dapp_kurd_no_site_message">Nav tomarkirî ye, lê xwediyê wê malperek ku cîzdan dikare veke belav nekiriye.</string>
+    <string name="dapp_kurd_unavailable_title">Nehat barkirin</string>
+    <string name="dapp_kurd_unavailable_message">Ne zincîr ne jî neynik bi naverokeke ku bê piştrastkirin bersiv dan.</string>
+    <string name="dapp_kurd_kind_official">Fermî · navê dewletê</string>
+    <string name="dapp_kurd_kind_registered">Li zincîrê tomarkirî ye</string>
+    <string name="dapp_kurd_kind_unverified">Bê piştrastkirin hate vekirin</string>
+    <string name="dapp_kurd_official_explanation">Ji aliyê Meclîsê ve hatiye dayîn. Naveroka wê tenê piştî demeke li bendê diguhere; di wê demê de Meclîs dikare guhertinê rawestîne.</string>
+    <string name="dapp_kurd_registered_explanation">Ev nav hatiye kirîn. Naverok bi zincîrê hate piştrastkirin, lê kê ew malper çêkiriye nehat piştrastkirin.</string>
+    <string name="dapp_kurd_unverified_explanation">Te hilbijart ku vî navî vekî, her çend bi zincîrê nehat kontrolkirin. Tiştê ku nîşan dide li ser gotina du girêkan e, ne li ser delîlekê.</string>
+    <string name="dapp_kurd_details_verification">Piştrastkirin</string>
+    <string name="dapp_kurd_verified_at_block">Bi zincîrê · blok #%s</string>
+    <string name="dapp_kurd_verified_on_chain">Bi zincîrê</string>
+    <string name="dapp_kurd_verified_by_nodes">Du girêk li hev kirin, delîl tune</string>
+    <string name="dapp_kurd_details_owner">Xwedî</string>
+    <string name="dapp_kurd_owner_institution">Saziya dewletê (multisig)</string>
+    <string name="dapp_kurd_details_content">Naverok</string>
+    <string name="dapp_kurd_clear_site_data">Daneyên vê malperê jê bibe</string>
 </resources>

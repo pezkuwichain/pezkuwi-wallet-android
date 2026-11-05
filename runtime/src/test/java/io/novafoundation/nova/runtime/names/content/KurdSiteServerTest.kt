@@ -8,6 +8,8 @@ import io.novafoundation.nova.runtime.names.NameStatus
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class KurdSiteServerTest {
@@ -75,6 +77,47 @@ class KurdSiteServerTest {
     }
 
     @Test
+    fun `a name read through RPC only waits for the reader's choice`() = runBlocking {
+        val server = server(resolved(ipfs(siteRoot), verified = false))
+        val name = KurdName.parse("ahmet.kurd")!!
+
+        assertEquals(428, server.serve("ahmet.kurd", "/subdir/hello.txt", mainFrame = true).status)
+        assertTrue(server.pageStates.value[name] is KurdSiteServer.PageState.NeedsConsent)
+
+        server.allowUnverified(name)
+
+        assertEquals(200, server.serve("ahmet.kurd", "/subdir/hello.txt", mainFrame = true).status)
+        assertTrue(server.pageStates.value[name] is KurdSiteServer.PageState.Open)
+    }
+
+    @Test
+    fun `only the page's own document sets its state`() = runBlocking {
+        val server = server(resolved(ipfs(siteRoot)))
+        val name = KurdName.parse("dks.kurd")!!
+
+        server.serve("dks.kurd", "/subdir/hello.txt", mainFrame = false)
+        assertNull(server.pageStates.value[name])
+
+        server.serve("dks.kurd", "/subdir/hello.txt", mainFrame = true)
+        assertEquals(siteRoot, (server.pageStates.value[name] as KurdSiteServer.PageState.Open).root)
+    }
+
+    @Test
+    fun `each outcome sets the page state the browser shows`() = runBlocking {
+        val name = KurdName.parse("dks.kurd")!!
+        suspend fun stateFor(resolve: (KurdName) -> KurdResolution): KurdSiteServer.PageState? {
+            val server = server(resolve)
+            server.serve("dks.kurd", "/", mainFrame = true)
+            return server.pageStates.value[name]
+        }
+
+        assertSame(KurdSiteServer.PageState.Refused, stateFor { KurdResolution.Refused(it) })
+        assertSame(KurdSiteServer.PageState.NotRegistered, stateFor { KurdResolution.NotFound(it, verified = true) })
+        assertSame(KurdSiteServer.PageState.Unavailable, stateFor { KurdResolution.Unavailable(it) })
+        assertSame(KurdSiteServer.PageState.NoSite, stateFor(resolved(content = null)))
+    }
+
+    @Test
     fun `paths decode per segment and only as UTF-8`() {
         assertEquals(listOf("a b", "ç.html"), KurdSiteServer.decodePath("/a%20b/%C3%A7.html?x=1#top"))
         assertEquals(emptyList<String>(), KurdSiteServer.decodePath("/"))
@@ -101,12 +144,12 @@ class KurdSiteServerTest {
 
     private fun ipfs(cid: Cid) = NameRecord.Content.Ipfs(byteArrayOf(0xe3.toByte(), 0x01) + cid.bytes)
 
-    private fun resolved(content: NameRecord.Content?): (KurdName) -> KurdResolution = { name ->
+    private fun resolved(content: NameRecord.Content?, verified: Boolean = true): (KurdName) -> KurdResolution = { name ->
         val record = NameRecord(
             label = name.labels.first(), parent = KurdName.KURD_NODE, parentReg = 0, reg = 1, owner = NameRecord.Owner.Governance,
             kind = NameRecord.Kind.GRANTED, lockedTransfer = true, expiry = null, account = null, content = content,
         )
-        KurdResolution.Resolved(name, record, NameStatus.ACTIVE, verified = true)
+        KurdResolution.Resolved(name, record, NameStatus.ACTIVE, verified = verified)
     }
 }
 
