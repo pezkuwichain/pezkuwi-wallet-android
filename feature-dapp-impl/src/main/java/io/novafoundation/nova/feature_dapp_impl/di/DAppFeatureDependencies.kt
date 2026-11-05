@@ -1,5 +1,6 @@
 package io.novafoundation.nova.feature_dapp_impl.di
 
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
 import android.content.Context
 import coil.ImageLoader
 import com.google.gson.Gson
@@ -100,6 +101,8 @@ interface DAppFeatureDependencies {
     fun gson(): Gson
 
     fun chainRegistry(): ChainRegistry
+
+    fun kurdSiteServer(): KurdSiteServer
 
     fun imageLoader(): ImageLoader
 

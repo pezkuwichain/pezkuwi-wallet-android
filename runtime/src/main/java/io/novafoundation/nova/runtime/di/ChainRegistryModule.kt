@@ -30,6 +30,11 @@ import io.novafoundation.nova.runtime.multiNetwork.connection.light.LightClientS
 import io.novafoundation.nova.runtime.multiNetwork.connection.light.LightClients
 import io.novafoundation.nova.runtime.names.KurdNameResolver
 import io.novafoundation.nova.runtime.names.RealKurdNameResolver
+import io.novafoundation.nova.runtime.names.content.KurdContentFetcher
+import io.novafoundation.nova.runtime.names.content.KurdGatewayListApi
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
+import io.novafoundation.nova.runtime.names.content.OkHttpCarSource
+import io.novafoundation.nova.runtime.names.content.RealKurdGateways
 import io.novafoundation.nova.runtime.multiNetwork.connection.autobalance.strategy.NodeSelectionStrategyProvider
 import io.novafoundation.nova.runtime.multiNetwork.connection.node.healthState.NodeHealthStateTesterFactory
 import io.novafoundation.nova.runtime.multiNetwork.runtime.AsyncChainSyncDispatcher
@@ -207,6 +212,18 @@ class ChainRegistryModule {
         chainRegistry = chainRegistry,
         connectionSecrets = connectionSecrets,
     )
+
+    @Provides
+    @ApplicationScope
+    fun provideKurdSiteServer(
+        kurdNameResolver: KurdNameResolver,
+        networkApiCreator: NetworkApiCreator,
+        okHttpClient: OkHttpClient,
+    ): KurdSiteServer {
+        val gateways = RealKurdGateways(networkApiCreator.create(KurdGatewayListApi::class.java))
+        val fetcher = KurdContentFetcher(gateways, OkHttpCarSource(okHttpClient))
+        return KurdSiteServer(kurdNameResolver, fetcher)
+    }
 
     @Provides
     @ApplicationScope

@@ -1,5 +1,6 @@
 package io.novafoundation.nova.feature_dapp_impl.utils.tabs.models
 
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
 import android.graphics.Bitmap
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -22,7 +23,8 @@ import kotlinx.coroutines.withContext
 class BrowserTabSessionFactory(
     private val compoundWeb3Injector: CompoundWeb3Injector,
     private val contextManager: ContextManager,
-    private val integrityCheckJSBridgeFactory: IntegrityCheckJSBridgeFactory
+    private val integrityCheckJSBridgeFactory: IntegrityCheckJSBridgeFactory,
+    private val kurdSiteServer: KurdSiteServer,
 ) {
 
     suspend fun create(tabId: String, startUrl: String, onPageChangedCallback: OnPageChangedCallback): BrowserTabSession {
@@ -37,7 +39,8 @@ class BrowserTabSessionFactory(
                 webView = webView,
                 integrityCheckJSBridge = integrityCheckProvider,
                 compoundWeb3Injector = compoundWeb3Injector,
-                onPageChangedCallback = onPageChangedCallback
+                onPageChangedCallback = onPageChangedCallback,
+                kurdSiteServer = kurdSiteServer,
             )
         }
     }
@@ -49,12 +52,14 @@ class BrowserTabSession(
     val webView: WebView,
     compoundWeb3Injector: CompoundWeb3Injector,
     private val onPageChangedCallback: OnPageChangedCallback,
-    private val integrityCheckJSBridge: IntegrityCheckJSBridge
+    private val integrityCheckJSBridge: IntegrityCheckJSBridge,
+    kurdSiteServer: KurdSiteServer,
 ) : PageCallback, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     val webViewClient: Web3WebViewClient = Web3WebViewClient(
         webView = webView,
-        pageCallback = this
+        pageCallback = this,
+        kurdSiteServer = kurdSiteServer,
     )
 
     var currentUrl: String = startUrl

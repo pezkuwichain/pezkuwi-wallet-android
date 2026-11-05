@@ -7,6 +7,9 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import io.novafoundation.nova.runtime.names.KurdName
+import io.novafoundation.nova.runtime.names.content.KurdSiteServer
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import java.io.ByteArrayInputStream
 
 interface PageCallback {
@@ -22,7 +25,8 @@ interface PageCallback {
 
 class Web3WebViewClient(
     private val webView: WebView,
-    private val pageCallback: PageCallback
+    private val pageCallback: PageCallback,
+    private val kurdSiteServer: KurdSiteServer,
 ) : WebViewClient() {
 
     var desktopMode: Boolean = false
@@ -36,8 +40,6 @@ class Web3WebViewClient(
     private var desktopModeChanged = false
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-        if (KurdName.isKurdHost(request.url.host)) return true
-
         if (pageCallback.shouldOverrideUrlLoading(view, request)) {
             return true
         }
@@ -48,13 +50,31 @@ class Web3WebViewClient(
     /**
      * Every request to a `.kurd` host -- a page, a frame, an image a page embeds -- ends here, before
      * the network: such a host is a name on chain, and asking system DNS for it would tell the
-     * network which site the reader opens. `loadUrl` reaches this hook too, unlike
-     * [shouldOverrideUrlLoading].
+     * network which site the reader opens. The wallet serves it from verified content instead.
+     * `loadUrl` reaches this hook too, unlike [shouldOverrideUrlLoading]. Called off the main thread.
      */
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
-        if (!KurdName.isKurdHost(request.url.host)) return null
+        val host = request.url.host
+        if (!KurdName.isKurdHost(host)) return null
 
-        return WebResourceResponse("text/plain", "utf-8", 403, "Forbidden", emptyMap(), ByteArrayInputStream(ByteArray(0)))
+        if (request.method != "GET" || host == null) return emptyResponse(405, "Method Not Allowed")
+
+        val response = runCatching {
+            runBlocking { withTimeout(KURD_REQUEST_TIMEOUT_MILLIS) { kurdSiteServer.serve(host, request.url.encodedPath.orEmpty()) } }
+        }.getOrNull() ?: return emptyResponse(504, "Gateway Timeout")
+
+        return WebResourceResponse(
+            response.mimeType,
+            if (response.mimeType.startsWith("text/")) "utf-8" else null,
+            response.status,
+            response.reason,
+            response.headers,
+            ByteArrayInputStream(response.body)
+        )
+    }
+
+    private fun emptyResponse(status: Int, reason: String): WebResourceResponse {
+        return WebResourceResponse("text/plain", "utf-8", status, reason, emptyMap(), ByteArrayInputStream(ByteArray(0)))
     }
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
@@ -86,6 +106,9 @@ class Web3WebViewClient(
         )
     }
 }
+
+/** A cold light client plus a gateway round trip, with room to spare. */
+private const val KURD_REQUEST_TIMEOUT_MILLIS = 60_000L
 
 private fun WebView.changeUserAgentByDesktopMode(desktopMode: Boolean) {
     val defaultUserAgent = WebSettings.getDefaultUserAgent(context)
