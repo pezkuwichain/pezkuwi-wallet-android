@@ -51,6 +51,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(":common")
+    implementation bouncyCastleDep
     implementation project(":core-db")
 
     implementation project(":core-api")

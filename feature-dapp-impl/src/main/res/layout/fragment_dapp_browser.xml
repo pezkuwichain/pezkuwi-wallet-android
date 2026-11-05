@@ -59,6 +59,39 @@
         app:layout_constraintBottom_toTopOf="@+id/dappBrowserBottomNavigation"
         app:layout_constraintTop_toBottomOf="@+id/dappBrowserAddressBarGroup" />
 
+    <LinearLayout
+        android:id="@+id/dappBrowserKurdOnChainVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/secondary_screen_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/dappBrowserAddressBarGroup">
+
+        <TextView
+            style="@style/TextAppearance.NovaFoundation.Regular.Footnote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dapp_kurd_on_chain_version"
+            android:textColor="@color/text_warning" />
+
+        <TextView
+            android:id="@+id/dappBrowserKurdOnChainVersionRetry"
+            style="@style/TextAppearance.NovaFoundation.SemiBold.Caption1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:minHeight="44dp"
+            android:paddingHorizontal="8dp"
+            android:text="@string/common_retry"
+            android:textColor="@color/text_warning" />
+    </LinearLayout>
+
     <include
         android:id="@+id/dappBrowserKurdNotice"
         layout="@layout/view_kurd_notice"

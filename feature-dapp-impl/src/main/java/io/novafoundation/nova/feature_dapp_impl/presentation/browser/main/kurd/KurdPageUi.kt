@@ -10,7 +10,8 @@ sealed interface KurdPageUi {
 
     val name: KurdName
 
-    class Open(override val name: KurdName, val badge: Badge, val details: Details) : KurdPageUi
+    /** [onChainVersion]: a feed showing the release the chain names, as no newer one could be confirmed. */
+    class Open(override val name: KurdName, val badge: Badge, val details: Details, val onChainVersion: Boolean = false) : KurdPageUi
 
     class Notice(override val name: KurdName, val kind: NoticeKind) : KurdPageUi
 
@@ -66,7 +67,7 @@ sealed interface KurdPageUi {
                 }
                 val provenAt = resolution.block.takeIf { resolution.verified }
 
-                Open(name, badge, Details(badge, provenAt, owner, state.root.toString()))
+                Open(name, badge, Details(badge, provenAt, owner, state.root.toString()), state.onChainVersion)
             }
             is PageState.NeedsConsent -> Notice(name, NoticeKind.NEEDS_CONSENT)
             PageState.Refused -> Notice(name, NoticeKind.REFUSED)

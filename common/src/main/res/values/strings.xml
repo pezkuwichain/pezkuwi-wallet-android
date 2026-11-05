@@ -2896,4 +2896,5 @@
     <string name="dapp_kurd_sign_kind_unverified">Not verified</string>
     <string name="dapp_kurd_sign_note_registered">Check the full name. This name was not given by the state.</string>
     <string name="dapp_kurd_sign_note_unverified">This name could not be checked on chain. Sign only if you are sure whose site this is.</string>
+    <string name="dapp_kurd_on_chain_version">No newer version found — showing the version on chain</string>
 </resources>

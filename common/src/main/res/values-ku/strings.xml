@@ -2171,4 +2171,5 @@
     <string name="dapp_kurd_sign_kind_unverified">Nehat piştrastkirin</string>
     <string name="dapp_kurd_sign_note_registered">Navê tevahî kontrol bike. Ev nav ji aliyê dewletê ve nehatiye dayîn.</string>
     <string name="dapp_kurd_sign_note_unverified">Ev nav bi zincîrê nehat kontrolkirin. Tenê îmze bike heke tu bawer î ku ev malpera kê ye.</string>
+    <string name="dapp_kurd_on_chain_version">Guhertoyeke nûtir nehat dîtin — guhertoya li zincîrê tê nîşandan</string>
 </resources>

@@ -52,6 +52,14 @@ class KurdPageUiTest {
     }
 
     @Test
+    fun `a feed showing the chain's version says so`() {
+        val resolution = KurdResolution.Resolved(name, leased(), NameStatus.ACTIVE, verified = true)
+
+        assertTrue((KurdPageUi.from(name, PageState.Open(resolution, root, onChainVersion = true)) as KurdPageUi.Open).onChainVersion)
+        assertTrue(!(KurdPageUi.from(name, PageState.Open(resolution, root)) as KurdPageUi.Open).onChainVersion)
+    }
+
+    @Test
     fun `only pages on a kurd host have a name`() {
         assertEquals("serok.gov.kurd", KurdPageUi.nameOf("https://serok.gov.kurd/news?x=1")!!.name)
         assertNull(KurdPageUi.nameOf("https://dks.kurd.example.com/"))

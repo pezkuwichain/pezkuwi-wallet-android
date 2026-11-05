@@ -251,6 +251,7 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
         }
 
         binder.dappBrowserKurdNotice.kurdNoticeSecondary.setOnClickListener { viewModel.kurdOpenAnyway() }
+        binder.dappBrowserKurdOnChainVersionRetry.setOnClickListener { viewModel.kurdRetry() }
 
         viewModel.tabsCountFlow.observe {
             if (it >= OVERFLOW_TABS_COUNT) {
@@ -371,6 +372,7 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
     private fun showKurdPage(page: KurdPageUi?) {
         lastKurdPage = page
         showKurdBadge(page)
+        binder.dappBrowserKurdOnChainVersion.setVisible((page as? KurdPageUi.Open)?.onChainVersion == true)
 
         val notice = binder.dappBrowserKurdNotice
         val kind = (page as? KurdPageUi.Notice)?.kind

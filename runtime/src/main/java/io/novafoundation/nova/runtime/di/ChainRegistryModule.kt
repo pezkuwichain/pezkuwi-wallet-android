@@ -31,9 +31,11 @@ import io.novafoundation.nova.runtime.multiNetwork.connection.light.LightClients
 import io.novafoundation.nova.runtime.names.KurdNameResolver
 import io.novafoundation.nova.runtime.names.RealKurdNameResolver
 import io.novafoundation.nova.runtime.names.content.KurdContentFetcher
+import io.novafoundation.nova.runtime.names.content.KurdFeedResolver
 import io.novafoundation.nova.runtime.names.content.KurdGatewayListApi
 import io.novafoundation.nova.runtime.names.content.KurdSiteServer
 import io.novafoundation.nova.runtime.names.content.OkHttpCarSource
+import io.novafoundation.nova.runtime.names.content.OkHttpIpnsRecordSource
 import io.novafoundation.nova.runtime.names.content.RealKurdGateways
 import io.novafoundation.nova.runtime.multiNetwork.connection.autobalance.strategy.NodeSelectionStrategyProvider
 import io.novafoundation.nova.runtime.multiNetwork.connection.node.healthState.NodeHealthStateTesterFactory
@@ -222,7 +224,8 @@ class ChainRegistryModule {
     ): KurdSiteServer {
         val gateways = RealKurdGateways(networkApiCreator.create(KurdGatewayListApi::class.java))
         val fetcher = KurdContentFetcher(gateways, OkHttpCarSource(okHttpClient))
-        return KurdSiteServer(kurdNameResolver, fetcher)
+        val feeds = KurdFeedResolver(gateways, OkHttpIpnsRecordSource(okHttpClient))
+        return KurdSiteServer(kurdNameResolver, fetcher, feeds)
     }
 
     @Provides

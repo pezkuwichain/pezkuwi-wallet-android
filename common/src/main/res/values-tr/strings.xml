@@ -2168,4 +2168,5 @@ Referral kısmına bu adresi yapıştır:
     <string name="dapp_kurd_sign_kind_unverified">Doğrulanmadı</string>
     <string name="dapp_kurd_sign_note_registered">Adın tamamını kontrol et. Bu ad devlet tarafından verilmedi.</string>
     <string name="dapp_kurd_sign_note_unverified">Bu ad zincirde denetlenemedi. Yalnızca sitenin kime ait olduğundan eminsen imzala.</string>
+    <string name="dapp_kurd_on_chain_version">Daha yeni sürüm bulunamadı — zincirdeki sürüm gösteriliyor</string>
 </resources>

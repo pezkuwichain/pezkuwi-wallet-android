@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap
 class KurdSiteServer(
     private val resolver: KurdNameResolver,
     private val fetcher: KurdContentFetcher,
+    private val feeds: KurdFeedResolver? = null,
     private val resolutionTtlMillis: Long = 60_000L,
     private val clock: () -> Long = System::currentTimeMillis,
 ) {
@@ -35,8 +36,11 @@ class KurdSiteServer(
     /** How the browser shows a `.kurd` page: set by its top-level document, read by the address bar and notices. */
     sealed interface PageState {
 
-        /** Content verified and served. [resolution] says how the name itself was read. */
-        class Open(val resolution: KurdResolution.Resolved, val root: Cid) : PageState
+        /**
+         * Content verified and served. [resolution] says how the name itself was read; for a feed,
+         * [onChainVersion] means no gateway confirmed a release past the one the chain names.
+         */
+        class Open(val resolution: KurdResolution.Resolved, val root: Cid, val onChainVersion: Boolean = false) : PageState
 
         /** Read through RPC nodes only; the content waits until the reader chooses to open it. */
         class NeedsConsent(val resolution: KurdResolution.Resolved) : PageState
@@ -90,16 +94,22 @@ class KurdSiteServer(
             is KurdResolution.Unavailable -> return PageState.Unavailable to status(502, "Bad Gateway")
         }
 
-        val root = when (val content = resolution.record.content) {
-            null -> return PageState.NoSite to status(404, "Not Found")
-            is NameRecord.Content.Ipfs -> Cid.fromContenthash(content.contenthash) ?: return PageState.NoSite to status(415, "Unsupported Media Type")
-            // A feed is resolved through its signed pointer, which this server does not read
-            is NameRecord.Content.Feed -> return PageState.NoSite to status(415, "Unsupported Media Type")
-        }
-
+        if (resolution.record.content == null) return PageState.NoSite to status(404, "Not Found")
         if (!resolution.verified && name !in consented) return PageState.NeedsConsent(resolution) to status(428, "Precondition Required")
 
-        val open = PageState.Open(resolution, root)
+        val (root, onChainVersion) = when (val content = resolution.record.content) {
+            is NameRecord.Content.Ipfs -> {
+                val cid = Cid.fromContenthash(content.contenthash) ?: return PageState.NoSite to status(415, "Unsupported Media Type")
+                cid to false
+            }
+            is NameRecord.Content.Feed -> {
+                val release = feeds?.resolve(content) ?: return PageState.NoSite to status(415, "Unsupported Media Type")
+                release.root to release.onChainVersion
+            }
+            null -> return PageState.NoSite to status(404, "Not Found")
+        }
+
+        val open = PageState.Open(resolution, root, onChainVersion)
         return when (val result = fetcher.fetch(root, segments)) {
             is KurdContentFetcher.Result.File -> open to Response(200, "OK", mimeTypeOf(result.path.lastOrNull()), result.bytes)
             KurdContentFetcher.Result.NotFound -> open to status(404, "Not Found")
