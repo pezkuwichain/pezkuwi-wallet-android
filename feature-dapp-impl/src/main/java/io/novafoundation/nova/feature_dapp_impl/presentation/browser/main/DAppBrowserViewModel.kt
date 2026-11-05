@@ -41,6 +41,7 @@ import io.novafoundation.nova.feature_external_sign_api.model.signPayload.Extern
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.ExternalSignRequest
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.ExternalSignWallet
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.SigningDappMetadata
+import io.novafoundation.nova.feature_external_sign_api.model.signPayload.SiteNameKind
 import io.novafoundation.nova.feature_external_sign_api.model.signPayload.polkadot.genesisHash
 import io.novafoundation.nova.feature_external_sign_api.presentation.externalSign.AuthorizeDappBottomSheet
 import io.novafoundation.nova.runtime.ext.addressOf
@@ -348,6 +349,16 @@ class DAppBrowserViewModel(
     }
 
     private suspend fun getDAppSignMetadata(dAppUrl: String): SigningDappMetadata {
+        val kurdPage = kurdPage.first()
+        if (kurdPage is KurdPageUi.Open) {
+            val kind = when (kurdPage.badge) {
+                KurdPageUi.Badge.OFFICIAL -> SiteNameKind.OFFICIAL
+                KurdPageUi.Badge.REGISTERED -> SiteNameKind.REGISTERED
+                KurdPageUi.Badge.UNVERIFIED -> SiteNameKind.UNVERIFIED
+            }
+            return SigningDappMetadata(icon = null, name = kurdPage.name.name, url = kurdPage.name.name, siteNameKind = kind)
+        }
+
         val dappMetadata = dAppInteractor.getDAppInfo(dAppUrl)
 
         return SigningDappMetadata(

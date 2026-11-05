@@ -16,8 +16,22 @@ class ExternalSignPayload(
 class SigningDappMetadata(
     val icon: String?,
     val name: String?,
-    val url: String
+    val url: String,
+    /** For a page on a `.kurd` name: what kind of name asks for the signature. */
+    val siteNameKind: SiteNameKind? = null,
 ) : Parcelable
+
+/** A `.kurd` name as the browser verified it, shown where the reader signs. */
+enum class SiteNameKind {
+    /** Given by Parliament, or under such a name. */
+    OFFICIAL,
+
+    /** Bought: anyone may hold it. */
+    REGISTERED,
+
+    /** Opened by the reader's choice without a proof. */
+    UNVERIFIED,
+}
 
 sealed class ExternalSignWallet : Parcelable {
 

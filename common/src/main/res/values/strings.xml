@@ -2891,4 +2891,9 @@
     <string name="dapp_kurd_lookalike_message">Fake sites use names close to official ones to deceive you.</string>
     <string name="dapp_kurd_lookalike_go">Go to %s</string>
     <string name="dapp_kurd_lookalike_open_anyway">Open %s anyway</string>
+    <string name="dapp_kurd_sign_kind_official">Official</string>
+    <string name="dapp_kurd_sign_kind_registered">Bought · not official</string>
+    <string name="dapp_kurd_sign_kind_unverified">Not verified</string>
+    <string name="dapp_kurd_sign_note_registered">Check the full name. This name was not given by the state.</string>
+    <string name="dapp_kurd_sign_note_unverified">This name could not be checked on chain. Sign only if you are sure whose site this is.</string>
 </resources>

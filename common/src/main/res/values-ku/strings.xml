@@ -2166,4 +2166,9 @@
     <string name="dapp_kurd_lookalike_message">Malperên sexte navên nêzîkî navên fermî bi kar tînin da ku te bixapînin.</string>
     <string name="dapp_kurd_lookalike_go">Biçe %s</string>
     <string name="dapp_kurd_lookalike_open_anyway">Dîsa jî %s veke</string>
+    <string name="dapp_kurd_sign_kind_official">Fermî</string>
+    <string name="dapp_kurd_sign_kind_registered">Kirî · ne fermî</string>
+    <string name="dapp_kurd_sign_kind_unverified">Nehat piştrastkirin</string>
+    <string name="dapp_kurd_sign_note_registered">Navê tevahî kontrol bike. Ev nav ji aliyê dewletê ve nehatiye dayîn.</string>
+    <string name="dapp_kurd_sign_note_unverified">Ev nav bi zincîrê nehat kontrolkirin. Tenê îmze bike heke tu bawer î ku ev malpera kê ye.</string>
 </resources>

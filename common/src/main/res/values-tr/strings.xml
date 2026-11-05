@@ -2163,4 +2163,9 @@ Referral kısmına bu adresi yapıştır:
     <string name="dapp_kurd_lookalike_message">Sahte siteler seni kandırmak için resmî adlara yakın adlar kullanır.</string>
     <string name="dapp_kurd_lookalike_go">%s adresine git</string>
     <string name="dapp_kurd_lookalike_open_anyway">Yine de %s adresini aç</string>
+    <string name="dapp_kurd_sign_kind_official">Resmî</string>
+    <string name="dapp_kurd_sign_kind_registered">Satın alınmış · resmî değil</string>
+    <string name="dapp_kurd_sign_kind_unverified">Doğrulanmadı</string>
+    <string name="dapp_kurd_sign_note_registered">Adın tamamını kontrol et. Bu ad devlet tarafından verilmedi.</string>
+    <string name="dapp_kurd_sign_note_unverified">Bu ad zincirde denetlenemedi. Yalnızca sitenin kime ait olduğundan eminsen imzala.</string>
 </resources>
