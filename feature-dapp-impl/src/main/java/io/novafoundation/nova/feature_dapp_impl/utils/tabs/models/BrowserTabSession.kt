@@ -68,8 +68,9 @@ class BrowserTabSession(
 
     init {
         webView.injectWeb3(webViewClient)
-        webView.loadUrl(startUrl)
+        // Before the first load: the bridge is only exposed to documents loaded after it is added
         compoundWeb3Injector.initialInject(webView)
+        webView.loadUrl(startUrl)
 
         integrityCheckJSBridge.errorFlow
             .onEach { sessionCallback?.onPageError(it) }

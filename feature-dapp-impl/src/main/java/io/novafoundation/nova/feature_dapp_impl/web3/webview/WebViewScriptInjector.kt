@@ -1,8 +1,12 @@
 package io.novafoundation.nova.feature_dapp_impl.web3.webview
 
+import android.util.Log
 import android.webkit.WebView
 import androidx.annotation.RawRes
+import androidx.webkit.WebViewCompat
+import androidx.webkit.WebViewFeature
 import io.novafoundation.nova.common.resources.ResourceManager
+import io.novafoundation.nova.common.utils.LOG_TAG
 
 private const val JAVASCRIPT_INTERFACE_PREFIX = "Pezkuwi"
 
@@ -19,12 +23,24 @@ class WebViewScriptInjector(
 
     private val scriptCache: MutableMap<Int, String> = mutableMapOf()
 
+    /**
+     * Exposes `postMessage` to page scripts under the interface name. Through a web message listener
+     * rather than `addJavascriptInterface`, so each message arrives with its origin and frame; on a
+     * WebView too old to say, the bridge stays off rather than trusting the page.
+     */
     fun injectJsInterface(
         into: WebView,
         jsInterface: WebViewWeb3JavaScriptInterface,
         interfaceName: String
     ) {
-        into.addJavascriptInterface(jsInterface, jsInterfaceFullName(interfaceName))
+        if (!WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
+            Log.w(LOG_TAG, "WebView cannot tell where a message came from; DApp bridge $interfaceName stays off")
+            return
+        }
+
+        WebViewCompat.addWebMessageListener(into, jsInterfaceFullName(interfaceName), setOf("*")) { view, message, sourceOrigin, isMainFrame, _ ->
+            message.data?.let { jsInterface.onMessage(view, it, sourceOrigin, isMainFrame) }
+        }
     }
 
     fun injectScript(
