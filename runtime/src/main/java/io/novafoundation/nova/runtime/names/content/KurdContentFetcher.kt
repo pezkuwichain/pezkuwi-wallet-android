@@ -54,8 +54,13 @@ class RealKurdGateways(
 
         const val LIST_URL = "https://raw.githubusercontent.com/pezkuwichain/pezkuwi-wallet-utils/master/kurd/gateways.json"
 
-        /** Measured reachable from Türkiye (architecture, M0); our own mirrors join through the signed list. */
-        val BUILT_IN = listOf("https://ipfs.io", "https://dweb.link")
+        /**
+         * Ours first: since 2026 ipfs.io and dweb.link send `?format=car` on to trustless-gateway.link,
+         * which finds only content announced over HTTP (measured 2026-11-06: 525/526 for a site our
+         * node pins and serves). The two stay as fallbacks; both were measured reachable from Türkiye
+         * (architecture, M0). More mirrors join through the signed list.
+         */
+        val BUILT_IN = listOf("https://ipfs.pezkuwichain.io", "https://ipfs.io", "https://dweb.link")
 
         private const val TAG = "KurdGateways"
 
@@ -130,7 +135,9 @@ class KurdContentFetcher(
     private suspend fun read(gateway: String, root: Cid, path: List<String>): Lookup? {
         val car = source.car(gateway, root, path)
         if (car != null) {
-            val entry = UnixFsReader(VerifiedBlocks.fromCar(car), maxFileSize).read(root, path) ?: return null
+            // A missing block throws; null means the verified directories on the way lack the name,
+            // which is how a trustless gateway answers for a path that is not there
+            val entry = UnixFsReader(VerifiedBlocks.fromCar(car), maxFileSize).read(root, path) ?: return Lookup.Absent
             return Lookup.Found(entry)
         }
 

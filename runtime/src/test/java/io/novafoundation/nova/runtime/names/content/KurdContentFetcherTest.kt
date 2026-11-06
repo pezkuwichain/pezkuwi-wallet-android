@@ -39,6 +39,16 @@ class KurdContentFetcherTest {
     }
 
     @Test
+    fun `a gateway proving the name absent in one answer is believed`() = runBlocking {
+        // Kubo's trustless gateway answers a missing path with the directory blocks that lack it
+        val asked = mutableListOf<List<String>>()
+        val source = CarSource { _, _, path -> asked += path; car }
+
+        assertSame(KurdContentFetcher.Result.NotFound, KurdContentFetcher(gateways("https://one"), source).fetch(root, listOf("subdir", "missing.txt")))
+        assertEquals(listOf(listOf("subdir", "missing.txt")), asked)
+    }
+
+    @Test
     fun `a directory is served through its index and without one is not found`() = runBlocking {
         val source = CarSource { _, _, path -> if (path.lastOrNull() == KurdContentFetcher.INDEX) null else car }
 
