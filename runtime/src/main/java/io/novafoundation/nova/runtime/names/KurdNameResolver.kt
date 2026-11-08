@@ -131,12 +131,14 @@ class RealKurdNameResolver(
     companion object {
 
         /**
+         * D23: a suspended name opens nothing, read either way -- a refusal needs no proof.
          * D18: a proven answer stands; an unproven one opens only for a name nobody could take for an
          * institution's, and with a warning.
          */
         internal fun judge(name: KurdName, lookup: NameLookup, verified: Boolean): KurdResolution = when (lookup) {
             NameLookup.NotFound, NameLookup.Lapsed -> KurdResolution.NotFound(name, verified)
             is NameLookup.Found -> when {
+                lookup.suspension != null -> KurdResolution.Suspended(name, lookup.suspension, verified)
                 verified -> KurdResolution.Resolved(name, lookup.record, lookup.status, verified = true, block = lookup.block)
                 mustBeVerified(name, lookup) -> KurdResolution.Refused(name)
                 else -> KurdResolution.Resolved(name, lookup.record, lookup.status, verified = false, block = lookup.block)

@@ -26,6 +26,7 @@ import io.novafoundation.nova.common.utils.insets.applyNavigationBarInsets
 import io.novafoundation.nova.common.utils.insets.applyStatusBarInsets
 import io.novafoundation.nova.common.utils.makeGone
 import io.novafoundation.nova.common.utils.makeVisible
+import io.novafoundation.nova.common.utils.formatting.formatDateTime
 import io.novafoundation.nova.common.utils.setImageTintRes
 import io.novafoundation.nova.common.utils.setVisible
 import io.novafoundation.nova.common.utils.webView.WebViewRequestInterceptor
@@ -51,6 +52,7 @@ import io.novafoundation.nova.feature_dapp_impl.web3.webview.Web3WebViewClient
 import io.novafoundation.nova.feature_dapp_impl.web3.webview.WebViewHolder
 import io.novafoundation.nova.feature_external_sign_api.presentation.externalSign.AuthorizeDappBottomSheet
 import io.novafoundation.nova.runtime.names.KurdName
+import io.novafoundation.nova.runtime.names.NameSuspension
 import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -445,6 +447,22 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
                 R.string.dapp_kurd_back,
                 viewModel::kurdBack
             )
+            KurdPageUi.NoticeKind.SUSPENDED -> {
+                val suspension = requireNotNull(page.suspension) { "A suspended notice without its suspension" }
+                val until = suspension.until.formatDateTime()
+                val message = when (suspension.by) {
+                    NameSuspension.By.COURT -> R.string.dapp_kurd_suspended_court_message
+                    NameSuspension.By.EMERGENCY -> R.string.dapp_kurd_suspended_emergency_message
+                }
+                Look(
+                    R.drawable.ic_kurd_suspended,
+                    R.color.icon_negative,
+                    R.string.dapp_kurd_suspended_title,
+                    getString(message, until),
+                    R.string.dapp_kurd_back,
+                    viewModel::kurdBack
+                )
+            }
             KurdPageUi.NoticeKind.NO_SITE -> Look(
                 R.drawable.ic_info,
                 R.color.icon_secondary,
@@ -471,7 +489,23 @@ class DAppBrowserFragment : BaseFragment<DAppBrowserViewModel, FragmentDappBrows
         notice.kurdNoticePrimary.setText(look.primary)
         notice.kurdNoticePrimary.setOnClickListener { look.primaryAction() }
         notice.kurdNoticeSecondary.setVisible(kind == KurdPageUi.NoticeKind.NEEDS_CONSENT)
+        showKurdSuspension(page.suspension.takeIf { kind == KurdPageUi.NoticeKind.SUSPENDED })
         notice.kurdNoticeSecondary.setText(R.string.dapp_kurd_open_anyway)
+    }
+
+    private fun showKurdSuspension(suspension: NameSuspension?) {
+        val details = binder.dappBrowserKurdNotice
+        details.kurdNoticeSuspension.setVisible(suspension != null)
+        if (suspension == null) return
+
+        details.kurdNoticeSuspensionBy.setText(
+            when (suspension.by) {
+                NameSuspension.By.COURT -> R.string.dapp_kurd_suspended_by_court
+                NameSuspension.By.EMERGENCY -> R.string.dapp_kurd_suspended_by_emergency
+            }
+        )
+        details.kurdNoticeSuspensionUntil.text = suspension.until.formatDateTime()
+        details.kurdNoticeSuspensionReason.text = suspension.reason.let { "${it.take(6)}…${it.takeLast(4)}" }
     }
 
     /** Storage, cookies and permissions the page kept under its name; then it loads afresh. */

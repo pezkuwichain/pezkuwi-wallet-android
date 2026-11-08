@@ -2142,6 +2142,14 @@
     <string name="dapp_kurd_open_anyway">Dîsa jî veke</string>
     <string name="dapp_kurd_not_registered_title">Navekî wiha tune ye</string>
     <string name="dapp_kurd_not_registered_message">%s ne tomarkirî ye, an jî dema wê qediyaye.</string>
+    <string name="dapp_kurd_suspended_title">Ev nav hatiye rawestandin</string>
+    <string name="dapp_kurd_suspended_court_message">Dîwanê ev nav heta %s rawestandiye. Heta wê demê malpera wê nayê vekirin.</string>
+    <string name="dapp_kurd_suspended_emergency_message">Desteya awarte ev nav heta %s rawestandiye. Ev rawestandin bi xwe diqede; Dîwan dikare wê zûtir rake.</string>
+    <string name="dapp_kurd_suspended_by">Biryar</string>
+    <string name="dapp_kurd_suspended_until">Heta</string>
+    <string name="dapp_kurd_suspended_reason">Hincet</string>
+    <string name="dapp_kurd_suspended_by_court">Dîwan</string>
+    <string name="dapp_kurd_suspended_by_emergency">Desteya awarte</string>
     <string name="dapp_kurd_no_site_title">Li ser vî navî malper tune</string>
     <string name="dapp_kurd_no_site_message">Nav tomarkirî ye, lê xwediyê wê malperek ku cîzdan dikare veke belav nekiriye.</string>
     <string name="dapp_kurd_unavailable_title">Nehat barkirin</string>

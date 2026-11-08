@@ -2,6 +2,7 @@ package io.novafoundation.nova.feature_dapp_impl.presentation.browser.main.kurd
 
 import io.novafoundation.nova.runtime.names.KurdName
 import io.novafoundation.nova.runtime.names.NameRecord
+import io.novafoundation.nova.runtime.names.NameSuspension
 import io.novafoundation.nova.runtime.names.content.KurdSiteServer.PageState
 import java.net.URI
 
@@ -13,7 +14,8 @@ sealed interface KurdPageUi {
     /** [onChainVersion]: a feed showing the release the chain names, as no newer one could be confirmed. */
     class Open(override val name: KurdName, val badge: Badge, val details: Details, val onChainVersion: Boolean = false) : KurdPageUi
 
-    class Notice(override val name: KurdName, val kind: NoticeKind) : KurdPageUi
+    /** [suspension]: who stopped the name and until when, for [NoticeKind.SUSPENDED]. */
+    class Notice(override val name: KurdName, val kind: NoticeKind, val suspension: NameSuspension? = null) : KurdPageUi
 
     enum class Badge {
         /** Granted by Parliament, or under such a name: the state's own. */
@@ -26,7 +28,7 @@ sealed interface KurdPageUi {
         UNVERIFIED,
     }
 
-    enum class NoticeKind { REFUSED, NEEDS_CONSENT, NOT_REGISTERED, NO_SITE, UNAVAILABLE }
+    enum class NoticeKind { REFUSED, NEEDS_CONSENT, NOT_REGISTERED, SUSPENDED, NO_SITE, UNAVAILABLE }
 
     class Details(
         val badge: Badge,
@@ -72,6 +74,7 @@ sealed interface KurdPageUi {
             is PageState.NeedsConsent -> Notice(name, NoticeKind.NEEDS_CONSENT)
             PageState.Refused -> Notice(name, NoticeKind.REFUSED)
             PageState.NotRegistered -> Notice(name, NoticeKind.NOT_REGISTERED)
+            is PageState.Suspended -> Notice(name, NoticeKind.SUSPENDED, state.suspension)
             PageState.NoSite -> Notice(name, NoticeKind.NO_SITE)
             PageState.Unavailable -> Notice(name, NoticeKind.UNAVAILABLE)
         }

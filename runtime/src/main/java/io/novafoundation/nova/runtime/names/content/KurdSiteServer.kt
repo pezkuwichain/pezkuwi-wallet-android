@@ -4,6 +4,7 @@ import io.novafoundation.nova.runtime.names.KurdName
 import io.novafoundation.nova.runtime.names.KurdNameResolver
 import io.novafoundation.nova.runtime.names.KurdResolution
 import io.novafoundation.nova.runtime.names.NameRecord
+import io.novafoundation.nova.runtime.names.NameSuspension
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -50,6 +51,9 @@ class KurdSiteServer(
 
         object NotRegistered : PageState
 
+        /** Stopped by the court or the emergency council; nothing of it is served. */
+        class Suspended(val suspension: NameSuspension) : PageState
+
         /** Registered, but no site: no content, or content of a kind this wallet does not serve. */
         object NoSite : PageState
 
@@ -90,6 +94,7 @@ class KurdSiteServer(
         val resolution = when (val resolved = resolve(name)) {
             is KurdResolution.Resolved -> resolved
             is KurdResolution.NotFound -> return PageState.NotRegistered to status(404, "Not Found")
+            is KurdResolution.Suspended -> return PageState.Suspended(resolved.suspension) to status(451, "Unavailable For Legal Reasons")
             is KurdResolution.Refused -> return PageState.Refused to status(403, "Forbidden")
             is KurdResolution.Unavailable -> return PageState.Unavailable to status(502, "Bad Gateway")
         }

@@ -2139,6 +2139,14 @@ Referral kısmına bu adresi yapıştır:
     <string name="dapp_kurd_open_anyway">Yine de aç</string>
     <string name="dapp_kurd_not_registered_title">Böyle bir ad yok</string>
     <string name="dapp_kurd_not_registered_message">%s kayıtlı değil ya da kaydının süresi doldu.</string>
+    <string name="dapp_kurd_suspended_title">Bu ad askıya alındı</string>
+    <string name="dapp_kurd_suspended_court_message">Dîwan bu adı %s tarihine kadar askıya aldı. O zamana kadar sitesi açılamaz.</string>
+    <string name="dapp_kurd_suspended_emergency_message">Acil kurul bu adı %s tarihine kadar askıya aldı. Askı kendiliğinden biter; Dîwan daha önce kaldırabilir.</string>
+    <string name="dapp_kurd_suspended_by">Karar</string>
+    <string name="dapp_kurd_suspended_until">Bitiş</string>
+    <string name="dapp_kurd_suspended_reason">Gerekçe</string>
+    <string name="dapp_kurd_suspended_by_court">Dîwan</string>
+    <string name="dapp_kurd_suspended_by_emergency">Acil kurul</string>
     <string name="dapp_kurd_no_site_title">Bu adda site yok</string>
     <string name="dapp_kurd_no_site_message">Ad kayıtlı, ama sahibi cüzdanın açabileceği bir site yayımlamamış.</string>
     <string name="dapp_kurd_unavailable_title">Yüklenemedi</string>

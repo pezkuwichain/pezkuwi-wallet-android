@@ -5,6 +5,7 @@ import io.novafoundation.nova.runtime.names.KurdNameResolver
 import io.novafoundation.nova.runtime.names.KurdResolution
 import io.novafoundation.nova.runtime.names.NameRecord
 import io.novafoundation.nova.runtime.names.NameStatus
+import io.novafoundation.nova.runtime.names.NameSuspension
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -135,6 +136,19 @@ class KurdSiteServerTest {
         assertSame(KurdSiteServer.PageState.NotRegistered, stateFor { KurdResolution.NotFound(it, verified = true) })
         assertSame(KurdSiteServer.PageState.Unavailable, stateFor { KurdResolution.Unavailable(it) })
         assertSame(KurdSiteServer.PageState.NoSite, stateFor(resolved(content = null)))
+
+        val suspension = NameSuspension(until = 1, reg = 1, reason = "0x00", by = NameSuspension.By.EMERGENCY)
+        val suspended = stateFor { KurdResolution.Suspended(it, suspension, verified = true) }
+        assertSame(suspension, (suspended as KurdSiteServer.PageState.Suspended).suspension)
+    }
+
+    @Test
+    fun `a suspended name serves nothing, not even its content when verified`() = runBlocking {
+        val suspension = NameSuspension(until = 1, reg = 1, reason = "0x00", by = NameSuspension.By.COURT)
+        val response = server { KurdResolution.Suspended(it, suspension, verified = true) }.serve("dks.kurd", "/")
+
+        assertEquals(451, response.status)
+        assertTrue(response.body.isEmpty())
     }
 
     @Test

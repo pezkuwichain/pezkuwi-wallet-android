@@ -28,7 +28,7 @@ sealed interface NameLookup {
 
     /** Two sources agree when they return the same records byte for byte and judge them the same. */
     fun agreesWith(other: NameLookup): Boolean = when (this) {
-        is Found -> other is Found && rawChain == other.rawChain && status == other.status && locked == other.locked
+        is Found -> other is Found && rawChain == other.rawChain && status == other.status && locked == other.locked && suspension == other.suspension
         else -> this === other
     }
 
@@ -46,12 +46,15 @@ sealed interface NameLookup {
         val locked: Boolean,
         /** The finalized block it was read at, when the source said; not part of agreement. */
         val block: Long? = null,
+        /** The suspension that stops the name now: its own, or a name's it sits under. */
+        val suspension: NameSuspension? = null,
     ) : NameLookup
 
     companion object {
 
         private val NAMES_PREFIX = "Navnisan".toByteArray().xxHash128() + "Names".toByteArray().xxHash128()
         private val LOCKED_PREFIX = "Navnisan".toByteArray().xxHash128() + "Locked".toByteArray().xxHash128()
+        private val SUSPENSIONS_PREFIX = "Navnisan".toByteArray().xxHash128() + "Suspensions".toByteArray().xxHash128()
         private val TIMESTAMP_NOW = "Timestamp".toByteArray().xxHash128() + "Now".toByteArray().xxHash128()
 
         /** `NavnisanGracePeriod`: 30 days after a lease ends the name still resolves (decision D11). */
@@ -60,6 +63,8 @@ sealed interface NameLookup {
         fun namesKey(node: ByteArray) = NAMES_PREFIX + node
 
         fun lockedKey(node: ByteArray) = LOCKED_PREFIX + node
+
+        fun suspensionsKey(node: ByteArray) = SUSPENSIONS_PREFIX + node
 
         val timestampNowKey: ByteArray get() = TIMESTAMP_NOW.copyOf()
 
@@ -87,10 +92,30 @@ sealed interface NameLookup {
 
             val status = effectiveStatus(records.map { it.first }, now) ?: return Lapsed
             val locked = nodes.any { reader.storage(lockedKey(it), at) != null }
+            val suspension = suspension(reader, at, nodes, records.map { it.first }, now)
 
             val block = runCatching { reader.blockNumber(at) }.getOrNull()
 
-            return Found(records.first().first, status, records.map { it.second }, locked, block)
+            return Found(records.first().first, status, records.map { it.second }, locked, block, suspension)
+        }
+
+        /**
+         * `Pezpallet::is_suspended`: the name's own suspension, then each ancestor's while the name
+         * below is a subname. A chain without `Suspensions` stores nothing there, and nothing is stopped.
+         */
+        private suspend fun suspension(
+            reader: NameStorageReader,
+            at: String,
+            nodes: List<ByteArray>,
+            chain: List<NameRecord>,
+            now: Long,
+        ): NameSuspension? {
+            for (level in chain.indices) {
+                val suspension = reader.storage(suspensionsKey(nodes[level]), at)?.let(NameSuspension::decode)
+                if (suspension != null && suspension.holdsFor(chain[level], now)) return suspension
+                if (chain[level].kind != NameRecord.Kind.SUB) return null
+            }
+            return null
         }
 
         /**
