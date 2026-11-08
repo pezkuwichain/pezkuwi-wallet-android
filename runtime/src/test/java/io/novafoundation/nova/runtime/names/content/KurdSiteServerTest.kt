@@ -38,6 +38,26 @@ class KurdSiteServerTest {
     }
 
     @Test
+    fun `a page the site lacks is its own 404 page, or a line of text, never an empty error`() = runBlocking {
+        val withPage = KurdSiteServer(
+            resolverOf(resolved(ipfs(cid("bafybeiezwrv6dr544fbj4xtthdg63jblfzqj5j6cqfkslbf7hkbevgpkui")))),
+            fetcher(CarSource { _, _, _ -> resource("site-with-404.car") }),
+        )
+        val ownPage = withPage.serve("dks.kurd", "/missing", mainFrame = true)
+        assertEquals(404, ownPage.status)
+        assertEquals("text/html", ownPage.mimeType)
+        assertTrue(String(ownPage.body).contains("<title>404 page</title>"))
+
+        val withoutPage = server(resolved(ipfs(siteRoot)))
+        val text = withoutPage.serve("dks.kurd", "/missing", mainFrame = true)
+        assertEquals(404, text.status)
+        assertTrue(text.body.isNotEmpty())
+
+        // A missing image or script is answered as before: the page decides what to show
+        assertEquals(0, withPage.serve("dks.kurd", "/missing.png").body.size)
+    }
+
+    @Test
     fun `content the server cannot verify is not served`() = runBlocking {
         val ipns = NameRecord.Content.Ipfs(byteArrayOf(0xe5.toByte(), 0x01) + siteRoot.bytes)
         val feed = NameRecord.Content.Feed(ByteArray(32), ByteArray(32), siteRoot.bytes, java.math.BigInteger.ONE)
