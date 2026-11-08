@@ -4,6 +4,7 @@ import io.novafoundation.nova.runtime.names.KurdName
 import io.novafoundation.nova.runtime.names.KurdNameResolver
 import io.novafoundation.nova.runtime.names.KurdResolution
 import io.novafoundation.nova.runtime.names.NameRecord
+import io.novafoundation.nova.runtime.names.NameSuspension
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -50,6 +51,9 @@ class KurdSiteServer(
 
         object NotRegistered : PageState
 
+        /** Stopped by the court or the emergency council; nothing of it is served. */
+        class Suspended(val suspension: NameSuspension) : PageState
+
         /** Registered, but no site: no content, or content of a kind this wallet does not serve. */
         object NoSite : PageState
 
@@ -81,15 +85,16 @@ class KurdSiteServer(
         val name = KurdName.parse(host) ?: return status(404, "Not Found")
         val segments = decodePath(encodedPath) ?: return status(400, "Bad Request")
 
-        val (state, response) = handle(name, segments)
+        val (state, response) = handle(name, segments, mainFrame)
         if (mainFrame) _pageStates.update { it + (name to state) }
         return response
     }
 
-    private suspend fun handle(name: KurdName, segments: List<String>): Pair<PageState, Response> {
+    private suspend fun handle(name: KurdName, segments: List<String>, mainFrame: Boolean): Pair<PageState, Response> {
         val resolution = when (val resolved = resolve(name)) {
             is KurdResolution.Resolved -> resolved
             is KurdResolution.NotFound -> return PageState.NotRegistered to status(404, "Not Found")
+            is KurdResolution.Suspended -> return PageState.Suspended(resolved.suspension) to status(451, "Unavailable For Legal Reasons")
             is KurdResolution.Refused -> return PageState.Refused to status(403, "Forbidden")
             is KurdResolution.Unavailable -> return PageState.Unavailable to status(502, "Bad Gateway")
         }
@@ -112,9 +117,21 @@ class KurdSiteServer(
         val open = PageState.Open(resolution, root, onChainVersion)
         return when (val result = fetcher.fetch(root, segments)) {
             is KurdContentFetcher.Result.File -> open to Response(200, "OK", mimeTypeOf(result.path.lastOrNull()), result.bytes)
-            KurdContentFetcher.Result.NotFound -> open to status(404, "Not Found")
+            KurdContentFetcher.Result.NotFound -> open to if (mainFrame) notFoundPage(root) else status(404, "Not Found")
             KurdContentFetcher.Result.Unavailable -> PageState.Unavailable to status(502, "Bad Gateway")
         }
+    }
+
+    /**
+     * A page the site does not have: its own `/404.html` when it ships one, as a web server would
+     * answer, and otherwise a line of text. Never an empty body, which WebView replaces with its
+     * own error screen as if the site could not be reached.
+     */
+    private suspend fun notFoundPage(root: Cid): Response {
+        val page = fetcher.fetch(root, listOf(NOT_FOUND_PAGE)) as? KurdContentFetcher.Result.File
+            ?: return Response(404, "Not Found", "text/plain", "404 Not Found".toByteArray())
+
+        return Response(404, "Not Found", mimeTypeOf(NOT_FOUND_PAGE), page.bytes)
     }
 
     private suspend fun resolve(name: KurdName): KurdResolution {
@@ -126,6 +143,8 @@ class KurdSiteServer(
     private fun status(code: Int, reason: String) = Response(code, reason, "text/plain", ByteArray(0))
 
     companion object {
+
+        private const val NOT_FOUND_PAGE = "404.html"
 
         const val CONTENT_SECURITY_POLICY = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; " +
             "img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self'; " +

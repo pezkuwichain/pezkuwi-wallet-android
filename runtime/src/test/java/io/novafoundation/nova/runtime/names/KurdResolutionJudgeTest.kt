@@ -3,6 +3,7 @@ package io.novafoundation.nova.runtime.names
 import io.novafoundation.nova.runtime.names.RealKurdNameResolver.Companion.judge
 import io.novafoundation.nova.runtime.names.RealKurdNameResolver.Companion.refuseOrGiveUp
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -33,6 +34,18 @@ class KurdResolutionJudgeTest {
 
         assertFalse(resolution.verified)
         assertFalse(resolution.official)
+    }
+
+    @Test
+    fun `a suspended name is suspended however it was read, even one that must be verified`() {
+        val suspension = NameSuspension(until = 1, reg = 9, reason = "0x00", by = NameSuspension.By.COURT)
+        val stopped = { raw: NameRecord -> NameLookup.Found(raw, NameStatus.ACTIVE, listOf("raw"), locked = false, suspension = suspension) }
+
+        val proven = judge(ahmet, stopped(leased()), verified = true) as KurdResolution.Suspended
+        assertTrue(proven.verified)
+        assertSame(suspension, proven.suspension)
+        assertTrue(judge(ahmet, stopped(leased()), verified = false) is KurdResolution.Suspended)
+        assertTrue(judge(dks, stopped(NameRecord.decode(NameFixtures.DKS)), verified = false) is KurdResolution.Suspended)
     }
 
     @Test

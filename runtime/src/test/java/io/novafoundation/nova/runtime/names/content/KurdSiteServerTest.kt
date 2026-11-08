@@ -5,6 +5,7 @@ import io.novafoundation.nova.runtime.names.KurdNameResolver
 import io.novafoundation.nova.runtime.names.KurdResolution
 import io.novafoundation.nova.runtime.names.NameRecord
 import io.novafoundation.nova.runtime.names.NameStatus
+import io.novafoundation.nova.runtime.names.NameSuspension
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -35,6 +36,26 @@ class KurdSiteServerTest {
         assertEquals(403, server { KurdResolution.Refused(it) }.serve("dks.kurd", "/").status)
         assertEquals(502, server { KurdResolution.Unavailable(it) }.serve("dks.kurd", "/").status)
         assertEquals(404, server(resolved(content = null)).serve(name.name, "/").status)
+    }
+
+    @Test
+    fun `a page the site lacks is its own 404 page, or a line of text, never an empty error`() = runBlocking {
+        val withPage = KurdSiteServer(
+            resolverOf(resolved(ipfs(cid("bafybeiezwrv6dr544fbj4xtthdg63jblfzqj5j6cqfkslbf7hkbevgpkui")))),
+            fetcher(CarSource { _, _, _ -> resource("site-with-404.car") }),
+        )
+        val ownPage = withPage.serve("dks.kurd", "/missing", mainFrame = true)
+        assertEquals(404, ownPage.status)
+        assertEquals("text/html", ownPage.mimeType)
+        assertTrue(String(ownPage.body).contains("<title>404 page</title>"))
+
+        val withoutPage = server(resolved(ipfs(siteRoot)))
+        val text = withoutPage.serve("dks.kurd", "/missing", mainFrame = true)
+        assertEquals(404, text.status)
+        assertTrue(text.body.isNotEmpty())
+
+        // A missing image or script is answered as before: the page decides what to show
+        assertEquals(0, withPage.serve("dks.kurd", "/missing.png").body.size)
     }
 
     @Test
@@ -115,6 +136,19 @@ class KurdSiteServerTest {
         assertSame(KurdSiteServer.PageState.NotRegistered, stateFor { KurdResolution.NotFound(it, verified = true) })
         assertSame(KurdSiteServer.PageState.Unavailable, stateFor { KurdResolution.Unavailable(it) })
         assertSame(KurdSiteServer.PageState.NoSite, stateFor(resolved(content = null)))
+
+        val suspension = NameSuspension(until = 1, reg = 1, reason = "0x00", by = NameSuspension.By.EMERGENCY)
+        val suspended = stateFor { KurdResolution.Suspended(it, suspension, verified = true) }
+        assertSame(suspension, (suspended as KurdSiteServer.PageState.Suspended).suspension)
+    }
+
+    @Test
+    fun `a suspended name serves nothing, not even its content when verified`() = runBlocking {
+        val suspension = NameSuspension(until = 1, reg = 1, reason = "0x00", by = NameSuspension.By.COURT)
+        val response = server { KurdResolution.Suspended(it, suspension, verified = true) }.serve("dks.kurd", "/")
+
+        assertEquals(451, response.status)
+        assertTrue(response.body.isEmpty())
     }
 
     @Test

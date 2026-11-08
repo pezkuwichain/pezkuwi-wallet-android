@@ -38,6 +38,13 @@ class SearchDappInteractorTest {
     }
 
     @Test
+    fun `a kurd page address is offered with its path`() = runBlocking {
+        val offered = interactor.searchDapps("https://dks-news.kurd/a/missing", categoryId = null)[DappSearchGroup.KURD_NAME]!!.single()
+
+        assertEquals("https://dks-news.kurd/a/missing", (offered as DappSearchResult.KurdName).url)
+    }
+
+    @Test
     fun `an invalid kurd name is offered nowhere`() = runBlocking {
         listOf("uni-x--edu.kurd", "dks_news.kurd", "a.b.c.d.e.kurd").forEach { query ->
             assertEquals(query, emptyMap<DappSearchGroup, List<DappSearchResult>>(), interactor.searchDapps(query, categoryId = null))

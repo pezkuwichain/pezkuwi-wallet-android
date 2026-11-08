@@ -107,6 +107,76 @@ class NameLookupTest {
         assertFalse(first.agreesWith(NameLookup.NotFound))
     }
 
+    @Test
+    fun `a suspension of the name or of the name above it stops it`() = runBlocking {
+        val govReg = NameRecord.decode(NameFixtures.GOV).reg
+        val serokReg = NameRecord.decode(NameFixtures.SEROK_GOV).reg
+        val live = { FakeReader().put(gov, NameFixtures.GOV).put(serok, NameFixtures.SEROK_GOV) }
+
+        assertEquals(null, (NameLookup.read(live(), serok) as NameLookup.Found).suspension)
+
+        val own = NameLookup.read(live().suspend(serok, serokReg, NameSuspension.By.EMERGENCY), serok) as NameLookup.Found
+        assertEquals(NameSuspension.By.EMERGENCY, own.suspension?.by)
+
+        val above = NameLookup.read(live().suspend(gov, govReg, NameSuspension.By.COURT), serok) as NameLookup.Found
+        assertEquals(NameSuspension.By.COURT, above.suspension?.by)
+        assertEquals(NameFixtures.NOW + 1, above.suspension?.until)
+    }
+
+    @Test
+    fun `a suspension that ran out or names another registration stops nothing`() = runBlocking {
+        val serokReg = NameRecord.decode(NameFixtures.SEROK_GOV).reg
+        val live = { FakeReader().put(gov, NameFixtures.GOV).put(serok, NameFixtures.SEROK_GOV) }
+
+        val ranOut = live().suspend(serok, serokReg, NameSuspension.By.COURT, until = NameFixtures.NOW)
+        assertEquals(null, (NameLookup.read(ranOut, serok) as NameLookup.Found).suspension)
+
+        val earlier = live().suspend(serok, serokReg - 1, NameSuspension.By.COURT)
+        assertEquals(null, (NameLookup.read(earlier, serok) as NameLookup.Found).suspension)
+    }
+
+    @Test
+    fun `a suspension above a name that is not a subname does not reach it`() = runBlocking {
+        // serok.gov.kurd as if Parliament had granted it outright rather than set it under gov.kurd
+        val granted = NameFixtures.SEROK_GOV.copyOf().also { it[SEROK_KIND_OFFSET] = 1 }
+        check(NameRecord.decode(granted).kind == NameRecord.Kind.GRANTED)
+        val reader = FakeReader().put(gov, NameFixtures.GOV).put(serok, granted)
+            .suspend(gov, NameRecord.decode(NameFixtures.GOV).reg, NameSuspension.By.COURT)
+
+        assertEquals(null, (NameLookup.read(reader, serok) as NameLookup.Found).suspension)
+    }
+
+    @Test
+    fun `sources that disagree on a suspension do not agree`() = runBlocking {
+        val serokReg = NameRecord.decode(NameFixtures.SEROK_GOV).reg
+        val live = { FakeReader().put(gov, NameFixtures.GOV).put(serok, NameFixtures.SEROK_GOV) }
+
+        val plain = NameLookup.read(live(), serok)
+        val stopped = NameLookup.read(live().suspend(serok, serokReg, NameSuspension.By.COURT), serok)
+        assertFalse(plain.agreesWith(stopped))
+        assertTrue(stopped.agreesWith(NameLookup.read(live().suspend(serok, serokReg, NameSuspension.By.COURT), serok)))
+    }
+
+    @Test
+    fun `suspensions are read from the pallet's own storage item`() {
+        // twox128("Navnisan") ++ twox128("Suspensions"), computed apart from this code
+        val prefix = "8dada8db66ab8573e0db54b9f7d276265dd5f3679e83b14ce6d7b388fae08646"
+        assertEquals(prefix + "00".repeat(32), NameLookup.suspensionsKey(ByteArray(32)).toHexString())
+    }
+
+    @Test
+    fun `a suspension decodes field by field and refuses trailing bytes`() {
+        val raw = suspensionBytes(until = 0x0102, reg = 7, by = NameSuspension.By.EMERGENCY)
+        val suspension = NameSuspension.decode(raw)
+
+        assertEquals(0x0102L, suspension.until)
+        assertEquals(7L, suspension.reg)
+        assertEquals("0x" + "ab".repeat(32), suspension.reason)
+        assertEquals(NameSuspension.By.EMERGENCY, suspension.by)
+        assertTrue(runCatching { NameSuspension.decode(raw + 0) }.isFailure)
+        assertTrue(runCatching { NameSuspension.decode(raw.copyOf(raw.size - 1) + 2) }.isFailure)
+    }
+
     private fun record(kind: NameRecord.Kind, expiry: Long?, reg: Long = 1, parentReg: Long = 1) = NameRecord(
         label = "x", parent = ByteArray(32), parentReg = parentReg, reg = reg, owner = NameRecord.Owner.Governance, kind = kind,
         lockedTransfer = false, expiry = expiry, account = null, content = null,
@@ -125,6 +195,10 @@ class NameLookupTest {
 
         fun lock(name: KurdName) = apply { values[NameLookup.lockedKey(name.node).toHexString()] = byteArrayOf(0) }
 
+        fun suspend(name: KurdName, reg: Long, by: NameSuspension.By, until: Long = NameFixtures.NOW + 1) = apply {
+            values[NameLookup.suspensionsKey(name.node).toHexString()] = suspensionBytes(until, reg, by)
+        }
+
         override suspend fun finalizedHead() = HEAD
 
         override suspend fun blockNumber(at: String): Long = 1_284_551
@@ -137,5 +211,17 @@ class NameLookupTest {
         companion object {
             const val HEAD = "0xfinalized"
         }
+    }
+
+    companion object {
+
+        /** Label (1 + 5), parent, parent_reg, reg, owner `Office(3)`: the kind byte follows. */
+        private const val SEROK_KIND_OFFSET = 6 + 32 + 8 + 8 + 2
+
+        /** `Suspension { until, reg, reason, by }` as the pallet encodes it. */
+        fun suspensionBytes(until: Long, reg: Long, by: NameSuspension.By): ByteArray =
+            le64(until) + le64(reg) + ByteArray(32) { 0xab.toByte() } + byteArrayOf(by.ordinal.toByte())
+
+        private fun le64(value: Long) = ByteArray(8) { (value ushr (8 * it)).toByte() }
     }
 }

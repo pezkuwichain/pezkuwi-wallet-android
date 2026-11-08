@@ -34,7 +34,7 @@ class SearchDappInteractor(
             .map(DappSearchResult::Dapp)
 
         // A .kurd name is resolved on chain by the wallet: never a web address, never a search query
-        val kurdName = KurdName.parse(query).takeIf { KurdName.mentionsKurd(query) }
+        val kurdAddress = KurdName.parseAddress(query).takeIf { KurdName.mentionsKurd(query) }
 
         val searchGroupContent = when {
             query.isEmpty() -> null
@@ -50,8 +50,8 @@ class SearchDappInteractor(
         }
 
         buildMap {
-            kurdName?.let {
-                put(DappSearchGroup.KURD_NAME, listOf(DappSearchResult.KurdName(it)))
+            kurdAddress?.let { (name, path) ->
+                put(DappSearchGroup.KURD_NAME, listOf(DappSearchResult.KurdName(name, path)))
             }
 
             searchGroupContent?.let {

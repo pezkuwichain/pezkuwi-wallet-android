@@ -78,6 +78,28 @@ class KurdName private constructor(
             return KurdName(labels)
         }
 
+        /**
+         * A `.kurd` page address -- the name and the path, query and fragment after it, as the address
+         * bar shows and the reader edits it -- or null when the name is invalid ([parse]) or what follows
+         * it is not a plain URL path. The path is `/` when none is given.
+         */
+        fun parseAddress(input: String): Pair<KurdName, String>? {
+            var text = input.trim()
+            if (text.startsWith("https://", ignoreCase = true)) text = text.substring("https://".length)
+            val end = text.indexOfFirst { it in "/?#" }.takeIf { it >= 0 } ?: text.length
+            val name = parse(text.substring(0, end)) ?: return null
+
+            val rest = text.substring(end)
+            if (rest.isEmpty()) return name to "/"
+            val path = if (rest.startsWith("/")) rest else "/$rest"
+            // Printable ASCII only: the page is fetched by path, so nothing may hide in it
+            if (path.any { it.code <= 0x20 || it.code >= 0x7f }) return null
+            val uri = runCatching { java.net.URI("https://${name.name}$path") }.getOrNull() ?: return null
+            if (uri.host != name.name || uri.port != -1 || uri.userInfo != null) return null
+
+            return name to path
+        }
+
         /** `a-z`, `0-9` and `-`, 1 to 63 bytes, no hyphen at either end and no `--` anywhere. */
         fun isValidLabel(label: String): Boolean {
             if (label.isEmpty() || label.length > MAX_LABEL) return false

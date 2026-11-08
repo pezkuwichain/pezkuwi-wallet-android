@@ -50,6 +50,86 @@
         android:lineSpacingMultiplier="1.2"
         tools:text="@string/dapp_kurd_refused_message" />
 
+    <!-- Who stopped the name, until when, and the hash of their written reasons (D23) -->
+    <LinearLayout
+        android:id="@+id/kurdNoticeSuspension"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_block_12"
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="12dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextAppearance.NovaFoundation.Regular.Caption1.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dapp_kurd_suspended_by" />
+
+            <TextView
+                android:id="@+id/kurdNoticeSuspensionBy"
+                style="@style/TextAppearance.NovaFoundation.Regular.Caption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                style="@style/TextAppearance.NovaFoundation.Regular.Caption1.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dapp_kurd_suspended_until" />
+
+            <TextView
+                android:id="@+id/kurdNoticeSuspensionUntil"
+                style="@style/TextAppearance.NovaFoundation.Regular.Caption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                style="@style/TextAppearance.NovaFoundation.Regular.Caption1.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dapp_kurd_suspended_reason" />
+
+            <TextView
+                android:id="@+id/kurdNoticeSuspensionReason"
+                style="@style/TextAppearance.NovaFoundation.Regular.Caption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="@color/text_primary"
+                android:fontFamily="monospace" />
+        </LinearLayout>
+    </LinearLayout>
+
     <io.novafoundation.nova.common.view.PrimaryButton
         android:id="@+id/kurdNoticePrimary"
         style="@style/Widget.Nova.Button.Primary"

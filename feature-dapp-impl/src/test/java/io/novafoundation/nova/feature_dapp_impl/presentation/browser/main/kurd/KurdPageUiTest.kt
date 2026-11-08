@@ -4,6 +4,7 @@ import io.novafoundation.nova.runtime.names.KurdName
 import io.novafoundation.nova.runtime.names.KurdResolution
 import io.novafoundation.nova.runtime.names.NameRecord
 import io.novafoundation.nova.runtime.names.NameStatus
+import io.novafoundation.nova.runtime.names.NameSuspension
 import io.novafoundation.nova.runtime.names.content.Cid
 import io.novafoundation.nova.runtime.names.content.KurdSiteServer.PageState
 import org.junit.Assert.assertEquals
@@ -49,6 +50,15 @@ class KurdPageUiTest {
         assertEquals(KurdPageUi.NoticeKind.NO_SITE, noticeOf(PageState.NoSite))
         assertEquals(KurdPageUi.NoticeKind.UNAVAILABLE, noticeOf(PageState.Unavailable))
         assertNull(KurdPageUi.from(name, null))
+    }
+
+    @Test
+    fun `a suspended name is a notice that carries who stopped it and until when`() {
+        val suspension = NameSuspension(until = 1_800_000_000_000, reg = 1, reason = "0x00", by = NameSuspension.By.EMERGENCY)
+        val notice = KurdPageUi.from(name, PageState.Suspended(suspension)) as KurdPageUi.Notice
+
+        assertEquals(KurdPageUi.NoticeKind.SUSPENDED, notice.kind)
+        assertEquals(suspension, notice.suspension)
     }
 
     @Test

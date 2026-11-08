@@ -23,7 +23,6 @@ import io.novafoundation.nova.feature_dapp_impl.presentation.DAppRouter
 import io.novafoundation.nova.feature_dapp_impl.presentation.common.dappCategoryToUi
 import io.novafoundation.nova.feature_dapp_impl.presentation.search.model.DappSearchModel
 import io.novafoundation.nova.runtime.names.KurdLookalikes
-import io.novafoundation.nova.runtime.names.KurdName
 import io.novafoundation.nova.runtime.names.KurdNameResolver
 import io.novafoundation.nova.runtime.names.KurdResolution
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -128,7 +127,7 @@ class DAppSearchViewModel(
             )
 
             is DappSearchResult.KurdName -> DappSearchModel(
-                title = searchResult.name.name,
+                title = searchResult.name.name + searchResult.path.takeIf { it != "/" }.orEmpty(),
                 description = resourceManager.getString(R.string.dapp_search_kurd_name_subtitle),
                 iconRes = R.drawable.shield_checkmark_outline,
                 searchResult = searchResult,
@@ -143,7 +142,7 @@ class DAppSearchViewModel(
                 is DappSearchResult.Dapp -> searchResult.dapp.url
                 is DappSearchResult.Search -> searchResult.searchUrl
                 is DappSearchResult.Url -> searchResult.url
-                is DappSearchResult.KurdName -> urlAfterLookalikeCheck(searchResult.name)
+                is DappSearchResult.KurdName -> urlAfterLookalikeCheck(searchResult)
             }
 
             if (!searchResult.isTrustedByNova) {
@@ -166,17 +165,18 @@ class DAppSearchViewModel(
      * chooses that one. Looked up only when the typed name has such a candidate, and for a few
      * seconds at most: the opened page still shows by its badge whether it is official.
      */
-    private suspend fun urlAfterLookalikeCheck(typed: KurdName): String {
+    private suspend fun urlAfterLookalikeCheck(typed: DappSearchResult.KurdName): String {
         val official = withTimeoutOrNull(LOOKALIKE_CHECK_MILLIS) {
-            KurdLookalikes.candidates(typed).firstOrNull { candidate ->
+            KurdLookalikes.candidates(typed.name).firstOrNull { candidate ->
                 val resolution = kurdNameResolver.resolve(candidate)
                 resolution is KurdResolution.Resolved && resolution.verified && resolution.official
             }
-        } ?: return DappSearchResult.KurdName(typed).url
+        } ?: return typed.url
 
-        return when (kurdLookalikeWarning.awaitAction(KurdLookalikeWarning(typed, official))) {
+        return when (kurdLookalikeWarning.awaitAction(KurdLookalikeWarning(typed.name, official))) {
+            // The official site's home page: the typed path belongs to a different site
             KurdLookalikeChoice.GO_OFFICIAL -> DappSearchResult.KurdName(official).url
-            KurdLookalikeChoice.OPEN_TYPED -> DappSearchResult.KurdName(typed).url
+            KurdLookalikeChoice.OPEN_TYPED -> typed.url
         }
     }
 

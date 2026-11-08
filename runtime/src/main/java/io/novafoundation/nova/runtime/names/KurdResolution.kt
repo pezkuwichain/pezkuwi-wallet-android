@@ -22,6 +22,12 @@ sealed interface KurdResolution {
         val official: Boolean get() = record.isOfficial
     }
 
+    /**
+     * Stopped by the court or the emergency council (decision D23): the name and everything under
+     * it open nothing until the suspension ends or is lifted, however it was read.
+     */
+    class Suspended(override val name: KurdName, val suspension: NameSuspension, val verified: Boolean) : KurdResolution
+
     /** Not registered, expired, or orphaned by its parent's re-registration. */
     class NotFound(override val name: KurdName, val verified: Boolean) : KurdResolution
 
