@@ -33,6 +33,28 @@ class KurdNameTest {
     }
 
     @Test
+    fun `a page address keeps its path, query and fragment`() {
+        assertEquals("dks-news.kurd" to "/kategori/ekonomi", address("https://DKS-News.kurd/kategori/ekonomi"))
+        assertEquals("dks-news.kurd" to "/a/x?lang=kmr#top", address("dks-news.kurd/a/x?lang=kmr#top"))
+        assertEquals("dks-news.kurd" to "/?q=1", address("dks-news.kurd?q=1"))
+        assertEquals("dks.kurd" to "/", address("dks.kurd"))
+        assertEquals("dks.kurd" to "/", address("https://dks.kurd/"))
+    }
+
+    @Test
+    fun `a page address with an invalid name, port, user or unsafe path is refused`() {
+        listOf(
+            "dks_news.kurd/a", // the name itself
+            "dks.kurd:8080/a",
+            "user@dks.kurd/a",
+            "http://dks.kurd/a", // only https, as for a bare name
+            "dks.kurd/a b",
+            "dks.kurd/\u00e7",
+            "dks.kurd/a%zz",
+        ).forEach { assertNull(it, KurdName.parseAddress(it)) }
+    }
+
+    @Test
     fun `names the pallet refuses are never parsed`() {
         listOf(
             "uni-x--edu.kurd", // `--` anywhere
@@ -84,4 +106,6 @@ class KurdNameTest {
     }
 
     private fun node(name: String) = KurdName.parse(name)!!.node.toHexString()
+
+    private fun address(input: String) = KurdName.parseAddress(input)?.let { (name, path) -> name.name to path }
 }
